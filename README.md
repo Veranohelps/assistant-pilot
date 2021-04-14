@@ -32,10 +32,31 @@ On IAM > Service Accounts > `PROJECT_ID-compute@developer.gserviceaccount.com` >
 
 Set `GOOGLE_APPLICATION_CREDENTIALS` to point to the key of the main Service Account on your computer.
 
+In order to manage Terraform resources properly, Terraform State should be stored remotely. Set up a GCS Bucket to handle the Terraform State, and locking (for when simultaneous state changes occur). To do this we need to create one resource manually in the Google Cloud Platform Storage console. Choose CREATE BUCKET and follow the instructions. Add the bucket's name to the backend block, under bucket in [terraform/providers.tf](./services/terraform/providers.tf).
+
+```
+gsutil versioning set on gs://[BUCKET_NAME]
+```
+
 Then, from the Terraform folder:
 
 ```
-docker run --rm -it -v $(PWD):/home/terraform -w /home/terraform -v $GOOGLE_APPLICATION_CREDENTIALS:/home/sa.json -e GOOGLE_APPLICATION_CREDENTIALS=/home/sa.json hashicorp/terraform:light plan
+docker run --rm -it \ 
+	-v $(PWD):/home/terraform \
+	-w /home/terraform \
+	-v $GOOGLE_APPLICATION_CREDENTIALS:/home/sa.json \
+	-e GOOGLE_APPLICATION_CREDENTIALS=/home/sa.json \
+	hashicorp/terraform:light \
+	plan -var="dersu_api_docker_image_tag=XXXXX"
 ```
 
 Uses [Cloud Run](https://cloud.google.com/run) via [cloud-run](https://registry.terraform.io/modules/garbetjie/cloud-run/google/latest) Terraform module.
+
+## CI
+
+Through [Github Actions](https://github.com/dersu-uz/assistant-pilot/actions). On commits to `develop`:
+
+- Build, push and deploy API via Terraform.
+
+
+Expects `GCP_PROJECT_ID`, `GCP_SA_KEY` (actual content of the service account key) and `GCP_EMAIL` (used for the service account) as **repository** secrets.
