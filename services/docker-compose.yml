@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  api:
+    build: 
+      context: ./api
+      target: builder
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/home/dersu-api
