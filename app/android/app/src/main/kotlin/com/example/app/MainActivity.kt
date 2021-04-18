@@ -1,4 +1,4 @@
-package com.example.app
+package uz.dersu.assistant.pilot
 
 import io.flutter.embedding.android.FlutterActivity
 

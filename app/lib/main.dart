@@ -123,8 +123,7 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
               } else if (snapshot.hasError) {
                 print("Error while fetching expeditions 👇");
                 print(snapshot.error);
-                return GenericError(
-                    errorMessage: 'Could not load list of expeditions');
+                return GenericError(errorMessage: snapshot.error.toString());
               }
               return GenericLoader();
             },

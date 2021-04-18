@@ -1,7 +1,4 @@
-# FROM:
-# https://github.com/docker/build-push-action
-
-name: Build, push and deploy Dersu API
+name: API build, push and deploy
 on:
   push:
     branches:

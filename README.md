@@ -3,7 +3,7 @@
 ## Configuration
 
  - App:
- 	- `ANDROID_SDK_GEO_MAPS_KEY`: see [Google Maps Flutter](https://pub.dev/packages/google_maps_flutter) reference.
+ 	- `ANDROID_MAPS_API_KEY`: see [Google Maps Flutter](https://pub.dev/packages/google_maps_flutter) reference. This is read at build time when using `flutter run` from the `app` folder. Should be added to the CI server configuration as well (see below).
  	- `DERSU_API_BASE_URL`
  - API:
  	- `PORT`
@@ -20,6 +20,7 @@ Enable APIs:
  - Cloud Build API 
  - Cloud Run API
  - Compute Engine API 
+ - Google Play Android Developer API 
 
 ```
 gcloud services enable cloudresourcemanager.googleapis.com
@@ -57,6 +58,9 @@ Uses [Cloud Run](https://cloud.google.com/run) via [cloud-run](https://registry.
 Through [Github Actions](https://github.com/dersu-uz/assistant-pilot/actions). On commits to `develop`:
 
 - Build, push and deploy API via Terraform.
+- Build the Android bundle.
 
+The following **repository** secrets required:
 
-Expects `GCP_PROJECT_ID`, `GCP_SA_KEY` (actual content of the service account key) and `GCP_EMAIL` (used for the service account) as **repository** secrets.
+ - `GCP_PROJECT_ID`, `GCP_SA_KEY` (actual content of the service account key) and `GCP_EMAIL` (used for the service account).
+ - `ANDROID_MAPS_API_KEY` ([Google Maps Flutter](https://pub.dev/packages/google_maps_flutter)), `ANDROID_STORE_PASSWORD`, `ANDROID_JKS` (actual contents of the key file B64 encoded), `ANDROID_KEY_PASSWORD`, `ANDROID_KEY_ALIAS` (as required to sign Android Releases with Flutter).

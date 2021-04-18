@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class NetworkRepository {
   Future<List<Expedition>> fetchExpeditions() async {
     String DERSU_API_BASE_URL = env['DERSU_API_BASE_URL']!;
-    final response = await http.get(Uri.http(DERSU_API_BASE_URL, "/"));
+    final response = await http.get(Uri.parse(DERSU_API_BASE_URL + "/"));
     return compute(parseExpeditions, response.body);
   }
 }
