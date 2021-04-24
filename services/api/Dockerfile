@@ -20,6 +20,7 @@ WORKDIR /home/dersu-api
 
 COPY --from=builder /home/dersu-api/node_modules /home/dersu-api/node_modules
 COPY --from=builder /home/dersu-api/build /home/dersu-api/build
+COPY --from=builder /home/dersu-api/static /home/dersu-api/static
 COPY --from=builder /home/dersu-api/package.json /home/dersu-api/package.json
 
 CMD ["npm", "run", "start:production"]
