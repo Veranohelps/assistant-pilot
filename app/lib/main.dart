@@ -81,9 +81,12 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   final GlobalKey<NavigatorState> navigatorKey;
 
   Expedition? _selectedExpedition;
+  DersuRoute? _selectedRoute;
   bool showExpeditionMap = false;
   late Future<List<Expedition>> futureExpeditions =
       NetworkRepository().fetchExpeditions();
+
+  late Future<DersuRoute> futureRoute;
 
   // the app state is stored directly on the RouterDelegate,
   // but could also be separated into another class
@@ -132,8 +135,8 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
 
     if (_selectedExpedition != null) {
       if (showExpeditionMap == true) {
-        print("show map now");
-        currentPages.add(ExpeditionMapPage(expedition: _selectedExpedition!));
+        currentPages.add(ExpeditionMapPage(
+            expedition: _selectedExpedition!, route: _selectedRoute!));
       } else {
         currentPages.add(ExpeditionDetailsPage(
             expedition: _selectedExpedition!, onMapSelected: _onMapSelected));
@@ -197,6 +200,30 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   void _handleExpeditionTapped(Expedition expedition) {
     print("Expedition selected: $expedition");
     _selectedExpedition = expedition;
+
+    if (_selectedExpedition!.routes.isNotEmpty) {
+      print("About to load first route ONLY");
+      futureRoute =
+          NetworkRepository().fetchRoute(_selectedExpedition!.routes.first.url);
+      futureRoute
+          .then((route) => _onRouteLoaded(route))
+          .catchError((error) => _onRouteLoadingError(error));
+    }
+
+    notifyListeners();
+  }
+
+  void _onRouteLoaded(route) {
+    print("Route loaded");
+    print(route.name);
+    _selectedRoute = route;
+    notifyListeners();
+  }
+
+  void _onRouteLoadingError(error) {
+    print("Error while trying to load route");
+    print(error.toString());
+    _selectedRoute = null;
     notifyListeners();
   }
 

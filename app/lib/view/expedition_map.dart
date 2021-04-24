@@ -4,7 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ExpeditionMapPage extends Page {
   final Expedition expedition;
-  ExpeditionMapPage({required this.expedition})
+  final DersuRoute route;
+  ExpeditionMapPage({required this.expedition, required this.route})
       : super(key: ValueKey(expedition.toString() + "-show-map"));
 
   Route createRoute(BuildContext context) {
@@ -13,6 +14,7 @@ class ExpeditionMapPage extends Page {
       builder: (BuildContext context) {
         return ExpeditionMapScreen(
           expedition: expedition,
+          route: route,
         );
       },
     );
@@ -21,10 +23,9 @@ class ExpeditionMapPage extends Page {
 
 class ExpeditionMapScreen extends StatelessWidget {
   final Expedition expedition;
+  final DersuRoute route;
 
-  ExpeditionMapScreen({
-    required this.expedition,
-  });
+  ExpeditionMapScreen({required this.expedition, required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +34,27 @@ class ExpeditionMapScreen extends StatelessWidget {
       zoom: 14.4746,
     );
 
+    final Set<Circle> circles = Set();
+    final Color circleColour = Color(0xddff0000);
+
+    route.points.asMap().forEach((index, point) => {
+          circles.add(Circle(
+              circleId: CircleId("id-" + index.toString()),
+              center: LatLng(point.latitude, point.longitude),
+              consumeTapEvents: false,
+              radius: 1.0,
+              strokeColor: circleColour))
+        });
+
     return Scaffold(
       appBar: AppBar(title: Text("Expedition Map")),
       body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: GoogleMap(
-            mapType: MapType.hybrid, initialCameraPosition: cameraPosition),
-      ),
+          height: double.infinity,
+          width: double.infinity,
+          child: GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: cameraPosition,
+              circles: circles)),
     );
   }
 }

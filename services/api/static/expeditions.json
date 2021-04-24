@@ -1,0 +1,22 @@
+{
+  "expeditions": [
+    {
+      "name": "Montblanc Summer",
+      "location": {
+        "latitude": "45.8326364",
+        "longitude": "6.860776"
+      },
+      "routes": []
+    },
+    {
+      "name": "Collarada Verano",
+      "location": {
+        "latitude": "42.723748",
+        "longitude": "-0.463421"
+      },
+      "routes": [{
+        "id": "87234xzkhd"
+      }]
+    }
+  ]
+}
