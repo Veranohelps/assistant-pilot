@@ -19,5 +19,10 @@ module.exports = {
     rules: {
         "prettier/prettier": "error",
         "no-console": "off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}],
+        "import/extensions": [0, {
+          "js": "never",
+          "ts": "never"
+        }]
     }
   }

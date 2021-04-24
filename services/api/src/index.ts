@@ -1,8 +1,9 @@
 import cors from "cors";
 import express from "express";
 import fs from "fs";
+import routeUrl from "./utils";
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const app = express();
 
 interface Route {
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
     if (routes != null) {
       routes.map((route) => {
         // eslint-disable-next-line
-        route.url = `${req.protocol}://${req.hostname}:${PORT}/routes/${route.id}`;
+        route.url = routeUrl(req, PORT, route.id);
         return route;
       });
     }

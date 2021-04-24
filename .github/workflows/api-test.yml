@@ -1,0 +1,26 @@
+name: API test
+on:
+  push:
+    paths:
+      - 'services/api/**'
+      - '.github/workflows/api-test.yml'      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: services/api
+          useRollingCache: false
+      - name: Lint
+        working-directory: services/api
+        run: npm run lint
+      - name: Test
+        working-directory: services/api
+        run: npm run test
