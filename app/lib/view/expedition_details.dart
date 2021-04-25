@@ -1,32 +1,47 @@
-import 'package:app/model/expedition.dart';
+import 'package:app/model/models.dart';
+import 'package:app/view/generic_error.dart';
+import 'package:app/view/generic_loader.dart';
 import 'package:flutter/material.dart';
 
-class ExpeditionDetailsPage extends Page {
+class ExpeditionDetailsPage extends MaterialPage {
+  final Future<DersuRoute> futureRoute;
   final Expedition expedition;
-  final ValueChanged<bool> onMapSelected;
+  final ValueChanged<DersuRoute> onMapSelected;
 
-  ExpeditionDetailsPage({required this.expedition, required this.onMapSelected})
-      : super(key: ValueKey(expedition.toString()));
+  ExpeditionDetailsPage(
+      {required this.expedition,
+      required this.futureRoute,
+      required this.onMapSelected})
+      : super(
+            key: ValueKey("ExpeditionDetailsPage"),
+            child: FutureBuilder<DersuRoute>(
+              future: futureRoute,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ExpeditionDetailsScreen(
+                      expedition: expedition,
+                      route: snapshot.data!,
+                      onMapSelected: onMapSelected);
+                } else if (snapshot.hasError) {
+                  print("Error while fetching route 👇");
+                  print(snapshot.error);
+                  return GenericError(errorMessage: snapshot.error.toString());
+                }
 
-  Route createRoute(BuildContext context) {
-    return MaterialPageRoute(
-      settings: this,
-      builder: (BuildContext context) {
-        return ExpeditionDetailsScreen(
-          expedition: expedition,
-          onMapSelected: onMapSelected,
-        );
-      },
-    );
-  }
+                return GenericLoader();
+              },
+            ));
 }
 
 class ExpeditionDetailsScreen extends StatelessWidget {
   final Expedition expedition;
-  final ValueChanged<bool> onMapSelected;
+  final DersuRoute route;
+  final ValueChanged<DersuRoute> onMapSelected;
 
   ExpeditionDetailsScreen(
-      {required this.expedition, required this.onMapSelected});
+      {required this.expedition,
+      required this.route,
+      required this.onMapSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +52,7 @@ class ExpeditionDetailsScreen extends StatelessWidget {
           ListTile(title: Text(expedition.name)),
           ListTile(
             title: Text("See map"),
-            onTap: () => onMapSelected(true),
+            onTap: () => onMapSelected(route),
           )
         ],
       ),

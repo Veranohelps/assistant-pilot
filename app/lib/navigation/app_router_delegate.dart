@@ -1,0 +1,201 @@
+import 'package:app/model/models.dart';
+import 'package:app/navigation/paths.dart';
+import 'package:app/repository/network_repository.dart';
+import 'package:app/view/about.dart';
+import 'package:app/view/expedition_details.dart';
+import 'package:app/view/expedition_list.dart';
+import 'package:app/view/expedition_map.dart';
+import 'package:app/view/home.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<AssistantRoutePath> {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  Expedition? _selectedExpedition;
+  DersuRoute? _selectedRoute;
+  bool _showAboutPage = true;
+  bool _showHomeScreen = true;
+  bool _showExpeditionList = false;
+  bool _showExpeditionDetails = false;
+  bool _showExpeditionMap = false;
+  late Future<List<Expedition>> futureExpeditions =
+      NetworkRepository().fetchExpeditions();
+  late Future<DersuRoute> futureRoute;
+
+  // the app state is stored directly on the RouterDelegate,
+  // but could also be separated into another class
+
+  AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+
+  AssistantRoutePath get currentConfiguration {
+    // https://api.flutter.dev/flutter/widgets/RouterDelegate/currentConfiguration.html
+    // return a path based on state
+    print("AppRouterDelegate get currentConfiguration");
+
+    if (_showHomeScreen) {
+      return AssistantRoutePath.home();
+    }
+
+    if (_showExpeditionList) {
+      return AssistantRoutePath.expeditionList();
+    }
+
+    if (_showExpeditionDetails) {
+      return AssistantRoutePath.expeditionDetails();
+    }
+
+    if (_showExpeditionMap) {
+      return AssistantRoutePath.expeditionMap();
+    }
+
+    if (_showAboutPage) {
+      return AssistantRoutePath.about();
+    }
+
+    print("AppRouterDelegate get currentConfiguration UNKNOWN STATE");
+    return AssistantRoutePath.unknown();
+  }
+
+  bool _handlePagePop(page, result) {
+    print("Page POP: " + page.settings.runtimeType.toString());
+
+    if (!page.didPop(result)) {
+      print("Page did NOT POP!");
+      return false;
+    }
+
+    // NOTE (JD): this is the back button callback handler
+    // the page received here is the one in which the back button was pressed
+    // the check below is U G L Y, need much much cleaner way of updating the state
+
+    switch (page.settings.runtimeType.toString()) {
+      case "ExpeditionListPage":
+        _showHomeScreen = true;
+        _showExpeditionList =
+            _showExpeditionDetails = _showExpeditionMap = false;
+        break;
+      case "ExpeditionDetailsPage":
+        _showExpeditionList = true;
+        _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
+        break;
+      case "ExpeditionMapPage":
+        _showExpeditionDetails = true;
+        _showHomeScreen = _showExpeditionList = _showExpeditionMap = false;
+        break;
+      case "AboutPage":
+        _showHomeScreen = true;
+        _showAboutPage = false;
+        break;
+      default:
+        throw Exception(
+            "Unhandled page POP: " + page.settings.runtimeType.toString());
+    }
+
+    notifyListeners();
+    return true;
+  }
+
+  void _handleAboutPageTapped() {
+    _showAboutPage = true;
+    _showHomeScreen = _showExpeditionList =
+        _showExpeditionDetails = _showExpeditionMap = false;
+    notifyListeners();
+  }
+
+  void _handleExpeditionListTapped() {
+    print("ExpeditionListTapped");
+    _showExpeditionList = true;
+    _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
+    notifyListeners();
+  }
+
+  void _handleExpeditionTapped(Expedition expedition) {
+    print("ExpeditionTapped");
+    _selectedExpedition = expedition;
+    // TODO (JD): assuming and only handling one route for the expedition
+    futureRoute =
+        NetworkRepository().fetchRoute(_selectedExpedition!.routes.first.url);
+    _showExpeditionDetails = true;
+    _showHomeScreen = _showExpeditionList = _showExpeditionMap = false;
+    notifyListeners();
+  }
+
+  void _onMapSelected(DersuRoute route) {
+    print("Expedition map selected");
+    _selectedRoute = route;
+    _showExpeditionMap = true;
+    _showHomeScreen = _showExpeditionList = _showExpeditionDetails = false;
+    notifyListeners();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Page<dynamic>> currentPages = [
+      HomePage(
+          expeditionListTapped: _handleExpeditionListTapped,
+          aboutPageTapped: _handleAboutPageTapped)
+    ];
+
+    // add or remove to currentPages based on state
+
+    if (_showExpeditionList) {
+      currentPages.add(ExpeditionListPage(
+          futureExpeditions: futureExpeditions,
+          expeditionTapped: _handleExpeditionTapped));
+    }
+
+    if (_showExpeditionDetails) {
+      currentPages.add(ExpeditionDetailsPage(
+          expedition: _selectedExpedition!,
+          futureRoute: futureRoute,
+          onMapSelected: _onMapSelected));
+    }
+
+    if (_showExpeditionMap) {
+      currentPages.add(ExpeditionMapPage(
+          expedition: _selectedExpedition!, route: _selectedRoute!));
+    }
+
+    if (_showAboutPage) {
+      currentPages.add(AboutPage());
+    }
+
+    return Navigator(
+      key: navigatorKey,
+      pages: currentPages,
+      onPopPage: _handlePagePop,
+    );
+  }
+
+  @override
+  Future<void> setNewRoutePath(AssistantRoutePath path) async {
+    // called with AssistantRoutePath, and must update the application state to reflect the change
+    // (for example, by setting the an expedition or route id) and call notifyListeners.
+
+    print("setNewRoutePath: " + path.name);
+
+    switch (path.name) {
+      case "HOME":
+        _showHomeScreen = true;
+        _showExpeditionList =
+            _showExpeditionDetails = _showExpeditionMap = false;
+        break;
+      case "EXPEDITION-LIST":
+        _showExpeditionList = true;
+        _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
+        break;
+      case "EXPEDITION-DETAILS":
+        _showExpeditionDetails = true;
+        _showHomeScreen = _showExpeditionList = _showExpeditionMap = false;
+        break;
+      case "EXPEDITION-MAP":
+        _showExpeditionMap = true;
+        _showHomeScreen = _showExpeditionDetails = _showExpeditionList = false;
+        break;
+      default:
+        throw Exception("Unexpected AssistantRoutePath: " + path.name);
+    }
+  }
+}

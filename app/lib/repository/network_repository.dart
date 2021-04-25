@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/model/expedition.dart';
+import 'package:app/model/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;

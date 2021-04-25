@@ -1,4 +1,4 @@
-import 'package:app/model/expedition.dart';
+import 'package:app/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -6,7 +6,7 @@ class ExpeditionMapPage extends Page {
   final Expedition expedition;
   final DersuRoute route;
   ExpeditionMapPage({required this.expedition, required this.route})
-      : super(key: ValueKey(expedition.toString() + "-show-map"));
+      : super(key: ValueKey("ExpeditionMapPage"));
 
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
