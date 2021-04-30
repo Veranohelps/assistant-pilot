@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import fs from "fs";
+import helmet from "helmet";
 import routeUrl from "./utils";
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -15,6 +16,7 @@ interface Expedition {
   routes: Array<Route>;
 }
 
+app.use(helmet());
 app.use(cors());
 app.get("/", (req, res) => {
   const data = fs.readFileSync("./static/expeditions.json", "utf-8");
