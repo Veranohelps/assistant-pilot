@@ -1,5 +1,6 @@
 Actualizaciones:
 
- - Nueva pantalla de inicio!
- - Nueva sección "Acerca de" con información de la application.
+ - Primera versión de waypoints interactivos en los mapas de rutas.
+ - Las notas de actualización se muestran en la sección de "Acerca de".
+ - Utiliza assistant-api.dersu.uz como fuente de datos por defecto.
 

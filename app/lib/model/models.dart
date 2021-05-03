@@ -3,20 +3,28 @@ class Expedition {
   final double latitude;
   final double longitude;
   final List<RoutePreInfo> routes;
+  final List<WayPoint> waypoints;
 
   Expedition(
       {required this.name,
       required this.latitude,
       required this.longitude,
-      required this.routes});
+      required this.routes,
+      required this.waypoints});
 
   factory Expedition.fromJson(Map<String, dynamic> json) {
     return Expedition(
         name: json['name'],
-        latitude: double.parse(json['location']['latitude']),
-        longitude: double.parse(json['location']['longitude']),
+        latitude: json['location']['latitude'].toDouble(),
+        longitude: json['location']['longitude'].toDouble(),
         routes: json['routes']
             .map<RoutePreInfo>((routeJson) => RoutePreInfo.fromJson(routeJson))
+            .toList(),
+        waypoints: json['waypoints']
+            .map<WayPoint>((waypoint) => WayPoint(
+                point: RoutePoint.fromJson(waypoint),
+                type: waypoint['type'],
+                radiusInMeters: waypoint['radius_in_meters'].toDouble()))
             .toList());
   }
 
@@ -49,14 +57,25 @@ class DersuRoute {
 
   factory DersuRoute.fromJson(json) {
     final List<dynamic> jsonCoordinates = json['coordinates'] as List<dynamic>;
-
     final List<RoutePoint> parsedPoints = jsonCoordinates
-        .map<RoutePoint>((jsonCoordinate) => RoutePoint(
-            latitude: jsonCoordinate['latitude'].toDouble(),
-            longitude: jsonCoordinate['longitude'].toDouble(),
-            altitude: jsonCoordinate['altitude'].toDouble()))
+        .map<RoutePoint>(
+            (jsonCoordinate) => RoutePoint.fromJson(jsonCoordinate))
         .toList();
     return DersuRoute(name: json['name'], points: parsedPoints);
+  }
+}
+
+class WayPoint {
+  final RoutePoint point;
+  final String type;
+  final double radiusInMeters;
+
+  WayPoint(
+      {required this.point, required this.type, required this.radiusInMeters});
+
+  @override
+  String toString() {
+    return "Waypoint (type: $type)";
   }
 }
 
@@ -69,4 +88,11 @@ class RoutePoint {
       {required this.latitude,
       required this.longitude,
       required this.altitude});
+
+  factory RoutePoint.fromJson(json) {
+    return RoutePoint(
+        latitude: json['latitude'].toDouble(),
+        longitude: json['longitude'].toDouble(),
+        altitude: json['altitude'].toDouble());
+  }
 }

@@ -1,27 +1,53 @@
 import { describe, expect, it } from "@jest/globals";
-import { Request } from "express";
+import { mockRequest } from "mock-req-res";
 import routeUrl from "../src/utils";
 
 describe("routeUrl", () => {
-  it("localhost with port", async () => {
-    const routeId = "some-id";
-    const mockRequest = {
-      protocol: "http",
-      hostname: "localhost",
-    } as Request;
-    const port = 3000;
-    const url = routeUrl(mockRequest, port, routeId);
-    expect(url).toEqual(`http://localhost:3000/routes/${routeId}`);
+  it("forces https and removes port if x-forwarded-proto header is https", async () => {
+    const options = {
+      hostname: "example.com",
+      header(headerName: string) {
+        if (headerName === "x-forwarded-proto") {
+          return "https";
+        }
+        return null;
+      },
+    };
+
+    const req = mockRequest(options);
+    const url = routeUrl(req, 3000, "some-id");
+    expect(url).toEqual("https://example.com/routes/some-id");
   });
 
-  it("deployed", async () => {
-    const routeId = "some-id";
-    const mockRequest = {
-      protocol: "https",
-      hostname: "some-domain.com",
-    } as Request;
-    const port = 3000;
-    const url = routeUrl(mockRequest, port, routeId);
-    expect(url).toEqual(`https://some-domain.com/routes/${routeId}`);
+  it("returns hostname and port for localhost", async () => {
+    const options = {
+      hostname: "localhost",
+      header(headerName: string) {
+        if (headerName === "x-forwarded-proto") {
+          return "http";
+        }
+        return null;
+      },
+    };
+
+    const req = mockRequest(options);
+    const url = routeUrl(req, 3000, "some-id");
+    expect(url).toEqual("http://localhost:3000/routes/some-id");
+  });
+
+  it("returns IP and port for IP addresses", async () => {
+    const options = {
+      hostname: "192.168.1.101",
+      header(headerName: string) {
+        if (headerName === "x-forwarded-proto") {
+          return "http";
+        }
+        return null;
+      },
+    };
+
+    const req = mockRequest(options);
+    const url = routeUrl(req, 3000, "some-id");
+    expect(url).toEqual("http://192.168.1.101:3000/routes/some-id");
   });
 });

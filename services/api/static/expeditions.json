@@ -3,20 +3,30 @@
     {
       "name": "Montblanc Summer",
       "location": {
-        "latitude": "45.8326364",
-        "longitude": "6.860776"
+        "latitude": 45.8326364,
+        "longitude": 6.860776
       },
-      "routes": []
+      "routes": [],
+      "waypoints": []
     },
     {
       "name": "Collarada Verano",
       "location": {
-        "latitude": "42.723748",
-        "longitude": "-0.463421"
+        "latitude": 42.723748,
+        "longitude": -0.463421
       },
       "routes": [{
         "id": "87234xzkhd"
-      }]
+      }],
+      "waypoints": [
+        {
+          "type": "ice",
+          "radius_in_meters": 100,
+          "latitude": 42.723132,
+          "longitude": -0.464412,
+          "altitude": 2089
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,7 @@
 import 'package:app/model/models.dart';
 import 'package:app/navigation/paths.dart';
 import 'package:app/repository/network_repository.dart';
+import 'package:app/view/WaypointTappedDialog.dart';
 import 'package:app/view/about.dart';
 import 'package:app/view/expedition_details.dart';
 import 'package:app/view/expedition_list.dart';
@@ -15,11 +16,11 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
 
   Expedition? _selectedExpedition;
   DersuRoute? _selectedRoute;
-  bool _showAboutPage = true;
   bool _showHomeScreen = true;
   bool _showExpeditionList = false;
   bool _showExpeditionDetails = false;
   bool _showExpeditionMap = false;
+  bool _showAboutPage = false;
   late Future<List<Expedition>> futureExpeditions =
       NetworkRepository().fetchExpeditions();
   late Future<DersuRoute> futureRoute;
@@ -97,6 +98,19 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
     return true;
   }
 
+  void _handleWaypointTapped(BuildContext context, WayPoint waypoint) {
+    showDialog(
+      context: context,
+      builder: (_) => new WaypointTappedDialog(
+          waypoint: waypoint,
+          dismissHandler: () => _handleWaypointDialogDismissed(context)),
+    );
+  }
+
+  void _handleWaypointDialogDismissed(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   void _handleAboutPageTapped() {
     _showAboutPage = true;
     _showHomeScreen = _showExpeditionList =
@@ -123,7 +137,6 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   }
 
   void _onMapSelected(DersuRoute route) {
-    print("Expedition map selected");
     _selectedRoute = route;
     _showExpeditionMap = true;
     _showHomeScreen = _showExpeditionList = _showExpeditionDetails = false;
@@ -155,7 +168,9 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
 
     if (_showExpeditionMap) {
       currentPages.add(ExpeditionMapPage(
-          expedition: _selectedExpedition!, route: _selectedRoute!));
+          expedition: _selectedExpedition!,
+          route: _selectedRoute!,
+          waypointTapped: _handleWaypointTapped));
     }
 
     if (_showAboutPage) {
