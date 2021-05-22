@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/maths/haver_sine.dart';
 import 'package:app/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,7 +21,7 @@ class ExpeditionMapPage extends Page {
       required this.route,
       required this.onWaypointTapped,
       required this.handleExpeditionStop})
-      : super(key: ValueKey("ExpeditionMapPage"));
+      : super(key: ValueKey("ExpeditionMapPage-" + live.toString()));
 
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -130,6 +131,20 @@ class MapPageState extends State<ExpeditionMapWidget> {
 
     locationSubscription =
         location!.onLocationChanged.listen((LocationData locationData) {
+      if (live == true) {
+        expedition.waypoints.forEach((waypoint) {
+          var distanceInKms = HaverSine.getDistanceFromLatLonInKm(
+              waypoint.point.latitude,
+              waypoint.point.longitude,
+              locationData.latitude,
+              locationData.longitude);
+
+          if (distanceInKms * 1000 <= waypoint.radiusInMeters) {
+            onWaypointTapped(context, waypoint);
+          }
+        });
+      }
+
       setState(() {
         currentLocation = locationData;
         showCurrentLocationOnMap();
@@ -212,7 +227,8 @@ class MapPageState extends State<ExpeditionMapWidget> {
         appBar: (live == false)
             ? AppBar(title: Text("Ruta de la expedición"))
             : null,
-        body: SafeArea(child: Stack(
+        body: SafeArea(
+            child: Stack(
           children: [
             Container(
                 height: double.infinity,
@@ -241,7 +257,8 @@ class MapPageState extends State<ExpeditionMapWidget> {
                 if (live == true)
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.red),
-                      onPressed: handleExpeditionStop, child: Text("STOP"))
+                      onPressed: () => handleExpeditionStop(context),
+                      child: Text("STOP"))
               ],
             )
           ],

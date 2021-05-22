@@ -20,6 +20,7 @@
       }],
       "waypoints": [
         {
+          "id": "waypoint-kjshfuy23",
           "type": "ice",
           "radius_in_meters": 100,
           "latitude": 42.723132,

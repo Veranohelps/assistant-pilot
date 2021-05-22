@@ -22,6 +22,7 @@ class Expedition {
             .toList(),
         waypoints: json['waypoints']
             .map<WayPoint>((waypoint) => WayPoint(
+                id: waypoint['id'],
                 point: RoutePoint.fromJson(waypoint),
                 type: waypoint['type'],
                 radiusInMeters: waypoint['radius_in_meters'].toDouble()))
@@ -66,12 +67,13 @@ class DersuRoute {
 }
 
 class WayPoint {
+  final String id;
   final RoutePoint point;
   final String type;
   final double radiusInMeters;
 
   WayPoint(
-      {required this.point, required this.type, required this.radiusInMeters});
+      {required this.id, required this.point, required this.type, required this.radiusInMeters});
 
   @override
   String toString() {

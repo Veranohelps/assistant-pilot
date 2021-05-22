@@ -22,6 +22,8 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   bool _showExpeditionMap = false;
   bool _showAboutPage = false;
   bool _expeditionStarted = false;
+  bool _showingWaypointDialogue = false;
+  Map<String, bool> _waypointsWarned = new Map();
   late Future<List<Expedition>> futureExpeditions =
       NetworkRepository().fetchExpeditions();
   late Future<DersuRoute> futureRoute;
@@ -87,8 +89,9 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
         _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
         break;
       case "ExpeditionMapPage":
-        // TODO: do we need to know if this is coming back from
-        // showing the route vs expedition stopped?
+        // NOTE: this is back from both normal and live MapPage
+        _waypointsWarned.clear();
+        _expeditionStarted = false;
         _showExpeditionDetails = true;
         _showHomeScreen = _showExpeditionList = _showExpeditionMap = false;
         break;
@@ -106,16 +109,27 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   }
 
   void _handleWaypointTapped(BuildContext context, WayPoint waypoint) {
-    showDialog(
-      context: context,
-      builder: (_) => new WaypointTappedDialog(
-          waypoint: waypoint,
-          dismissHandler: () => _handleWaypointDialogDismissed(context)),
-    );
+    if (_showingWaypointDialogue == false) {
+      if (_waypointsWarned.containsKey(waypoint.id) == false) {
+        _waypointsWarned.addEntries([MapEntry(waypoint.id, true)]);
+        _showingWaypointDialogue = true;
+        showDialog(
+          context: context,
+          builder: (_) => new WaypointTappedDialog(
+              waypoint: waypoint,
+              dismissHandler: () => _handleWaypointDialogDismissed(context)),
+        );
+      } else {
+        print("already shown waypoint " + waypoint.id);
+      }
+    } else {
+      print("already showing waypoint");
+    }
   }
 
   void _handleWaypointDialogDismissed(BuildContext context) {
     Navigator.of(context).pop();
+    _showingWaypointDialogue = false;
   }
 
   void _handleAboutPageTapped() {
@@ -156,10 +170,8 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
     notifyListeners();
   }
 
-  void _handleExpeditionStop() {
-    _expeditionStarted = false;
-    _showExpeditionDetails = true;
-    notifyListeners();
+  void _handleExpeditionStop(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override
