@@ -8,7 +8,7 @@ class GenericError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Something not quite right")),
+      appBar: AppBar(title: Text("Error")),
       body: Center(
         child: Text(errorMessage),
       ),

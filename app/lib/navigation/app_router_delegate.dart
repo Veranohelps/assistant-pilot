@@ -21,6 +21,7 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   bool _showExpeditionDetails = false;
   bool _showExpeditionMap = false;
   bool _showAboutPage = false;
+  bool _expeditionStarted = false;
   late Future<List<Expedition>> futureExpeditions =
       NetworkRepository().fetchExpeditions();
   late Future<DersuRoute> futureRoute;
@@ -49,6 +50,10 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
 
     if (_showExpeditionMap) {
       return AssistantRoutePath.expeditionMap();
+    }
+
+    if (_expeditionStarted) {
+      return AssistantRoutePath.expeditionStarted();
     }
 
     if (_showAboutPage) {
@@ -82,6 +87,8 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
         _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
         break;
       case "ExpeditionMapPage":
+        // TODO: do we need to know if this is coming back from
+        // showing the route vs expedition stopped?
         _showExpeditionDetails = true;
         _showHomeScreen = _showExpeditionList = _showExpeditionMap = false;
         break;
@@ -119,14 +126,12 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
   }
 
   void _handleExpeditionListTapped() {
-    print("ExpeditionListTapped");
     _showExpeditionList = true;
     _showHomeScreen = _showExpeditionDetails = _showExpeditionMap = false;
     notifyListeners();
   }
 
   void _handleExpeditionTapped(Expedition expedition) {
-    print("ExpeditionTapped");
     _selectedExpedition = expedition;
     // TODO (JD): assuming and only handling one route for the expedition
     futureRoute =
@@ -140,6 +145,20 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
     _selectedRoute = route;
     _showExpeditionMap = true;
     _showHomeScreen = _showExpeditionList = _showExpeditionDetails = false;
+    notifyListeners();
+  }
+
+  void _onExpeditionStart(DersuRoute route) {
+    _selectedRoute = route;
+    _expeditionStarted = true;
+    _showExpeditionMap =
+        _showHomeScreen = _showExpeditionList = _showExpeditionDetails = false;
+    notifyListeners();
+  }
+
+  void _handleExpeditionStop() {
+    _expeditionStarted = false;
+    _showExpeditionDetails = true;
     notifyListeners();
   }
 
@@ -163,14 +182,26 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
       currentPages.add(ExpeditionDetailsPage(
           expedition: _selectedExpedition!,
           futureRoute: futureRoute,
-          onMapSelected: _onMapSelected));
+          onMapSelected: _onMapSelected,
+          onExpeditionStart: _onExpeditionStart));
     }
 
     if (_showExpeditionMap) {
       currentPages.add(ExpeditionMapPage(
+          live: false,
           expedition: _selectedExpedition!,
           route: _selectedRoute!,
-          waypointTapped: _handleWaypointTapped));
+          onWaypointTapped: _handleWaypointTapped,
+          handleExpeditionStop: null));
+    }
+
+    if (_expeditionStarted) {
+      currentPages.add(ExpeditionMapPage(
+          live: true,
+          expedition: _selectedExpedition!,
+          route: _selectedRoute!,
+          onWaypointTapped: _handleWaypointTapped,
+          handleExpeditionStop: _handleExpeditionStop));
     }
 
     if (_showAboutPage) {

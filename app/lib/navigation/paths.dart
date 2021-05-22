@@ -5,6 +5,7 @@ class AssistantRoutePath {
   AssistantRoutePath.expeditionList() : name = "EXPEDITION-LIST";
   AssistantRoutePath.expeditionDetails() : name = "EXPEDITION-DETAILS";
   AssistantRoutePath.expeditionMap() : name = "EXPEDITION-MAP";
+  AssistantRoutePath.expeditionStarted() : name = "EXPEDITION-STARTED";
   AssistantRoutePath.about() : name = "ABOUT";
   AssistantRoutePath.unknown() : name = "UNKNOWN";
 

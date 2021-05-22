@@ -39,14 +39,13 @@ class ExpeditionListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("List of expeditions")),
+      appBar: AppBar(title: Text("Expediciones")),
       body: ListView(
         children: [
           for (var expedition in expeditions)
-            ListTile(
-              title: Text(expedition.name),
-              onTap: () => onTapped(expedition),
-            )
+            ElevatedButton(
+                onPressed: () => onTapped(expedition),
+                child: Text(expedition.name))
         ],
       ),
     );
