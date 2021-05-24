@@ -89,8 +89,11 @@ class MapPageState extends State<ExpeditionMapWidget> {
   void initState() {
     super.initState();
     _mapCameraPoint = LatLng(expedition.latitude, expedition.longitude);
-    location = new Location();
-    setInitialLocation();
+
+    if (live == true) {
+      location = new Location();
+      setInitialLocation();
+    }
   }
 
   @override
@@ -131,19 +134,17 @@ class MapPageState extends State<ExpeditionMapWidget> {
 
     locationSubscription =
         location!.onLocationChanged.listen((LocationData locationData) {
-      if (live == true) {
-        expedition.waypoints.forEach((waypoint) {
-          var distanceInKms = HaverSine.getDistanceFromLatLonInKm(
-              waypoint.point.latitude,
-              waypoint.point.longitude,
-              locationData.latitude,
-              locationData.longitude);
+      expedition.waypoints.forEach((waypoint) {
+        var distanceInKms = HaverSine.getDistanceFromLatLonInKm(
+            waypoint.point.latitude,
+            waypoint.point.longitude,
+            locationData.latitude,
+            locationData.longitude);
 
-          if (distanceInKms * 1000 <= waypoint.radiusInMeters) {
-            onWaypointTapped(context, waypoint);
-          }
-        });
-      }
+        if (distanceInKms * 1000 <= waypoint.radiusInMeters) {
+          onWaypointTapped(context, waypoint);
+        }
+      });
 
       setState(() {
         currentLocation = locationData;
@@ -172,32 +173,6 @@ class MapPageState extends State<ExpeditionMapWidget> {
     }
   }
 
-  void showRouteOnMap() {
-    final Color circleColour = Color(0xddff0000);
-    final Color waypointColour = Color(0xdd00ff00);
-
-    route.points.asMap().forEach((index, point) => {
-          _mapCircles.add(Circle(
-              circleId: CircleId("id-" + index.toString()),
-              center: LatLng(point.latitude, point.longitude),
-              consumeTapEvents: false,
-              radius: 5.0,
-              fillColor: circleColour,
-              strokeWidth: 0))
-        });
-
-    expedition.waypoints.asMap().forEach((index, waypoint) => {
-          _mapCircles.add(Circle(
-              circleId: CircleId("waypoint-id-" + index.toString()),
-              center: LatLng(waypoint.point.latitude, waypoint.point.longitude),
-              radius: 30.0,
-              fillColor: waypointColour,
-              strokeWidth: 0,
-              consumeTapEvents: true,
-              onTap: () => onWaypointTapped(context, waypoint)))
-        });
-  }
-
   void showCurrentLocationOnMap() {
     final Color currentLocationColour = Color(0xcc0000ff);
 
@@ -223,6 +198,30 @@ class MapPageState extends State<ExpeditionMapWidget> {
       zoom: CAMERA_ZOOM,
     );
 
+    final Color circleColour = Color(0xddff0000);
+    final Color waypointColour = Color(0xdd00ff00);
+
+    route.points.asMap().forEach((index, point) => {
+          _mapCircles.add(Circle(
+              circleId: CircleId("id-" + index.toString()),
+              center: LatLng(point.latitude, point.longitude),
+              consumeTapEvents: false,
+              radius: 5.0,
+              fillColor: circleColour,
+              strokeWidth: 0))
+        });
+
+    expedition.waypoints.asMap().forEach((index, waypoint) => {
+          _mapCircles.add(Circle(
+              circleId: CircleId("waypoint-id-" + index.toString()),
+              center: LatLng(waypoint.point.latitude, waypoint.point.longitude),
+              radius: 30.0,
+              fillColor: waypointColour,
+              strokeWidth: 0,
+              consumeTapEvents: true,
+              onTap: () => onWaypointTapped(context, waypoint)))
+        });
+
     return Scaffold(
         appBar: (live == false)
             ? AppBar(title: Text("Ruta de la expedición"))
@@ -239,8 +238,9 @@ class MapPageState extends State<ExpeditionMapWidget> {
                   circles: _mapCircles,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
-                    showRouteOnMap();
-                    showCurrentLocationOnMap();
+                    if (live == true) {
+                      showCurrentLocationOnMap();
+                    }
                   },
                   trafficEnabled: false,
                   tiltGesturesEnabled: false,
@@ -249,18 +249,18 @@ class MapPageState extends State<ExpeditionMapWidget> {
                   buildingsEnabled: false,
                   // liteModeEnabled: true,
                 )),
-            Row(
-              children: [
-                ElevatedButton(
-                    onPressed: centreCurrentLocation,
-                    child: Text("Posición Actual")),
-                if (live == true)
+            if (live == true)
+              Row(
+                children: [
+                  ElevatedButton(
+                      onPressed: centreCurrentLocation,
+                      child: Text("Posición Actual")),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.red),
                       onPressed: () => handleExpeditionStop(context),
                       child: Text("STOP"))
-              ],
-            )
+                ],
+              )
           ],
         )));
   }

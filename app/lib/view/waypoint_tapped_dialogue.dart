@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class WaypointTappedDialog extends AlertDialog {
-  WaypointTappedDialog({required waypoint, required dismissHandler})
+class WaypointTappedDialogue extends AlertDialog {
+  WaypointTappedDialogue({required waypoint, required dismissHandler})
       : super(
-          key: Key("waypointDialog"),
+          key: Key("waypointDialogue"),
           title: new Text("🚨 Cuidado 🚨"),
           content: new Text("Waypoint tipo: " + waypoint.type),
           actions: <Widget>[

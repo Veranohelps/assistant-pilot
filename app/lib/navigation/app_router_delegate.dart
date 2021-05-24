@@ -1,12 +1,13 @@
 import 'package:app/model/models.dart';
 import 'package:app/navigation/paths.dart';
 import 'package:app/repository/network_repository.dart';
-import 'package:app/view/WaypointTappedDialog.dart';
 import 'package:app/view/about.dart';
 import 'package:app/view/expedition_details.dart';
 import 'package:app/view/expedition_list.dart';
 import 'package:app/view/expedition_map.dart';
 import 'package:app/view/home.dart';
+import 'package:app/view/location_warning_dialogue.dart';
+import 'package:app/view/waypoint_tapped_dialogue.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -115,7 +116,7 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
         _showingWaypointDialogue = true;
         showDialog(
           context: context,
-          builder: (_) => new WaypointTappedDialog(
+          builder: (_) => new WaypointTappedDialogue(
               waypoint: waypoint,
               dismissHandler: () => _handleWaypointDialogDismissed(context)),
         );
@@ -155,14 +156,23 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
     notifyListeners();
   }
 
-  void _onMapSelected(DersuRoute route) {
+  void _onExpeditionMapSelected(DersuRoute route) {
     _selectedRoute = route;
     _showExpeditionMap = true;
     _showHomeScreen = _showExpeditionList = _showExpeditionDetails = false;
     notifyListeners();
   }
 
-  void _onExpeditionStart(DersuRoute route) {
+  void _onExpeditionStart(BuildContext context, DersuRoute route) {
+    showDialog(
+        context: context,
+        builder: (_) => new LocationWarningDialogue(
+              acceptHandler: () => _onExpeditionStartConfirmed(route),
+              denyHandler: () => Navigator.of(context).pop(),
+            ));
+  }
+
+  void _onExpeditionStartConfirmed(DersuRoute route) {
     _selectedRoute = route;
     _expeditionStarted = true;
     _showExpeditionMap =
@@ -194,7 +204,7 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
       currentPages.add(ExpeditionDetailsPage(
           expedition: _selectedExpedition!,
           futureRoute: futureRoute,
-          onMapSelected: _onMapSelected,
+          onMapSelected: _onExpeditionMapSelected,
           onExpeditionStart: _onExpeditionStart));
     }
 

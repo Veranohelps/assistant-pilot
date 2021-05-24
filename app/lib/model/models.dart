@@ -64,6 +64,11 @@ class DersuRoute {
         .toList();
     return DersuRoute(name: json['name'], points: parsedPoints);
   }
+
+  @override
+  String toString() {
+    return "DersuRoute, name: $name";
+  }
 }
 
 class WayPoint {
@@ -73,7 +78,10 @@ class WayPoint {
   final double radiusInMeters;
 
   WayPoint(
-      {required this.id, required this.point, required this.type, required this.radiusInMeters});
+      {required this.id,
+      required this.point,
+      required this.type,
+      required this.radiusInMeters});
 
   @override
   String toString() {

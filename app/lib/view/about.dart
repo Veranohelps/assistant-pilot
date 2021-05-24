@@ -2,7 +2,9 @@ import 'package:app/view/generic_error.dart';
 import 'package:app/view/generic_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends MaterialPage {
   AboutPage()
@@ -57,9 +59,22 @@ class AboutScreen extends StatelessWidget {
         children: [
           ListTile(title: Text("Versión: " + packageInfo.version)),
           ListTile(title: Text("Build: " + packageInfo.buildNumber)),
-          ListTile(title: Text(whatsNew))
+          ListTile(title: Text(whatsNew)),
+          ElevatedButton(
+              onPressed: _launchPrivacyPolicy,
+              child: Text("Política de privacidad"))
         ],
       ),
     );
+  }
+
+  void _launchPrivacyPolicy() async {
+    final String DERSU_SITE_BASE_URL = env['DERSU_SITE_BASE_URL']!;
+    final url = DERSU_SITE_BASE_URL + '/en/privacy/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

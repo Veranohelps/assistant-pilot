@@ -7,7 +7,7 @@ class ExpeditionDetailsPage extends MaterialPage {
   final Future<DersuRoute> futureRoute;
   final Expedition expedition;
   final ValueChanged<DersuRoute> onMapSelected;
-  final ValueChanged<DersuRoute> onExpeditionStart;
+  final onExpeditionStart;
 
   ExpeditionDetailsPage(
       {required this.expedition,
@@ -41,7 +41,7 @@ class ExpeditionDetailsScreen extends StatelessWidget {
   final Expedition expedition;
   final DersuRoute route;
   final ValueChanged<DersuRoute> onMapSelected;
-  final ValueChanged<DersuRoute> onExpeditionStart;
+  final onExpeditionStart;
 
   ExpeditionDetailsScreen(
       {required this.expedition,
@@ -60,7 +60,8 @@ class ExpeditionDetailsScreen extends StatelessWidget {
               onPressed: () => onMapSelected(route), child: Text("Ver mapa")),
           ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.green),
-              onPressed: () => onExpeditionStart(route), child: Text("Empezar"))
+              onPressed: () => onExpeditionStart(context, route),
+              child: Text("Empezar"))
         ],
       ),
     );
