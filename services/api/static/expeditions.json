@@ -1,6 +1,48 @@
 {
   "expeditions": [
     {
+      "name": "Test Madrid",
+      "location": {
+        "latitude": 40.400226,
+        "longitude": -3.708542
+      },
+      "routes": [
+        {"id": "sadakdjhs"}
+      ],
+      "waypoints": [
+        {
+          "id": "test-mad-biblio",
+          "name": "Biblioteca",
+          "description": "Pública Pío Baroja",
+          "type": "info",
+          "radius_in_meters": 50,
+          "latitude": 40.4004431,
+          "longitude": -3.7080626,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-noroeste",
+          "name": "Esquina Noroeste",
+          "description": "Parque",
+          "type": "info",
+          "radius_in_meters": 20,
+          "latitude": 40.4010705,
+          "longitude": -3.7082396,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-suroeste",
+          "name": "Esquina suroeste",
+          "description": "Bar",
+          "type": "drinks",
+          "radius_in_meters": 20,
+          "latitude": 40.3992379,
+          "longitude": -3.7101538,
+          "altitude": 600.4
+         }         
+      ]
+    },
+    {
       "name": "Montblanc Gouter Verano",
       "location": {
         "latitude": 45.851175,
