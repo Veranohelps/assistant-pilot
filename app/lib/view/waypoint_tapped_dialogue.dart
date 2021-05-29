@@ -4,8 +4,8 @@ class WaypointTappedDialogue extends AlertDialog {
   WaypointTappedDialogue({required waypoint, required dismissHandler})
       : super(
           key: Key("waypointDialogue"),
-          title: new Text("🚨 Cuidado 🚨"),
-          content: new Text("Waypoint tipo: " + waypoint.type),
+          title: new Text(waypoint.name),
+          content: new Text(waypoint.description),
           actions: <Widget>[
             TextButton(
               child: Text("OK"),

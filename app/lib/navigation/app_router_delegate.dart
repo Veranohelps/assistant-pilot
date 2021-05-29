@@ -109,10 +109,13 @@ class AppRouterDelegate extends RouterDelegate<AssistantRoutePath>
     return true;
   }
 
-  void _handleWaypointTapped(BuildContext context, WayPoint waypoint) {
+  void _handleWaypointTapped(
+      BuildContext context, WayPoint waypoint, bool markAsWarned) {
     if (_showingWaypointDialogue == false) {
       if (_waypointsWarned.containsKey(waypoint.id) == false) {
-        _waypointsWarned.addEntries([MapEntry(waypoint.id, true)]);
+        if (markAsWarned == true) {
+          _waypointsWarned.addEntries([MapEntry(waypoint.id, true)]);
+        }
         _showingWaypointDialogue = true;
         showDialog(
           context: context,

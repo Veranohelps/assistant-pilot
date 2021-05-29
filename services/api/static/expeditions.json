@@ -9,7 +9,178 @@
       "routes": [{
         "id": "bnbhjhy77"
       }],
-      "waypoints": []
+      "waypoints": [
+        {
+         "id": "c86a39fa-d861-4a3d-b55e-5bad089ee2d9",
+         "name": "Nid de aigle",
+         "description": "Llegada del tren cremallera",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.85848,
+         "longitude": 6.798564,
+         "altitude": 2376.4
+        },
+        {
+         "id": "6743ed5b-50e0-4762-a0ff-9849fcd4f0b7",
+         "name": "Refuge TeteRousse",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.855137,
+         "longitude": 6.817633,
+         "altitude": 3145.1
+        },
+        {
+         "id": "b2fed0ed-2c6f-4455-a7ab-13d11b7f60e7",
+         "name": "Caseta de informacion",
+         "description": "Control de.reservas\nEntrada al glaciar\nEncordamiento",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.857406,
+         "longitude": 6.818059,
+         "altitude": 3121.5
+        },
+        {
+         "id": "78c1efa2-16a7-4338-bdc4-a014e4f74e91",
+         "name": "Espolón rocoso",
+         "description": "Fácil,\nSendero Expo en algún punto",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.860485,
+         "longitude": 6.812513,
+         "altitude": 2820.3
+        },
+        {
+         "id": "5e30ada8-68de-4a0f-9d88-d57cea08843b",
+         "name": "Espolón rocoso",
+         "description": "Fácil,\nSendero Expo en algún sitio",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.857428,
+         "longitude": 6.817775,
+         "altitude": 3111.7
+        },
+        {
+         "id": "9342fe21-af44-40ee-a684-606e98a33bc2",
+         "name": "Refuge Nos de Aigle",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.856306,
+         "longitude": 6.799659,
+         "altitude": 2412
+        },
+        {
+         "id": "240a96ca-b99f-4c7a-afeb-ab5d48ba3907",
+         "name": "Espolón Gouter",
+         "description": "Espolón rocoso de II+\nCambio de encordamiento",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.855054,
+         "longitude": 6.822843,
+         "altitude": 3257.4
+        },
+        {
+         "id": "62b1c835-3108-40ee-a729-ef59e2456050",
+         "name": "Bolera",
+         "description": "Cruce de canal de 100m\nDesprendimientos de piedras constante",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.854665,
+         "longitude": 6.823876,
+         "altitude": 3324.8
+        },
+        {
+         "id": "e425dc15-3596-4acc-a563-4ca9eab524e2",
+         "name": "Bolera",
+         "description": "Cruce de canal de 100m\nDesprendimientos de piedras constante",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.853702,
+         "longitude": 6.824744,
+         "altitude": 3387.1
+        },
+        {
+         "id": "0e13b324-b91f-42e5-8430-094e1a61cf87",
+         "name": "Refugio gouter antiguo",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.853402,
+         "longitude": 6.830059,
+         "altitude": 3792.1
+        },
+        {
+         "id": "bf6483eb-8b69-4b64-a173-2a0063ece0fd",
+         "name": "Espolón gouter",
+         "description": "Espolón rocoso II+\nCambio glaciar roca,cambio encordamiento",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.853262,
+         "longitude": 6.830098,
+         "altitude": 3793.7
+        },
+        {
+         "id": "89f130aa-1f0e-405f-ba51-4f6f3979d522",
+         "name": "Ref Gouter",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.851422,
+         "longitude": 6.830674,
+         "altitude": 3823.7
+        },
+        {
+         "id": "c5c7af31-d057-48f0-ba55-d6cc962820d2",
+         "name": "Paso de Dome de Gouter",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.844346,
+         "longitude": 6.843767,
+         "altitude": 4254.8
+        },
+        {
+         "id": "ed88feca-1cb5-4d2c-9a31-9461b4137990",
+         "name": "Abrí Vallot",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.839233,
+         "longitude": 6.8521,
+         "altitude": 4332.7
+        },
+        {
+         "id": "4156f87e-5e42-4d66-b765-3198b2a8be80",
+         "name": "Aristas de nieve",
+         "description": "Aristas afiladas de nieve y con pendiente.\nCambio de encordamiento",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.839009,
+         "longitude": 6.852018,
+         "altitude": 4343.5
+        },
+        {
+         "id": "c1f74f94-dc97-4da2-a537-ee6f83c9e675",
+         "name": "Mont Blanc",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.832563,
+         "longitude": 6.86482,
+         "altitude": 4793.5
+        },
+        {
+         "id": "0bf289e2-6bee-4037-b7f4-0ae57bcf313f",
+         "name": "Aristas de nieve",
+         "description": "Aristas finas de nieve y pendientes\nEncordamiento corto",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.832717,
+         "longitude": 6.861571,
+         "altitude": 4721.2
+        }
+       ]       
     },
     {
       "name": "Collarada Verano",
@@ -22,14 +193,56 @@
       }],
       "waypoints": [
         {
-          "id": "waypoint-kjshfuy23",
-          "type": "ice",
-          "radius_in_meters": 100,
-          "latitude": 42.723132,
-          "longitude": -0.464412,
-          "altitude": 2089
+         "id": "cfdcdfd4-b6a9-4358-b58b-d7d44d4f1b7d",
+         "name": "Refugio Ibón de Ip",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 42.723707,
+         "longitude": -0.46326,
+         "altitude": 2026.5
+        },
+        {
+         "id": "c436e89e-d571-412b-8781-ec69b549f3db",
+         "name": "Subida al Collado",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 42.738337,
+         "longitude": -0.462774,
+         "altitude": 2582.6
+        },
+        {
+         "id": "a8529372-87b0-4450-a930-93c2c13bb539",
+         "name": "Cima Pala de Ip (2.783 m)",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 42.737889,
+         "longitude": -0.453562,
+         "altitude": 2732
+        },
+        {
+         "id": "a2740d0a-5746-478f-952f-87d6e3b88986",
+         "name": "Tronquera (2.613 m)",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 42.737078,
+         "longitude": -0.479016,
+         "altitude": 2614.1
+        },
+        {
+         "id": "ffdbba0d-e8b6-4002-b81c-efafa8187a7f",
+         "name": "Moleta (2.573 m)",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 42.740302,
+         "longitude": -0.487219,
+         "altitude": 2579.2
         }
-      ]
+       ]
     }
   ]
 }

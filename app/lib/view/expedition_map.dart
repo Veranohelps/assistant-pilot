@@ -142,7 +142,9 @@ class MapPageState extends State<ExpeditionMapWidget> {
             locationData.longitude);
 
         if (distanceInKms * 1000 <= waypoint.radiusInMeters) {
-          onWaypointTapped(context, waypoint);
+          // NOTE: we only set waypoints as "marked" during live
+          // expeditions
+          onWaypointTapped(context, waypoint, live);
         }
       });
 
@@ -219,7 +221,7 @@ class MapPageState extends State<ExpeditionMapWidget> {
               fillColor: waypointColour,
               strokeWidth: 0,
               consumeTapEvents: true,
-              onTap: () => onWaypointTapped(context, waypoint)))
+              onTap: () => onWaypointTapped(context, waypoint, live)))
         });
 
     return Scaffold(
