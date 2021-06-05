@@ -10,38 +10,60 @@
         {"id": "sadakdjhs"}
       ],
       "waypoints": [
-        {
-          "id": "test-mad-biblio",
-          "name": "Biblioteca",
-          "description": "Pública Pío Baroja",
-          "type": "info",
-          "radius_in_meters": 50,
-          "latitude": 40.4004431,
-          "longitude": -3.7080626,
+         {
+          "id": "test-mad-tradiciones",
+          "name": "Mis Tradiciones",
+          "description": "Increíble sitio para comer y descansar.",
+          "type": "food",
+          "radius_in_meters": 20,
+          "latitude": 40.4000621,
+          "longitude": -3.7117378,
           "altitude": 600.4
          },
          {
-          "id": "test-mad-noroeste",
-          "name": "Esquina Noroeste",
-          "description": "Parque",
-          "type": "info",
+          "id": "test-mad-ies-de-la-cierva",
+          "name": "IES Juan de la Cierva",
+          "description": "Conocimiento.",
+          "type": "knowledge",
           "radius_in_meters": 20,
-          "latitude": 40.4010705,
-          "longitude": -3.7082396,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-suroeste",
-          "name": "Esquina suroeste",
-          "description": "Bar",
-          "type": "drinks",
-          "radius_in_meters": 20,
-          "latitude": 40.3992379,
-          "longitude": -3.7101538,
+          "latitude": 40.4016681,
+          "longitude": -3.7068679,
           "altitude": 600.4
          }         
       ]
     },
+    {
+      "name": "Test Jaca",
+      "location": {
+        "latitude": 42.577608,
+        "longitude": -0.5512927
+      },
+      "routes": [
+        {"id": "nnjhyeeq"}
+      ],
+      "waypoints": [
+         {
+          "id": "test-jaca-man",
+          "name": "Estatua",
+          "description": "Espectacular.",
+          "type": "point-of-interest",
+          "radius_in_meters": 20,
+          "latitude": 42.5721851,
+          "longitude": -0.5549594,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-jaca-ca-esteban",
+          "name": "Casa Esteban",
+          "description": "Rico.",
+          "type": "food",
+          "radius_in_meters": 20,
+          "latitude": 42.5757911,
+          "longitude": -0.5468412,
+          "altitude": 600.4
+         }         
+      ]
+    },    
     {
       "name": "Montblanc Gouter Verano",
       "location": {
