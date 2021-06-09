@@ -29,7 +29,57 @@
           "latitude": 40.4016681,
           "longitude": -3.7068679,
           "altitude": 600.4
-         }         
+         },
+         {
+          "id": "test-mad-nogue-1",
+          "name": "Noguerol 1",
+          "description": "Noguerol 1.",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.4029648,
+          "longitude": -3.7368429,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-nogue-2",
+          "name": "Noguerol 2",
+          "description": "Noguerol 2.",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3993528,
+          "longitude": -3.7333524,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-nogue-3",
+          "name": "Noguerol 3",
+          "description": "Noguerol 3.",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3989859,
+          "longitude": -3.7284334,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-nogue-4",
+          "name": "Noguerol 4",
+          "description": "Noguerol 4.",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3990722,
+          "longitude": -3.7137607,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-mad-nogue-5",
+          "name": "Noguerol 5",
+          "description": "Noguerol 5.",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3997331,
+          "longitude": -3.7217642,
+          "altitude": 600.4
+         }
       ]
     },
     {
