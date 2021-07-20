@@ -5,7 +5,8 @@ on:
       - 'develop'
     paths:
       - 'app/**'
-      - '.github/workflows/android.yml'      
+      - '.github/workflows/android.yml'
+      - '.github/workflows/android-test.yml'
 jobs:
   build-deploy:
     runs-on: ubuntu-latest

@@ -1,8 +1,4 @@
-import 'package:app/app.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 void main() {
-  testWidgets('DersuAssistantApp', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
-  });
+  // Real tests coming up:
+  // https://www.notion.so/Mobile-app-tests-55bce27eaf8a420290707ca907663306
 }
