@@ -40,6 +40,7 @@ jobs:
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
         ANDROID_JKS_PATH: '${{ github.workspace }}/android-key.jks'
+        TRANSISTOR_BG_LOCATOR_KEY: ${{ secrets.TRANSISTOR_BG_LOCATOR_KEY }}
     - name: Generate What Is New Files
       run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
     - name: Write SA KEY file

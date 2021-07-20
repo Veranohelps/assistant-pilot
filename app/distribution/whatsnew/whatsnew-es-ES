@@ -1,9 +1,5 @@
 Actualizaciones:
 
- - Añade la primera versión del modo "live" para las expediciones.
- - Avisa de la proximidad de un waypoint.
- - Muestra la localización en tiempo real en la vista del mapa.
- - Muestra un aviso y pide confirmación antes de acceder a la localización del usuario.
- - Arregladas algunas inconsistencias menores con el idioma y las interacciones.
- - La política de privacidad es accesible desde "Acerca de".
+ - Actualización del sistema de Geofencing para mejorar el consumo de batería y la precisión.
+.
 

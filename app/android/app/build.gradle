@@ -10,6 +10,18 @@ if(mapsApiKey == null || mapsApiKey == ""){
     throw new GradleException('Missing `ANDROID_MAPS_API_KEY` environment variable')
 }
 
+def transitorGeoLocationProperties = new Properties()
+try {
+    transitorGeoLocationProperties['TRANSISTOR_BG_LOCATOR_KEY'] = System.getenv('TRANSISTOR_BG_LOCATOR_KEY')
+} catch (Exception e){
+    project.logger.warn('Failed to read TRANSISTOR_BG_LOCATOR_KEY from environment.', e)
+}
+
+def transistorGeolocationKey = transitorGeoLocationProperties.getProperty('TRANSISTOR_BG_LOCATOR_KEY')
+if(transistorGeolocationKey == null || transistorGeolocationKey == ""){
+    throw new GradleException('Missing `TRANSISTOR_BG_LOCATOR_KEY` environment variable')
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -50,7 +62,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [ANDROID_MAPS_API_KEY: mapsApiKey]
+        manifestPlaceholders = [ANDROID_MAPS_API_KEY: mapsApiKey, TRANSISTOR_BG_LOCATOR_KEY: transistorGeolocationKey]
     }
 
     signingConfigs {

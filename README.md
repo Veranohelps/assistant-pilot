@@ -4,6 +4,7 @@
 
  - App:
  	- `ANDROID_MAPS_API_KEY`: see [Google Maps Flutter](https://pub.dev/packages/google_maps_flutter) reference. This is read at build time when using `flutter run` from the `app` folder. Should be added to the CI server configuration as well (see below).
+ 	- `TRANSISTOR_BG_LOCATOR_KEY`: Android only, for the [Flutter Background Geolocation plugin](https://pub.dev/packages/flutter_background_geolocation).
  	- `DERSU_API_BASE_URL`
  - API:
  	- `PORT`
