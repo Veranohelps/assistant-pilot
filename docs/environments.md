@@ -22,11 +22,7 @@ Environments are mapped to GIT branches of the same name. Through Github Actions
 
 The `production` environment should never be ahead (have differences) with `develop`. The flow of work, including bug fixes, should be PR > `develop` > `production`.
 
-This is achieved through GIT commands. To do a production release:
+To do a production release:
 
-```bash
-git fetch
-git checkout production
-git reset --hard origin/develop
-git push
-```
+- Create a pull request from `develop` to `production` that includes all the latest changes.
+- Sqash and merge into `production` in order to trigger the CD action.
