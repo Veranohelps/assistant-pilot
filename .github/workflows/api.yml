@@ -3,19 +3,28 @@ on:
   push:
     branches:
       - 'develop'
+      - 'production'
     paths:
       - 'services/api/**'
       - 'services/terraform/**'
-      - '.github/workflows/api.yml'      
+      - '.github/workflows/api.yml'
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Short commit SHA
-        id: slug
+      - name: Set current branch name
+        id: currentbranch
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+      - name: Set short commit SHA
+        id: shortcommit
         run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+      - name: Set Docker image tag
+        id: dockerimage
+        run: echo "::set-output name=tag::${{ steps.currentbranch.outputs.branch }}-${{ steps.shortcommit.outputs.sha8 }}"
+      - name: Echo Docker image tag
+        run: echo ${{ steps.dockerimage.outputs.tag }}        
       - name: Check out
-        uses: actions/checkout@v2        
+        uses: actions/checkout@v2
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -33,21 +42,22 @@ jobs:
         with:
           context: services/api
           push: true
-          tags: gcr.io/dersu-assistant/api:${{ steps.slug.outputs.sha8 }}
+          tags: gcr.io/dersu-assistant/api:${{ steps.dockerimage.outputs.tag }}
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.14.10
+          terraform_version: 1.0.3
       - name: Terraform init
         working-directory: services/terraform
-        run: terraform init -input=false -lock=true 
-      - name: Terraform plan
+        run: terraform init -input=false
+      - name: Terraform select workspace
+        working-directory: services/terraform
+        run: terraform workspace select ${{ steps.currentbranch.outputs.branch }}
+      - name: Terraform plan 
         working-directory: services/terraform
         run: |
-          terraform plan -input=false -lock=true -out=tfplan \
-          -var="dersu_api_docker_image_tag=${{ steps.slug.outputs.sha8 }}"
+          terraform plan -input=false -out=tfplan \
+          -var="dersu_api_docker_image_tag=${{ steps.dockerimage.outputs.tag }}"
       - name: Terraform apply
         working-directory: services/terraform
-        run: terraform apply -input=false -lock=true tfplan
-          
-
+        run: terraform apply -input=false tfplan

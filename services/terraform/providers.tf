@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 0.14.10"
+  required_version = "~> 1.0.3"
 
   backend "gcs" {
     bucket = "dersu-assistant--pilot-terraform-state"
