@@ -49,7 +49,6 @@ class BackgroundGeolocation extends ChangeNotifier {
         latitude: wp.latitude,
         longitude: wp.longitude,
         notifyOnEntry: true,
-        notifyOnDwell: true,
         notifyOnExit: true,
         extras: {'waypointId': wp.id},
       );
