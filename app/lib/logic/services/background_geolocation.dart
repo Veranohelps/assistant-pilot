@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/model/console_message.dart';
@@ -14,7 +16,7 @@ class BackgroundGeolocation extends ChangeNotifier {
 
   Future<void> init() async {
     bg.BackgroundGeolocation.onGeofence(
-      (event) {
+      (bg.GeofenceEvent event) {
         var waypointId = event.extras!['waypointId'];
         var waypoint =
             waypoints.firstWhere((element) => element.id == waypointId);
@@ -49,6 +51,7 @@ class BackgroundGeolocation extends ChangeNotifier {
         latitude: wp.latitude,
         longitude: wp.longitude,
         notifyOnEntry: true,
+        notifyOnDwell: Platform.isAndroid,
         notifyOnExit: true,
         extras: {'waypointId': wp.id},
       );
@@ -64,10 +67,12 @@ class BackgroundGeolocation extends ChangeNotifier {
   Future<void> onWaypointGeofence(Waypoint waypoint, String action) async {
     var notification = getIt<NotificationService>();
 
-    notification.showNotification(
-      title: '$action: ${waypoint.name}, ${waypoint.type}',
-      text: waypoint.description,
-    );
+    if (action.toLowerCase() != "dwell") {
+      notification.showNotification(
+        title: '$action: ${waypoint.name}, ${waypoint.type}',
+        text: waypoint.description,
+      );
+    }
 
     getIt<ConsoleService>()
         .addMessage(ConsoleMessage(text: '$action: ${waypoint.id}'));
