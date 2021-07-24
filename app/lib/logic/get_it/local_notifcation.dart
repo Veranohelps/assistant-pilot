@@ -60,7 +60,7 @@ class NotificationService {
     }
     reAskPermitionsIfNeeded();
     getIt<ConsoleService>().addMessage(
-      ConsoleMessage(text: 'showNotification'),
+      ConsoleMessage(text: 'showNotification: ' + title),
     );
     flutterLocalNotificationsPlugin.show(
       0,
