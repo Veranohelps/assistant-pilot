@@ -81,7 +81,7 @@ android {
           shrinkResources false
           useProguard true
           proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
-          signingConfig signingConfigs.debug
+          signingConfig signingConfigs.release
         }
     }
 }
