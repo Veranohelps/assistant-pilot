@@ -1,3 +1,4 @@
+import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/waypoint.dart';
@@ -44,7 +45,7 @@ class BackgroundGeolocation extends ChangeNotifier {
     var geofences = waypoints.map((wp) {
       return bg.Geofence(
         identifier: wp.id,
-        radius: 200,
+        radius: kGeofenceCircleRadius,
         latitude: wp.latitude,
         longitude: wp.longitude,
         notifyOnEntry: true,

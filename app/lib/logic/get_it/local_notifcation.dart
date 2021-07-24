@@ -24,7 +24,7 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(
       InitializationSettings(
-        android: AndroidInitializationSettings('app_icon'),
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: IOSInitializationSettings(
           requestSoundPermission: true,
           requestBadgePermission: true,

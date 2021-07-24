@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:app/config/brand_colors.dart';
+import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
+import 'package:app/logic/get_it/console.dart';
 import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/logic/model/route.dart';
 import 'package:app/logic/services/background_geolocation.dart';
 import 'package:flutter/material.dart';
+import 'package:app/ui/pages/root_tabs/more/console/console.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -46,7 +49,7 @@ class MapPageState extends State<ExpeditionMapWidget> {
               circleId: CircleId("waypoint-id-" + waypoint.id),
               center: LatLng(waypoint.latitude, waypoint.longitude),
               // radius: waypoint.radiusInMeters,
-              radius: 200,
+              radius: kGeofenceCircleRadius,
               fillColor: BrandColors.greenWithOpacity,
               strokeWidth: 0,
               consumeTapEvents: true,
@@ -109,8 +112,38 @@ class MapPageState extends State<ExpeditionMapWidget> {
 
     return Scaffold(
       appBar: (widget.isLive == false)
-          ? AppBar(title: Text("Ruta de la expedición"))
-          : AppBar(title: Text("Live is on")),
+          ? AppBar(
+              title: Text("Ruta de la expedición"),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Console(),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.account_balance_rounded),
+                )
+              ],
+            )
+          : AppBar(
+              title: Text(
+                "Live is on",
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Console(),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.account_balance_rounded),
+                )
+              ],
+            ),
       body: GoogleMap(
         mapType: MapType.satellite,
         initialCameraPosition: cameraPosition,

@@ -49,9 +49,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-android {
-    compileSdkVersion 30
+Project background_geolocation = project(':flutter_background_geolocation')
+ apply from: "${background_geolocation.projectDir}/background_geolocation.gradle"
 
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -59,7 +61,7 @@ android {
     defaultConfig {
         applicationId "uz.dersu.assistant.pilot"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders = [ANDROID_MAPS_API_KEY: mapsApiKey, TRANSISTOR_BG_LOCATOR_KEY: transistorGeolocationKey]
@@ -75,9 +77,11 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            shrinkResources false
-//            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
+          minifyEnabled true
+          shrinkResources false
+          useProguard true
+          proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
+          signingConfig signingConfigs.debug
         }
     }
 }

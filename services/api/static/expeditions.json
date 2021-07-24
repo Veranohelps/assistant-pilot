@@ -79,7 +79,91 @@
           "latitude": 40.3997331,
           "longitude": -3.7217642,
           "altitude": 600.4
+         },
+         {
+          "id": "test-madrid-rio-1",
+          "name": "Madrid Rio 1",
+          "description": "Madrid Rio 1",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3955151,
+          "longitude": -3.7077274,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-madrid-rio-2",
+          "name": "Madrid Rio 2",
+          "description": "Madrid Rio 2",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3943939,
+          "longitude": -3.704515,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-madrid-rio-3",
+          "name": "Madrid Rio 3",
+          "description": "Madrid Rio 3",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.390478,
+          "longitude": -3.7002265,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-madrid-rio-4",
+          "name": "Madrid Rio 4",
+          "description": "Madrid Rio 4",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3865064,
+          "longitude": -3.6962392,
+          "altitude": 600.4
+         },
+         {
+          "id": "test-madrid-rio-5",
+          "name": "Madrid Rio 5",
+          "description": "Madrid Rio 5",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 40.3838301,
+          "longitude": -3.6925174,
+          "altitude": 600.4
          }
+      ]
+    },
+    {
+      "name": "Test Alicante",
+      "location": {
+        "latitude": 38.356842,
+        "longitude": -0.484238        
+      },
+      "routes": [
+        {
+          "id": "uyuyubmmnsd"
+        }
+      ],
+      "waypoints": [        
+        {
+          "id": "alicante1",
+          "name": "Home",
+          "description": "Kherel's house",
+          "type": "home",
+          "radius_in_meters": 20,
+          "latitude": 38.355,
+          "longitude": -0.484238,
+          "altitude": 600.4
+        },
+        {
+          "id": "alicante2",
+          "name": "a crossroads near kherel",
+          "description": "crossroads",
+          "type": "knowledge",
+          "radius_in_meters": 20,
+          "latitude": 38.358,
+          "longitude": -0.484238,
+          "altitude": 600.4
+        }
       ]
     },
     {

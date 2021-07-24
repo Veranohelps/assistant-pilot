@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/config/geofence.dart';
 import 'package:app/logic/model/waypoint.dart';
 import 'package:app/logic/services/background_geolocation.dart';
 import 'package:app/utils/extensions/text_extension.dart';
@@ -88,7 +89,7 @@ class _TestingGeofenceState extends State<TestingGeofence> {
                         description:
                             '${maker.position.latitude} ${maker.position.longitude}',
                         type: 'type-test',
-                        radiusInMeters: 200,
+                        radiusInMeters: kGeofenceCircleRadius,
                         latitude: maker.position.latitude,
                         longitude: maker.position.longitude,
                         altitude: 0,
