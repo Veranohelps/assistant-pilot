@@ -197,7 +197,81 @@
           "altitude": 600.4
          }         
       ]
-    },    
+    },
+    {
+      "name": "Test Zarauz Guetaria",
+      "location": {
+        "latitude": 43.284357,
+        "longitude": -2.173543
+      },
+      "routes": [
+        {
+          "id": "vvvhgdwytt"
+        }
+      ],
+      "waypoints": [
+        {
+          "id": "zarauz-guetaria-1",
+          "name": "Zarauz Guetaria 1",
+          "description": "Zarauz Guetaria 1",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.285556,
+          "longitude": -2.175953,
+          "altitude": 2376.4
+        },
+        {
+          "id": "zarauz-guetaria-2",
+          "name": "Aiten Etxe",
+          "description": "Restaurante rico",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.2885762,
+          "longitude": -2.1787983,
+          "altitude": 2376.4
+        },
+        {
+          "id": "zarauz-guetaria-3",
+          "name": "Zarauz Guetaria 3",
+          "description": "Zarauz Guetaria 3",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.2938668,
+          "longitude": -2.1834442,
+          "altitude": 2376.4
+        },
+        {
+          "id": "zarauz-guetaria-4",
+          "name": "Zarauz Guetaria 4",
+          "description": "Zarauz Guetaria 4",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.296463,
+          "longitude": -2.1924279,
+          "altitude": 2376.4
+        },
+        {
+          "id": "zarauz-guetaria-5",
+          "name": "Mirador del puerto",
+          "description": "Mirador del puerto",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.3004662,
+          "longitude": -2.2016369,
+          "altitude": 2376.4
+        },
+        {
+          "id": "zarauz-guetaria-6",
+          "name": "Amona Maria Delicatessen",
+          "description": "Alimentos",
+          "type": "some-type",
+          "radius_in_meters": 100,
+          "latitude": 43.3047236,
+          "longitude": -2.2031247,
+          "altitude": 2376.4
+        }
+      ]
+    },
     {
       "name": "Montblanc Gouter Verano",
       "location": {
