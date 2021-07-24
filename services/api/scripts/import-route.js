@@ -11,6 +11,10 @@ const gpxDocument = new DOMParser().parseFromString(fs.readFileSync(from, 'utf8'
 
 const parsedDocument = tj.gpx(gpxDocument);
 
+// console.log(JSON.stringify(parsedDocument, null, " "));
+
+// process.exit(0);
+
 console.log("About to run toGeoJSON");
 console.log(`FROM: ${from}`);
 console.log(`TO: ${to}`);
@@ -44,7 +48,8 @@ pointFeatures.forEach((pointFeature) => {
     });
 });
 
-console.log(JSON.stringify(waypoints, null, " "));
+// console.log(JSON.stringify(waypoints, null, " "));
 console.log("---------------------");
-// console.log(route);
+// console.log(JSON.stringify(route, null, " "));
+
 
