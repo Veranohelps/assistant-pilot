@@ -13,3 +13,10 @@ RoutePoint _$RoutePointFromJson(Map<String, dynamic> json) {
     altitude: (json['altitude'] as num).toDouble(),
   );
 }
+
+Map<String, dynamic> _$RoutePointToJson(RoutePoint instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'altitude': instance.altitude,
+    };

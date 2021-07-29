@@ -15,6 +15,9 @@ class BackgroundGeolocation extends ChangeNotifier {
   final List<String> shownWaypointsIds = [];
 
   Future<void> init() async {
+    await bg.BackgroundGeolocation.destroyLocations();
+    await bg.BackgroundGeolocation.removeGeofences();
+
     bg.BackgroundGeolocation.onGeofence(
       (bg.GeofenceEvent event) {
         var waypointId = event.extras!['waypointId'];

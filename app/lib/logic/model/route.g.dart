@@ -13,6 +13,12 @@ RoutePreInfo _$RoutePreInfoFromJson(Map<String, dynamic> json) {
   );
 }
 
+Map<String, dynamic> _$RoutePreInfoToJson(RoutePreInfo instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'url': instance.url,
+    };
+
 DersuRoute _$DersuRouteFromJson(Map<String, dynamic> json) {
   return DersuRoute(
     name: json['name'] as String,
@@ -21,3 +27,9 @@ DersuRoute _$DersuRouteFromJson(Map<String, dynamic> json) {
         .toList(),
   );
 }
+
+Map<String, dynamic> _$DersuRouteToJson(DersuRoute instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'coordinates': instance.points.map((e) => e.toJson()).toList(),
+    };

@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:app/config/brand_colors.dart';
 import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
+import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/get_it/console.dart';
 import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/logic/model/route.dart';
 import 'package:app/logic/services/background_geolocation.dart';
+import 'package:app/ui/components/brand_appbar/brand_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui/pages/root_tabs/more/console/console.dart';
+import 'package:ionicons/ionicons.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -82,10 +85,15 @@ class MapPageState extends State<ExpeditionMapWidget> {
 
   Future<void> _afterLayout(_) async {
     backgroundGeolocation = context.read<BackgroundGeolocation>();
+    var liveCubit = context.read<LiveCubit>();
 
     if (widget.isLive) {
       backgroundGeolocation.init();
       backgroundGeolocation.start(widget.expedition.waypoints);
+      liveCubit.setLiveOn(
+        expedition: widget.expedition,
+        route: widget.route,
+      );
     }
   }
 
@@ -103,46 +111,38 @@ class MapPageState extends State<ExpeditionMapWidget> {
     controller.dispose();
   }
 
+  Widget getConsoleButton() {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Console(),
+          ),
+        );
+      },
+      icon: Icon(
+        Ionicons.terminal,
+        color: BrandColors.white,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final CameraPosition cameraPosition = CameraPosition(
       target: _mapCameraPoint,
       zoom: zoom,
     );
-
     return Scaffold(
       appBar: (widget.isLive == false)
-          ? AppBar(
+          ? BrandAppBar(
               title: Text("Ruta de la expedición"),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Console(),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.account_balance_rounded),
-                )
-              ],
+              actions: [getConsoleButton()],
             )
-          : AppBar(
-              title: Text(
-                "Live is on",
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Console(),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.account_balance_rounded),
-                )
-              ],
+          : BrandAppBar(
+              title: Text("Live is on"),
+              onPop: () => context.read<LiveCubit>().setLiveOff(),
+              actions: [getConsoleButton()],
             ),
       body: GoogleMap(
         mapType: MapType.satellite,

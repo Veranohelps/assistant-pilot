@@ -12,16 +12,24 @@ class ExpeditionDetails extends StatefulWidget {
   const ExpeditionDetails({
     Key? key,
     required this.expedition,
+    this.isLife = false,
   }) : super(key: key);
 
   final Expedition expedition;
+  final bool isLife;
 
   @override
   _ExpeditionDetailsState createState() => _ExpeditionDetailsState();
 }
 
 class _ExpeditionDetailsState extends State<ExpeditionDetails> {
-  bool isLive = false;
+  late bool isLive;
+
+  @override
+  void initState() {
+    isLive = widget.isLife;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

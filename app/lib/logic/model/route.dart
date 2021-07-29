@@ -17,14 +17,14 @@ class RoutePreInfo {
   String toString() {
     return "RoutePreInfo, id: $id, url: $url";
   }
+
+  Map<String, dynamic> toJson() => _$RoutePreInfoToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
 class DersuRoute {
   DersuRoute({required this.name, required this.points});
-
   final String name;
-  
   @JsonKey(name: 'coordinates')
   final List<RoutePoint> points;
 
@@ -35,4 +35,6 @@ class DersuRoute {
 
   factory DersuRoute.fromJson(Map<String, dynamic> json) =>
       _$DersuRouteFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DersuRouteToJson(this);
 }

@@ -4,6 +4,9 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - Flutter (1.0.0)
   - flutter_background_geolocation (4.0.2):
     - CocoaLumberjack (~> 3.7.2)
@@ -24,6 +27,7 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
+  - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -31,6 +35,7 @@ PODS:
 
 DEPENDENCIES:
   - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
   - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -45,10 +50,13 @@ SPEC REPOS:
   trunk:
     - CocoaLumberjack
     - GoogleMaps
+    - Reachability
 
 EXTERNAL SOURCES:
   background_fetch:
     :path: ".symlinks/plugins/background_fetch/ios"
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
   Flutter:
     :path: Flutter
   flutter_background_geolocation:
@@ -71,6 +79,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   background_fetch: 2edffc19a5a465c47f073efa35db57f7910738fa
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_background_geolocation: 5c5754282837dabecb09539e5bb5274a964f67c8
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
@@ -79,6 +88,7 @@ SPEC CHECKSUMS:
   notification_permissions: b74860c2967c1579243a675e63cd55e0ae75cef7
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 

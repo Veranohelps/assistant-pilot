@@ -14,5 +14,8 @@ class RoutePoint {
     required this.altitude,
   });
 
-  factory RoutePoint.fromJson(Map<String, dynamic> json) => _$RoutePointFromJson(json);
+  factory RoutePoint.fromJson(Map<String, dynamic> json) =>
+      _$RoutePointFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RoutePointToJson(this);
 }

@@ -18,3 +18,14 @@ Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
     altitude: (json['altitude'] as num).toDouble(),
   );
 }
+
+Map<String, dynamic> _$WaypointToJson(Waypoint instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'description': instance.description,
+      'type': instance.type,
+      'radius_in_meters': instance.radiusInMeters,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'altitude': instance.altitude,
+    };

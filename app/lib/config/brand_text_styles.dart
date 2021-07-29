@@ -1,6 +1,7 @@
 import 'package:app/utils/named_font_weight.dart';
 import 'package:flutter/material.dart';
 import 'brand_colors.dart';
+export 'package:app/utils/extensions/text_extension.dart';
 
 class BrandTextStyles {
   static const defaultText = TextStyle(

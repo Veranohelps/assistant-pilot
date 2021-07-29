@@ -1,8 +1,18 @@
+import 'package:app/logic/model/console_message.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class HiveConfig{
-  static Future init() async {
-    return Hive.initFlutter();
+class HiveConfig {
+  static Future<void> init() async {
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(ConsoleMessageAdapter());
+    Hive.registerAdapter(MessageTypeAdapter());
   }
+}
+
+enum HiveContants { console }
+
+extension HiveContantseExt on HiveContants {
+  String get txt => this.toString().split('.')[1];
 }

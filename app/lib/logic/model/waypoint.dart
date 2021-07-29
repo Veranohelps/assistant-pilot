@@ -39,4 +39,6 @@ class Waypoint {
 
   factory Waypoint.fromJson(Map<String, dynamic> json) =>
       _$WaypointFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WaypointToJson(this);
 }

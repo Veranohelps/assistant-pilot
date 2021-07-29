@@ -1,3 +1,4 @@
+import 'package:app/logic/get_it/connectivity.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:app/logic/get_it/navigation.dart';
@@ -14,6 +15,12 @@ Future<void> getItSetup() async {
   getIt.registerSingleton<NavigationService>(NavigationService());
   getIt.registerSingleton<NotificationService>(NotificationService());
   getIt.registerSingleton<ConsoleService>(ConsoleService());
+
+  getIt.registerSingletonAsync<ConnectivityService>(() async {
+    var service = ConnectivityService();
+    await service.init();
+    return service;
+  });
 
   await getIt.allReady();
 }

@@ -19,9 +19,23 @@ Expedition _$ExpeditionFromJson(Map<String, dynamic> json) {
   );
 }
 
+Map<String, dynamic> _$ExpeditionToJson(Expedition instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'location': instance.location.toJson(),
+      'routes': instance.routes.map((e) => e.toJson()).toList(),
+      'waypoints': instance.waypoints.map((e) => e.toJson()).toList(),
+    };
+
 DersuLocation _$DersuLocationFromJson(Map<String, dynamic> json) {
   return DersuLocation(
     latitude: (json['latitude'] as num).toDouble(),
     longitude: (json['longitude'] as num).toDouble(),
   );
 }
+
+Map<String, dynamic> _$DersuLocationToJson(DersuLocation instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+    };
