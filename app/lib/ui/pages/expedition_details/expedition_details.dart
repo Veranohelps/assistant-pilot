@@ -4,9 +4,9 @@ import 'package:app/logic/model/expedition.dart';
 import 'package:app/ui/components/brand_card/brand_card.dart';
 import 'package:app/ui/components/brand_switcher/brand_switcher.dart';
 import 'package:app/ui/pages/expedition/expedition.dart';
+import 'package:app/utils/extensions/text_extension.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
-import 'package:app/utils/extensions/text_extension.dart';
 
 class ExpeditionDetails extends StatefulWidget {
   const ExpeditionDetails({
@@ -43,20 +43,17 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 20),
-            Text('Inormation').h6,
-            textLine('Name: ', widget.expedition.name),
+            Text(widget.expedition.name).h6,
+            SizedBox(height: 20),
             textLine('Waypoint count: ',
                 widget.expedition.waypoints.length.toString()),
-            SizedBox(height: 20),
-            Text('Routes').h6,
-            textLine(
-                'Rounts count: ', widget.expedition.routes.length.toString()),
+            Text('Routes: ' + widget.expedition.routes.length.toString()),
             SizedBox(height: 20),
             GestureDetector(
               onTap: handleIsLiveSwithcer,
               child: Row(
                 children: [
-                  Text('Is live: '),
+                  Text('En progreso: '),
                   BrandSwitcher(
                     isAcitve: isLive,
                   ),
@@ -83,8 +80,9 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
                       child: BrandCard(
                         child: Row(
                           children: [
-                            Text('Route: ${i + 1},\nid: ${routePreInfo.id}')
-                                .bodySmall,
+                            ElevatedButton(
+                                onPressed: null,
+                                child: Text(isLive ? "COMENZAR" : "CONSULTAR"))
                           ],
                         ),
                       ),
