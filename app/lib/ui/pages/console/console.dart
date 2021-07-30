@@ -6,6 +6,7 @@ import 'package:app/config/brand_theme.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/model/console_message.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class Console extends StatefulWidget {
   const Console({Key? key}) : super(key: key);
@@ -32,11 +33,21 @@ class _ConsoleState extends State<Console> {
 
   @override
   Widget build(BuildContext context) {
-    var messages = getIt.get<ConsoleService>().messages;
+    var consoleService = getIt.get<ConsoleService>();
+    var messages = consoleService.messages;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Console'),
+        actions: [
+          IconButton(
+            onPressed: () => consoleService.sendFile(),
+            icon: Icon(
+              Ionicons.share,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       body: messages.isEmpty
           ? Center(child: Text('No messages'))

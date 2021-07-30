@@ -14,7 +14,11 @@ final getIt = GetIt.instance;
 Future<void> getItSetup() async {
   getIt.registerSingleton<NavigationService>(NavigationService());
   getIt.registerSingleton<NotificationService>(NotificationService());
-  getIt.registerSingleton<ConsoleService>(ConsoleService());
+  getIt.registerSingletonAsync<ConsoleService>(() async {
+    var service = ConsoleService();
+    await service.load();
+    return service;
+  });
 
   getIt.registerSingletonAsync<ConnectivityService>(() async {
     var service = ConnectivityService();

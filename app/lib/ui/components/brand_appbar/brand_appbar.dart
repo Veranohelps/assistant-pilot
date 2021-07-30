@@ -1,5 +1,4 @@
 import 'package:app/config/brand_colors.dart';
-import 'package:app/config/brand_text_styles.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,10 +26,7 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Text(
-                'Console',
-                textAlign: TextAlign.center,
-              ).h3.withColor(BrandColors.white),
+              title,
               Row(
                 children: [
                   IconButton(

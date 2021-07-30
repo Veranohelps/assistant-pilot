@@ -9,9 +9,11 @@ import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/logic/model/route.dart';
 import 'package:app/logic/services/background_geolocation.dart';
+import 'package:app/utils/extensions/text_extension.dart';
+
 import 'package:app/ui/components/brand_appbar/brand_appbar.dart';
+import 'package:app/ui/pages/console/console.dart';
 import 'package:flutter/material.dart';
-import 'package:app/ui/pages/root_tabs/more/console/console.dart';
 import 'package:ionicons/ionicons.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -148,11 +150,11 @@ class MapPageState extends State<ExpeditionMapWidget> {
     return Scaffold(
       appBar: (widget.isLive == false)
           ? BrandAppBar(
-              title: Text("Ruta de la expedición"),
+              title: Text("Ruta de la expedición").h3.withColor(Colors.white),
               actions: [getConsoleButton()],
             )
           : BrandAppBar(
-              title: Text("Live is on"),
+              title: Text("Live is on").h3.withColor(Colors.white),
               onPop: () => context.read<LiveCubit>().setLiveOff(),
               actions: [getConsoleButton()],
             ),

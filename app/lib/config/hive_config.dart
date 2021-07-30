@@ -8,6 +8,8 @@ class HiveConfig {
 
     Hive.registerAdapter(ConsoleMessageAdapter());
     Hive.registerAdapter(MessageTypeAdapter());
+
+    await Hive.openBox<ConsoleMessage>(HiveContants.console.txt);
   }
 }
 

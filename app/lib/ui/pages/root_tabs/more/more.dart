@@ -1,5 +1,5 @@
 import 'package:app/config/brand_colors.dart';
-import 'package:app/ui/pages/root_tabs/more/console/console.dart';
+import 'package:app/ui/pages/console/console.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 

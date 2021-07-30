@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 part 'console_message.g.dart';
 
 final formater = new DateFormat('hh:mm');
+final formater2 = DateFormat('MM-dd hh:mm');
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 1)
 class ConsoleMessage {
   ConsoleMessage({this.text, this.type = MessageType.normal})
       : time = DateTime.now();
@@ -21,9 +22,12 @@ class ConsoleMessage {
         text: text,
         type: MessageType.warning,
       );
+
+  @override
+  String toString() => '${formater2.format(time)}: $text';
 }
 
-@HiveType(typeId: 8)
+@HiveType(typeId: 2)
 enum MessageType {
   @HiveField(0)
   normal,

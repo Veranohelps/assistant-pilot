@@ -13,8 +13,8 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: "develop-public.env");
-  await getItSetup();
   await HiveConfig.init();
+  await getItSetup();
   await initHydratedBloc();
   runApp(_Main());
 }

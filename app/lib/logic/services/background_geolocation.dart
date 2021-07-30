@@ -102,8 +102,9 @@ class BackgroundGeolocation extends ChangeNotifier {
 
   Future<void> stop() async {
     getIt<ConsoleService>().addMessage(ConsoleMessage(
-        text: 'BackgroundGeolocation stoped, Geofences cleared'));
+        text: 'BackgroundGeolocation stopped, Geofences cleared'));
     await bg.BackgroundGeolocation.stop();
+
     await bg.BackgroundGeolocation.destroyLocations();
     await bg.BackgroundGeolocation.removeGeofences();
   }
