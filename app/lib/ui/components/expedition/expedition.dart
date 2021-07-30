@@ -34,17 +34,21 @@ class ExpeditionMapWidget extends StatefulWidget {
 }
 
 class MapPageState extends State<ExpeditionMapWidget> {
-  late LatLng _mapCameraPoint;
   Completer<GoogleMapController> _controller = new Completer();
   final Set<Circle> _mapCircles = Set();
-
+  CameraPosition? cameraPosition;
   @override
   void initState() {
     super.initState();
-    _mapCameraPoint = LatLng(
-      widget.expedition.location.latitude,
-      widget.expedition.location.longitude,
-    );
+    if (!widget.isLive) {
+      cameraPosition = CameraPosition(
+        target: LatLng(
+          widget.expedition.location.latitude,
+          widget.expedition.location.longitude,
+        ),
+        zoom: zoom,
+      );
+    }
 
     widget.expedition.waypoints.forEach((waypoint) => {
           _mapCircles.add(
@@ -88,12 +92,24 @@ class MapPageState extends State<ExpeditionMapWidget> {
     var liveCubit = context.read<LiveCubit>();
 
     if (widget.isLive) {
-      backgroundGeolocation.init();
-      backgroundGeolocation.start(widget.expedition.waypoints);
+      await backgroundGeolocation.requestPermissionTillAlwais();
+      await backgroundGeolocation.init();
+      await backgroundGeolocation.start(widget.expedition.waypoints);
       liveCubit.setLiveOn(
         expedition: widget.expedition,
         route: widget.route,
       );
+      var currentPosition = await backgroundGeolocation.currentPosition;
+
+      setState(() {
+        cameraPosition = CameraPosition(
+          target: LatLng(
+            currentPosition.coords.latitude,
+            currentPosition.coords.longitude,
+          ),
+          zoom: zoom,
+        );
+      });
     }
   }
 
@@ -129,10 +145,6 @@ class MapPageState extends State<ExpeditionMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final CameraPosition cameraPosition = CameraPosition(
-      target: _mapCameraPoint,
-      zoom: zoom,
-    );
     return Scaffold(
       appBar: (widget.isLive == false)
           ? BrandAppBar(
@@ -144,24 +156,26 @@ class MapPageState extends State<ExpeditionMapWidget> {
               onPop: () => context.read<LiveCubit>().setLiveOff(),
               actions: [getConsoleButton()],
             ),
-      body: GoogleMap(
-        mapType: MapType.satellite,
-        initialCameraPosition: cameraPosition,
-        circles: _mapCircles,
-        onMapCreated: (GoogleMapController controller) async {
-          _controller.complete(controller);
-        },
-        trafficEnabled: false,
-        tiltGesturesEnabled: false,
-        indoorViewEnabled: false,
-        compassEnabled: false,
-        buildingsEnabled: false,
-        myLocationButtonEnabled: widget.isLive,
-        myLocationEnabled: widget.isLive,
-        scrollGesturesEnabled: true,
-        zoomControlsEnabled: true,
-        zoomGesturesEnabled: true,
-      ),
+      body: cameraPosition == null
+          ? Center(child: CircularProgressIndicator())
+          : GoogleMap(
+              mapType: MapType.satellite,
+              initialCameraPosition: cameraPosition!,
+              circles: _mapCircles,
+              onMapCreated: (GoogleMapController controller) async {
+                _controller.complete(controller);
+              },
+              trafficEnabled: false,
+              tiltGesturesEnabled: false,
+              indoorViewEnabled: false,
+              compassEnabled: false,
+              buildingsEnabled: false,
+              myLocationButtonEnabled: widget.isLive,
+              myLocationEnabled: widget.isLive,
+              scrollGesturesEnabled: true,
+              zoomControlsEnabled: true,
+              zoomGesturesEnabled: true,
+            ),
     );
   }
 }

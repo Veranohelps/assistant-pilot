@@ -13,6 +13,18 @@ export 'package:provider/provider.dart';
 class BackgroundGeolocation extends ChangeNotifier {
   final List<Waypoint> waypoints = [];
   final List<String> shownWaypointsIds = [];
+  Future<bg.Location> get currentPosition =>
+      bg.BackgroundGeolocation.getCurrentPosition();
+
+  Future<void> requestPermissionTillAlwais() async {
+    while (true) {
+      var status = await bg.BackgroundGeolocation.requestPermission();
+
+      if (status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_ALWAYS) {
+        break;
+      }
+    }
+  }
 
   Future<void> init() async {
     await bg.BackgroundGeolocation.destroyLocations();
@@ -27,7 +39,7 @@ class BackgroundGeolocation extends ChangeNotifier {
       },
     );
 
-    bg.BackgroundGeolocation.ready(bg.Config(
+    await bg.BackgroundGeolocation.ready(bg.Config(
             desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
             distanceFilter: 10.0,
             stopOnTerminate: false,
@@ -91,7 +103,7 @@ class BackgroundGeolocation extends ChangeNotifier {
   Future<void> stop() async {
     getIt<ConsoleService>().addMessage(ConsoleMessage(
         text: 'BackgroundGeolocation stoped, Geofences cleared'));
-    bg.BackgroundGeolocation.stop();
+    await bg.BackgroundGeolocation.stop();
     await bg.BackgroundGeolocation.destroyLocations();
     await bg.BackgroundGeolocation.removeGeofences();
   }
