@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/waypoint.dart';
@@ -57,12 +56,12 @@ class BackgroundGeolocation extends ChangeNotifier {
     );
   }
 
-  Future<void> start(List<Waypoint> waypoints) async {
+  Future<void> start(List<Waypoint> waypoints, int waypointPrecision) async {
     getIt<NotificationService>().init();
     var geofences = waypoints.map((wp) {
       return bg.Geofence(
         identifier: wp.id,
-        radius: kGeofenceCircleRadius,
+        radius: waypointPrecision.toDouble(),
         latitude: wp.latitude,
         longitude: wp.longitude,
         notifyOnEntry: true,
@@ -82,7 +81,7 @@ class BackgroundGeolocation extends ChangeNotifier {
   Future<void> onWaypointGeofence(Waypoint waypoint, String action) async {
     var notification = getIt<NotificationService>();
 
-    if (action.toLowerCase() != "dwell") {
+    if (action.toLowerCase() == "enter") {
       notification.showNotification(
         title: '$action: ${waypoint.name}, ${waypoint.type}',
         text: waypoint.description,

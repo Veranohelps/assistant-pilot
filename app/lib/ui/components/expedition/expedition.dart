@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/config/brand_colors.dart';
-import 'package:app/config/geofence.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/get_it/console.dart';
@@ -9,27 +8,26 @@ import 'package:app/logic/model/console_message.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/logic/model/route.dart';
 import 'package:app/logic/services/background_geolocation.dart';
-import 'package:app/utils/extensions/text_extension.dart';
-
 import 'package:app/ui/components/brand_appbar/brand_appbar.dart';
 import 'package:app/ui/pages/console/console.dart';
+import 'package:app/utils/extensions/text_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 
 const zoom = 14.4746;
 
 class ExpeditionMapWidget extends StatefulWidget {
-  ExpeditionMapWidget({
-    required this.isLive,
-    required this.expedition,
-    required this.route,
-  });
+  ExpeditionMapWidget(
+      {required this.isLive,
+      required this.expedition,
+      required this.route,
+      required this.waypointPrecision});
 
   final Expedition expedition;
   final DersuRoute route;
   final bool isLive;
+  final int waypointPrecision;
 
   @override
   State<StatefulWidget> createState() => MapPageState();
@@ -58,7 +56,7 @@ class MapPageState extends State<ExpeditionMapWidget> {
               circleId: CircleId("waypoint-id-" + waypoint.id),
               center: LatLng(waypoint.latitude, waypoint.longitude),
               // radius: waypoint.radiusInMeters,
-              radius: kGeofenceCircleRadius,
+              radius: widget.waypointPrecision.toDouble(),
               fillColor: BrandColors.greenWithOpacity,
               strokeWidth: 0,
               consumeTapEvents: true,
@@ -96,7 +94,8 @@ class MapPageState extends State<ExpeditionMapWidget> {
     if (widget.isLive) {
       await backgroundGeolocation.requestPermissionTillAlwais();
       await backgroundGeolocation.init();
-      await backgroundGeolocation.start(widget.expedition.waypoints);
+      await backgroundGeolocation.start(
+          widget.expedition.waypoints, widget.waypointPrecision);
       liveCubit.setLiveOn(
         expedition: widget.expedition,
         route: widget.route,

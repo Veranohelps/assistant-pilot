@@ -2,8 +2,10 @@ import 'package:app/app.dart';
 import 'package:app/ui/pages/error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
 import 'config/bloc_config.dart';
 import 'config/brand_theme.dart';
+import 'config/geofence.dart';
 import 'config/get_it_config.dart';
 import 'config/hive_config.dart';
 

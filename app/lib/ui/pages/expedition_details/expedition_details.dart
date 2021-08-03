@@ -1,5 +1,7 @@
 import 'package:app/config/brand_text_styles.dart';
 import 'package:app/config/brand_theme.dart';
+import 'package:app/config/geofence.dart';
+import 'package:app/config/hive_config.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/ui/components/brand_card/brand_card.dart';
 import 'package:app/ui/components/brand_switcher/brand_switcher.dart';
@@ -7,6 +9,7 @@ import 'package:app/ui/pages/expedition/expedition.dart';
 import 'package:app/utils/extensions/text_extension.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class ExpeditionDetails extends StatefulWidget {
   const ExpeditionDetails({
@@ -24,11 +27,22 @@ class ExpeditionDetails extends StatefulWidget {
 
 class _ExpeditionDetailsState extends State<ExpeditionDetails> {
   late bool isLive;
-
+  late int waypointPrecision;
+  final geoConig = Hive.box(HiveContants.geoConfig.txt);
   @override
   void initState() {
+    waypointPrecision = geoConig.get(
+      HiveContants.waypointPrecision.txt,
+      defaultValue: kWaypointPrecisionDefault,
+    );
+
     isLive = widget.isLife;
     super.initState();
+  }
+
+  void updatePrecision(newPrecision) async {
+    await geoConig.put(HiveContants.waypointPrecision.txt, newPrecision);
+    setState(() => {waypointPrecision = newPrecision.toInt()});
   }
 
   @override
@@ -48,6 +62,15 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
             textLine('Waypoint count: ',
                 widget.expedition.waypoints.length.toString()),
             Text('Routes: ' + widget.expedition.routes.length.toString()),
+            SizedBox(height: 20),
+            Text("Precisión: $waypointPrecision metros"),
+            Slider(
+              value: waypointPrecision.toDouble(),
+              min: 50,
+              max: 200,
+              divisions: 3,
+              onChanged: (isLive) ? null : (v) => updatePrecision(v.toInt()),
+            ),
             SizedBox(height: 20),
             GestureDetector(
               onTap: handleIsLiveSwithcer,
@@ -73,6 +96,7 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
                               expedition: widget.expedition,
                               routeId: routePreInfo.id,
                               isLive: isLive,
+                              waypointPrecision: waypointPrecision,
                             ),
                           ),
                         );

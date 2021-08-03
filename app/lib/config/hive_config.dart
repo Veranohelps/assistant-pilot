@@ -10,10 +10,11 @@ class HiveConfig {
     Hive.registerAdapter(MessageTypeAdapter());
 
     await Hive.openBox<ConsoleMessage>(HiveContants.console.txt);
+    await Hive.openBox(HiveContants.geoConfig.txt);
   }
 }
 
-enum HiveContants { console }
+enum HiveContants { console, geoConfig, waypointPrecision }
 
 extension HiveContantseExt on HiveContants {
   String get txt => this.toString().split('.')[1];

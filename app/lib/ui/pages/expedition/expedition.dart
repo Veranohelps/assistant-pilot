@@ -6,16 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ExpeditionPage extends StatelessWidget {
-  const ExpeditionPage({
-    Key? key,
-    required this.expedition,
-    required this.routeId,
-    required this.isLive,
-  }) : super(key: key);
+  const ExpeditionPage(
+      {Key? key,
+      required this.expedition,
+      required this.routeId,
+      required this.isLive,
+      required this.waypointPrecision})
+      : super(key: key);
 
   final Expedition expedition;
   final String routeId;
   final bool isLive;
+  final int waypointPrecision;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class ExpeditionPage extends StatelessWidget {
               isLive: isLive,
               expedition: expedition,
               route: route,
+              waypointPrecision: waypointPrecision,
             );
           },
         ),

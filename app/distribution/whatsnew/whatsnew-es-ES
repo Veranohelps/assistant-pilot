@@ -1,3 +1,5 @@
 Actualizaciones:
 
+ - Permite modificar la precisión (radio) de los waypoints.
+ - Limita las notificaciones de los waypoints a las de entrada.
  - Actualización del sistema de Geofencing para mejorar el consumo de batería y la precisión.

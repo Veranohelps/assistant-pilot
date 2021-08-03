@@ -5,8 +5,8 @@ import 'package:app/logic/model/waypoint.dart';
 import 'package:app/logic/services/background_geolocation.dart';
 import 'package:app/utils/extensions/text_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TestingGeofence extends StatefulWidget {
   const TestingGeofence({Key? key}) : super(key: key);
@@ -94,7 +94,7 @@ class _TestingGeofenceState extends State<TestingGeofence> {
                         longitude: maker.position.longitude,
                         altitude: 0,
                       ),
-                    ]);
+                    ], 150);
                   }
                 },
                 child: Container(
