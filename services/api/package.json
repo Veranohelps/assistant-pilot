@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^26.6.2",
+    "@tmcw/togeojson-cli": "^2.0.1",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.22",
