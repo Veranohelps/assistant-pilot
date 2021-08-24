@@ -20,7 +20,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.13.4'
+        flutter-version: '2.2.3'
     - name: Write JKS file for signing
       run: echo $ANDROID_JKS > key.b64 && base64 -d key.b64 > $ANDROID_JKS_PATH 
       env:
@@ -34,14 +34,21 @@ jobs:
       run: flutter test
     - name: Build app bundle
       working-directory: app
-      run: flutter build appbundle
-      env:
-        ANDROID_MAPS_API_KEY: ${{ secrets.ANDROID_MAPS_API_KEY }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
-        ANDROID_JKS_PATH: '${{ github.workspace }}/android-key.jks'
-        TRANSISTOR_BG_LOCATOR_KEY: ${{ secrets.TRANSISTOR_BG_LOCATOR_KEY }}
+      run: |
+        flutter build appbundle
+        touch .env
+        echo ANDROID_MAPS_API_KEY=${{ secrets.ANDROID_MAPS_API_KEY }} >> .env
+        echo IOS_MAPS_API_KEY=${{ secrets.IOS_MAPS_API_KEY }} >> .env
+        echo TRANSISTOR_BG_LOCATOR_KEY=${{ secrets.TRANSISTOR_BG_LOCATOR_KEY }} >> .env
+        
+        echo DERSU_API_BASE_URL=${{ secrets.DERSU_API_BASE_URL }} >> .env
+        echo DERSU_SITE_BASE_URL=${{ secrets.DERSU_SITE_BASE_URL }} >> .env
+        
+        echo ANDROID_JKS_PATH=${{ github.workspace }}/android-key.jks>> .env
+        echo ANDROID_STORE_PASSWORD=${{ secrets.ANDROID_STORE_PASSWORD }} >> .env
+        echo ANDROID_KEY_ALIAS=key >> .env
+        echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> .env
+        cat .env
     - name: Generate What Is New Files
       run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
     - name: Write SA KEY file
