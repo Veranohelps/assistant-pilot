@@ -1,27 +1,3 @@
-def mapsProperties = new Properties()
-try {
-    mapsProperties['ANDROID_MAPS_API_KEY'] = System.getenv('ANDROID_MAPS_API_KEY')
-} catch (Exception e){
-    project.logger.warn('Failed to read ANDROID_MAPS_API_KEY from environment.', e)
-}
-
-def mapsApiKey = mapsProperties.getProperty('ANDROID_MAPS_API_KEY')
-if(mapsApiKey == null || mapsApiKey == ""){
-    throw new GradleException('Missing `ANDROID_MAPS_API_KEY` environment variable')
-}
-
-def transitorGeoLocationProperties = new Properties()
-try {
-    transitorGeoLocationProperties['TRANSISTOR_BG_LOCATOR_KEY'] = System.getenv('TRANSISTOR_BG_LOCATOR_KEY')
-} catch (Exception e){
-    project.logger.warn('Failed to read TRANSISTOR_BG_LOCATOR_KEY from environment.', e)
-}
-
-def transistorGeolocationKey = transitorGeoLocationProperties.getProperty('TRANSISTOR_BG_LOCATOR_KEY')
-if(transistorGeolocationKey == null || transistorGeolocationKey == ""){
-    throw new GradleException('Missing `TRANSISTOR_BG_LOCATOR_KEY` environment variable')
-}
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -48,14 +24,22 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
 Project background_geolocation = project(':flutter_background_geolocation')
  apply from: "${background_geolocation.projectDir}/background_geolocation.gradle"
+
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 
     defaultConfig {
@@ -64,17 +48,17 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [ANDROID_MAPS_API_KEY: mapsApiKey, TRANSISTOR_BG_LOCATOR_KEY: transistorGeolocationKey]
     }
 
     signingConfigs {
         release {
-            storeFile file(System.getenv('ANDROID_JKS_PATH'))
-            storePassword System.getenv('ANDROID_STORE_PASSWORD')
-            keyAlias System.getenv('ANDROID_KEY_ALIAS')
-            keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+           storeFile file(project.env.get("ANDROID_JKS_PATH"))
+           storePassword project.env.get("ANDROID_STORE_PASSWORD")
+           keyAlias project.env.get("ANDROID_KEY_ALIAS")
+           keyPassword project.env.get("ANDROID_KEY_PASSWORD")
         }
     }
+    
     buildTypes {
         release {
           minifyEnabled true

@@ -11,15 +11,17 @@ PODS:
   - flutter_background_geolocation (4.0.2):
     - CocoaLumberjack (~> 3.7.2)
     - Flutter
+  - flutter_config (0.0.1):
+    - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
-  - GoogleMaps (3.9.0):
-    - GoogleMaps/Maps (= 3.9.0)
-  - GoogleMaps/Base (3.9.0)
-  - GoogleMaps/Maps (3.9.0):
+  - GoogleMaps (4.2.0):
+    - GoogleMaps/Maps (= 4.2.0)
+  - GoogleMaps/Base (4.2.0)
+  - GoogleMaps/Maps (4.2.0):
     - GoogleMaps/Base
   - notification_permissions (0.4.4):
     - Flutter
@@ -40,6 +42,7 @@ DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
   - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
+  - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - notification_permissions (from `.symlinks/plugins/notification_permissions/ios`)
@@ -64,6 +67,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_background_geolocation:
     :path: ".symlinks/plugins/flutter_background_geolocation/ios"
+  flutter_config:
+    :path: ".symlinks/plugins/flutter_config/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   google_maps_flutter:
@@ -87,9 +92,10 @@ SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_background_geolocation: 5c5754282837dabecb09539e5bb5274a964f67c8
+  flutter_config: 2226c1df19c78fe34a05eb7f1363445f18e76fc1
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
-  GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
+  GoogleMaps: eb03e327edfd70b06de1e6e321653f73712df7ad
   notification_permissions: b74860c2967c1579243a675e63cd55e0ae75cef7
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c

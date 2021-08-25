@@ -2,7 +2,7 @@ import 'package:app/ui/pages/error/error.dart';
 import 'package:app/ui/pages/loader/generic_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,7 +70,7 @@ class AboutScreen extends StatelessWidget {
   }
 
   void _launchPrivacyPolicy() async {
-    final baseUrl = dotenv.env['DERSU_SITE_BASE_URL']!;
+    final baseUrl = FlutterConfig.get('DERSU_SITE_BASE_URL');
     final url = '$baseUrl/en/privacy/';
     if (await canLaunch(url)) {
       await launch(url);

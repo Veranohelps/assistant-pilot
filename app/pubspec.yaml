@@ -5,12 +5,12 @@ publish_to: 'none'
 version: 1.0.0+36
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.4 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^7.0.0
+  bloc: ^7.1.0
   connectivity: ^3.0.6
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
@@ -18,7 +18,6 @@ dependencies:
   equatable: ^2.0.3
   flutter_background_geolocation: ^4.0.2
   flutter_bloc: ^7.1.0
-  flutter_dotenv: ^5.0.0
   flutter_local_notifications: ^6.0.0
   get_it: ^7.1.3
   google_maps_flutter: ^2.0.6
@@ -36,6 +35,7 @@ dependencies:
   shared_preferences: ^2.0.6
   unicons: ^2.0.1
   url_launcher: ^6.0.4
+  flutter_config: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -48,5 +48,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - develop-public.env
     - distribution/whatsnew/whatsnew-es-ES

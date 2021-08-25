@@ -1,11 +1,9 @@
 import 'package:app/app.dart';
 import 'package:app/ui/pages/error/error.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'config/bloc_config.dart';
 import 'config/brand_theme.dart';
-import 'config/geofence.dart';
 import 'config/get_it_config.dart';
 import 'config/hive_config.dart';
 
@@ -14,7 +12,7 @@ var apiDefaultLog = false;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: "develop-public.env");
+  await FlutterConfig.loadEnvVariables();
   await HiveConfig.init();
   await getItSetup();
   await initHydratedBloc();

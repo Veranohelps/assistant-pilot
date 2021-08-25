@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'api.dart';
@@ -25,6 +25,6 @@ abstract class DersuApi extends ApiMap {
 
   @protected
   Future<BaseOptions> get options async {
-    return BaseOptions(baseUrl: dotenv.env['DERSU_API_BASE_URL']!);
+    return BaseOptions(baseUrl: FlutterConfig.get('DERSU_API_BASE_URL'));
   }
 }
