@@ -1,6 +1,250 @@
 {
   "expeditions": [
     {
+      "name": "Gran Paradiso",
+      "location": {
+        "latitude": 45.512565,
+        "longitude": 7.22969
+      },
+      "routes": [
+        {
+          "id": "yyhbgfrtr"
+        }
+      ],
+      "waypoints": [
+        {
+         "id": "9a00f7c9-c2d2-4fbe-a5a3-9c80e426f8ec",
+         "name": "Col etret",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.471006,
+         "longitude": 7.221143,
+         "altitude": 3053
+        },
+        {
+         "id": "a402233b-a8d2-4564-aedd-b3fd18709247",
+         "name": "Valle Etret",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.483433,
+         "longitude": 7.219465,
+         "altitude": 2651
+        },
+        {
+         "id": "8d378a7c-fe59-40ef-83f6-e43b629cea18",
+         "name": "Entrada glaciar",
+         "description": "Encordamiento glaciar",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.530507,
+         "longitude": 7.250888,
+         "altitude": 3038
+        },
+        {
+         "id": "4116974c-f952-45fe-82cc-6a9c99beaf0b",
+         "name": "Gran paradiso",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.517232,
+         "longitude": 7.26813,
+         "altitude": 4002
+        },
+        {
+         "id": "ba5afceb-341e-404e-acda-b9de1ac15ac7",
+         "name": "Collado, cresta roca",
+         "description": "Escalada en mixto II grado",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.516505,
+         "longitude": 7.268656,
+         "altitude": 3984
+        },
+        {
+         "id": "38034bd9-ad82-415b-99bb-68b2ad208059",
+         "name": "Paso de rimaya",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.516248,
+         "longitude": 7.26878,
+         "altitude": 3977
+        },
+        {
+         "id": "3e4124ac-df2a-4dfb-891c-3e261ea79b60",
+         "name": "Paso rimaya",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.515733,
+         "longitude": 7.268436,
+         "altitude": 3967
+        },
+        {
+         "id": "1b2fd1f6-e1ed-4153-b1bb-8511574e8baf",
+         "name": "Becca Di moncorve",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.513003,
+         "longitude": 7.266611,
+         "altitude": 3838
+        },
+        {
+         "id": "4dfe0743-8b49-4ce7-b803-747d639ebce3",
+         "name": "Comienzo pendientes fuertes",
+         "description": "Encordamiento glaciar",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.519615,
+         "longitude": 7.247105,
+         "altitude": 3144
+        },
+        {
+         "id": "e2eb7682-571e-4ed7-b822-f686ad0f34cb",
+         "name": "Entrada glaciar norte",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.521446,
+         "longitude": 7.251753,
+         "altitude": 3328
+        },
+        {
+         "id": "bdaecdbf-fbfc-4ddd-b041-425214c4608b",
+         "name": "Trepada",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.52151,
+         "longitude": 7.241837,
+         "altitude": 3095
+        },
+        {
+         "id": "ea0b7832-e412-4809-9e79-262e9faf76a3",
+         "name": "Trepada",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.521109,
+         "longitude": 7.241663,
+         "altitude": 3078
+        },
+        {
+         "id": "854602da-4407-4339-8ea5-e2d7c172de2d",
+         "name": "Desvío a la morrena",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.517497,
+         "longitude": 7.233581,
+         "altitude": 2852
+        },
+        {
+         "id": "a2287cd6-41fe-4bd9-9447-6e9e72b64176",
+         "name": "La tresenta",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.499222,
+         "longitude": 7.264207,
+         "altitude": 3568
+        },
+        {
+         "id": "f5ffc92b-ed42-42af-a9ee-c445fa303a16",
+         "name": "Arista cimera",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.499071,
+         "longitude": 7.263857,
+         "altitude": 3547
+        },
+        {
+         "id": "9e76a755-2b5f-47c5-a52c-c540be44b907",
+         "name": "Zona expo-espolon",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.500533,
+         "longitude": 7.259433,
+         "altitude": 3338
+        },
+        {
+         "id": "52d17561-01ad-40ca-a7b0-e3050c6b1921",
+         "name": "Zona expo",
+         "description": "Cruce de pala de expuesta a aludes cuando esté nevada",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.503257,
+         "longitude": 7.259897,
+         "altitude": 3211
+        },
+        {
+         "id": "48278585-c628-474f-99ae-3d3b3d695867",
+         "name": "Comienzo de la escalada",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.503832,
+         "longitude": 7.258209,
+         "altitude": 3157
+        },
+        {
+         "id": "3db8f530-bc93-4491-8234-3754a4f9f9b2",
+         "name": "Rifugio Vittorio enmanuelle",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.512562,
+         "longitude": 7.229443,
+         "altitude": 2715
+        },
+        {
+         "id": "2efb7b45-9f3b-4298-a498-bf7e3b7f72aa",
+         "name": "Rifugio Chabod",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.540261,
+         "longitude": 7.238892,
+         "altitude": 2702
+        },
+        {
+         "id": "ece4e530-76f3-4d45-9eb0-e8b98d80295f",
+         "name": "Fuente",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.544152,
+         "longitude": 7.22259,
+         "altitude": 2194
+        },
+        {
+         "id": "127cf8b6-51ba-4343-8117-40e4937ecf91",
+         "name": "A rifugio Chabod",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.544552,
+         "longitude": 7.212099,
+         "altitude": 1830
+        },
+        {
+         "id": "8d403b9d-9379-4f77-97e2-a1c939b5e9ac",
+         "name": "Ponte, Vittorio enmanuelle",
+         "description": "",
+         "type": "some-type",
+         "radius_in_meters": 100,
+         "latitude": 45.524491,
+         "longitude": 7.201271,
+         "altitude": 1955
+        }
+       ]       
+    },
+    {
       "name": "Piramide de Vincent",
       "location": {
         "latitude": 45.891075,
