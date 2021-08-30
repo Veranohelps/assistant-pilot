@@ -245,6 +245,750 @@
        ]       
     },
     {
+      "name": "Golondrina Fácil",
+      "location": {
+        "latitude": 42.86245,
+        "longitude": -0.92288
+      },
+      "routes": [{
+        "id": "bbvujkgfb"
+      }],
+      "waypoints": [
+        {
+         "id": "d18450b9-fda2-4bd0-b8a4-2bf7f19d06ce",
+         "name": "Belagua",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.932327,
+         "longitude": -0.834125,
+         "altitude": 1056.172
+        },
+        {
+         "id": "409ce67b-98d0-4c3f-9cb4-95097242ad5b",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.903755,
+         "longitude": -0.872852,
+         "altitude": 1120.731
+        },
+        {
+         "id": "9951f72b-e2b1-4f83-8f37-5aa9dd57427a",
+         "name": "Desvio a Txamantxoia",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.906545,
+         "longitude": -0.84769,
+         "altitude": 1597.252
+        },
+        {
+         "id": "ad748e65-19c8-4b6d-abc6-4fd5765d3823",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.90836,
+         "longitude": -0.839188,
+         "altitude": 1791.972
+        },
+        {
+         "id": "02e36112-9c75-42e3-8970-47768ace8ae2",
+         "name": "Txamantxoia 1544",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.90226,
+         "longitude": -0.81717,
+         "altitude": 1989.343
+        },
+        {
+         "id": "5c14745a-e8ac-410d-93f8-eba7dc68bf7c",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.902421,
+         "longitude": -0.816308,
+         "altitude": 1983.765
+        },
+        {
+         "id": "a98e47c8-e2b5-4121-ad5b-352aba88403c",
+         "name": "Pinsapo? ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904451,
+         "longitude": -0.811376,
+         "altitude": 1748.186
+        },
+        {
+         "id": "39ef9ee4-ddbd-4e73-9d34-3236537db0b2",
+         "name": "Refugio de Linza",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898065,
+         "longitude": -0.799653,
+         "altitude": 1405.844
+        },
+        {
+         "id": "728f59e4-bc28-4c2c-b3d9-4500f9c97700",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.900986,
+         "longitude": -0.785519,
+         "altitude": 1581.246
+        },
+        {
+         "id": "a272a528-6ee2-48f3-848b-60e25a18c587",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.906863,
+         "longitude": -0.776349,
+         "altitude": 1781
+        },
+        {
+         "id": "56d7322b-dc15-4e1d-9821-746bdf6cee5d",
+         "name": "Collado de linza ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904508,
+         "longitude": -0.762572,
+         "altitude": 1965.378
+        },
+        {
+         "id": "c2f5845c-4e89-4c28-bd17-b9689e67c87c",
+         "name": "Llanos hacia la mesa de ños 3 reyes y vists al petrachema",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904129,
+         "longitude": -0.755137,
+         "altitude": 2055.374
+        },
+        {
+         "id": "dbc391a0-2eaf-4beb-9382-a433d26e816e",
+         "name": "Petrechema o Pic d'Ansabere 2371m",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.902985,
+         "longitude": -0.732674,
+         "altitude": 2414.916
+        },
+        {
+         "id": "d2cd3761-55f8-4d42-8c60-f2c8ab26ccb8",
+         "name": "Desvio agujas Ansabere",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.900672,
+         "longitude": -0.731872,
+         "altitude": 2269.36
+        },
+        {
+         "id": "8e7c5e00-a29c-4f08-8ffa-52f8105b35bf",
+         "name": "Collado de Petrechema o d'Ansabere ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898172,
+         "longitude": -0.732996,
+         "altitude": 2138.193
+        },
+        {
+         "id": "0ada551c-d958-4711-a4c7-85d9317a46a0",
+         "name": "Agujas d'Ansabere ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898405,
+         "longitude": -0.727178,
+         "altitude": 1936.06
+        },
+        {
+         "id": "5fbff6bc-ea0d-45ad-9111-f2fbba103e04",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904176,
+         "longitude": -0.706114,
+         "altitude": 1417.129
+        },
+        {
+         "id": "e88898d1-9e61-4f12-ad6f-8ff5ba6b98a9",
+         "name": "Lamary",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.905588,
+         "longitude": -0.690976,
+         "altitude": 1226.911
+        },
+        {
+         "id": "8dd63038-785e-4940-95fa-203e2d3d7dc0",
+         "name": "Comienza asfalto ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.911957,
+         "longitude": -0.671395,
+         "altitude": 1019.891
+        },
+        {
+         "id": "44bcdc20-3c0a-4b97-ad2f-8d6771cd56e8",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.927897,
+         "longitude": -0.660754,
+         "altitude": 1051.304
+        },
+        {
+         "id": "d6584a88-ffd2-4e53-8f4d-f35c2622cc42",
+         "name": "Cascada del Plateau de Sanchese",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.941816,
+         "longitude": -0.680011,
+         "altitude": 1144.322
+        },
+        {
+         "id": "75b7115a-89a1-4c25-a546-2c61e4a217bc",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.939279,
+         "longitude": -0.672889,
+         "altitude": 1163.085
+        },
+        {
+         "id": "1688a504-e85f-4c85-9720-ea33687aa9f8",
+         "name": "Refuge d'Aberouat",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.950217,
+         "longitude": -0.665947,
+         "altitude": 1495.719
+        },
+        {
+         "id": "feab0b9d-fd6c-4c97-a436-e1a1d07c365d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.95902,
+         "longitude": -0.693963,
+         "altitude": 1585.241
+        },
+        {
+         "id": "435b627f-3b11-4ca3-aac3-19e55ddf8078",
+         "name": "Desvío GR10 y berger venta fromage",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.958826,
+         "longitude": -0.705027,
+         "altitude": 1724.712
+        },
+        {
+         "id": "665ab25e-f103-4c9b-96df-ec48ab3df320",
+         "name": "Cruz",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.948626,
+         "longitude": -0.717013,
+         "altitude": 2257.223
+        },
+        {
+         "id": "6a014534-1e46-4c65-a80f-46281f01a3f1",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.948019,
+         "longitude": -0.719876,
+         "altitude": 2262.784
+        },
+        {
+         "id": "3d4a046f-1134-477b-8544-0f0344a55e64",
+         "name": "Pic D'anie",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.944292,
+         "longitude": -0.720717,
+         "altitude": 2550.921
+        },
+        {
+         "id": "bbc73d94-71a3-4542-b9ae-919c7b4878b0",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.953049,
+         "longitude": -0.741654,
+         "altitude": 2121.249
+        },
+        {
+         "id": "26dd861c-1212-4b22-901e-403065a44367",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.958925,
+         "longitude": -0.744724,
+         "altitude": 2005.45
+        },
+        {
+         "id": "0cc0f184-09e8-45d2-8d2e-0435c675e06a",
+         "name": "Refuge Jeandel",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.978146,
+         "longitude": -0.749676,
+         "altitude": 1714.485
+        },
+        {
+         "id": "a7c222c6-1cd6-4630-b838-5cd9ccb21952",
+         "name": "null",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.978459,
+         "longitude": -0.748643,
+         "altitude": 1694.312
+        },
+        {
+         "id": "de322f56-db59-4e43-adfa-f9122f83cc9d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.945465,
+         "longitude": -0.832119,
+         "altitude": 1473.03
+        },
+        {
+         "id": "9ad790ef-8192-4050-8d96-6c688e3b2ab6",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.945161,
+         "longitude": -0.833939,
+         "altitude": 1472.074
+        },
+        {
+         "id": "e1d6d092-60c4-4c06-8bed-31f32f30b71f",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.940342,
+         "longitude": -0.830356,
+         "altitude": 1393.836
+        },
+        {
+         "id": "4cb27799-a682-491c-8272-02e5cc05cc9d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.937568,
+         "longitude": -0.833143,
+         "altitude": 1277.013
+        }
+       ]
+    },
+    {
+      "name": "Golondrina Difícil",
+      "location": {
+        "latitude": 42.86245,
+        "longitude": -0.92288
+      },
+      "routes": [{
+        "id": "jjjuhbnmkl"
+      }],
+      "waypoints": [
+        {
+         "id": "d18450b9-fda2-4bd0-b8a4-2bf7f19d06ce",
+         "name": "Belagua",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.932327,
+         "longitude": -0.834125,
+         "altitude": 1056.172
+        },
+        {
+         "id": "409ce67b-98d0-4c3f-9cb4-95097242ad5b",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.903755,
+         "longitude": -0.872852,
+         "altitude": 1120.731
+        },
+        {
+         "id": "9951f72b-e2b1-4f83-8f37-5aa9dd57427a",
+         "name": "Desvio a Txamantxoia",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.906545,
+         "longitude": -0.84769,
+         "altitude": 1597.252
+        },
+        {
+         "id": "ad748e65-19c8-4b6d-abc6-4fd5765d3823",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.90836,
+         "longitude": -0.839188,
+         "altitude": 1791.972
+        },
+        {
+         "id": "02e36112-9c75-42e3-8970-47768ace8ae2",
+         "name": "Txamantxoia 1544",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.90226,
+         "longitude": -0.81717,
+         "altitude": 1989.343
+        },
+        {
+         "id": "5c14745a-e8ac-410d-93f8-eba7dc68bf7c",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.902421,
+         "longitude": -0.816308,
+         "altitude": 1983.765
+        },
+        {
+         "id": "a98e47c8-e2b5-4121-ad5b-352aba88403c",
+         "name": "Pinsapo? ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904451,
+         "longitude": -0.811376,
+         "altitude": 1748.186
+        },
+        {
+         "id": "39ef9ee4-ddbd-4e73-9d34-3236537db0b2",
+         "name": "Refugio de Linza",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898065,
+         "longitude": -0.799653,
+         "altitude": 1405.844
+        },
+        {
+         "id": "728f59e4-bc28-4c2c-b3d9-4500f9c97700",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.900986,
+         "longitude": -0.785519,
+         "altitude": 1581.246
+        },
+        {
+         "id": "a272a528-6ee2-48f3-848b-60e25a18c587",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.906863,
+         "longitude": -0.776349,
+         "altitude": 1781
+        },
+        {
+         "id": "56d7322b-dc15-4e1d-9821-746bdf6cee5d",
+         "name": "Collado de linza ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904508,
+         "longitude": -0.762572,
+         "altitude": 1965.378
+        },
+        {
+         "id": "c2f5845c-4e89-4c28-bd17-b9689e67c87c",
+         "name": "Llanos hacia la mesa de ños 3 reyes y vists al petrachema",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904129,
+         "longitude": -0.755137,
+         "altitude": 2055.374
+        },
+        {
+         "id": "dbc391a0-2eaf-4beb-9382-a433d26e816e",
+         "name": "Petrechema o Pic d'Ansabere 2371m",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.902985,
+         "longitude": -0.732674,
+         "altitude": 2414.916
+        },
+        {
+         "id": "d2cd3761-55f8-4d42-8c60-f2c8ab26ccb8",
+         "name": "Desvio agujas Ansabere",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.900672,
+         "longitude": -0.731872,
+         "altitude": 2269.36
+        },
+        {
+         "id": "8e7c5e00-a29c-4f08-8ffa-52f8105b35bf",
+         "name": "Collado de Petrechema o d'Ansabere ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898172,
+         "longitude": -0.732996,
+         "altitude": 2138.193
+        },
+        {
+         "id": "0ada551c-d958-4711-a4c7-85d9317a46a0",
+         "name": "Agujas d'Ansabere ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.898405,
+         "longitude": -0.727178,
+         "altitude": 1936.06
+        },
+        {
+         "id": "5fbff6bc-ea0d-45ad-9111-f2fbba103e04",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.904176,
+         "longitude": -0.706114,
+         "altitude": 1417.129
+        },
+        {
+         "id": "e88898d1-9e61-4f12-ad6f-8ff5ba6b98a9",
+         "name": "Lamary",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.905588,
+         "longitude": -0.690976,
+         "altitude": 1226.911
+        },
+        {
+         "id": "8dd63038-785e-4940-95fa-203e2d3d7dc0",
+         "name": "Comienza asfalto ",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.911957,
+         "longitude": -0.671395,
+         "altitude": 1019.891
+        },
+        {
+         "id": "44bcdc20-3c0a-4b97-ad2f-8d6771cd56e8",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.927897,
+         "longitude": -0.660754,
+         "altitude": 1051.304
+        },
+        {
+         "id": "d6584a88-ffd2-4e53-8f4d-f35c2622cc42",
+         "name": "Cascada del Plateau de Sanchese",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.941816,
+         "longitude": -0.680011,
+         "altitude": 1144.322
+        },
+        {
+         "id": "75b7115a-89a1-4c25-a546-2c61e4a217bc",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.939279,
+         "longitude": -0.672889,
+         "altitude": 1163.085
+        },
+        {
+         "id": "1688a504-e85f-4c85-9720-ea33687aa9f8",
+         "name": "Refuge d'Aberouat",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.950217,
+         "longitude": -0.665947,
+         "altitude": 1495.719
+        },
+        {
+         "id": "feab0b9d-fd6c-4c97-a436-e1a1d07c365d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.95902,
+         "longitude": -0.693963,
+         "altitude": 1585.241
+        },
+        {
+         "id": "435b627f-3b11-4ca3-aac3-19e55ddf8078",
+         "name": "Desvío GR10 y berger venta fromage",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.958826,
+         "longitude": -0.705027,
+         "altitude": 1724.712
+        },
+        {
+         "id": "665ab25e-f103-4c9b-96df-ec48ab3df320",
+         "name": "Cruz",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.948626,
+         "longitude": -0.717013,
+         "altitude": 2257.223
+        },
+        {
+         "id": "6a014534-1e46-4c65-a80f-46281f01a3f1",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.948019,
+         "longitude": -0.719876,
+         "altitude": 2262.784
+        },
+        {
+         "id": "3d4a046f-1134-477b-8544-0f0344a55e64",
+         "name": "Pic D'anie",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.944292,
+         "longitude": -0.720717,
+         "altitude": 2550.921
+        },
+        {
+         "id": "bbc73d94-71a3-4542-b9ae-919c7b4878b0",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.953049,
+         "longitude": -0.741654,
+         "altitude": 2121.249
+        },
+        {
+         "id": "26dd861c-1212-4b22-901e-403065a44367",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.958925,
+         "longitude": -0.744724,
+         "altitude": 2005.45
+        },
+        {
+         "id": "0cc0f184-09e8-45d2-8d2e-0435c675e06a",
+         "name": "Refuge Jeandel",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.978146,
+         "longitude": -0.749676,
+         "altitude": 1714.485
+        },
+        {
+         "id": "a7c222c6-1cd6-4630-b838-5cd9ccb21952",
+         "name": "null",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.978459,
+         "longitude": -0.748643,
+         "altitude": 1694.312
+        },
+        {
+         "id": "de322f56-db59-4e43-adfa-f9122f83cc9d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.945465,
+         "longitude": -0.832119,
+         "altitude": 1473.03
+        },
+        {
+         "id": "9ad790ef-8192-4050-8d96-6c688e3b2ab6",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.945161,
+         "longitude": -0.833939,
+         "altitude": 1472.074
+        },
+        {
+         "id": "e1d6d092-60c4-4c06-8bed-31f32f30b71f",
+         "name": "Intersección",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.940342,
+         "longitude": -0.830356,
+         "altitude": 1393.836
+        },
+        {
+         "id": "4cb27799-a682-491c-8272-02e5cc05cc9d",
+         "name": "Foto",
+         "type": "some-type",
+         "description": "",
+         "radius_in_meters": 100,
+         "latitude": 42.937568,
+         "longitude": -0.833143,
+         "altitude": 1277.013
+        }
+       ]
+    },
+    {
       "name": "Piramide de Vincent",
       "location": {
         "latitude": 45.891075,
@@ -584,278 +1328,6 @@
          "altitude": 2145
         }
        ]       
-    },
-    {
-      "name": "Test Madrid",
-      "location": {
-        "latitude": 40.400226,
-        "longitude": -3.708542
-      },
-      "routes": [
-        {"id": "sadakdjhs"}
-      ],
-      "waypoints": [
-         {
-          "id": "test-mad-tradiciones",
-          "name": "Mis Tradiciones",
-          "description": "Increíble sitio para comer y descansar.",
-          "type": "food",
-          "radius_in_meters": 20,
-          "latitude": 40.4000621,
-          "longitude": -3.7117378,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-ies-de-la-cierva",
-          "name": "IES Juan de la Cierva",
-          "description": "Conocimiento.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.4016681,
-          "longitude": -3.7068679,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-nogue-1",
-          "name": "Noguerol 1",
-          "description": "Noguerol 1.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.4029648,
-          "longitude": -3.7368429,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-nogue-2",
-          "name": "Noguerol 2",
-          "description": "Noguerol 2.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3993528,
-          "longitude": -3.7333524,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-nogue-3",
-          "name": "Noguerol 3",
-          "description": "Noguerol 3.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3989859,
-          "longitude": -3.7284334,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-nogue-4",
-          "name": "Noguerol 4",
-          "description": "Noguerol 4.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3990722,
-          "longitude": -3.7137607,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-mad-nogue-5",
-          "name": "Noguerol 5",
-          "description": "Noguerol 5.",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3997331,
-          "longitude": -3.7217642,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-madrid-rio-1",
-          "name": "Madrid Rio 1",
-          "description": "Madrid Rio 1",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3955151,
-          "longitude": -3.7077274,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-madrid-rio-2",
-          "name": "Madrid Rio 2",
-          "description": "Madrid Rio 2",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3943939,
-          "longitude": -3.704515,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-madrid-rio-3",
-          "name": "Madrid Rio 3",
-          "description": "Madrid Rio 3",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.390478,
-          "longitude": -3.7002265,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-madrid-rio-4",
-          "name": "Madrid Rio 4",
-          "description": "Madrid Rio 4",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3865064,
-          "longitude": -3.6962392,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-madrid-rio-5",
-          "name": "Madrid Rio 5",
-          "description": "Madrid Rio 5",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 40.3838301,
-          "longitude": -3.6925174,
-          "altitude": 600.4
-         }
-      ]
-    },
-    {
-      "name": "Test Alicante",
-      "location": {
-        "latitude": 38.356842,
-        "longitude": -0.484238        
-      },
-      "routes": [
-        {
-          "id": "uyuyubmmnsd"
-        }
-      ],
-      "waypoints": [        
-        {
-          "id": "alicante1",
-          "name": "Home",
-          "description": "Kherel's house",
-          "type": "home",
-          "radius_in_meters": 20,
-          "latitude": 38.355,
-          "longitude": -0.484238,
-          "altitude": 600.4
-        },
-        {
-          "id": "alicante2",
-          "name": "a crossroads near kherel",
-          "description": "crossroads",
-          "type": "knowledge",
-          "radius_in_meters": 20,
-          "latitude": 38.358,
-          "longitude": -0.484238,
-          "altitude": 600.4
-        }
-      ]
-    },
-    {
-      "name": "Test Jaca",
-      "location": {
-        "latitude": 42.577608,
-        "longitude": -0.5512927
-      },
-      "routes": [
-        {"id": "nnjhyeeq"}
-      ],
-      "waypoints": [
-         {
-          "id": "test-jaca-man",
-          "name": "Estatua",
-          "description": "Espectacular.",
-          "type": "point-of-interest",
-          "radius_in_meters": 20,
-          "latitude": 42.5721851,
-          "longitude": -0.5549594,
-          "altitude": 600.4
-         },
-         {
-          "id": "test-jaca-ca-esteban",
-          "name": "Casa Esteban",
-          "description": "Rico.",
-          "type": "food",
-          "radius_in_meters": 20,
-          "latitude": 42.5757911,
-          "longitude": -0.5468412,
-          "altitude": 600.4
-         }         
-      ]
-    },
-    {
-      "name": "Test Zarauz Guetaria",
-      "location": {
-        "latitude": 43.284357,
-        "longitude": -2.173543
-      },
-      "routes": [
-        {
-          "id": "vvvhgdwytt"
-        }
-      ],
-      "waypoints": [
-        {
-          "id": "zarauz-guetaria-1",
-          "name": "Zarauz Guetaria 1",
-          "description": "Zarauz Guetaria 1",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.285556,
-          "longitude": -2.175953,
-          "altitude": 2376.4
-        },
-        {
-          "id": "zarauz-guetaria-2",
-          "name": "Aiten Etxe",
-          "description": "Restaurante rico",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.2885762,
-          "longitude": -2.1787983,
-          "altitude": 2376.4
-        },
-        {
-          "id": "zarauz-guetaria-3",
-          "name": "Zarauz Guetaria 3",
-          "description": "Zarauz Guetaria 3",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.2938668,
-          "longitude": -2.1834442,
-          "altitude": 2376.4
-        },
-        {
-          "id": "zarauz-guetaria-4",
-          "name": "Zarauz Guetaria 4",
-          "description": "Zarauz Guetaria 4",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.296463,
-          "longitude": -2.1924279,
-          "altitude": 2376.4
-        },
-        {
-          "id": "zarauz-guetaria-5",
-          "name": "Mirador del puerto",
-          "description": "Mirador del puerto",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.3004662,
-          "longitude": -2.2016369,
-          "altitude": 2376.4
-        },
-        {
-          "id": "zarauz-guetaria-6",
-          "name": "Amona Maria Delicatessen",
-          "description": "Alimentos",
-          "type": "some-type",
-          "radius_in_meters": 100,
-          "latitude": 43.3047236,
-          "longitude": -2.2031247,
-          "altitude": 2376.4
-        }
-      ]
     },
     {
       "name": "Montblanc Gouter Verano",
