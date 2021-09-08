@@ -1,4 +1,6 @@
 import 'package:app/app.dart';
+import 'package:app/config/analytics_config.dart';
+import 'package:app/logic/api_maps/plausible.dart';
 import 'package:app/ui/pages/error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -24,20 +26,23 @@ class _Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocAndProviderConfig(
-      child: MaterialApp(
-        navigatorKey: getIt.get<NavigationService>().navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: brandTheme,
-        title: 'Dersu Assistant App',
-        home: App(),
-        builder: (BuildContext context, Widget? widget) {
-          ErrorWidget.builder =
-              (FlutterErrorDetails errorDetails) => ErrorScreen(
-                    error: Exception('...rendering error'),
-                  );
-          return widget!;
-        },
+    return AnalyticsConfig(
+      child: BlocAndProviderConfig(
+        child: MaterialApp(
+          navigatorKey: getIt.get<NavigationService>().navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: brandTheme,
+          title: 'Dersu Assistant App',
+          home: App(),
+          navigatorObservers: [getIt.get<Analitics>().navigatorObserver],
+          builder: (BuildContext context, Widget? widget) {
+            ErrorWidget.builder =
+                (FlutterErrorDetails errorDetails) => ErrorScreen(
+                      error: Exception('...rendering error'),
+                    );
+            return widget!;
+          },
+        ),
       ),
     );
   }

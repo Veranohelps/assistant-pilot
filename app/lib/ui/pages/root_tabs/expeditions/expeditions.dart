@@ -44,9 +44,14 @@ class ExpeditionListScreen extends StatelessWidget {
           for (var expedition in expeditions)
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(materialRoute(ExpeditionDetails(
-                  expedition: expedition,
-                )));
+                Navigator.of(context).push(
+                  materialRoute(
+                    ExpeditionDetails(
+                      expedition: expedition,
+                    ),
+                    expedition.name,
+                  ),
+                );
               },
               child: BrandCard(
                 child: Text(expedition.name).h3,

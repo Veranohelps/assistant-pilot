@@ -98,6 +98,7 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
                               isLive: isLive,
                               waypointPrecision: waypointPrecision,
                             ),
+                            widget.expedition.name,
                           ),
                         );
                       },
@@ -126,6 +127,10 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
       newIsLive = false;
     } else {
       var res = await showDialog(
+        routeSettings: RouteSettings(
+          name: 'Alert dialog',
+          arguments: 'location-warning-dialogue',
+        ),
         context: context,
         builder: (context) => AlertDialog(
           key: Key("location-warning-dialogue"),

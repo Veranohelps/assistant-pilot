@@ -13,6 +13,7 @@ class SimpleBlocObserver extends BlocObserver {
           error: error,
           stackTrace: stackTrace,
         ),
+        error
       ),
     );
     super.onError(cubit, error, stackTrace);

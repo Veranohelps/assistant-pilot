@@ -11,6 +11,7 @@ import 'package:app/logic/services/background_geolocation.dart';
 import 'package:app/ui/components/brand_appbar/brand_appbar.dart';
 import 'package:app/ui/pages/console/console.dart';
 import 'package:app/utils/extensions/text_extension.dart';
+import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
@@ -132,9 +133,7 @@ class MapPageState extends State<ExpeditionMapWidget> {
     return IconButton(
       onPressed: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Console(),
-          ),
+          materialRoute(Console()),
         );
       },
       icon: Icon(

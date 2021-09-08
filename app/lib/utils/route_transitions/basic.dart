@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-Route materialRoute(Widget widget) => MaterialPageRoute(
+Route materialRoute(Widget widget, [arguments]) => MaterialPageRoute(
       builder: (context) => widget,
+      settings: RouteSettings(
+        arguments: arguments,
+        name: widget.runtimeType.toString(),
+      ),
     );
 
 Route noAnimationRoute(Widget widget) => PageRouteBuilder(

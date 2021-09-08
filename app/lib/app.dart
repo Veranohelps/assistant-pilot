@@ -38,13 +38,15 @@ class _AppState extends State<App> {
         ..push(
           materialRoute(
             ExpeditionMapWidget(
-                isLive: true,
-                expedition: liveCubitState.expedition,
-                route: liveCubitState.route,
-                waypointPrecision: Hive.box(HiveContants.geoConfig.txt).get(
-                  HiveContants.waypointPrecision.txt,
-                  defaultValue: kWaypointPrecisionDefault,
-                )),
+              isLive: true,
+              expedition: liveCubitState.expedition,
+              route: liveCubitState.route,
+              waypointPrecision: Hive.box(HiveContants.geoConfig.txt).get(
+                HiveContants.waypointPrecision.txt,
+                defaultValue: kWaypointPrecisionDefault,
+              ),
+            ),
+            'restore: ${liveCubitState.expedition}',
           ),
         );
     }
@@ -52,6 +54,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+
     return RootPage();
   }
 }
