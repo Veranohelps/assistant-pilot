@@ -1,6 +1,8 @@
 import 'package:app/config/brand_colors.dart';
+import 'package:app/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 final _kBottomTabBarHeight = 51;
 
@@ -49,10 +51,12 @@ class _BrandTabBarState extends State<BrandTabBar> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: _getIconButton('Expeditions', UniconsLine.sign_alt, 0),
+              child: _getIconButton(LocaleKeys.tab_names_expeditions.tr(),
+                  UniconsLine.sign_alt, 0),
             ),
             Expanded(
-              child: _getIconButton('More', UniconsLine.setting, 1),
+              child: _getIconButton(
+                  LocaleKeys.tab_names_more.tr(), UniconsLine.setting, 1),
             )
           ],
         ),
@@ -78,7 +82,7 @@ class _BrandTabBarState extends State<BrandTabBar> {
                   style: TextStyle(
                     fontSize: 9,
                     color: color,
-                  )),
+                  )).tr(),
             ],
           ),
         ),
