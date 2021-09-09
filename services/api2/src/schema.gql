@@ -1,0 +1,68 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PointGeometry {
+  type: String!
+  coordinates: [Float!]!
+}
+
+type LineStringGeometry {
+  type: String!
+  coordinates: [[Float!]!]!
+}
+
+type Route {
+  id: String!
+  name: String!
+  coordinate: [LineStringGeometry!]!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Waypoint {
+  id: String!
+  name: String!
+  type: String!
+  description: String!
+  coordinate: PointGeometry!
+  radiusInMeters: Float!
+  updatedAt: DateTime!
+}
+
+type Expedition {
+  id: String!
+  name: String!
+  description: String
+  coordinate: PointGeometry!
+  startDateTime: DateTime!
+  endDateTime: DateTime!
+  updatedAt: DateTime!
+  routes: [Route!]!
+  waypoints: [Waypoint!]!
+}
+
+type Query {
+  expeditions: [Expedition!]!
+}
+
+type Mutation {
+  createExpedition(gpxFile: Upload!, data: CreateExpeditionInput!): Expedition!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateExpeditionInput {
+  name: String!
+  description: String!
+  longitude: Float!
+  latitude: Float!
+  altitude: Float
+  startDateTime: DateTime!
+  endDateTime: DateTime!
+}

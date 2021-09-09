@@ -5,9 +5,15 @@ variable "project_id" {
 
 variable "region" {
   type    = string
-  default = "europe-west2"
+  # Domain Mapping are not available in all locations
+  # See: https://cloud.google.com/run/docs/mapping-custom-domains  
+  default = "europe-west1"
 }
 
 variable "dersu_api_docker_image_tag" {
+  type = string
+}
+
+variable "dersu_admin_console_docker_image_tag" {
   type = string
 }

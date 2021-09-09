@@ -2,7 +2,7 @@
 
 ## Configuration
 
-Read the [mobile app](./app/README.md) and services documentation (TBD).
+Read the [mobile app](./app/README.md) and [web services](./services/README.md) documentation.
 
 ## Infrastructure
 

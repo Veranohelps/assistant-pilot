@@ -5,11 +5,6 @@ Dersu services are accessible through different environments, each with a purpos
 - Production: stable and gets public traffic. 
 - Develop: developer's playground, can break and go down at any time.
 
-### URLs
-
-- Production: https://production-assistant-api.dersu.uz
-- Develop: https://develop-assistant-api.dersu.uz
-
 ## How it works
 
 Environments are created and managed using [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html).

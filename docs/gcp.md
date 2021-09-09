@@ -11,12 +11,16 @@ Enable APIs:
  - Cloud Run API
  - Compute Engine API 
  - Google Play Android Developer API 
+ - Cloud SQL Admin API
+ - Secret Manager API
 
 ```
 gcloud services enable cloudresourcemanager.googleapis.com
 gcloud services enable cloudbuild.googleapis.com
 gcloud services enable run.googleapis.com
 gcloud services enable compute.googleapis.com
+gcloud services enable sqladmin.googleapis.com
+gcloud services enable secretmanager.googleapis.com
 ```
 
 On IAM > Service Accounts > `PROJECT_ID-compute@developer.gserviceaccount.com` > Manage Permissions > Grant Access > Find the original service account and add Service Account User role ([SO](https://stackoverflow.com/questions/61334524/how-do-you-enable-iam-serviceaccounts-actas-permissions-on-a-sevice-account)).
