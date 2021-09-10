@@ -15,7 +15,6 @@ COPY knexfile.ts knexfile.ts
 COPY nest-cli.json nest-cli.json
 COPY tsconfig.build.json tsconfig.build.json
 COPY tsconfig.json tsconfig.json
-COPY static static
 COPY src src
 
 RUN npm run build
