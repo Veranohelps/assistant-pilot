@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { ExpeditionModule } from './expedition/expedition.module';
 import { RouteModule } from './route/route.module';
 import { WaypointModule } from './waypoint/waypoint.module';
+import { DictionaryModule } from './dictionary/dictionary.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { WaypointModule } from './waypoint/waypoint.module';
     WaypointModule,
     RouteModule,
     AuthModule,
+    DictionaryModule,
   ],
   controllers: [],
   providers: [],

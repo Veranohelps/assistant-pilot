@@ -1,0 +1,245 @@
+[
+  {
+    "id": "category-0",
+    "name": "Nivel fisico",
+    "description": "",
+    "skills": [
+        {
+            "id": "category-0-skill0",
+            "name": "Alpinismo",
+            "description": "",
+            "levels": [
+                {
+                    "id": "category-0-skill0-level0",
+                    "level": 0,
+                    "name": "F1",
+                    "description": "300+ 5k 2h50´"
+                },
+                {
+                    "id": "category-0-skill0-level1",
+                    "level": 1,
+                    "name": "F2",
+                    "description": "600+ 10k 5h30´"
+                },
+                {
+                    "id": "category-0-skill0-level2",
+                    "level": 2,
+                    "name": "F3",
+                    "description": "1000+ 15k 8h25´"
+                },
+                {
+                    "id": "category-0-skill0-level3",
+                    "level": 3,
+                    "name": "F4",
+                    "description": "1500+ 20k 12h"
+                },
+                {
+                    "id": "category-0-skill0-level4",
+                    "level": 4,
+                    "name": "F5",
+                    "description": "2500+ 40k 20h"
+                }
+            ]
+        },
+        {
+            "id": "category-0-skill1",
+            "name": "Esquí",
+            "description": "",
+            "levels": [
+                {
+                    "id": "category-0-skill1-level0",
+                    "level": 0,
+                    "name": "F1",
+                    "description": "300+ 5k 2h"
+                },
+                {
+                    "id": "category-0-skill1-level1",
+                    "level": 1,
+                    "name": "F2",
+                    "description": "600+ 10k 3h45´"
+                },
+                {
+                    "id": "category-0-skill1-level2",
+                    "level": 2,
+                    "name": "F3",
+                    "description": "1000+ 15k 6h"
+                },
+                {
+                    "id": "category-0-skill1-level3",
+                    "level": 3,
+                    "name": "F4",
+                    "description": "1500+ 20k  8h45´"
+                },
+                {
+                    "id": "category-0-skill1-level4",
+                    "level": 4,
+                    "name": "F5",
+                    "description": "2500+ 40k 14h"
+                }
+            ]
+        }
+    ]
+  },
+  {
+      "id": "category-1",
+      "name": "Nivel técnico",
+      "description": "",
+      "skills":[
+          {
+              "id": "category-1-skill0",
+              "name": "Alpinismo invernal",
+              "description": "",
+              "levels": [
+                  {
+                      "id": "category-1-skill0-level0",
+                      "level": 0,
+                      "name": "F",
+                      "description": "Rampas de nieve hasta 40º"
+                  },
+                  {
+                    "id": "category-1-skill0-level1",
+                    "level": 1,
+                    "name": "PD",
+                    "description": "Rampas de nieve de hasta 45º, algún largo de cuerda más expo, pasos de mixto II grado"
+                },
+                {
+                  "id": "category-1-skill0-level2",
+                  "level": 2,
+                  "name": "AD",
+                  "description": "Rampas de nieve de hasta 50º, algún largo de cuerda más expo, pasos de mixto III grado"
+                },
+                {
+                  "id": "category-1-skill0-level3",
+                  "level": 3,
+                  "name": "D",
+                  "description": "Rampas de nieve de hasta 55º, algún largo de cuerda entre 60º-70º, pasos de mixto IV grado"
+                },
+                {
+                  "id": "category-1-skill0-level4",
+                  "level": 4,
+                  "name": "MD",
+                  "description": "Varios pasos de nieve de 60º y 1 o 2 largos de cuerda entre 70º-85º, pasos de mixto V grado"
+                }
+              ]
+          },
+          {
+              "id": "category-1-skill1",
+              "name": "Alpinismo estival",
+              "description": "",
+              "levels":[
+                  {
+                      "id": "category-1-skill1-level0",
+                      "level": 0,
+                      "name": "F",
+                      "description": "Alguna trepada I+"
+                  },
+                  {
+                    "id": "category-1-skill1-level1",
+                    "level": 1,
+                    "name": "PD",
+                    "description": "Trepada terreno expuesto, uso de la cuerda útil, hasta II+"
+                  },
+                  {
+                    "id": "category-1-skill1-level2",
+                    "level": 2,
+                    "name": "AD",
+                    "description": "Vía de escalada, técnica de rapel,pasos técnicos III+"
+                  },
+                  {
+                    "id": "category-1-skill1-level3",
+                    "level": 3,
+                    "name": "D",
+                    "description": "Dominio técnicas de escalada y rapel. Pasos de IV grado."
+                  },
+                  {
+                    "id": "category-1-skill1-level4",
+                    "level": 4,
+                    "name": "MD",
+                    "description": "Vía de escalada V grado."
+                  }
+              ]
+          },
+          {
+              "id": "category-1-skill2",
+              "name": "Esquí",
+              "description": "",
+              "levels": [
+                  {
+                    "id": "category-1-skill2-level0",
+                    "level": 0,
+                    "name": "S1",
+                    "description": "Esquí de montaña de estación ó pendientes medias de 30ºmax en laderas amplias."
+                  },
+                  {
+                    "id": "category-1-skill2-level1",
+                    "level": 1,
+                    "name": "S2",
+                    "description": "Pendiente max.35º, exposición a caída grande."
+                  },
+                  {
+                    "id": "category-1-skill2-level2",
+                    "level": 2,
+                    "name": "S3",
+                    "description": "Pendiente media de 35º con algún paso 40-45º. Ski-alpinismo"
+                  },
+                  {
+                    "id": "category-1-skill2-level3",
+                    "level": 3,
+                    "name": "S4",
+                    "description": "Pendientes mantenidas 40º-45º. Terreno de alta accidentalidad."
+                  },
+                  {
+                    "id": "category-1-skill2-level4",
+                    "level": 4,
+                    "name": "S4",
+                    "description": "Pendiente media de 45º unos 300m, ó 50º durante 100m."
+                  }
+            ]
+          }
+      ]
+  },
+  {
+      "id": "category-2",
+      "name": "Nivel de exposición",
+      "description": "",
+      "skills": [
+          {
+              "id": "category-2-skill0",
+              "name": "Exposición",
+              "description": "",
+              "levels": [
+                  {
+                      "id": "category-2-skill0-level0",
+                      "level": 0,
+                      "name": "E0",
+                      "description": "Dominio esquiable de estación, sin obstáculo en la trayectoria de una caída."
+                  },
+                  {
+                    "id": "category-2-skill0-level1",
+                    "level": 1,
+                    "name": "E1",
+                    "description": "Riesgo bajo."                    
+                  },
+                  {
+                    "id": "category-2-skill0-level2",
+                    "level": 2,
+                    "name": "E2",
+                    "description": "Riesgo mediano, en caso de caída se puede golpear obstáculos. Existen peligros objetivos."
+                  },
+                  {
+                    "id": "category-2-skill0-level3",
+                    "level": 3,
+                    "name": "E3",
+                    "description": "Riesgo alto. En caso de caída, graves consecuencias. Peligros objetivos y subjetivos importantes. Muerte probable."
+                  },
+                  {
+                    "id": "category-2-skill0-level4",
+                    "level": 4,
+                    "name": "E4",
+                    "description": "Riesgo muy alto, en caso de accidente riesgo muy alto de muerte."
+                  }
+              ]
+          }
+      ]
+  }
+]
