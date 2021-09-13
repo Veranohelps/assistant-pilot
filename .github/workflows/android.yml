@@ -41,7 +41,7 @@ jobs:
           echo TRANSISTOR_BG_LOCATOR_KEY=${{ secrets.TRANSISTOR_BG_LOCATOR_KEY }} >> .env
           echo DERSU_API_BASE_URL=https://develop-api.dersu.uz/personal >> .env
           echo DERSU_SITE_BASE_URL=https://dersu.uz >> .env
-          echo API_TEMP_KEY=${{ secrets.API_ADMIN_TOKEN_DEVELOP }} >> .env
+          echo API_TEMP_KEY="${{ secrets.API_ADMIN_TOKEN_DEVELOP }}" >> .env
           echo ANDROID_JKS_PATH=${{ github.workspace }}/android-key.jks>> .env
           echo ANDROID_STORE_PASSWORD=${{ secrets.ANDROID_STORE_PASSWORD }} >> .env
           echo ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }} >> .env
