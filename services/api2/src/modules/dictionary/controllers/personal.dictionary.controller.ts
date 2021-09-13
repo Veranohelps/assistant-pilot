@@ -17,7 +17,7 @@ export class PersonalDictionaryController {
   async getPersonalDictionaries() {
     const dictionariesJson = dictionaries.map<IDictionary>((dictionary) => ({
       ...dictionary,
-      url: `${this.configService.get('APP_URL')}/personal/dictionaries/${dictionary.id}`,
+      url: `${this.configService.get('APP_URL')}/personal/dictionary/${dictionary.id}`,
     }));
 
     return successResponse('Personal Dictionaries', { dictionaries: dictionariesJson });
