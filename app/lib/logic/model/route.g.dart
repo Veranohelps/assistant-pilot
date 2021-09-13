@@ -22,14 +22,13 @@ Map<String, dynamic> _$RoutePreInfoToJson(RoutePreInfo instance) =>
 DersuRoute _$DersuRouteFromJson(Map<String, dynamic> json) {
   return DersuRoute(
     name: json['name'] as String,
-    points: (json['coordinates'] as List<dynamic>)
-        .map((e) => RoutePoint.fromJson(e as Map<String, dynamic>))
-        .toList(),
+    coordinate:
+        LineStringGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$DersuRouteToJson(DersuRoute instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'coordinates': instance.points.map((e) => e.toJson()).toList(),
+      'coordinate': instance.coordinate.toJson(),
     };

@@ -12,10 +12,10 @@ Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     description: json['description'] as String,
     type: json['type'] as String,
-    radiusInMeters: json['radius_in_meters'] as num,
-    latitude: (json['latitude'] as num).toDouble(),
-    longitude: (json['longitude'] as num).toDouble(),
-    altitude: (json['altitude'] as num).toDouble(),
+    radiusInMeters: json['radiusInMeters'] as num,
+    updatedAt: DateTime.parse(json['updatedAt'] as String),
+    coordinate:
+        PointGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
   );
 }
 
@@ -24,8 +24,7 @@ Map<String, dynamic> _$WaypointToJson(Waypoint instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'type': instance.type,
-      'radius_in_meters': instance.radiusInMeters,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
-      'altitude': instance.altitude,
+      'radiusInMeters': instance.radiusInMeters,
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'coordinate': instance.coordinate,
     };

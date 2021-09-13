@@ -44,8 +44,8 @@ class MapPageState extends State<ExpeditionMapWidget> {
     if (!widget.isLive) {
       cameraPosition = CameraPosition(
         target: LatLng(
-          widget.expedition.location.latitude,
-          widget.expedition.location.longitude,
+          widget.expedition.coordinate.coordinates.latitude,
+          widget.expedition.coordinate.coordinates.longitude,
         ),
         zoom: zoom,
       );
@@ -55,7 +55,10 @@ class MapPageState extends State<ExpeditionMapWidget> {
           _mapCircles.add(
             Circle(
               circleId: CircleId("waypoint-id-" + waypoint.id),
-              center: LatLng(waypoint.latitude, waypoint.longitude),
+              center: LatLng(
+                waypoint.coordinate.coordinates.latitude,
+                waypoint.coordinate.coordinates.longitude,
+              ),
               // radius: waypoint.radiusInMeters,
               radius: widget.waypointPrecision.toDouble(),
               fillColor: BrandColors.greenWithOpacity,
@@ -72,7 +75,7 @@ class MapPageState extends State<ExpeditionMapWidget> {
           )
         });
 
-    widget.route.points.asMap().forEach((index, point) => {
+    widget.route.coordinate.coordinates.asMap().forEach((index, point) => {
           _mapCircles.add(
             Circle(
               circleId: CircleId("id-" + index.toString()),

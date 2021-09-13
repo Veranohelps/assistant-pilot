@@ -4,9 +4,9 @@ import 'package:app/logic/model/expedition.dart';
 class ExpeditionsApi extends DersuApi {
   Future<List<Expedition>> fetchExpeditions() async {
     var client = await getClient();
-    var res = await client.get('/');
+    var res = await client.get('/expedition');
     client.close();
-    return res.data['expeditions']
+    return (res.data['data']['expeditions'] as List)
         .map<Expedition>((json) => Expedition.fromJson(json))
         .toList();
   }

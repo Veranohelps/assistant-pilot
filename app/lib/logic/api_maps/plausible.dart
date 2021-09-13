@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/api_maps/api.dart';
 import 'package:app/logic/get_it/analytics.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -24,11 +25,16 @@ class PlausibleApi extends ApiMap {
       ));
     }
 
+    /// plausible HandshakeException: Handshake error in client
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
     return dio;
   }
-
-  @override
-  bool hasLoger = true;
 
   Future<BaseOptions> get options async {
     var userAgent = '';
@@ -42,6 +48,7 @@ class PlausibleApi extends ApiMap {
     }
 
     return BaseOptions(
+      responseType: ResponseType.plain,
       baseUrl: 'https://plausible.io/',
       headers: {
         'Content-Type': 'text/plain',
@@ -72,5 +79,4 @@ class PlausibleApi extends ApiMap {
       }),
     );
   }
-
 }

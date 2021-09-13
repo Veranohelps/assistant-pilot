@@ -8,7 +8,7 @@ part of 'console_message.dart';
 
 class MessageTypeAdapter extends TypeAdapter<MessageType> {
   @override
-  final int typeId = 8;
+  final int typeId = 2;
 
   @override
   MessageType read(BinaryReader reader) {
@@ -47,7 +47,7 @@ class MessageTypeAdapter extends TypeAdapter<MessageType> {
 
 class ConsoleMessageAdapter extends TypeAdapter<ConsoleMessage> {
   @override
-  final int typeId = 7;
+  final int typeId = 1;
 
   @override
   ConsoleMessage read(BinaryReader reader) {

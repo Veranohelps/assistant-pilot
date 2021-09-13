@@ -94,7 +94,7 @@ SPEC CHECKSUMS:
   flutter_background_geolocation: 5c5754282837dabecb09539e5bb5274a964f67c8
   flutter_config: 2226c1df19c78fe34a05eb7f1363445f18e76fc1
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
+  google_maps_flutter: 279865bd07e2d8751f43a3bc64bac7f6075d0c93
   GoogleMaps: eb03e327edfd70b06de1e6e321653f73712df7ad
   notification_permissions: b74860c2967c1579243a675e63cd55e0ae75cef7
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62

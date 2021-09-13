@@ -1,18 +1,20 @@
 import 'package:app/logic/model/route.dart';
 import 'package:app/logic/model/waypoint.dart';
+import 'package:app/logic/model/geo_json.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'expedition.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class Expedition {
-  Expedition(
-      {required this.name,
-      required this.routes,
-      required this.waypoints,
-      required this.location});
+  Expedition({
+    required this.name,
+    required this.routes,
+    required this.waypoints,
+    required this.coordinate,
+  });
   final String name;
-  final DersuLocation location;
+  final PointGeometry coordinate;
   final List<RoutePreInfo> routes;
   final List<Waypoint> waypoints;
 
@@ -20,19 +22,4 @@ class Expedition {
       _$ExpeditionFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExpeditionToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class DersuLocation {
-  DersuLocation({
-    required this.latitude,
-    required this.longitude,
-  });
-  final double latitude;
-  final double longitude;
-
-  factory DersuLocation.fromJson(Map<String, dynamic> json) =>
-      _$DersuLocationFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DersuLocationToJson(this);
 }

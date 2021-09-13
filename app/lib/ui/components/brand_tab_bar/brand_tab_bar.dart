@@ -40,7 +40,6 @@ class _BrandTabBarState extends State<BrandTabBar> {
   @override
   Widget build(BuildContext context) {
     final paddingBottom = MediaQuery.of(context).padding.bottom;
-
     return SizedBox(
       height: paddingBottom + _kBottomTabBarHeight,
       child: Container(

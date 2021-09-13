@@ -1,4 +1,4 @@
-import 'package:app/logic/model/route_point.dart';
+import 'package:app/logic/model/geo_json.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'waypoint.g.dart';
@@ -11,26 +11,18 @@ class Waypoint {
     required this.description,
     required this.type,
     required this.radiusInMeters,
-    required this.latitude,
-    required this.longitude,
-    required this.altitude,
+    required this.updatedAt,
+    required this.coordinate,
   });
 
   final String id;
   final String name;
   final String description;
   final String type;
-  @JsonKey(name: 'radius_in_meters')
   final num radiusInMeters;
-  final double latitude;
-  final double longitude;
-  final double altitude;
+  final DateTime updatedAt;
 
-  RoutePoint get point => RoutePoint(
-        altitude: altitude,
-        longitude: longitude,
-        latitude: latitude,
-      );
+  final PointGeometry coordinate;
 
   @override
   String toString() {

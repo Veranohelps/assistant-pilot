@@ -25,6 +25,12 @@ abstract class DersuApi extends ApiMap {
 
   @protected
   Future<BaseOptions> get options async {
-    return BaseOptions(baseUrl: FlutterConfig.get('DERSU_API_BASE_URL'));
+    return BaseOptions(
+        baseUrl: FlutterConfig.get(
+          'DERSU_API_BASE_URL',
+        ),
+        headers: {
+          "x-dersu-api-admin-token": FlutterConfig.get('API_TEMP_KEY')
+        });
   }
 }

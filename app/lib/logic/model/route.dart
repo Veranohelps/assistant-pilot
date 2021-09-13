@@ -1,4 +1,4 @@
-import 'package:app/logic/model/route_point.dart';
+import 'package:app/logic/model/geo_json.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'route.g.dart';
@@ -23,10 +23,9 @@ class RoutePreInfo {
 
 @JsonSerializable(explicitToJson: true)
 class DersuRoute {
-  DersuRoute({required this.name, required this.points});
+  DersuRoute({required this.name, required this.coordinate});
   final String name;
-  @JsonKey(name: 'coordinates')
-  final List<RoutePoint> points;
+  final LineStringGeometry coordinate;
 
   @override
   String toString() {
