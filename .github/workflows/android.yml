@@ -46,7 +46,7 @@ jobs:
           echo ANDROID_STORE_PASSWORD=${{ secrets.ANDROID_STORE_PASSWORD }} >> .env
           echo ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }} >> .env
           echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> .env
-          echo PLAUSIBLE_URL=us.dersu.assistant.pilot.develop >> .env
+          echo PLAUSIBLE_URL=uz.dersu.assistant.pilot.develop >> .env
           flutter build appbundle
       - name: Generate What Is New Files
         run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
