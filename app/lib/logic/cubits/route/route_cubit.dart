@@ -7,8 +7,8 @@ class RouteCubit extends Cubit<DersuRoute?> {
 
   var api = RoutesApi();
 
-  void getRoute(String id) async {
-    var route = await api.fetchRoute(id);
+  void getRoute(String url) async {
+    var route = await api.fetchRoute(url);
     emit(route);
   }
 }

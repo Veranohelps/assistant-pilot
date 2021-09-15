@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:app/config/brand_colors.dart';
-import 'package:app/config/brand_text_styles.dart';
+import 'package:app/config/theme_typo.dart';
 import 'package:app/config/brand_theme.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/model/console_message.dart';
@@ -63,7 +63,7 @@ class _ConsoleState extends State<Console> {
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: RichText(
                           text: TextSpan(
-                            style: BrandTextStyles.body,
+                            style: ThemeTypo.p0,
                             children: <TextSpan>[
                               TextSpan(
                                 text:

@@ -1,4 +1,5 @@
 import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
+import 'package:app/logic/cubits/levels/levels_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/services/background_geolocation.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class BlocAndProviderConfig extends StatelessWidget {
         ),
         BlocProvider(lazy: false, create: (_) => ExpeditionsCubit()..load()),
         BlocProvider(lazy: false, create: (_) => LiveCubit()),
+        BlocProvider(lazy: false, create: (_) => LevelsCubit()),
       ],
       child: child!,
     );

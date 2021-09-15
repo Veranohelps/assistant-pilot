@@ -1,4 +1,4 @@
-import 'package:app/config/brand_text_styles.dart';
+import 'package:app/config/theme_typo.dart';
 import 'package:app/config/brand_theme.dart';
 import 'package:app/config/geofence.dart';
 import 'package:app/config/hive_config.dart';
@@ -94,7 +94,7 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
                           materialRoute(
                             ExpeditionPage(
                               expedition: widget.expedition,
-                              routeId: routePreInfo.id,
+                              dersuUrl: routePreInfo,
                               isLive: isLive,
                               waypointPrecision: waypointPrecision,
                             ),
@@ -163,12 +163,12 @@ class _ExpeditionDetailsState extends State<ExpeditionDetails> {
 Widget textLine(String label, String text) {
   return RichText(
     text: TextSpan(
-      style: BrandTextStyles.body,
+      style: ThemeTypo.p0,
       children: [
         TextSpan(text: label),
         TextSpan(
           text: text,
-          style: BrandTextStyles.h4,
+          style: ThemeTypo.h4,
         )
       ],
     ),

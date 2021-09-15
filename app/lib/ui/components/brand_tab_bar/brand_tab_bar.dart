@@ -1,15 +1,18 @@
 import 'package:app/config/brand_colors.dart';
-import 'package:app/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:unicons/unicons.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-final _kBottomTabBarHeight = 51;
+final _kBottomTabBarHeight = 51.0;
 
 class BrandTabBar extends StatefulWidget {
-  BrandTabBar({Key? key, this.controller}) : super(key: key);
+  BrandTabBar({
+    Key? key,
+    required this.controller,
+    required this.tabsData,
+  }) : super(key: key);
 
-  final TabController? controller;
+  final TabController controller;
+  final List<List> tabsData;
   @override
   _BrandTabBarState createState() => _BrandTabBarState();
 }
@@ -18,71 +21,75 @@ class _BrandTabBarState extends State<BrandTabBar> {
   int? currentIndex;
   @override
   void initState() {
-    currentIndex = widget.controller!.index;
-    widget.controller!.addListener(_listener);
+    currentIndex = widget.controller.index;
+    widget.controller.addListener(_listener);
     super.initState();
   }
 
   _listener() {
-    if (currentIndex != widget.controller!.index) {
+    if (currentIndex != widget.controller.index) {
       setState(() {
-        currentIndex = widget.controller!.index;
+        currentIndex = widget.controller.index;
       });
     }
   }
 
   @override
   void dispose() {
-    widget.controller ?? widget.controller!.removeListener(_listener);
+    widget.controller.removeListener(_listener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final paddingBottom = MediaQuery.of(context).padding.bottom;
-    return SizedBox(
-      height: paddingBottom + _kBottomTabBarHeight,
-      child: Container(
-        decoration: BoxDecoration(
-            boxShadow: kElevationToShadow[1], color: BrandColors.white),
-        padding: EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      height: _kBottomTabBarHeight + paddingBottom,
+      decoration: BoxDecoration(
+          boxShadow: kElevationToShadow[1], color: BrandColors.white),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: SafeArea(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: _getIconButton(LocaleKeys.tab_names_expeditions.tr(),
-                  UniconsLine.sign_alt, 0),
-            ),
-            Expanded(
-              child: _getIconButton(
-                  LocaleKeys.tab_names_more.tr(), UniconsLine.setting, 1),
-            )
-          ],
-        ),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: widget.tabsData
+                .asMap()
+                .map((index, value) {
+                  return MapEntry(
+                      index,
+                      _getIconButton(
+                        (value[0] as String).tr(),
+                        value[1] as IconData,
+                        index,
+                      ));
+                })
+                .values
+                .toList()),
       ),
     );
   }
 
-  _getIconButton(String label, IconData iconData, int index) {
+  Widget _getIconButton(String label, IconData iconData, int index) {
     var isActive = currentIndex == index;
     var color = isActive ? BrandColors.active : BrandColors.inactive;
-    return InkWell(
-      onTap: () => widget.controller!.animateTo(index),
-      child: Padding(
-        padding: EdgeInsets.all(6),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(iconData, color: color),
-              SizedBox(height: 3),
-              Text(label,
-                  style: TextStyle(
-                    fontSize: 9,
-                    color: color,
-                  )).tr(),
-            ],
+    return Expanded(
+      child: InkWell(
+        onTap: () => widget.controller.animateTo(index),
+        child: Padding(
+          padding: EdgeInsets.all(6),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(iconData, color: color),
+                SizedBox(height: 3),
+                Text(label,
+                    style: TextStyle(
+                      fontSize: 9,
+                      color: color,
+                    )),
+              ],
+            ),
           ),
         ),
       ),

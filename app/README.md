@@ -21,3 +21,8 @@ Packages, libraries and plugins in use:
 - [Bloc](https://bloclibrary.dev) for state management.
 - [getIt](https://github.com/fluttercommunity/get_it) as a service locator.
 - [Hive DB](https://docs.hivedb.dev) NoSql key-value database written in Dart.
+
+## Misc
+
+LocaleKeys generation: 
+`$ flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o locale_keys.g.dart`

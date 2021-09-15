@@ -1,15 +1,14 @@
 import 'package:app/config/brand_theme.dart';
-import 'package:app/config/get_it_config.dart';
+import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
-import 'package:app/logic/get_it/local_notifcation.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/ui/components/brand_card/brand_card.dart';
 import 'package:app/ui/components/loader/loader.dart';
 import 'package:app/ui/pages/expedition_details/expedition_details.dart';
-import 'package:app/ui/pages/testing_geofence/testing_geofence.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/extensions/text_extension.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ExpeditionsDetails extends StatelessWidget {
   const ExpeditionsDetails({Key? key}) : super(key: key);
@@ -37,10 +36,11 @@ class ExpeditionListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Expediciones")),
+      appBar: AppBar(title: Text(LocaleKeys.plans_name.tr())),
       body: ListView(
         padding: paddingH25V0.copyWith(top: 20),
         children: [
+          Text(LocaleKeys.expeditions.tr()),
           for (var expedition in expeditions)
             GestureDetector(
               onTap: () {
@@ -57,25 +57,6 @@ class ExpeditionListScreen extends StatelessWidget {
                 child: Text(expedition.name).h3,
               ),
             ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).push(materialRoute(
-              TestingGeofence(),
-            )),
-            child: Text(
-              'Testing geofencing',
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              getIt<NotificationService>().showNotification(
-                title: 'Test title',
-                text: 'Test text',
-              );
-            },
-            child: Text(
-              'Testing local notfication',
-            ),
-          ),
         ],
       ),
     );

@@ -16,7 +16,7 @@ class ErrorScreen extends StatelessWidget {
           Text(error.toString()).h4,
           if (stackTrace != null) ...[
             Text('stackTrace: ').h6,
-            Text(stackTrace.toString()).bodyExtraSmall,
+            Text(stackTrace.toString()).p2,
           ],
         ],
       ),

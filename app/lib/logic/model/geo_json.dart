@@ -37,10 +37,6 @@ class LineStringGeometry extends Geometry {
   @override
   GeometryTypes type = GeometryTypes.lineString;
 
-  // @JsonKey(
-  //   fromJson: Serialization.fromJsonListToPointCoordinatesList,
-  //   toJson: Serialization.fromPointCoordinatesListToJsonList,
-  // )
   List<PointCoordinates> coordinates;
 
   static LineStringGeometry fromJson(Map<String, dynamic> json) =>

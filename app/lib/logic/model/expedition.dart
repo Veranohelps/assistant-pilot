@@ -1,4 +1,4 @@
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/model/url.dart';
 import 'package:app/logic/model/waypoint.dart';
 import 'package:app/logic/model/geo_json.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,7 +15,7 @@ class Expedition {
   });
   final String name;
   final PointGeometry coordinate;
-  final List<RoutePreInfo> routes;
+  final List<DersuUrlModel> routes;
   final List<Waypoint> waypoints;
 
   factory Expedition.fromJson(Map<String, dynamic> json) =>

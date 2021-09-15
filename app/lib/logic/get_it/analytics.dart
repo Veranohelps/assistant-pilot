@@ -47,11 +47,11 @@ class Analitics {
 
 enum CustomEvents {
   page,
-  test,
+  click,
   create,
 }
 
-enum PageEventTypes { open, close, replace }
+enum PageEventTypes { open, close, replace, tab }
 
 typedef TrackPageChanges = void Function({
   required PageEventTypes action,
@@ -68,7 +68,7 @@ class NavigationHistoryObserver extends NavigatorObserver {
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     track(
       action: PageEventTypes.close,
-      name: route.settings.name ?? 'no mame',
+      name: route.settings.name ?? 'no name',
     );
   }
 
@@ -76,7 +76,7 @@ class NavigationHistoryObserver extends NavigatorObserver {
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     track(
       action: PageEventTypes.open,
-      name: route.settings.name ?? 'no mame',
+      name: route.settings.name ?? 'no name',
       value: route.settings.arguments?.toString(),
     );
   }

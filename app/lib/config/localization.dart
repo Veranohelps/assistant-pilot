@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 class Localization extends StatelessWidget {
   const Localization({
     Key? key,
-    required this.builder,
+    required this.child,
   }) : super(key: key);
 
-  final Widget Function(BuildContext) builder;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(
-      supportedLocales: [Locale('es'), Locale('en')],
+      supportedLocales: [Locale('en'), Locale('es')],
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
       saveLocale: false,
       useOnlyLangCode: true,
-      child: Builder(builder: builder),
+      child: child,
+      useFallbackTranslations: true,
     );
   }
 }

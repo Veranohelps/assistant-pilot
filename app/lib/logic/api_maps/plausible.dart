@@ -33,6 +33,14 @@ class PlausibleApi extends ApiMap {
       return client;
     };
 
+    /// plausible HandshakeException: Handshake error in client
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
     return dio;
   }
 

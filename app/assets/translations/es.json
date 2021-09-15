@@ -1,6 +1,16 @@
 {
-  "tab_names": {
-    "expeditions": "expediciones",
-    "more": "más"
-  }
+  "profile": {
+    "profile": "Perfil",
+    "my_levels": "Mi nivel"
+  },
+  "plans": {
+    "name": "Planificación"
+  },
+  "home": {
+    "name": "Dersu home"
+  },
+  "more": {
+    "name": "Más"
+  },
+  "expeditions": "Expediciones"
 }

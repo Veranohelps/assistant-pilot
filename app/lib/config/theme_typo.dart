@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'brand_colors.dart';
 export 'package:app/utils/extensions/text_extension.dart';
 
-class BrandTextStyles {
+class ThemeTypo {
   static const defaultText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.normal,
@@ -37,24 +37,38 @@ class BrandTextStyles {
     height: 1.4,
     letterSpacing: -1,
   );
-  static final h6 = defaultText.copyWith(
+
+  static final h5 = defaultText.copyWith(
     fontSize: 12,
-    fontWeight: FontWeight.bold,
+    fontWeight: NamedWeight.bold,
     height: 1.5,
   );
 
-  static final body = defaultText.copyWith(
+  static final h6 = defaultText.copyWith(
+    fontSize: 12,
+    fontWeight: NamedWeight.medium,
+    height: 1.5,
+  );
+
+  static final p0 = defaultText.copyWith(
     fontSize: 14,
     height: 1.5,
   );
 
-  static final bodySmall = defaultText.copyWith(
+  static final p1 = defaultText.copyWith(
     fontSize: 12,
     height: 1.3,
   );
 
-  static final bodyExtraSmall = defaultText.copyWith(
+  static final p2 = defaultText.copyWith(
     fontSize: 10,
+  );
+
+  static final p4 = defaultText.copyWith(
+    fontSize: 15,
+    fontWeight: NamedWeight.regular,
+    height: 1.4,
+    letterSpacing: -1,
   );
 
   static final temp = TextStyle(color: Colors.red);
