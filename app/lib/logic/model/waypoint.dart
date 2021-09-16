@@ -1,28 +1,28 @@
 import 'package:app/logic/model/geo_json.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'waypoint.g.dart';
 
 @JsonSerializable()
-class Waypoint {
+class Waypoint extends Equatable {
   Waypoint({
     required this.id,
+    required this.type,
     required this.name,
     required this.description,
-    required this.type,
     required this.radiusInMeters,
     required this.updatedAt,
     required this.coordinate,
   });
 
   final String id;
+  final String type;
   final String name;
   final String description;
-  final String type;
   final num radiusInMeters;
-  final DateTime updatedAt;
-
   final PointGeometry coordinate;
+  final DateTime updatedAt;
 
   @override
   String toString() {
@@ -33,4 +33,8 @@ class Waypoint {
       _$WaypointFromJson(json);
 
   Map<String, dynamic> toJson() => _$WaypointToJson(this);
+
+  @override
+  List<Object?> get props =>
+      [id, name, description, type, radiusInMeters, updatedAt, coordinate];
 }

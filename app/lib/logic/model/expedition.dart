@@ -8,13 +8,25 @@ part 'expedition.g.dart';
 @JsonSerializable()
 class Expedition {
   Expedition({
+    required this.id,
     required this.name,
+    required this.description,
     required this.routes,
     required this.waypoints,
     required this.coordinate,
+    required this.startDateTime,
+    required this.endDateTime,
+    required this.updatedAt,
   });
+
+  final String id;
   final String name;
+  final String description;
+
   final PointGeometry coordinate;
+  final DateTime startDateTime;
+  final DateTime endDateTime;
+  final DateTime updatedAt;
   final List<DersuUrlModel> routes;
   final List<Waypoint> waypoints;
 

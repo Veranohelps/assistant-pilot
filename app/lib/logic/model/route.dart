@@ -9,6 +9,7 @@ class DersuRoute {
   final String name;
   final LineStringGeometry coordinate;
 
+  List<PointCoordinates> get coordinates => coordinate.coordinates;
   @override
   String toString() {
     return "DersuRoute, name: $name";

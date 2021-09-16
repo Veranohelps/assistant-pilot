@@ -62,8 +62,8 @@ class BackgroundGeolocation extends ChangeNotifier {
       return bg.Geofence(
         identifier: wp.id,
         radius: waypointPrecision.toDouble(),
-        latitude: wp.coordinate.coordinates.latitude,
-        longitude: wp.coordinate.coordinates.longitude,
+        latitude: wp.coordinate.latitude.toDouble(),
+        longitude: wp.coordinate.longitude.toDouble(),
         notifyOnEntry: true,
         notifyOnDwell: Platform.isAndroid,
         notifyOnExit: true,

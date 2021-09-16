@@ -6,14 +6,14 @@ part of 'url.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DersuUrlModel _$DersoUrlModelFromJson(Map<String, dynamic> json) {
+DersuUrlModel _$DersuUrlModelFromJson(Map<String, dynamic> json) {
   return DersuUrlModel(
     id: json['id'] as String,
     url: json['url'] as String,
   );
 }
 
-Map<String, dynamic> _$DersoUrlModelToJson(DersuUrlModel instance) =>
+Map<String, dynamic> _$DersuUrlModelToJson(DersuUrlModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'url': instance.url,

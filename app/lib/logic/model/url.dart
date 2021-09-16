@@ -13,7 +13,7 @@ class DersuUrlModel {
   final String url;
 
   factory DersuUrlModel.fromJson(Map<String, dynamic> json) =>
-      _$DersoUrlModelFromJson(json);
+      _$DersuUrlModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DersoUrlModelToJson(this);
+  Map<String, dynamic> toJson() => _$DersuUrlModelToJson(this);
 }
