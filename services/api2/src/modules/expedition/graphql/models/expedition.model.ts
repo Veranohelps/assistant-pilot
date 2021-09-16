@@ -1,7 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IRoute } from 'express';
 import { PointGeometryModel } from '../../../common/graphql/geojson.model';
-import { SMeta } from '../../../common/graphql/scalars/meta.scalar';
 import { IPointGeometry } from '../../../common/types/geojson.type';
 import { RouteModel } from '../../../route/graphql/models/route.model';
 import { WaypointModel } from '../../../waypoint/graphql/models/waypoint.model';

@@ -5,10 +5,11 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './database/database.module';
+import { DictionaryModule } from './dictionary/dictionary.module';
 import { ExpeditionModule } from './expedition/expedition.module';
 import { RouteModule } from './route/route.module';
+import { SkillModule } from './skill/skill.module';
 import { WaypointModule } from './waypoint/waypoint.module';
-import { DictionaryModule } from './dictionary/dictionary.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { DictionaryModule } from './dictionary/dictionary.module';
     RouteModule,
     AuthModule,
     DictionaryModule,
+    SkillModule,
   ],
   controllers: [],
   providers: [],

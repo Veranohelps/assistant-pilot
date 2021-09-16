@@ -1,6 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { PointGeometryModel } from '../../../common/graphql/geojson.model';
-import { SMeta } from '../../../common/graphql/scalars/meta.scalar';
 import { IPointGeometry } from '../../../common/types/geojson.type';
 import { IWaypoint } from '../../types/waypoint.type';
 

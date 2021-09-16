@@ -142,7 +142,10 @@ export class ExpeditionService {
     const result = expeditions.map<IExpeditionFull>((expedition) => ({
       ...expedition,
       routes: expeditionRoutes[expedition.id].map((e) => e.routes).flat(),
-      waypoints: (expeditionWaypoints[expedition.id] !== undefined) ? expeditionWaypoints[expedition.id].map((e) => e.waypoints).flat() : [],
+      waypoints:
+        expeditionWaypoints[expedition.id] !== undefined
+          ? expeditionWaypoints[expedition.id].map((e) => e.waypoints).flat()
+          : [],
     }));
 
     return result;

@@ -1,10 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiAdminTokenProtected } from '../../auth/decorators/api-admin-token-protected.decorator';
-import { successResponse } from '../../common/utilities/success-response';
-import dictionaries from '../static/dictionaries.json';
-import dictionaryLevels from '../static/dictionary-levels.json';
-import { IDictionary } from '../types/dictionary.type';
+import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { successResponse } from '../../../common/utilities/success-response';
+import dictionaries from '../../static/dictionaries.json';
+import dictionaryLevels from '../../static/dictionary-levels.json';
+import { IDictionary } from '../../types/dictionary.type';
 
 @Controller('/personal/dictionary')
 @ApiAdminTokenProtected()
