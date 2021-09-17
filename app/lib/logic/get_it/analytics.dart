@@ -7,7 +7,7 @@ class Analitics {
   }
 
   final plausibleApi = PlausibleApi();
-  late int screenSize;
+  int? screenSize;
 
   void init(double width) {
     screenSize = width.toInt();

@@ -26,15 +26,30 @@ Future<void> main() async {
       await EasyLocalization.ensureInitialized();
       await FlutterConfig.loadEnvVariables();
       await HiveConfig.init();
-      await getItSetup();
+      await preRenderGetItSetup();
       await initHydratedBloc();
     },
     () => runApp(Localization(child: _Main())),
   );
 }
 
-class _Main extends StatelessWidget {
+class _Main extends StatefulWidget {
   const _Main({Key? key}) : super(key: key);
+
+  @override
+  State<_Main> createState() => _MainState();
+}
+
+class _MainState extends State<_Main> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback(_afterLayoutBuild);
+    super.initState();
+  }
+
+  _afterLayoutBuild(_) {
+    afterFirstRenderGetItSetup();
+  }
 
   @override
   Widget build(BuildContext context) {

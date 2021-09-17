@@ -15,15 +15,10 @@ export 'package:app/logic/get_it/levels.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> getItSetup() async {
+Future<void> preRenderGetItSetup() async {
   getIt.registerSingleton<Analitics>(Analitics());
   getIt.registerSingleton<NavigationService>(NavigationService());
   getIt.registerSingleton<NotificationService>(NotificationService());
-  getIt.registerSingletonAsync<LevelsService>(() async {
-    var service = LevelsService();
-    await service.load();
-    return service;
-  });
 
   getIt.registerSingletonAsync<ConsoleService>(() async {
     var service = ConsoleService();
@@ -37,5 +32,14 @@ Future<void> getItSetup() async {
     return service;
   });
 
+  await getIt.allReady();
+}
+
+Future<void> afterFirstRenderGetItSetup() async {
+  getIt.registerSingletonAsync<LevelsService>(() async {
+    var service = LevelsService();
+    await service.load();
+    return service;
+  });
   await getIt.allReady();
 }

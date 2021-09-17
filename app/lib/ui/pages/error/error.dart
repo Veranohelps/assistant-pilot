@@ -18,6 +18,23 @@ class ErrorScreen extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 100),
+                    Text('🤯 🤬 😵', style: TextStyle(fontSize: 50)),
+                    Text(LocaleKeys.errors_fatal.tr()).h1,
+                    Text(error?.toString() ?? LocaleKeys.errors_fatal.tr()).h4,
+                    if (stackTrace != null) ...[
+                      Text('Stack trace: ').h6,
+                      Text(stackTrace.toString()).p2,
+                    ],
+                  ],
+                ),
+              ),
+            ),
             Positioned(
               top: 10,
               right: 10,
@@ -32,26 +49,6 @@ class ErrorScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(LocaleKeys.gestures_press_and_hold.tr())
                       .withColor(Colors.white),
-                ),
-              ),
-            ),
-            Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('🤯 🤬 😵', style: TextStyle(fontSize: 50)),
-                      Text(LocaleKeys.errors_fatal.tr()).h1,
-                      Text(error?.toString() ?? LocaleKeys.errors_fatal.tr())
-                          .h4,
-                      if (stackTrace != null) ...[
-                        Text('Stack trace: ').h6,
-                        Text(stackTrace.toString()).p2,
-                      ],
-                    ],
-                  ),
                 ),
               ),
             ),
