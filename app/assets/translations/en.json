@@ -12,5 +12,12 @@
   "more": {
     "name": "More"
   },
-  "expeditions": "Expeditions"
+  "expeditions": "Expeditions",
+  "errors": {
+    "fatal": "Fatal error!",
+    "unknown": "Unknown error"
+  },
+  "gestures": {
+    "press_and_hold": "Press & Hold"
+  }
 }

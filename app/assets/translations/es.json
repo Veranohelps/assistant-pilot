@@ -12,5 +12,12 @@
   "more": {
     "name": "Más"
   },
-  "expeditions": "Expediciones"
+  "expeditions": "Expediciones",
+  "errors": {
+    "fatal": "Error fatal!!",
+    "unknown": "Error desconocido"
+  },
+  "gestures": {
+    "press_and_hold": "Mantén presionado"
+  }
 }

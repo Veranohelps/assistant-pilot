@@ -29,6 +29,19 @@ class Analitics {
     );
   }
 
+  Future<void> sendErrorEvent({
+    String? action,
+    String? label,
+    value,
+  }) async {
+    await plausibleApi.sendPlausibleEvent(
+      type: CustomEvents.error,
+      action: action,
+      label: label,
+      value: value,
+    );
+  }
+
   void sendScreensEvent({
     required PageEventTypes action,
     required String name,
@@ -48,6 +61,7 @@ class Analitics {
 enum CustomEvents {
   page,
   click,
+  error,
   create,
 }
 

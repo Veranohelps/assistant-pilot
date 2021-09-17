@@ -2,26 +2,35 @@ import 'package:app/app.dart';
 import 'package:app/config/localization.dart';
 import 'package:app/config/analytics_config.dart';
 import 'package:app/ui/pages/error/error.dart';
+import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 import 'config/bloc_config.dart';
+import 'config/bloc_observer.dart';
 import 'config/brand_theme.dart';
 import 'config/get_it_config.dart';
+import 'config/global_error_handling.dart';
 import 'config/hive_config.dart';
 
 var apiDefaultLog = false;
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
-  await HiveConfig.init();
-  await getItSetup();
-  await initHydratedBloc();
+Future<void> main() async {
+  globalErrorHandling(
+    () async {
+      Bloc.observer = SimpleBlocObserver();
 
-  runApp(Localization(child: _Main()));
+      WidgetsFlutterBinding.ensureInitialized();
+
+      await EasyLocalization.ensureInitialized();
+      await FlutterConfig.loadEnvVariables();
+      await HiveConfig.init();
+      await getItSetup();
+      await initHydratedBloc();
+    },
+    () => runApp(Localization(child: _Main())),
+  );
 }
 
 class _Main extends StatelessWidget {

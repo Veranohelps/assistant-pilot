@@ -1,4 +1,5 @@
 .env
+**/ios/Podfile.lock
 
 # Miscellaneous
 *.class
