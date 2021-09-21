@@ -1,10 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { ExpeditionService } from '../../services/expedition.service';
 
 @Controller('personal/expedition')
-@ApiAdminTokenProtected()
+@JwtProtected()
 export class PersonalExpeditionController {
   constructor(private expeditionService: ExpeditionService) {}
 

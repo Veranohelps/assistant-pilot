@@ -4,7 +4,7 @@ import 'package:app/logic/model/url.dart';
 
 final dictionaryUrl = '/dictionary';
 
-class DictionariesApi extends DersuApi {
+class DictionariesApi extends PrivateDersuApi {
   Future<List<Category>> fetchLevelCategories() async {
     var allDictionaries = await fetchDictionary();
     var levelUrl =

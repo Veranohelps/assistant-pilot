@@ -71,6 +71,14 @@ resource "google_cloud_run_service" "api" {
             }
           }
         }
+        env {
+          name = "AUTH0_ISSUER_URL"
+          value = "https://develop-login.dersu.uz/"
+        }
+        env {
+          name = "AUTH0_AUDIENCE"
+          value = "HyowYsFA3VSJJoeWde3sKgp1qcxQ0KHn"
+        }        
         ports {
           container_port = 3033
         }

@@ -1,3 +1,5 @@
+import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
+import 'package:app/ui/pages/authentication/authentication.dart';
 import 'package:app/ui/pages/expedition_details/expedition_details.dart';
 import 'package:app/ui/pages/rootRoute.dart';
 import 'package:app/utils/route_transitions/basic.dart';
@@ -54,6 +56,13 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return RootPage();
+    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
+      builder: (context, state) {
+        if (state is Authenticated) {
+          return RootPage();
+        }
+        return AuthenticationPage();
+      },
+    );
   }
 }

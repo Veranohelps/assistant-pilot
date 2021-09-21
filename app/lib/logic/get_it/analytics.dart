@@ -13,16 +13,42 @@ class Analitics {
     screenSize = width.toInt();
   }
 
-  void sendCustomEvent({
+  Future<void> _sendCustomEvent({
     required CustomEvents type,
     String? action,
     String? label,
     value,
-  }) {
+  }) async {
     print('type: $type, action: $action, label: $label, value: $value');
 
-    plausibleApi.sendPlausibleEvent(
+    await plausibleApi.sendPlausibleEvent(
       type: type,
+      action: action,
+      label: label,
+      value: value,
+    );
+  }
+
+  void sendClickEvent({
+    required String action,
+    String? label,
+    value,
+  }) {
+    _sendCustomEvent(
+      type: CustomEvents.click,
+      action: action,
+      label: label,
+      value: value,
+    );
+  }
+
+  void sendCubitEvent({
+    required String action,
+    String? label,
+    value,
+  }) {
+    _sendCustomEvent(
+      type: CustomEvents.logic,
       action: action,
       label: label,
       value: value,
@@ -33,8 +59,8 @@ class Analitics {
     String? action,
     String? label,
     value,
-  }) async {
-    await plausibleApi.sendPlausibleEvent(
+  }) {
+    return _sendCustomEvent(
       type: CustomEvents.error,
       action: action,
       label: label,
@@ -42,12 +68,12 @@ class Analitics {
     );
   }
 
-  void sendScreensEvent({
+  Future<void> sendScreensEvent({
     required PageEventTypes action,
     required String name,
     String? value,
-  }) {
-    sendCustomEvent(
+  }) async {
+    await _sendCustomEvent(
       type: CustomEvents.page,
       action: action.toString().split('.')[1],
       label: name,
@@ -63,6 +89,7 @@ enum CustomEvents {
   click,
   error,
   create,
+  logic,
 }
 
 enum PageEventTypes { open, close, replace, tab }

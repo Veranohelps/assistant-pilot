@@ -1,7 +1,9 @@
 import 'package:app/config/brand_colors.dart';
-import 'package:app/config/get_it_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
+import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/levels/levels_cubit.dart';
+import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/model/levels.dart';
 import 'package:app/ui/components/brand_bottom_sheet/brand_bottom_sheet.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
@@ -16,7 +18,16 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var items = getIt<LevelsService>().flat();
+    var dictionariesState = context.watch<DictionariesCubit>().state;
+    if (dictionariesState is! DictionariesLoaded) {
+      return Container();
+    }
+    var items = <LevelsCatalogData>[];
+
+    for (final categorie in dictionariesState.categories) {
+      items.add(categorie);
+      items.addAll(categorie.children);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -72,9 +83,11 @@ class ProfileTab extends StatelessWidget {
                                       currentLevel,
                                       levelData as Skill,
                                     ),
+                                    label: 'Level - Change',
                                     text: currentLevel!.name,
                                   )
                                 : buttons.textButton(
+                                    label: 'Level - Not set up',
                                     onPressed: () => onLevelChange(
                                       context,
                                       currentLevel,
@@ -87,7 +100,14 @@ class ProfileTab extends StatelessWidget {
                         ),
                       ],
                     );
-                  }).toList()
+                  }).toList(),
+                  Center(
+                    child: buttons.primaryShort(
+                      text: 'Logout',
+                      onPressed: context.read<AuthenticationCubit>().logout,
+                    ),
+                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -137,6 +157,7 @@ class ProfileTab extends StatelessWidget {
                 },
               ),
               buttons.textButton(
+                  label: 'Save level change',
                   text: 'Save',
                   onPressed: () {
                     Navigator.of(context).pop(selectedLevel);
@@ -170,12 +191,19 @@ class ProfileTab extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Kherel Kechil').h2,
-            Text('kherel@gmail.com').p1.withColor(BrandColors.grey),
-          ],
+        BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (context, state) {
+            if (state is! ProfileLoaded) {
+              return Container();
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(state.name).h2,
+                Text(state.email).p1.withColor(BrandColors.grey),
+              ],
+            );
+          },
         ),
       ],
     );

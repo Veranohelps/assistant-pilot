@@ -1,16 +1,32 @@
 import 'package:app/config/brand_colors.dart';
+import 'package:app/config/get_it_config.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:flutter/material.dart';
+
+VoidCallback? analiticsOnPressWrapper(
+  VoidCallback? onPressed,
+  String text,
+  String? label,
+) {
+  if (onPressed == null) {
+    return null;
+  }
+  return () {
+    getIt<Analitics>().sendClickEvent(action: text, label: label);
+    onPressed();
+  };
+}
 
 Widget textButton({
   Key? key,
   required VoidCallback onPressed,
   required String text,
+  String? label,
   Color? color,
 }) =>
     _BrandTextButton(
       key: key,
-      onPressed: onPressed,
+      onPressed: analiticsOnPressWrapper(onPressed, text, label),
       text: text,
       style: ThemeTypo.p4,
       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -19,11 +35,12 @@ Widget textButton({
 
 Widget primaryShort({
   required String text,
-  required VoidCallback onPressed,
+  String? label,
+  required VoidCallback? onPressed,
 }) =>
     _PrimaryShort(
       text: text,
-      onPressed: onPressed,
+      onPressed: analiticsOnPressWrapper(onPressed, text, label),
     );
 
 class _PrimaryShort extends StatelessWidget {
@@ -34,7 +51,7 @@ class _PrimaryShort extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +84,7 @@ class _BrandTextButton extends StatelessWidget {
   })  : this.color = color ?? BrandColors.active,
         super(key: key);
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final TextStyle style;
   final EdgeInsets padding;

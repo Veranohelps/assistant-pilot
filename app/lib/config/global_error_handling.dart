@@ -29,7 +29,7 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) {
       runApp();
     },
     (Object error, StackTrace stack) async {
-      await getIt<Analitics>().sendErrorEvent(
+      getIt<Analitics>().sendErrorEvent(
         action: error.toString(),
         value: stack.toString(),
       );

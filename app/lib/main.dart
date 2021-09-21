@@ -20,9 +20,7 @@ Future<void> main() async {
   globalErrorHandling(
     () async {
       Bloc.observer = SimpleBlocObserver();
-
       WidgetsFlutterBinding.ensureInitialized();
-
       await EasyLocalization.ensureInitialized();
       await FlutterConfig.loadEnvVariables();
       await HiveConfig.init();

@@ -1,12 +1,12 @@
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { RouteService } from '../../services/route.service';
 
 @Controller('personal/route')
-@ApiAdminTokenProtected()
+@JwtProtected()
 export class PersonalRouteController {
   constructor(private routeService: RouteService) {}
 

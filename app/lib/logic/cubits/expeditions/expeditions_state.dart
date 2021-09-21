@@ -1,8 +1,8 @@
 part of 'expeditions_cubit.dart';
 
-abstract class ExpeditionsState extends Equatable {}
+abstract class ExpeditionsState extends AuthenticationDependendState {}
 
-class ExpeditionsInitial extends ExpeditionsState {
+class ExpeditionsNotLoaded extends ExpeditionsState {
   @override
   List<Object?> get props => [];
 }

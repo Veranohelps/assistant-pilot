@@ -48,6 +48,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders = [
+            'appAuthRedirectScheme': project.env.get("AUTH0_DOMAIN")
+        ]
     }
 
     signingConfigs {

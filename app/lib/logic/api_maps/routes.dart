@@ -3,7 +3,7 @@ import 'package:app/logic/model/route.dart';
 
 final routesUrl = '/route';
 
-class RoutesApi extends DersuApi {
+class RoutesApi extends PrivateDersuApi {
   Future<DersuRoute> fetchRoute(String url) async {
     var client = await getClient();
     var res = await client.get(url);
