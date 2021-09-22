@@ -6,7 +6,8 @@ import 'package:hive/hive.dart';
 
 final auth0domain = FlutterConfig.get('AUTH0_DOMAIN');
 final auth0clientId = FlutterConfig.get('AUTH0_CLIENT_ID');
-final auth0redirectUrl = FlutterConfig.get('AUTH0_REDIRECT_URI');
+final auth0redirectUrl =
+    '${FlutterConfig.get('AUTH0_REDIRECT_SCHEME')}://login-callback';
 final auth0issuer = 'https://$auth0domain';
 
 class AuthenticationRepository {

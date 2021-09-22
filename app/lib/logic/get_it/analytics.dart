@@ -13,15 +13,15 @@ class Analitics {
     screenSize = width.toInt();
   }
 
-  Future<void> _sendCustomEvent({
+  void _sendCustomEvent({
     required CustomEvents type,
     String? action,
     String? label,
     value,
-  }) async {
+  }) {
     print('type: $type, action: $action, label: $label, value: $value');
 
-    await plausibleApi.sendPlausibleEvent(
+    plausibleApi.sendPlausibleEvent(
       type: type,
       action: action,
       label: label,
@@ -55,7 +55,7 @@ class Analitics {
     );
   }
 
-  Future<void> sendErrorEvent({
+  void sendErrorEvent({
     String? action,
     String? label,
     value,
@@ -68,12 +68,12 @@ class Analitics {
     );
   }
 
-  Future<void> sendScreensEvent({
+  void sendScreensEvent({
     required PageEventTypes action,
     required String name,
     String? value,
-  }) async {
-    await _sendCustomEvent(
+  }) {
+    _sendCustomEvent(
       type: CustomEvents.page,
       action: action.toString().split('.')[1],
       label: name,

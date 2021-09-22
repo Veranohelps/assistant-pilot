@@ -15,7 +15,7 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) {
     () async {
       await init();
       FlutterError.onError = (FlutterErrorDetails errorDetails) async {
-        await getIt<Analitics>().sendErrorEvent(
+        getIt<Analitics>().sendErrorEvent(
             action: errorDetails.exception.toString(),
             value: errorDetails.stack.toString());
 

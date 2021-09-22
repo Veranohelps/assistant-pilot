@@ -35,6 +35,4 @@ Future<void> preRenderGetItSetup() async {
   await getIt.allReady();
 }
 
-Future<void> afterFirstRenderGetItSetup() async {
-  await getIt.allReady();
-}
+Future<void> afterFirstRenderGetItSetup() async {}

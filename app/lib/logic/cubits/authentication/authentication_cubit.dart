@@ -33,8 +33,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     var newState = res.fold(
       () => NotAuthenticated(),
       (token) {
-        getIt<Analitics>()
-            .sendCubitEvent(action: 'Cubit: Registration or login with credentials');
+        getIt<Analitics>().sendCubitEvent(
+            action: 'Cubit: Registration or login with credentials');
         getIt<AuthTokenService>().tokenResponse = token;
         return Authenticated(token: token);
       },
