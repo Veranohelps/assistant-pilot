@@ -9,6 +9,7 @@ import { DictionaryModule } from './dictionary/dictionary.module';
 import { ExpeditionModule } from './expedition/expedition.module';
 import { RouteModule } from './route/route.module';
 import { SkillModule } from './skill/skill.module';
+import { UserModule } from './user/user.module';
 import { WaypointModule } from './waypoint/waypoint.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { WaypointModule } from './waypoint/waypoint.module';
     AuthModule,
     DictionaryModule,
     SkillModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

@@ -72,13 +72,25 @@ resource "google_cloud_run_service" "api" {
           }
         }
         env {
-          name = "AUTH0_ISSUER_URL"
-          value = "https://develop-login.dersu.uz/"
+          name = "AUTH0_TENANT"
+          value = "dersu-develop.eu"
         }
         env {
-          name = "AUTH0_AUDIENCE"
-          value = "HyowYsFA3VSJJoeWde3sKgp1qcxQ0KHn"
-        }        
+          name = "AUTH0_ISSUER_URL"
+          value = "https://dersu-develop.eu.auth0.com/"
+        }
+        env {
+          namer = "AUTH0_AUDIENCE"
+          value = "dersu-develop"
+        }
+        env {
+          name = "AUTH0_CLIENT_ID"
+          value = "lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
+        }
+        env {
+          name = "AUTH0_CLIENT_SECRET"
+          value = var.AUTH0_CLIENT_SECRET
+        }  
         ports {
           container_port = 3033
         }

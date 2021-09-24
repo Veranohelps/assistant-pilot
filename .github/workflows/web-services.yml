@@ -70,7 +70,9 @@ jobs:
         run: |
           terraform plan -input=false -out=tfplan \
           -var="dersu_api_docker_image_tag=${{ steps.dockerimage.outputs.tag }}" \
-          -var="dersu_admin_console_docker_image_tag=${{ steps.dockerimage.outputs.tag }}" \
+          -var="dersu_admin_console_docker_image_tag=${{ steps.dockerimage.outputs.tag }}"
+        env:
+          TF_VAR_AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
       - name: Terraform apply
         working-directory: services/terraform
         run: terraform apply -input=false tfplan

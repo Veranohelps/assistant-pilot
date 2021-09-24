@@ -14,9 +14,11 @@ Please note that these are `develop` values, `production` values TBD.
 
 ### API
 
-- `AUTH0_ISSUER_URL`: `https://develop-login.dersu.uz/`
-- `AUTH0_AUDIENCE`: `HyowYsFA3VSJJoeWde3sKgp1qcxQ0KHn`
-
+- `AUTH0_ISSUER_URL`: `https://dersu-develop.eu.auth0.com/`
+- `AUTH0_AUDIENCE`: `dersu-develop`
+- `AUTH0_TENANT`: `dersu-develop.eu`
+- `AUTH0_CLIENT_ID`: `lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD`
+- `AUTH0_CLIENT_SECRET`:
 
 ## Important notes:
 

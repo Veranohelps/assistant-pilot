@@ -17,3 +17,7 @@ variable "dersu_api_docker_image_tag" {
 variable "dersu_admin_console_docker_image_tag" {
   type = string
 }
+
+variable "AUTH0_CLIENT_SECRET" {
+  type = string
+}

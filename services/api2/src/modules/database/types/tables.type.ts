@@ -12,6 +12,7 @@ import { ICreateRoute, IRoute } from '../../route/types/route.type';
 import { ICreateSkillCategory, ISkillCategory } from '../../skill/types/skill-category.type';
 import { ICreateSkillLevel, ISkillLevel } from '../../skill/types/skill-level.type';
 import { ICreateSkill, ISkill } from '../../skill/types/skill.type';
+import { ICreateUser, IUser } from '../../user/types/user.type';
 import { ICreateWaypoint, IWaypoint } from '../../waypoint/types/waypoint.type';
 
 export interface IDatabaseTables {
@@ -43,4 +44,5 @@ export interface IDatabaseTables {
     ICreateSkillLevel,
     Partial<Omit<ISkillLevel, 'id'>>
   >;
+  User: Knex.CompositeTableType<IUser, ICreateUser, Partial<Omit<IUser, 'id'>>>;
 }
