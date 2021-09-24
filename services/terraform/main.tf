@@ -80,7 +80,7 @@ resource "google_cloud_run_service" "api" {
           value = "https://dersu-develop.eu.auth0.com/"
         }
         env {
-          namer = "AUTH0_AUDIENCE"
+          name = "AUTH0_AUDIENCE"
           value = "dersu-develop"
         }
         env {
