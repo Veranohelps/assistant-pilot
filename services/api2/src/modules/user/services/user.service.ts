@@ -19,7 +19,16 @@ export class UserService {
   ) {}
 
   async signupUser(tx: TransactionManager, payload: ICreateUserDTO): Promise<IUser> {
-    const [user] = await this.db.read(tx).insert(payload).returning('*');
+    let [user] = await this.db
+      .read(tx)
+      .insert(payload)
+      .onConflict('auth0Id')
+      .ignore()
+      .returning('*');
+
+    // if a user with with the provided Auth0Id already exists
+    // we return the existing user
+    user = user ? user : await this.findByAuth0Id(tx, payload.auth0Id);
 
     return user;
   }
