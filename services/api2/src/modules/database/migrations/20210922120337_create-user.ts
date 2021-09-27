@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('lastName', 255).nullable();
     table.string('otherName', 255).nullable();
     table.boolean('isRegistrationFinished').notNullable().defaultTo(false);
-    table.boolean('hasSubscription').notNullable().defaultTo(false);
+    table.boolean('isSubscribedToNewsletter').notNullable().defaultTo(false);
     table.text('avatar').nullable();
     table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());
     table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());

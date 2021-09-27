@@ -11,7 +11,7 @@ export const userEntity: IEntity<IUser> = {
     lastName: { type: 'string' },
     otherName: { type: 'string' },
     isRegistrationFinished: { type: 'boolean' },
-    hasSubscription: { type: 'boolean' },
+    isSubscribedToNewsletter: { type: 'boolean' },
     avatar: { type: 'string' },
     createdAt: { type: 'date', select: false },
     updatedAt: { type: 'date' },

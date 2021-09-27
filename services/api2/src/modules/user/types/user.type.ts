@@ -6,7 +6,7 @@ export interface IUser {
   lastName: string | null;
   otherName: string | null;
   isRegistrationFinished: boolean;
-  hasSubscription: boolean;
+  isSubscribedToNewsletter: boolean;
   avatar: string;
   createdAt: Date;
   updatedAt: Date;
