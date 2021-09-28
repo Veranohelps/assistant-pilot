@@ -1,12 +1,5 @@
-name: Android build
-on:
-  push:
-    branches:
-      - "develop"
-    paths:
-      - "app/**"
-      - ".github/workflows/android.yml"
-      - ".github/workflows/android-test.yml"
+name: Android release
+on: workflow_dispatch
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
