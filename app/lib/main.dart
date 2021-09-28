@@ -25,7 +25,6 @@ Future<void> main() async {
       await FlutterConfig.loadEnvVariables();
       await HiveConfig.init();
       await preRenderGetItSetup();
-      await initHydratedBloc();
     },
     () => runApp(Localization(child: _Main())),
   );

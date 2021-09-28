@@ -1,4 +1,6 @@
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
+import 'package:app/logic/cubits/profile/profile_cubit.dart';
+import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/pages/authentication/authentication.dart';
 import 'package:app/ui/pages/expedition_details/expedition_details.dart';
 import 'package:app/ui/pages/rootRoute.dart';
@@ -11,6 +13,7 @@ import 'config/geofence.dart';
 import 'config/hive_config.dart';
 import 'logic/cubits/live/live_cubit.dart';
 import 'ui/components/expedition/expedition.dart';
+import 'ui/pages/registration/registration.dart';
 
 class App extends StatefulWidget {
   @override
@@ -56,13 +59,21 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
-      builder: (context, state) {
-        if (state is Authenticated) {
-          return RootPage();
-        }
-        return AuthenticationPage();
-      },
-    );
+    var authState = context.watch<AuthenticationCubit>().state;
+    if (authState is NotAuthenticated) {
+      return AuthenticationPage();
+    } else if (authState is AuthenticationInitial) {
+      return BrandLoading();
+    } else if (authState is Authenticated ||
+        authState is AuthenticationLoading) {
+      var profileState = context.watch<ProfileCubit>().state;
+      if (profileState is ProfileNotReady) {
+        return BrandLoading();
+      } else if (profileState is ProfileDersuRegistrationNotFinished) {
+        return Registration();
+      }
+      return RootPage();
+    }
+    throw 'wrong auth state';
   }
 }

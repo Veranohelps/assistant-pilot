@@ -1,7 +1,7 @@
-import 'dart:convert';
-
+import 'package:app/logic/api_maps/user_api.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
+import 'package:app/logic/model/profile.dart';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 
@@ -9,24 +9,37 @@ part 'profile_state.dart';
 
 class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
   ProfileCubit(AuthenticationCubit authenticationCubit)
-      : super(authenticationCubit, ProfileNotLoaded());
+      : super(authenticationCubit, ProfileNotReady());
 
-  void load(TokenResponse token) {
-    final parts = token.idToken!.split(r'.');
-    assert(parts.length == 3);
+  final api = UserApi();
 
-    var auth0UserInfo = jsonDecode(
-      utf8.decode(
-        base64Url.decode(base64Url.normalize(parts[1])),
-      ),
+  void load(TokenResponse token) async {
+    var profile = await api.fetch();
+    late ProfileState state;
+    if (profile is FilledProfile) {
+      state = ProfileDersuRegistrationFinished(profile);
+    } else if (profile is IncompleteProfile) {
+      state = ProfileDersuRegistrationNotFinished(profile);
+    }
+
+    emit(state);
+  }
+
+  Future<void> finishRegistration({
+    required String firstName,
+    required bool isSubscribedToNewsletter,
+    required String lastName,
+  }) async {
+    var updatedProfile = await api.signUp(
+      firstName: firstName,
+      lastName: lastName,
+      isSubscribedToNewsletter: isSubscribedToNewsletter,
     );
-    print(auth0UserInfo);
-    emit(
-      ProfileLoaded(
-          email: auth0UserInfo?['name'], name: auth0UserInfo?['nickname']),
-    );
+    emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 
   @override
-  void clear() {}
+  void clear() {
+    emit(ProfileNotReady());
+  }
 }

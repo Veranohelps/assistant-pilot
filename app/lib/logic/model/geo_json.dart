@@ -10,7 +10,6 @@ abstract class Geometry extends Equatable {
 
   static Geometry fromJson(Map<String, dynamic> json) {
     var type = geometryTypesFromString(json['type']);
-    print(type);
     if (type == GeometryTypes.lineString) {
       return LineStringGeometry.fromJson(json);
     } else if (type == GeometryTypes.point) {

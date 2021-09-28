@@ -29,10 +29,11 @@ abstract class PrivateDersuApi extends ApiMap {
   @protected
   Future<BaseOptions> get options async {
     var authToken = getIt<AuthTokenService>();
+
     assert(authToken.hasToken, 'no auth token');
     return BaseOptions(
       baseUrl: FlutterConfig.get('DERSU_API_BASE_URL'),
-      headers: {"Authorization": 'Bearer ${authToken.idToken}'},
+      headers: {"Authorization": 'Bearer ${authToken.accessToken}'},
     );
   }
 }

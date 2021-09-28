@@ -4,6 +4,7 @@ import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+export 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 
 part 'authentication_dependend_state.dart';
 

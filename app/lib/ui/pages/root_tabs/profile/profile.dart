@@ -7,6 +7,7 @@ import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/model/levels.dart';
 import 'package:app/ui/components/brand_bottom_sheet/brand_bottom_sheet.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/helpers/modals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +20,10 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dictionariesState = context.watch<DictionariesCubit>().state;
-    if (dictionariesState is! DictionariesLoaded) {
-      return Container();
+    var levelsState = context.watch<LevelsCubit>().state;
+    if (dictionariesState is! DictionariesLoaded ||
+        levelsState is! LevelsLoaded) {
+      return BrandLoading();
     }
     var items = <LevelsCatalogData>[];
 
@@ -33,86 +36,77 @@ class ProfileTab extends StatelessWidget {
       appBar: AppBar(
         title: Text(LocaleKeys.profile_name.tr()),
       ),
-      body: BlocBuilder<LevelsCubit, LevelsState>(
-        builder: (context, state) {
-          if (state is! LevelsLoaded) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 20),
-                  buildHeader(),
-                  SizedBox(height: 20),
-                  Divider(),
-                  SizedBox(height: 10),
-                  Text(LocaleKeys.profile_my_levels.tr())
-                      .h3
-                      .copyWith(textAlign: TextAlign.center),
-                  SizedBox(height: 10),
-                  ...items.map((levelData) {
-                    if (levelData is Category) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text(levelData.name).h3,
-                      );
-                    }
-                    var currentLevel = state.levelsMap[levelData];
-                    levelData = levelData as Skill;
-                    var hasLevel = currentLevel != null;
-                    return Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('${levelData.name}:').h4,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: hasLevel
-                                ? buttons.primaryShort(
-                                    onPressed: () => onLevelChange(
-                                      context,
-                                      currentLevel,
-                                      levelData as Skill,
-                                    ),
-                                    label: 'Level - Change',
-                                    text: currentLevel!.name,
-                                  )
-                                : buttons.textButton(
-                                    label: 'Level - Not set up',
-                                    onPressed: () => onLevelChange(
-                                      context,
-                                      currentLevel,
-                                      levelData as Skill,
-                                    ),
-                                    text: 'Not set up',
-                                    color: BrandColors.grey,
-                                  ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                  Center(
-                    child: buttons.primaryShort(
-                      text: 'Logout',
-                      onPressed: context.read<AuthenticationCubit>().logout,
+      body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 20),
+              buildHeader(),
+              SizedBox(height: 20),
+              Divider(),
+              SizedBox(height: 10),
+              Text(LocaleKeys.profile_my_levels.tr())
+                  .h3
+                  .copyWith(textAlign: TextAlign.center),
+              SizedBox(height: 10),
+              ...items.map((levelData) {
+                if (levelData is Category) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text(levelData.name).h3,
+                  );
+                }
+                levelData = levelData as Skill;
+                var currentLevel = levelsState.levelById(levelData);
+                var hasLevel = currentLevel != null;
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text('${levelData.name}:').h4,
                     ),
-                  ),
-                  SizedBox(height: 20),
-                ],
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: hasLevel
+                            ? buttons.primaryShort(
+                                onPressed: () => onLevelChange(
+                                  context,
+                                  currentLevel,
+                                  levelData as Skill,
+                                ),
+                                label: 'Level - Change',
+                                text: currentLevel!.name,
+                              )
+                            : buttons.textButton(
+                                label: 'Level - Not set up',
+                                onPressed: () => onLevelChange(
+                                  context,
+                                  currentLevel,
+                                  levelData as Skill,
+                                ),
+                                text: 'Not set up',
+                                color: BrandColors.grey,
+                              ),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+              Center(
+                child: buttons.primaryShort(
+                  text: 'Logout',
+                  onPressed: context.read<AuthenticationCubit>().logout,
+                ),
               ),
-            ),
-          );
-        },
+              SizedBox(height: 20),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -120,7 +114,7 @@ class ProfileTab extends StatelessWidget {
   void onLevelChange(
       BuildContext context, Level? currentLevel, Skill skill) async {
     int _currentSliderValue = currentLevel?.level ?? 0;
-    var res = await showBrandBottomSheet(
+    var res = await showBrandBottomSheet<Level>(
       context: context,
       builder: (context) => StatefulBuilder(builder: (
         context,
@@ -169,7 +163,10 @@ class ProfileTab extends StatelessWidget {
       }),
     );
     if (res != null) {
-      context.read<LevelsCubit>().setLevel(skill: skill, level: res);
+      context.read<LevelsCubit>().setLevel(
+            skillId: skill.id,
+            levelId: res.id,
+          );
     }
   }
 
@@ -193,14 +190,14 @@ class ProfileTab extends StatelessWidget {
         SizedBox(width: 20),
         BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
-            if (state is! ProfileLoaded) {
+            if (state is! ProfileDersuRegistrationFinished) {
               return Container();
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(state.name).h2,
-                Text(state.email).p1.withColor(BrandColors.grey),
+                Text('${state.profile.firstName} ${state.profile.lastName}').h2,
+                Text(state.profile.email).p1.withColor(BrandColors.grey),
               ],
             );
           },

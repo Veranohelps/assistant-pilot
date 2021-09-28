@@ -1,12 +1,20 @@
+import 'dart:convert';
+
+import 'package:app/config/hive_config.dart';
 import 'package:app/logic/model/expedition.dart';
 import 'package:app/logic/model/route.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'live_state.dart';
 
-class LiveCubit extends HydratedCubit<LiveState> {
-  LiveCubit() : super(IsNotLive());
+class LiveCubit extends Cubit<LiveState> {
+  LiveCubit() : super(IsNotLive()) {
+    load();
+  }
+
+  final box = Hive.box(HiveContants.hydratedCubits.txt);
 
   void setLiveOn({
     required Expedition expedition,
@@ -22,28 +30,40 @@ class LiveCubit extends HydratedCubit<LiveState> {
     emit(IsNotLive());
   }
 
-  @override
-  LiveState fromJson(Map<String, dynamic> json) {
+  void load() {
+    var json =
+        jsonDecode(box.get(HiveContants.liveCubit.txt, defaultValue: '{}'));
     if (json['isLive'] != null && json['isLive']) {
-      return IsLive(
+      emit(IsLive(
         route: DersuRoute.fromJson(json['route']),
         expedition: Expedition.fromJson(json['expedition']),
-      );
+      ));
+    }
+  }
+
+  void saveState(LiveState state) {
+    Map<String, dynamic> json;
+    if (state is IsLive) {
+      json = {
+        'isLive': true,
+        'route': state.route.toJson(),
+        'expedition': state.expedition,
+      };
+    } else {
+      json = {'isLive': false};
     }
 
-    return IsNotLive();
+    box.put(HiveContants.liveCubit.txt, jsonEncode(json));
   }
 
   @override
-  Map<String, dynamic> toJson(LiveState state) {
-    if (state is IsLive) {
-      return {
-        'isLive': true,
-        'route': state.route.toJson(),
-        'expedition': state.expedition.toJson(),
-      };
+  void onChange(Change<LiveState> change) {
+    super.onChange(change);
+    final state = change.nextState;
+    try {
+      saveState(state);
+    } catch (error, stackTrace) {
+      onError(error, stackTrace);
     }
-
-    return {'isLive': false};
   }
 }

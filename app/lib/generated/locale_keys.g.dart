@@ -1,6 +1,8 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const basis_accept = 'basis.accept';
+  static const basis = 'basis';
   static const profile_name = 'profile.name';
   static const profile_my_levels = 'profile.my_levels';
   static const profile = 'profile';
@@ -16,5 +18,10 @@ abstract class  LocaleKeys {
   static const errors = 'errors';
   static const gestures_press_and_hold = 'gestures.press_and_hold';
   static const gestures = 'gestures';
+  static const registration_name = 'registration.name';
+  static const registration_firstName = 'registration.firstName';
+  static const registration_lastName = 'registration.lastName';
+  static const registration_subscribe_text = 'registration.subscribe_text';
+  static const registration = 'registration';
 
 }

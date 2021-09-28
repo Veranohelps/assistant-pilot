@@ -1,4 +1,7 @@
 {
+  "basis":{
+    "accept": "Accept"
+  },
   "profile": {
     "name": "Profile",
     "my_levels": "My levels"
@@ -19,5 +22,11 @@
   },
   "gestures": {
     "press_and_hold": "Press & Hold"
+  },
+  "registration": {
+    "name": "Profile details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "subscribe_text": "Subsciption to our newsletter"
   }
 }

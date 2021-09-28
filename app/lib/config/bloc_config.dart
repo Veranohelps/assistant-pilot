@@ -7,8 +7,6 @@ import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/services/background_geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
 class BlocAndProviderConfig extends StatelessWidget {
   const BlocAndProviderConfig({Key? key, this.child}) : super(key: key);
@@ -29,7 +27,8 @@ class BlocAndProviderConfig extends StatelessWidget {
         BlocProvider(
             lazy: false, create: (_) => ExpeditionsCubit(authenticationCubit)),
         BlocProvider(lazy: false, create: (_) => LiveCubit()),
-        BlocProvider(lazy: false, create: (_) => LevelsCubit()),
+        BlocProvider(
+            lazy: false, create: (_) => LevelsCubit(authenticationCubit)),
         BlocProvider(
             lazy: false, create: (_) => ProfileCubit(authenticationCubit)),
         BlocProvider(lazy: false, create: (_) => dictionaries),
@@ -37,10 +36,4 @@ class BlocAndProviderConfig extends StatelessWidget {
       child: child!,
     );
   }
-}
-
-Future<void> initHydratedBloc() async {
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
-  );
 }

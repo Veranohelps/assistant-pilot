@@ -9,16 +9,20 @@ export 'package:provider/provider.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit() : super(NotAuthenticated());
+  AuthenticationCubit() : super(AuthenticationInitial());
 
   final repository = AuthenticationRepository();
 
   void load() async {
     var res = await repository.load();
     var newState = res.fold(
-      () => NotAuthenticated(),
+      () {
+        getIt<Analitics>().sendCubitEvent(action: 'Cubit: Silent login: user is not authenticated');
+
+        return NotAuthenticated();
+      },
       (token) {
-        getIt<Analitics>().sendCubitEvent(action: 'Cubit: Silent login');
+        getIt<Analitics>().sendCubitEvent(action: 'Cubit: Silent login: User is successfully authenticated');
         getIt<AuthTokenService>().tokenResponse = token;
         return Authenticated(token: token);
       },
@@ -31,10 +35,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(AuthenticationLoading());
     var res = await repository.login();
     var newState = res.fold(
-      () => NotAuthenticated(),
+      () {
+        getIt<Analitics>().sendCubitEvent(
+            action: 'Cubit: Registration or login with credentials is failed');
+        return NotAuthenticated();
+      },
       (token) {
         getIt<Analitics>().sendCubitEvent(
-            action: 'Cubit: Registration or login with credentials');
+            action: 'Cubit: Registration or login with credentials is success');
         getIt<AuthTokenService>().tokenResponse = token;
         return Authenticated(token: token);
       },
