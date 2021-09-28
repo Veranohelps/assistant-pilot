@@ -22,7 +22,7 @@ services:
     volumes:
       - ./api2/src:/home/dersu-api/src
   database:
-    image: postgis/postgis:13-3.1-alpine
+    image: mdillon/postgis:11-alpine
     shm_size: 256MB
     environment:
       POSTGRES_PASSWORD: 123456
