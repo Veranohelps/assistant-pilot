@@ -1,18 +1,6 @@
 
 ############## SERVICES
 
-#  LEGACY
-module cloud_run {
-  source   = "garbetjie/cloud-run/google"
-  name     = "dersu-assistant-api-${terraform.workspace}"
-  image    = "gcr.io/dersu-assistant/api:develop-3550400c"
-  location = "europe-west1"
-  # map_domains         = ["api.dersu.uz"]
-  allow_public_access = true
-  port                = 3000
-  project = var.project_id
-}
-
 resource "google_cloud_run_service" "api" {
   project = var.project_id
   provider = google-beta
