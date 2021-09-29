@@ -29,7 +29,7 @@ export interface IRelationEntityColumn {
   type: '1:M' | 'M:1' | 'M:M' | '1:1';
 }
 
-export interface IEntity<T extends object = any> {
+export interface IEntity<T = any> {
   columns: Record<keyof T, IEntityColumn<T>>;
   relations?: Record<string, IRelationEntityColumn>;
   hooks?: {

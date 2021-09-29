@@ -17,12 +17,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     var res = await repository.load();
     var newState = res.fold(
       () {
-        getIt<Analitics>().sendCubitEvent(action: 'Cubit: Silent login: user is not authenticated');
+        getIt<Analitics>().sendCubitEvent(
+            action: 'Cubit: Silent login: user is not authenticated');
 
         return NotAuthenticated();
       },
       (token) {
-        getIt<Analitics>().sendCubitEvent(action: 'Cubit: Silent login: User is successfully authenticated');
+        print(token.accessToken);
+        getIt<Analitics>().sendCubitEvent(
+            action: 'Cubit: Silent login: User is successfully authenticated');
         getIt<AuthTokenService>().tokenResponse = token;
         return Authenticated(token: token);
       },

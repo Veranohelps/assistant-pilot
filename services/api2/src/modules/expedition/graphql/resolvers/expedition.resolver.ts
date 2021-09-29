@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { Writable } from 'stream';
 import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
@@ -24,7 +24,7 @@ export class ExpeditionResolver {
 
   @Query(() => [ExpeditionModel])
   @ApiAdminTokenProtected()
-  async expeditions(@Context() args: any): Promise<IExpedition[]> {
+  async expeditions(): Promise<IExpedition[]> {
     const response = await this.expeditionService.getExpeditions();
 
     return response;

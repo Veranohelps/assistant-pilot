@@ -60,6 +60,7 @@ class FilledProfile extends Profile {
     required this.id,
     required this.auth0Id,
     required this.email,
+    required this.currentLevels,
     required this.isRegistrationFinished,
     required this.updatedAt,
   });
@@ -67,6 +68,7 @@ class FilledProfile extends Profile {
   final String firstName;
   final String lastName;
   final String avatar;
+  final Map<String, String> currentLevels;
 
   final bool isSubscribedToNewsletter;
 
@@ -86,13 +88,6 @@ class FilledProfile extends Profile {
 
   Map<String, dynamic> toJson() => _$FilledProfileToJson(this);
 
-  @override
-  List<Object?> get props => [
-        firstName,
-        lastName,
-        isSubscribedToNewsletter,
-      ];
-
   FilledProfile copyWith({
     String? firstName,
     String? lastName,
@@ -103,6 +98,7 @@ class FilledProfile extends Profile {
     bool? isRegistrationFinished,
     String? avatar,
     DateTime? updatedAt,
+    Map<String, String>? currentLevels,
   }) {
     return FilledProfile(
       firstName: firstName ?? this.firstName,
@@ -116,6 +112,28 @@ class FilledProfile extends Profile {
           isRegistrationFinished ?? this.isRegistrationFinished,
       avatar: avatar ?? this.avatar,
       updatedAt: updatedAt ?? this.updatedAt,
+      currentLevels: currentLevels ?? this.currentLevels,
     );
   }
+
+  @override
+  String toString() {
+    return 'FilledProfile(firstName: $firstName, lastName: $lastName, avatar: $avatar, currentLevels: $currentLevels, isSubscribedToNewsletter: $isSubscribedToNewsletter, id: $id, auth0Id: $auth0Id, email: $email, isRegistrationFinished: $isRegistrationFinished, updatedAt: $updatedAt)';
+  }
+
+  @override
+  List<Object?> get props => [
+        firstName,
+        lastName,
+        avatar,
+        isSubscribedToNewsletter,
+        id,
+        auth0Id,
+        email,
+        currentLevels,
+        isRegistrationFinished,
+        updatedAt,
+      ];
+
+
 }

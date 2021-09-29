@@ -4,7 +4,7 @@ import { IWithColumnsOptions } from '../modules/database/database.service';
 import { IDatabaseTables } from './tables.type';
 
 declare module 'knex' {
-  interface Knex<TRecord extends {} = any, TResult = unknown[]> {
+  interface Knex {
     postgis: KnexPostgis;
   }
   namespace Knex {

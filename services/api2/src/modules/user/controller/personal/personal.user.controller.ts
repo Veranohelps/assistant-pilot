@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Patch } from '@nestjs/common';
+import { UserLevelService } from '../../../assessment/services/user-level.service';
 import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
@@ -12,7 +13,7 @@ import { completeUserRegistrationValidationSchema } from '../../user.validation-
 @Controller('personal/user')
 @JwtProtected()
 export class PersonalUserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private userLevelService: UserLevelService) {}
 
   @Patch('complete-registration')
   @HttpCode(HttpStatus.CREATED)
@@ -29,7 +30,8 @@ export class PersonalUserController {
   @Get('profile')
   @HttpCode(HttpStatus.CREATED)
   async getProfile(@UserData() user: IUser) {
-    const profile = { user };
+    const currentLevels = await this.userLevelService.getCurrentUserLevels(null, user.id);
+    const profile = { user, currentLevels };
 
     return successResponse('User signup success', { profile });
   }

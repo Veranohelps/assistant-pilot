@@ -11,11 +11,6 @@ interface IProperties {
   coordinateProperties: ICoordinateProperties;
 }
 
-interface IGeometry {
-  type: string;
-  coordinates: [number, number, number | null][];
-}
-
 export interface IPointGeometry {
   type: 'Point';
   coordinates: [number, number, number | null];

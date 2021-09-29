@@ -38,8 +38,28 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
     emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 
+  Future<void> set({
+    required String firstName,
+    required bool isSubscribedToNewsletter,
+    required String lastName,
+  }) async {
+    var updatedProfile = await api.signUp(
+      firstName: firstName,
+      lastName: lastName,
+      isSubscribedToNewsletter: isSubscribedToNewsletter,
+    );
+    emit(ProfileDersuRegistrationFinished(updatedProfile));
+  }
+
   @override
   void clear() {
     emit(ProfileNotReady());
+  }
+
+  void setNewAssessments(final Map<String, String> currentLevels) async {
+    var profile = (state as ProfileDersuRegistrationFinished).profile;
+    var newProfile = profile.copyWith(currentLevels: currentLevels);
+    await api.setNewLevels(levels: newProfile.currentLevels.values.toList());
+    emit(ProfileDersuRegistrationFinished(newProfile));
   }
 }

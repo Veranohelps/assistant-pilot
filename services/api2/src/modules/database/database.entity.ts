@@ -1,4 +1,9 @@
 import {
+  assessmentEntity,
+  assessmentHistoryEntity,
+  userLevelEntity,
+} from '../assessment/assessment.entity';
+import {
   expeditionEntity,
   expeditionRouteEntity,
   expeditionWaypointEntity,
@@ -20,4 +25,7 @@ export const entityMap: Record<keyof IDatabaseTables, IEntity> = {
   Skill: skillEntity,
   SkillLevel: skillLevelEntity,
   User: userEntity,
+  Assessment: assessmentEntity,
+  UserLevel: userLevelEntity,
+  AssessmentHistory: assessmentHistoryEntity,
 };

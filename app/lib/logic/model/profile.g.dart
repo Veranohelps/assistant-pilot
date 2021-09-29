@@ -24,6 +24,7 @@ FilledProfile _$FilledProfileFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     auth0Id: json['auth0Id'] as String,
     email: json['email'] as String,
+    currentLevels: Map<String, String>.from(json['currentLevels'] as Map),
     isRegistrationFinished: json['isRegistrationFinished'] as bool,
     updatedAt: DateTime.parse(json['updatedAt'] as String),
   );
@@ -34,6 +35,7 @@ Map<String, dynamic> _$FilledProfileToJson(FilledProfile instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'avatar': instance.avatar,
+      'currentLevels': instance.currentLevels,
       'isSubscribedToNewsletter': instance.isSubscribedToNewsletter,
       'id': readonly(instance.id),
       'auth0Id': readonly(instance.auth0Id),

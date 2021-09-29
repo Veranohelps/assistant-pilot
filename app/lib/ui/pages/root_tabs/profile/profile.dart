@@ -1,14 +1,10 @@
 import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
-import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
-import 'package:app/logic/cubits/levels/levels_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
-import 'package:app/logic/model/levels.dart';
-import 'package:app/ui/components/brand_bottom_sheet/brand_bottom_sheet.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
-import 'package:app/ui/components/brand_loading/brand_loading.dart';
-import 'package:app/ui/helpers/modals.dart';
+import 'package:app/ui/pages/root_tabs/profile/levels/levels.dart';
+import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicons/unicons.dart';
@@ -19,190 +15,107 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dictionariesState = context.watch<DictionariesCubit>().state;
-    var levelsState = context.watch<LevelsCubit>().state;
-    if (dictionariesState is! DictionariesLoaded ||
-        levelsState is! LevelsLoaded) {
-      return BrandLoading();
-    }
-    var items = <LevelsCatalogData>[];
-
-    for (final categorie in dictionariesState.categories) {
-      items.add(categorie);
-      items.addAll(categorie.children);
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.profile_name.tr()),
       ),
-      body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 20),
-              buildHeader(),
-              SizedBox(height: 20),
-              Divider(),
-              SizedBox(height: 10),
-              Text(LocaleKeys.profile_my_levels.tr())
-                  .h3
-                  .copyWith(textAlign: TextAlign.center),
-              SizedBox(height: 10),
-              ...items.map((levelData) {
-                if (levelData is Category) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(levelData.name).h3,
-                  );
-                }
-                levelData = levelData as Skill;
-                var currentLevel = levelsState.levelById(levelData);
-                var hasLevel = currentLevel != null;
-                return Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text('${levelData.name}:').h4,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: hasLevel
-                            ? buttons.primaryShort(
-                                onPressed: () => onLevelChange(
-                                  context,
-                                  currentLevel,
-                                  levelData as Skill,
-                                ),
-                                label: 'Level - Change',
-                                text: currentLevel!.name,
-                              )
-                            : buttons.textButton(
-                                label: 'Level - Not set up',
-                                onPressed: () => onLevelChange(
-                                  context,
-                                  currentLevel,
-                                  levelData as Skill,
-                                ),
-                                text: 'Not set up',
-                                color: BrandColors.grey,
-                              ),
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
-              Center(
-                child: buttons.primaryShort(
-                  text: 'Logout',
-                  onPressed: context.read<AuthenticationCubit>().logout,
-                ),
-              ),
-              SizedBox(height: 20),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 20),
+          buildHeader(),
+          SizedBox(height: 20),
+          Divider(),
+          _NavItem(
+            title: LocaleKeys.profile_my_levels.tr(),
+            goTo: LevelsSetting(),
           ),
-        ),
+          Spacer(),
+          Center(
+            child: buttons.primaryShort(
+              text: LocaleKeys.profile_logout.tr(),
+              onPressed: context.read<AuthenticationCubit>().logout,
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
       ),
     );
   }
 
-  void onLevelChange(
-      BuildContext context, Level? currentLevel, Skill skill) async {
-    int _currentSliderValue = currentLevel?.level ?? 0;
-    var res = await showBrandBottomSheet<Level>(
-      context: context,
-      builder: (context) => StatefulBuilder(builder: (
-        context,
-        StateSetter setter,
-      ) {
-        var selectedLevel =
-            skill.children.firstWhere((el) => el.level == _currentSliderValue);
-
-        return BrandBottomSheet(
-          child: Column(
-            children: [
-              Text('Set: ${skill.name}').h1,
-              SizedBox(height: 20),
-              Text(selectedLevel.name).h3,
-              SizedBox(height: 20),
-              Container(
-                height: 100,
-                child: Center(
-                  child: Text(
-                    selectedLevel.description,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Slider(
-                value: _currentSliderValue.toDouble(),
-                min: 0,
-                max: 4,
-                label: _currentSliderValue.round().toString(),
-                onChanged: (double value) {
-                  setter(() {
-                    _currentSliderValue = value.toInt();
-                  });
-                },
-              ),
-              buttons.textButton(
-                  label: 'Save level change',
-                  text: 'Save',
-                  onPressed: () {
-                    Navigator.of(context).pop(selectedLevel);
-                  }),
-              SafeArea(child: SizedBox(height: 5)),
-            ],
+  Widget buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: BrandColors.grey,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              UniconsLine.camera,
+              color: BrandColors.white,
+              size: 30,
+            ),
           ),
-        );
-      }),
+          SizedBox(width: 20),
+          BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state is! ProfileDersuRegistrationFinished) {
+                return Container();
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${state.profile.firstName} ${state.profile.lastName}')
+                      .h2,
+                  Text(state.profile.email).p1.withColor(BrandColors.grey),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
-    if (res != null) {
-      context.read<LevelsCubit>().setLevel(
-            skillId: skill.id,
-            levelId: res.id,
-          );
-    }
   }
+}
 
-  Row buildHeader() {
-    return Row(
-      children: [
-        Container(
-          width: 80,
-          height: 80,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: BrandColors.grey,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            UniconsLine.camera,
-            color: BrandColors.white,
-            size: 30,
+class _NavItem extends StatelessWidget {
+  const _NavItem({
+    Key? key,
+    required this.goTo,
+    required this.title,
+  }) : super(key: key);
+
+  final Widget goTo;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(materialRoute(goTo)),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: BrandColors.grey,
+              width: 1,
+            ),
           ),
         ),
-        SizedBox(width: 20),
-        BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            if (state is! ProfileDersuRegistrationFinished) {
-              return Container();
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${state.profile.firstName} ${state.profile.lastName}').h2,
-                Text(state.profile.email).p1.withColor(BrandColors.grey),
-              ],
-            );
-          },
+        padding: EdgeInsets.symmetric(
+          vertical: 24,
+          horizontal: 20,
         ),
-      ],
+        child: Text(
+          title,
+        ),
+      ),
     );
   }
 }

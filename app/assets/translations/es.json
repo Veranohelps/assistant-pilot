@@ -1,10 +1,15 @@
 {
-  "basis":{
-    "accept": "Acceptar"
+  "basis": {
+    "accept": "Acceptar",
+    "save": "Save",
+    "close": "Close"
   },
   "profile": {
     "profile": "Perfil",
-    "my_levels": "Mi nivel"
+    "my_levels": "Mi nivel",
+    "not_set_up": "No instalado",
+    "save_and_close": "Guardar y cerrar configuración",
+    "logout": "Cerrar sesión"
   },
   "plans": {
     "name": "Planificación"

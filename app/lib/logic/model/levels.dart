@@ -62,6 +62,14 @@ class Skill extends LevelsCatalogData<Level> {
   @JsonKey(name: 'levels')
   final List<Level> children;
 
+  Level? levelByLevelId(String? id) {
+    if (id == null) {
+      return null;
+    }
+
+    return children.firstWhere((element) => element.id == id);
+  }
+
   factory Skill.fromJson(Map<String, dynamic> json) => _$SkillFromJson(json);
 
   Map<String, dynamic> toJson() => _$SkillToJson(this);

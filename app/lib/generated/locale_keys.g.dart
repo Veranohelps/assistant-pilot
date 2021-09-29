@@ -2,9 +2,14 @@
 
 abstract class  LocaleKeys {
   static const basis_accept = 'basis.accept';
+  static const basis_save = 'basis.save';
+  static const basis_close = 'basis.close';
   static const basis = 'basis';
   static const profile_name = 'profile.name';
   static const profile_my_levels = 'profile.my_levels';
+  static const profile_not_set_up = 'profile.not_set_up';
+  static const profile_save_and_close = 'profile.save_and_close';
+  static const profile_logout = 'profile.logout';
   static const profile = 'profile';
   static const plans_name = 'plans.name';
   static const plans = 'plans';

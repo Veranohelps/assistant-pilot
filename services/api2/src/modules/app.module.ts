@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { AssessmentModule } from './assessment/assessment.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './database/database.module';
@@ -33,7 +34,8 @@ import { CourseModule } from './course/course.module';
     DictionaryModule,
     SkillModule,
     UserModule,
-    CourseModule
+    CourseModule,
+    AssessmentModule,
   ],
   controllers: [],
   providers: [],

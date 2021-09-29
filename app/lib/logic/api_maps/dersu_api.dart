@@ -13,14 +13,24 @@ abstract class PrivateDersuApi extends ApiMap {
     var dio = Dio(await options);
     if (hasLoger) {
       dio.interceptors.add(PrettyDioLogger(
+        request: true,
         requestHeader: true,
         requestBody: true,
         responseBody: true,
         responseHeader: false,
-        error: true,
         compact: true,
         maxWidth: 90,
       ));
+
+      dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
+        print(e.requestOptions.path);
+        print(e.requestOptions.data);
+
+        print(e.message);
+        print(e.response);
+
+        return handler.next(e);
+      }));
     }
 
     return dio;

@@ -20,7 +20,7 @@ class ProfileDersuRegistrationNotFinished extends ProfileReady {
   final IncompleteProfile profile;
 }
 
-class ProfileDersuRegistrationFinished extends ProfileState {
+class ProfileDersuRegistrationFinished extends ProfileReady {
   ProfileDersuRegistrationFinished(this.profile);
 
   final FilledProfile profile;

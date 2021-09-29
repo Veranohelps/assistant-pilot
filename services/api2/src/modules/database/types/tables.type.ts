@@ -1,5 +1,11 @@
 import { Knex } from 'knex';
 import {
+  IAssessmentHistory,
+  ICreateAssessmentHistory,
+} from '../../assessment/types/assessment-history.type';
+import { IAssessment, ICreateAssessment } from '../../assessment/types/assessment.type';
+import { ICreateUserLevel, IUserLevel } from '../../assessment/types/user-level.type';
+import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
 } from '../../expedition/types/expedition-route.type';
@@ -45,4 +51,15 @@ export interface IDatabaseTables {
     Partial<Omit<ISkillLevel, 'id'>>
   >;
   User: Knex.CompositeTableType<IUser, ICreateUser, Partial<Omit<IUser, 'id'>>>;
+  Assessment: Knex.CompositeTableType<
+    IAssessment,
+    ICreateAssessment,
+    Partial<Omit<IAssessment, 'id'>>
+  >;
+  UserLevel: Knex.CompositeTableType<IUserLevel, ICreateUserLevel, Partial<Omit<IUserLevel, 'id'>>>;
+  AssessmentHistory: Knex.CompositeTableType<
+    IAssessmentHistory,
+    ICreateAssessmentHistory,
+    Partial<Omit<IAssessmentHistory, 'id'>>
+  >;
 }

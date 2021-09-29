@@ -5,13 +5,16 @@ const mockKey = 'UserMockKey';
 
 const profileUrl = '/user/profile';
 const editProfileUrl = '/user/complete-registration';
+const assessmentSubmitUrl = '/assessment/submit';
 
 class UserApi extends PrivateDersuApi {
   Future<Profile> fetch() async {
     var client = await getClient();
     var res = await client.get(profileUrl);
     client.close();
-    return Profile.fromJson(res.data['data']['profile']['user']);
+    var json = res.data['data']['profile']['user'];
+    json['currentLevels'] = res.data['data']['profile']['currentLevels'];
+    return Profile.fromJson(json);
   }
 
   Future<FilledProfile> signUp({
@@ -20,14 +23,24 @@ class UserApi extends PrivateDersuApi {
     required bool isSubscribedToNewsletter,
   }) async {
     var client = await getClient();
-    var res = await client.patch(editProfileUrl, data: {
+    await client.patch(editProfileUrl, data: {
       'firstName': firstName,
       'lastName': lastName,
       'isSubscribedToNewsletter': isSubscribedToNewsletter,
     });
     client.close();
-    return FilledProfile.fromJson(
-      res.data['data']['user'],
-    );
+
+    return await fetch() as FilledProfile;
+  }
+
+  final hasLoger = true;
+
+  Future<FilledProfile> setNewLevels({required List<String> levels}) async {
+    var client = await getClient();
+    
+    await client.post(assessmentSubmitUrl, data: {"levels": levels});
+    client.close();
+
+    return await fetch() as FilledProfile;
   }
 }

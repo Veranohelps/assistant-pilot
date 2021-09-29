@@ -12,6 +12,6 @@ export class SuccessResponse {
   }
 }
 
-export const successResponse = (message: string, data?: Record<string, unknown>) => {
+export const successResponse = (message: string, data?: any) => {
   return new SuccessResponse(message, data);
 };
