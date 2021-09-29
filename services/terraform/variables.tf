@@ -18,6 +18,18 @@ variable "dersu_admin_console_docker_image_tag" {
   type = string
 }
 
+variable "dersu_strapi_docker_image_tag" {
+  type = string
+}
+
 variable "AUTH0_CLIENT_SECRET" {
+  type = string
+}
+
+variable "STRAPI_PASSWORD" {
+  type = string
+}
+
+variable "STRAPI_EMAIL" {
   type = string
 }

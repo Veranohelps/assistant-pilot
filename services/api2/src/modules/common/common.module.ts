@@ -6,6 +6,7 @@ import { JoiExceptionFilter } from './filters/joi-exception.filter';
 import { ErrorInterceptor } from './interceptors/error-handler.interceptor';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { LoaderService } from './services/loader.service';
+import { StrapiService } from './services/strapi.service';
 
 @Global()
 @Module({
@@ -31,7 +32,8 @@ import { LoaderService } from './services/loader.service';
       useClass: ErrorInterceptor,
     },
     LoaderService,
+    StrapiService,
   ],
-  exports: [LoaderService],
+  exports: [LoaderService, StrapiService],
 })
 export class CommonModule {}

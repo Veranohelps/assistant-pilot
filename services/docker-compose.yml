@@ -19,6 +19,9 @@ services:
       AUTH0_TENANT: "dersu-develop.eu"
       AUTH0_CLIENT_ID: "lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
       AUTH0_CLIENT_SECRET:
+      STRAPI_EMAIL: "dersu-api@example.com"
+      STRAPI_PASSWORD: "rzcFxZo8r9D8byEfP!wwH.qp"
+      STRAPI_URL: http://localhost:1337
     volumes:
       - ./api2/src:/home/dersu-api/src
   database:
@@ -49,6 +52,26 @@ services:
       REACT_APP_API_BASE_URL: http://localhost:3033
     volumes:
       - ./admin-console/src:/home/dersu-admin-console/src
+  strapi:
+    build:
+      context: ./strapi
+      target: builder
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_NAME: dersu-db
+      DATABASE_USERNAME: dersu-user
+      DATABASE_PASSWORD: 123456
+      NODE_ENV: development
+      ADMIN_JWT_SECRET: 123456
+    volumes:
+      - ./strapi/api:/srv/app/api
+      - ./strapi/config:/srv/app/config
+      - ./strapi/extensions:/srv/app/extensions
+      - ./strapi/public:/srv/app/public
+    ports:
+      - "1337:1337"
   adminer:
     image: adminer
     restart: always

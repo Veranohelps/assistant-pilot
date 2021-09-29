@@ -8,7 +8,8 @@ on:
       - "services/api2/**"
       - "services/admin-console/**"
       - "services/terraform/**"
-      - ".github/workflows/api.yml"
+      - "services/strapi/**"
+      - ".github/workflows/web-services.yml"
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
@@ -53,10 +54,12 @@ jobs:
             NODE_ENV=local
             REACT_APP_ENV=production
             REACT_APP_API_BASE_URL=https://${{ steps.currentbranch.outputs.branch }}-api.dersu.uz
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: Build and push Strapi
+        uses: docker/build-push-action@v2
         with:
-          terraform_version: 1.0.3
+          context: services/strapi
+          push: true
+          tags: gcr.io/dersu-assistant/strapi:${{ steps.dockerimage.outputs.tag }}
       - name: Terraform init
         working-directory: services/terraform
         run: terraform init -input=false
@@ -70,8 +73,11 @@ jobs:
         run: |
           terraform plan -input=false -out=tfplan \
           -var="dersu_api_docker_image_tag=${{ steps.dockerimage.outputs.tag }}" \
-          -var="dersu_admin_console_docker_image_tag=${{ steps.dockerimage.outputs.tag }}"
+          -var="dersu_admin_console_docker_image_tag=${{ steps.dockerimage.outputs.tag }}" \
+          -var="dersu_strapi_docker_image_tag=${{ steps.dockerimage.outputs.tag }}"
         env:
+          TF_VAR_STRAPI_PASSWORD: ${{ secrets.STRAPI_PASSWORD }}
+          TF_VAR_STRAPI_EMAIL: ${{ secrets.STRAPI_EMAIL }}
           TF_VAR_AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
       - name: Terraform apply
         working-directory: services/terraform
