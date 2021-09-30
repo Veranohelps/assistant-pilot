@@ -7,17 +7,22 @@ ARG REACT_APP_API_BASE_URL
 
 WORKDIR /home/dersu-admin-console
 
-COPY package-lock.json package.lock.json
+COPY yarn.lock yarn.lock
 COPY package.json package.json
-RUN npm install
+COPY .yarn/cache .yarn/cache/
+COPY .yarn/releases .yarn/releases/
+COPY .yarn/plugins .yarn/plugins/
+COPY .yarnrc.yml .yarnrc.yml
+COPY .pnp.cjs .pnp.cjs
 
 COPY .prettierrc .prettierrc
 COPY tsconfig.json tsconfig.json
 COPY public public
 COPY src src
-RUN npm run build
 
-CMD ["npm", "start"]
+RUN yarn build
+
+CMD ["yarn", "start"]
 
 FROM nginx:1.19.2-alpine AS final
 COPY default.conf /etc/nginx/conf.d/default.conf

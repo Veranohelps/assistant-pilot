@@ -4,38 +4,37 @@ Dersu API
 
 ## Installation
 
-```bash
-# install dependencies
-$ npm install
+Our project utilizes Yarn [PnP](https://yarnpkg.com/features/pnp) and [zero installs](https://yarnpkg.com/features/zero-installs). Just run migrations and start the app
 
+```bash
 # run database migrations
-$ npm run knex migrate:latest
+$ yarn migrations
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ yarn test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn test:cov
 ```
 
 ## Support

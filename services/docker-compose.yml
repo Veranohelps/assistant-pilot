@@ -2,7 +2,9 @@ version: "3.8"
 services:
   api:
     build: ./api2
-    command: npm run start:dev
+    command: ./wait-for database:5432 -- yarn start --watch
+    depends_on:
+      - database
     ports:
       - "3033:3033"
     environment:
@@ -25,7 +27,7 @@ services:
     volumes:
       - ./api2/src:/home/dersu-api/src
   database:
-    image: gangstead/postgis:13-3.1-arm
+    image: postgis/postgis:13-3.1
     shm_size: 256MB
     environment:
       POSTGRES_PASSWORD: 123456

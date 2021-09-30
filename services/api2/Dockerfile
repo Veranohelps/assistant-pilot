@@ -2,12 +2,20 @@ FROM node:lts-slim AS builder
 
 # See https://github.com/nestjs/nest-cli/issues/484
 RUN apt update && apt install -y procps
+RUN apt install -y netcat
 
 WORKDIR /home/dersu-api
 
-COPY package-lock.json package.lock.json
+COPY wait-for wait-for
+RUN chmod u+x wait-for
+
+COPY yarn.lock yarn.lock
 COPY package.json package.json
-RUN npm install
+COPY .yarn/cache .yarn/cache/
+COPY .yarn/releases .yarn/releases/
+COPY .yarn/plugins .yarn/plugins/
+COPY .yarnrc.yml .yarnrc.yml
+COPY .pnp.cjs .pnp.cjs
 
 COPY .eslintrc.js .eslintrc.js
 COPY .prettierrc .prettierrc
@@ -17,11 +25,6 @@ COPY tsconfig.build.json tsconfig.build.json
 COPY tsconfig.json tsconfig.json
 COPY src src
 
-RUN npm run build
+RUN yarn build
 
-CMD ["npm", "run", "start"]
-
-# FROM node:lts-slim
-# COPY --from=builder /home/dersu-api/dist /home/dersu-api
-# WORKDIR /home/dersu-api
-# CMD ["node", "dist/src/main.js"]
+CMD ["yarn", "start"]

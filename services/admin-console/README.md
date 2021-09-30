@@ -4,16 +4,13 @@ Dersu Admin Console
 
 ## Installation
 
-```bash
-# install dependencies
-$ npm install
-```
+Our project utilizes Yarn  [PnP](https://yarnpkg.com/features/pnp) and [zero installs](https://yarnpkg.com/features/zero-installs). Just run the app
 
 ## Running the app
 
 ```bash
 # development
-$ npm start
+$ yarn start
 ```
 
 

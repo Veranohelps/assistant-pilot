@@ -3,8 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import got, { Got } from 'got';
 import { decode } from 'jsonwebtoken';
 
-const test = got.extend();
-
 @Injectable()
 export class StrapiService {
   private jwtToken: string;
