@@ -40,9 +40,10 @@ jobs:
           echo ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }} >> .env
           echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> .env
           echo PLAUSIBLE_URL=uz.dersu.assistant.pilot.develop >> .env
-          echo AUTH0_DOMAIN="develop-login.dersu.uz" >> .env
+          echo AUTH0_DOMAIN="dersu-develop.eu.auth0.com" >> .env
           echo AUTH0_CLIENT_ID="HyowYsFA3VSJJoeWde3sKgp1qcxQ0KHn" >> .env
           echo AUTH0_REDIRECT_SCHEME="uz.dersu.assistant.pilot" >> .env
+          echo AUTH0_AUDIENCE="dersu-develop" >> .env
           flutter build appbundle
       - name: Generate What Is New Files
         run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
