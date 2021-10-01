@@ -25,6 +25,13 @@ COPY tsconfig.build.json tsconfig.build.json
 COPY tsconfig.json tsconfig.json
 COPY src src
 
-RUN yarn build
+CMD ["./wait-for", "database:5432", "--", "yarn", "start:dev"]
 
-CMD ["yarn", "start"]
+FROM node:lts-slim AS final
+RUN apt update && apt install -y procps
+RUN apt install -y netcat
+COPY --from=builder /home/dersu-api /home/dersu-api
+WORKDIR /home/dersu-api
+
+RUN yarn build
+CMD ["yarn", "start:prod"]

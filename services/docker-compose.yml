@@ -1,8 +1,9 @@
 version: "3.8"
 services:
   api:
-    build: ./api2
-    command: ./wait-for database:5432 -- yarn start --watch
+    build:
+      context: ./api2
+      target: builder
     depends_on:
       - database
     ports:
