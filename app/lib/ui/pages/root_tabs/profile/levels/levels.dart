@@ -112,10 +112,14 @@ class _LevelsSettingState extends State<LevelsSetting> {
             Center(
               child: buttons.primaryShort(
                 text: LocaleKeys.profile_save_and_close.tr(),
-                onPressed: () {
-                  context.read<ProfileCubit>().setNewAssessments(assessments);
-                  Navigator.of(context).pop();
-                },
+                onPressed: assessments.values.isNotEmpty
+                    ? () {
+                        context
+                            .read<ProfileCubit>()
+                            .setNewAssessments(assessments);
+                        Navigator.of(context).pop();
+                      }
+                    : null,
               ),
             ),
             SizedBox(height: 20)
