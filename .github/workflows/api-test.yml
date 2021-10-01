@@ -14,10 +14,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: services/api2
-          useRollingCache: false
+      - name: Install dependencies
+        working-directory: services/api2
+        run: yarn
+      - name: Test
+        working-directory: services/api2
+        run: yarn run test
       - name: Lint
         working-directory: services/api2
-        run: echo "I NEED TESTS"
+        run: yarn run lint:ci
