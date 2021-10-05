@@ -4,15 +4,15 @@ The Dersu Assistant app is built using [Flutter](https://flutter.dev/) for both 
 
 ## Development
 
-1. Copy `.env.example` to `.env`, fill in the details (`TRANSISTOR_BG_LOCATOR_KEY` is not required for debug builds). 
-2. Run `flutter pub get` and `flutter run`.
+You have to get the configuration file and Android signing key from GCP's Secret Manager. You can do so manually or running the following commands (requires `gcloud` installed and initialised and being able to access the project in GCP, including Secret Manager Secret Accessor role):
 
-
-If you need to locally build an APK:
-
-1. Run `keytool -genkey -v -keystore ~/key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key`
-2. Setup relevant Android variables into your `.env` file.
-3. Run `flutter build apk`.
+```
+gcloud secrets versions access 3 --secret="develop-app-configuration" > app/.env
+gcloud secrets versions access 2 --secret="develop-app-android-jks" > app/android/app/sign/android-key.b64
+base64 -d app/android/app/sign/android-key.b64 > app/android/app/sign/android-key.jks
+flutter pub get
+flutter run
+```
 
 Check the main [README](../readme.md) for more info.
 

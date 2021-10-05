@@ -14,11 +14,19 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: "2.5.0"
-      - name: Write JKS file for signing
-        run: echo $ANDROID_JKS > key.b64 && base64 -d key.b64 > $ANDROID_JKS_PATH
-        env:
-          ANDROID_JKS: ${{ secrets.ANDROID_JKS }}
-          ANDROID_JKS_PATH: "${{ github.workspace }}/android-key.jks"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          export_default_credentials: true
+      - name: Get application configuration
+        run: gcloud secrets versions access 3 --secret="develop-app-configuration" > app/.env
+      - name: Get JKS file for Android signing
+        run: |
+          gcloud secrets versions access 2 --secret="develop-app-android-jks" > key.b64
+          base64 -d key.b64 > app/android/app/sign/android-key.jks
       - name: Get Flutter dependencies
         working-directory: app
         run: flutter pub get
@@ -27,24 +35,7 @@ jobs:
         run: flutter test
       - name: Build app bundle
         working-directory: app
-        run: |
-          touch .env
-          echo ANDROID_MAPS_API_KEY=${{ secrets.ANDROID_MAPS_API_KEY }} >> .env
-          echo IOS_MAPS_API_KEY=${{ secrets.IOS_MAPS_API_KEY }} >> .env
-          echo TRANSISTOR_BG_LOCATOR_KEY=${{ secrets.TRANSISTOR_BG_LOCATOR_KEY }} >> .env
-          echo DERSU_API_BASE_URL=https://develop-api.dersu.uz/personal >> .env
-          echo DERSU_SITE_BASE_URL=https://dersu.uz >> .env
-          echo API_TEMP_KEY="${{ secrets.API_ADMIN_TOKEN_DEVELOP }}" >> .env
-          echo ANDROID_JKS_PATH=${{ github.workspace }}/android-key.jks>> .env
-          echo ANDROID_STORE_PASSWORD=${{ secrets.ANDROID_STORE_PASSWORD }} >> .env
-          echo ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }} >> .env
-          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> .env
-          echo PLAUSIBLE_URL=uz.dersu.assistant.pilot.develop >> .env
-          echo AUTH0_DOMAIN="dersu-develop.eu.auth0.com" >> .env
-          echo AUTH0_CLIENT_ID="HyowYsFA3VSJJoeWde3sKgp1qcxQ0KHn" >> .env
-          echo AUTH0_REDIRECT_SCHEME="uz.dersu.assistant.pilot" >> .env
-          echo AUTH0_AUDIENCE="dersu-develop" >> .env
-          flutter build appbundle
+        run: flutter build appbundle
       - name: Generate What Is New Files
         run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
       - name: Write SA KEY file

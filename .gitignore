@@ -7,3 +7,5 @@ terraform.tfstate.*
 **/android/.gradle
 postgres-data
 .idea/
+*.jks
+android-key.b64
