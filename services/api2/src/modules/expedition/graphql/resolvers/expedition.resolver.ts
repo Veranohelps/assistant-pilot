@@ -48,7 +48,7 @@ export class ExpeditionResolver {
   @ApiAdminTokenProtected()
   async createExpedition(
     @Tx() tx: TransactionManager,
-    @Args('data', joiPipe(expeditionValidationSchema, { stripUnknown: false }))
+    @Args('data', joiPipe(expeditionValidationSchema))
     data: CreateExpeditionInput,
     @Args({ name: 'gpxFile', type: () => GraphQLUpload }) gpxFile: FileUpload,
   ): Promise<IExpedition> {

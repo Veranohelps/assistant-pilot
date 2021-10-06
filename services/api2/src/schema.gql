@@ -14,6 +14,9 @@ type LineStringGeometry {
 
 type Route {
   id: String!
+  originId: String!
+  globalId: String!
+  userId: String!
   name: String!
   coordinate: [LineStringGeometry!]!
   updatedAt: DateTime!

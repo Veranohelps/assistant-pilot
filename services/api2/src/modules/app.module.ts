@@ -5,6 +5,7 @@ import { join } from 'path';
 import { AssessmentModule } from './assessment/assessment.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { CourseModule } from './course/course.module';
 import { DatabaseModule } from './database/database.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { ExpeditionModule } from './expedition/expedition.module';
@@ -12,7 +13,6 @@ import { RouteModule } from './route/route.module';
 import { SkillModule } from './skill/skill.module';
 import { UserModule } from './user/user.module';
 import { WaypointModule } from './waypoint/waypoint.module';
-import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [

@@ -14,6 +14,7 @@ import {
   IExpeditionWaypoint,
 } from '../../expedition/types/expedition-waypoint.type';
 import { ICreateExpedition, IExpedition } from '../../expedition/types/expedition.type';
+import { IRouteOrigin } from '../../route/types/route-origin.type';
 import { ICreateRoute, IRoute } from '../../route/types/route.type';
 import { ICreateSkillCategory, ISkillCategory } from '../../skill/types/skill-category.type';
 import { ICreateSkillLevel, ISkillLevel } from '../../skill/types/skill-level.type';
@@ -61,5 +62,10 @@ export interface IDatabaseTables {
     IAssessmentHistory,
     ICreateAssessmentHistory,
     Partial<Omit<IAssessmentHistory, 'id'>>
+  >;
+  RouteOrigin: Knex.CompositeTableType<
+    IRouteOrigin,
+    IRouteOrigin,
+    Partial<Omit<IRouteOrigin, 'id'>>
   >;
 }

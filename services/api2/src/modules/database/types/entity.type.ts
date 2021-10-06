@@ -20,6 +20,9 @@ export interface IEntityColumn<T> {
     update?: defaultFunction<T>;
     select?: defaultFunction<T>;
   };
+  hooks?: {
+    beforeSelect?: (builder: Knex.QueryBuilder, knex: Knex) => void;
+  };
 }
 
 export interface IRelationEntityColumn {

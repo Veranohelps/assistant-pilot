@@ -97,14 +97,13 @@ class _PrimaryShort extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isDisabled = onPressed == null;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
         decoration: BoxDecoration(
-          color: isDisabled ? BrandColors.grey : BrandColors.primary,
+          color: BrandColors.primary,
           borderRadius: BorderRadius.circular(2),
         ),
         child: Text(

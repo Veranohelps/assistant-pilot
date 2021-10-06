@@ -2,6 +2,7 @@ import 'package:app/logic/api_maps/dictionaries.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
 import 'package:app/logic/model/levels.dart';
+import 'package:app/logic/model/route_origin.dart';
 
 part 'dictionaries_state.dart';
 
@@ -13,8 +14,15 @@ class DictionariesCubit
   final api = DictionariesApi();
 
   void load(_) async {
-    final categories = await api.fetchLevelCategories();
-    emit(DictionariesLoaded(categories: categories));
+    final routeOrigins = await api.fetchRouteOrigins();
+    final dictionaryLevels = await api.fetchLevelCategories();
+
+    emit(
+      DictionariesLoaded(
+        dictionaryLevels: dictionaryLevels,
+        routeOrigins: routeOrigins,
+      ),
+    );
   }
 
   @override

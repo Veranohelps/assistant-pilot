@@ -50,13 +50,13 @@ class _LevelsSettingState extends State<LevelsSetting> {
 
     var items = <LevelsCatalogData>[];
 
-    for (final categorie in dictionariesState.categories) {
-      items.add(categorie);
-      items.addAll(categorie.children);
+    for (final category in dictionariesState.dictionaryLevels) {
+      items.add(category);
+      items.addAll(category.children);
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.profile_my_levels.tr()),
+        title: Text(LocaleKeys.profile_my_levels_name.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -100,7 +100,8 @@ class _LevelsSettingState extends State<LevelsSetting> {
                                 currentLevel,
                                 levelData as Skill,
                               ),
-                              text: LocaleKeys.profile_not_set_up.tr(),
+                              text:
+                                  LocaleKeys.profile_my_levels_not_set_up.tr(),
                               color: BrandColors.grey,
                             ),
                     ),
@@ -111,15 +112,11 @@ class _LevelsSettingState extends State<LevelsSetting> {
             Spacer(),
             Center(
               child: buttons.primaryShort(
-                text: LocaleKeys.profile_save_and_close.tr(),
-                onPressed: assessments.values.isNotEmpty
-                    ? () {
-                        context
-                            .read<ProfileCubit>()
-                            .setNewAssessments(assessments);
-                        Navigator.of(context).pop();
-                      }
-                    : null,
+                text: LocaleKeys.profile_my_levels_save_and_close.tr(),
+                onPressed: () {
+                  context.read<ProfileCubit>().setNewAssessments(assessments);
+                  Navigator.of(context).pop();
+                },
               ),
             ),
             SizedBox(height: 20)

@@ -1,7 +1,8 @@
 import { KnexPostgis } from 'knex-postgis';
-import { TransactionManager } from '../common/utilities/transaction-manager';
-import { IWithColumnsOptions } from '../modules/database/database.service';
-import { IDatabaseTables } from './tables.type';
+import { TransactionManager } from '../modules/common/utilities/transaction-manager';
+import { IWithColumnsOptions } from '../modules/database/knex/extensions.knex';
+import { IEntityColumn } from '../modules/database/types/entity.type';
+import { IDatabaseTables } from '../modules/database/types/tables.type';
 
 declare module 'knex' {
   interface Knex {
@@ -26,6 +27,8 @@ declare module 'knex' {
       whereIn2: WhereIn<TRecord, TResult>;
 
       postgis(): KnexPostgis;
+
+      sTest<T extends keyof ResolveTableType<TRecord>>(col: T, override: IEntityColumn<TRecord>);
     }
   }
 }

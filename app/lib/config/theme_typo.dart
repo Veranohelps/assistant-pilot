@@ -35,7 +35,6 @@ class ThemeTypo {
     fontSize: 15,
     fontWeight: NamedWeight.medium,
     height: 1.4,
-    letterSpacing: -1,
   );
 
   static final h5 = defaultText.copyWith(

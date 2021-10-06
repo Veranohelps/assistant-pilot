@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { gpx } from '@tmcw/togeojson';
@@ -12,6 +11,7 @@ import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { RouteService } from '../../route/services/route.service';
+import { ERouteOrigins } from '../../route/types/route-origin.type';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { ICreateExpeditionDTO, IExpedition, IExpeditionFull } from '../types/expedition.type';
 import { ExpeditionRouteService } from './expedition-route.service';
@@ -26,7 +26,6 @@ export class ExpeditionService {
     private routeService: RouteService,
     private expeditionRouteService: ExpeditionRouteService,
     private expeditionWaypointService: ExpeditionWaypointService,
-    private configService: ConfigService,
   ) {}
 
   async createFromGeojson(
@@ -37,7 +36,7 @@ export class ExpeditionService {
     const gpxDocument = new DOMParser().parseFromString(file.buffer.toString('utf-8'));
     const parsedDocument: IGeoJSON = gpx(gpxDocument);
     const waypoints = await this.waypointService.fromGeoJson(tx, parsedDocument);
-    const route = await this.routeService.fromGeoJson(tx, parsedDocument);
+    const route = await this.routeService.fromGeoJson(tx, ERouteOrigins.DERSU, parsedDocument);
     const [{ id }] = await this.db
       .write(tx)
       .insert({
@@ -70,7 +69,7 @@ export class ExpeditionService {
     const gpxDocument = new DOMParser().parseFromString(gpxString);
     const parsedDocument: IGeoJSON = gpx(gpxDocument);
     const waypoints = await this.waypointService.fromGeoJson(tx, parsedDocument);
-    const route = await this.routeService.fromGeoJson(tx, parsedDocument);
+    const route = await this.routeService.fromGeoJson(tx, ERouteOrigins.DERSU, parsedDocument);
     const [{ id }] = await this.db
       .write(tx)
       .insert({

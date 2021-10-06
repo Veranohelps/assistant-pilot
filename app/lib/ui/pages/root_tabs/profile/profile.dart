@@ -28,7 +28,7 @@ class ProfileTab extends StatelessWidget {
           SizedBox(height: 20),
           Divider(),
           _NavItem(
-            title: LocaleKeys.profile_my_levels.tr(),
+            title: LocaleKeys.profile_my_levels_name.tr(),
             goTo: LevelsSetting(),
           ),
           Spacer(),

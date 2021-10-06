@@ -1,18 +1,25 @@
 {
-  "basis":{
+  "basis": {
     "accept": "Accept",
-    "save": "Guardar",
-    "close": "Cerrar"
+    "save": "Save",
+    "close": "Close"
   },
   "profile": {
     "name": "Profile",
-    "my_levels": "My levels",
-    "not_set_up": "Not set up",
-    "save_and_close": "Save and close configurations",
+    "my_levels": {
+      "name": "My levels",
+      "not_set_up": "Not set up",
+      "save_and_close": "Save and close configurations"
+    },
     "logout": "Logout"
   },
-  "plans": {
-    "name": "Plannning"
+  "planning": {
+    "name": "Planning",
+    "routes": "Routes",
+    "route_details": {
+      "name": "Route Details",
+      "route_name": "Name"
+    }
   },
   "home": {
     "name": "Dersu home"
@@ -20,7 +27,6 @@
   "more": {
     "name": "More"
   },
-  "expeditions": "Expeditions",
   "errors": {
     "fatal": "Fatal error!",
     "unknown": "Unknown error"

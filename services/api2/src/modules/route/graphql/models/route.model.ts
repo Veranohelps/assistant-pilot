@@ -9,6 +9,15 @@ export class RouteModel implements IRoute {
   id!: string;
 
   @Field()
+  originId!: string;
+
+  @Field()
+  globalId!: string;
+
+  @Field()
+  userId!: string;
+
+  @Field()
   name!: string;
 
   @Field(() => [LineStringGeometryModel])

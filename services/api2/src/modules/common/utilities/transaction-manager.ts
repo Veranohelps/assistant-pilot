@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { knexClient } from '../../database/knex/client.knex';
+import { knexClient } from '../../database/knex/init-knex';
 
 export class TransactionManager {
   private rollbacks: (() => Promise<any>)[];

@@ -2,8 +2,9 @@ import dottie from 'dottie';
 import { Knex } from 'knex';
 import { DatabaseError } from '../../common/errors/database.error';
 import { entityMap } from '../database.entity';
+import { TEntityRecord } from '../types/database.type';
 import { IDatabaseTables } from '../types/tables.type';
-import { knexClient } from './client.knex';
+import { knexClient } from './init-knex';
 
 const nest = (data: any) => {
   if (!data) return data;
@@ -45,7 +46,15 @@ const beforeInsert = (builder: any) => {
 const beforeSelect = (builder: any) => {
   if (!(builder._method === 'select' || builder._method === 'first')) return;
 
-  const { hooks } = entityMap[builder._single.table as keyof IDatabaseTables];
+  const entityMap = builder.queryContext().entityMap as TEntityRecord;
+
+  const { hooks, columns } = entityMap[builder._single.table as keyof IDatabaseTables];
+
+  Object.values(columns).forEach((col) => {
+    if (col.select !== false) {
+      col.hooks?.beforeSelect?.(builder, knexClient);
+    }
+  });
 
   hooks?.beforeSelect?.(builder, knexClient);
 };

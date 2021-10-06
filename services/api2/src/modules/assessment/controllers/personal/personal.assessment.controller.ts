@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
-import { joiPipe } from '../../../common/pipes/validation.pipe';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { IUser } from '../../../user/types/user.type';
@@ -19,7 +19,7 @@ export class PersonalAssessmentController {
   @HttpCode(HttpStatus.CREATED)
   async submitAssessment(
     @Tx() tx: TransactionManager,
-    @Body(joiPipe(createAssessmentValidationSchema)) payload: ICreateAssessmentDTO,
+    @ParsedBody(createAssessmentValidationSchema) payload: ICreateAssessmentDTO,
     @UserData() user: IUser,
   ) {
     const result = await this.assessmentService.create(tx, user.id, payload);

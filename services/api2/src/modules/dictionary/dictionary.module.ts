@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { RouteModule } from '../route/route.module';
 import { SkillModule } from '../skill/skill.module';
 import { PersonalDictionaryController } from './controllers/personal/personal.dictionary.controller';
-import { PersonalSkillDictionaryController } from './controllers/personal/personal.skill.dictionary.controller';
+import { DictionaryService } from './services/dictionary.service';
 
 @Module({
-  imports: [SkillModule],
-  controllers: [PersonalDictionaryController, PersonalSkillDictionaryController],
+  imports: [SkillModule, RouteModule],
+  controllers: [PersonalDictionaryController],
+  providers: [DictionaryService],
 })
 export class DictionaryModule {}

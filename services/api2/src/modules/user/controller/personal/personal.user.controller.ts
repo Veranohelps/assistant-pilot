@@ -1,9 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Patch } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Patch } from '@nestjs/common';
 import { UserLevelService } from '../../../assessment/services/user-level.service';
 import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
-import { joiPipe } from '../../../common/pipes/validation.pipe';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { UserService } from '../../services/user.service';
@@ -19,7 +19,7 @@ export class PersonalUserController {
   @HttpCode(HttpStatus.CREATED)
   async completeRegistration(
     @Tx() tx: TransactionManager,
-    @Body(joiPipe(completeUserRegistrationValidationSchema)) payload: ICompleteUserRegistrationDTO,
+    @ParsedBody(completeUserRegistrationValidationSchema) payload: ICompleteUserRegistrationDTO,
     @UserData() user: IUser,
   ) {
     const updatedUser = await this.userService.completeRegistration(tx, user.id, payload);

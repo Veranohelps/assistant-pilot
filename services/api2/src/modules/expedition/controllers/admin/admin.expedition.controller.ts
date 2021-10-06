@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   HttpCode,
@@ -10,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
-import { joiPipe } from '../../../common/pipes/validation.pipe';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { expeditionValidationSchema } from '../../expedition.validation';
@@ -29,7 +28,7 @@ export class AdminExpeditionController {
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Tx() tx: TransactionManager,
-    @Body(joiPipe(expeditionValidationSchema)) payload: ICreateExpeditionDTO,
+    @ParsedBody(expeditionValidationSchema) payload: ICreateExpeditionDTO,
   ) {
     const expedition = await this.expeditionService.createFromGeojson(tx, payload, file);
 

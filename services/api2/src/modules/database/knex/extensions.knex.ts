@@ -20,7 +20,13 @@ function withColumns<T extends keyof IDatabaseTables>(
   tableName: T,
   options?: IWithColumnsOptions<T>,
 ) {
-  const { columns, relations = {} } = cloneDeep(entityMap[tableName]);
+  const clonedEntityMap = cloneDeep(entityMap);
+  const queryCtx = this.queryContext() ?? {};
+
+  queryCtx['entityMap'] = clonedEntityMap;
+  this.queryContext(queryCtx);
+
+  const { columns, relations = {} } = clonedEntityMap[tableName];
 
   if (options?.overrides) {
     merge(columns, options.overrides);
@@ -41,9 +47,9 @@ function withColumns<T extends keyof IDatabaseTables>(
     });
   });
 
-  if (columns['deletedAt']) {
-    this.andWhere('deletedAt', null);
-  }
+  // if (columns['deletedAt']) {
+  //   this.andWhere('deletedAt', null);
+  // }
 
   Object.keys(relations).forEach((rel) => {
     const entityColumn = relations[rel];
