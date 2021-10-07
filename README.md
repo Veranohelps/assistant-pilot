@@ -15,7 +15,7 @@ Implemented through [Github Actions](https://github.com/dersu-uz/assistant-pilot
 ### Mobile application
 
 - Run tests on commits to any branch.
-- Build and deploy to Google Play's alpha branch triggering a manual run of the [Android Release workflow](https://github.com/dersu-uz/assistant-pilot/actions/workflows/android-release.yml) using the `develop` branch.
+- For releases read [mobile app README instructions](./app).
 
 ### Web services
 

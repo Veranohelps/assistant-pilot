@@ -1,0 +1,46 @@
+name: iOS Build
+# on: workflow_dispatch
+on:
+  push:
+    paths:
+      - "app/**"
+      - ".github/workflows/ios-build.yml"
+jobs:
+  test-build:
+    runs-on: macOS-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "2.5.0"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          export_default_credentials: true
+      - name: Get application configuration
+        run: gcloud secrets versions access 3 --secret="develop-app-configuration" > app/.env
+      - name: Get Flutter dependencies
+        working-directory: app
+        run: flutter pub get
+      - name: Test
+        working-directory: app
+        run: flutter test
+      - name: Generate What Is New Files
+        run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
+      - name: Build unsigned iOS bundle
+        working-directory: app
+        run: flutter build ios --release --no-codesign
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dersu-ios-unsigned-app
+          path: app/build/ios/iphoneos/*.app
