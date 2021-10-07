@@ -1,13 +1,17 @@
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/route/route_cubit.dart';
+import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
+import 'package:app/ui/pages/route_detatils/map.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
 
 final dateFormat = DateFormat.yMMMd();
+final dateFormat2 = DateFormat.yMMMMEEEEd().add_jm();
 
 class RouteDetails extends StatelessWidget {
   const RouteDetails({
@@ -21,6 +25,7 @@ class RouteDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var selectedTime = context.watch<TimeFilterCubit>().state;
     return Scaffold(
       appBar: AppBar(
         title: Text(route.name),
@@ -29,7 +34,7 @@ class RouteDetails extends StatelessWidget {
         create: (_) => RouteCubit()..getRoute(route.url),
         child: Builder(
           builder: (context) {
-            return BlocBuilder<RouteCubit, DersuRoute?>(
+            return BlocBuilder<RouteCubit, DersuRouteFull?>(
               builder: (_, route) {
                 final dectionary = context.watch<DictionariesCubit>().state;
 
@@ -39,15 +44,21 @@ class RouteDetails extends StatelessWidget {
                 return ListView(
                   padding: EdgeInsets.all(10),
                   children: [
-                    ...buildBlock('Origin', route.originId),
-                    ...buildBlock(
-                      'Origin description',
-                      dectionary.findRouteById(route.originId).description,
-                    ),
                     ...buildBlock('Name', route.name),
-                    ...buildBlock('id', route.id),
-                    ...buildBlock(
-                        'updatedAt', dateFormat.format(route.updatedAt)),
+                    SizedBox(
+                      height: 200,
+                      child: StaticMap(route: route),
+                    ),
+                    SizedBox(height: 15),
+                    Center(
+                      child: buttons.primaryShort(
+                        onPressed: () => setDate(context),
+                        label: 'time change',
+                        text: selectedTime == null
+                            ? 'no date'
+                            : dateFormat2.format(selectedTime),
+                      ),
+                    ),
                   ],
                 );
               },
@@ -65,5 +76,30 @@ class RouteDetails extends StatelessWidget {
       Text(value, style: ThemeTypo.p0),
       SizedBox(height: 10),
     ];
+  }
+
+  void setDate(BuildContext context) async {
+    var today = DateTime.now();
+    var day = await showDatePicker(
+      context: context,
+      initialDate: today,
+      firstDate: today,
+      lastDate: today.add(Duration(
+        days: 31,
+      )),
+    );
+
+    if (day != null) {
+      final time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: 8, minute: 0),
+      );
+
+      if (time != null) {
+        final dayTime =
+            DateTime(day.year, day.month, day.day, time.hour, time.minute);
+        context.read<TimeFilterCubit>().setNewTime(dayTime);
+      }
+    }
   }
 }
