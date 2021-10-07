@@ -1,8 +1,8 @@
 import 'package:app/logic/api_maps/dictionaries.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
-import 'package:app/logic/model/levels.dart';
-import 'package:app/logic/model/route_origin.dart';
+import 'package:app/logic/models/levels.dart';
+import 'package:app/logic/models/route_origin.dart';
 
 part 'dictionaries_state.dart';
 

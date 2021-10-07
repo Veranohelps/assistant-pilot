@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:app/logic/models/geo_json.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'package:app/logic/model/geo_json.dart';
 
 part 'route.g.dart';
 

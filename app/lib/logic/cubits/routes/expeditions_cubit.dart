@@ -1,7 +1,7 @@
 import 'package:app/logic/api_maps/routes.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/models/route.dart';
 
 export 'package:provider/provider.dart';
 

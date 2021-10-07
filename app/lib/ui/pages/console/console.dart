@@ -4,7 +4,7 @@ import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/config/brand_theme.dart';
 import 'package:app/config/get_it_config.dart';
-import 'package:app/logic/model/console_message.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 

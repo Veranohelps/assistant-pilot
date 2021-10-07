@@ -45,7 +45,7 @@ class PlausibleApi extends ApiMap {
   }
 
   Future<BaseOptions> get options async {
-    var userAgent = '';
+    var userAgent = getIt<DeviceInfoService>().deviceInfoString();
 
     if (Platform.isAndroid) {
       userAgent =
@@ -82,8 +82,8 @@ class PlausibleApi extends ApiMap {
         "p":
             "{\"action\": \"$action\", \"label\": \"$label\", \"value\": \"$value\"}",
         "r": null,
-        "w": getIt<Analitics>().screenSize,
-        "h": 1
+        "w": getIt<DeviceInfoService>().device?.screenWidth.toInt() ?? 0,
+        "h": getIt<DeviceInfoService>().device?.screenHeight.toInt() ?? 0,
       }),
     );
   }

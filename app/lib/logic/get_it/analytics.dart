@@ -7,11 +7,6 @@ class Analitics {
   }
 
   final plausibleApi = PlausibleApi();
-  int? screenSize;
-
-  void init(double width) {
-    screenSize = width.toInt();
-  }
 
   void _sendCustomEvent({
     required CustomEvents type,

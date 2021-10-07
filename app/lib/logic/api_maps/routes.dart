@@ -1,5 +1,5 @@
 import 'package:app/logic/api_maps/dersu_api.dart';
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/models/route.dart';
 
 final routesUrl = '/route';
 

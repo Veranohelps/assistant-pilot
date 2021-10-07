@@ -1,5 +1,5 @@
 import 'package:app/logic/api_maps/dersu_api.dart';
-import 'package:app/logic/model/profile.dart';
+import 'package:app/logic/models/profile.dart';
 
 const mockKey = 'UserMockKey';
 
@@ -37,7 +37,7 @@ class UserApi extends PrivateDersuApi {
 
   Future<FilledProfile> setNewLevels({required List<String> levels}) async {
     var client = await getClient();
-    
+
     await client.post(assessmentSubmitUrl, data: {"levels": levels});
     client.close();
 

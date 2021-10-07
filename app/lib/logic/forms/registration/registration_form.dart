@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
-import 'package:app/logic/model/profile.dart';
+import 'package:app/logic/models/profile.dart';
 import 'package:cubit_form/cubit_form.dart';
 
 class RegistrationFormCubit extends FormCubit {

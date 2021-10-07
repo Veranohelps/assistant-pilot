@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:app/logic/model/geo_json.dart';
+import 'package:app/logic/models/geo_json.dart';
 
 void main() {
   final longitude = 1.0;

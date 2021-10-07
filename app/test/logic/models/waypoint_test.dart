@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:app/logic/model/waypoint.dart';
+import 'package:app/logic/models/waypoint.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:app/logic/model/geo_json.dart';
+import 'package:app/logic/models/geo_json.dart';
 
 void main() {
   Map<String, dynamic> json = {

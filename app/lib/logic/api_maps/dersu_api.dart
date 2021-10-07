@@ -38,12 +38,20 @@ abstract class PrivateDersuApi extends ApiMap {
 
   @protected
   Future<BaseOptions> get options async {
-    var authToken = getIt<AuthTokenService>();
+    final authToken = getIt<AuthTokenService>();
 
     assert(authToken.hasToken, 'no auth token');
+
+    final deviceInfo = getIt<DeviceInfoService>();
+
     return BaseOptions(
       baseUrl: FlutterConfig.get('DERSU_API_BASE_URL'),
-      headers: {"Authorization": 'Bearer ${authToken.accessToken}'},
+      headers: {
+        "Authorization": 'Bearer ${authToken.accessToken}',
+        'x-dersu-language': deviceInfo.locale?.toString(),
+        'x-dersu-region': 'xxx',
+        'x-dersu-client-info': deviceInfo.deviceInfoString(),
+      },
     );
   }
 }

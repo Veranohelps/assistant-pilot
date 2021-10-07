@@ -23,7 +23,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         return NotAuthenticated();
       },
       (token) {
-        print(token.accessToken);
         getIt<Analitics>().sendCubitEvent(
             action: 'Cubit: Silent login: User is successfully authenticated');
         getIt<AuthTokenService>().tokenResponse = token;

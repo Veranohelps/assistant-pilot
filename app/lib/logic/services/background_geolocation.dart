@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:app/config/get_it_config.dart';
-import 'package:app/logic/model/console_message.dart';
-import 'package:app/logic/model/waypoint.dart';
+import 'package:app/logic/models/console_message.dart';
+import 'package:app/logic/models/waypoint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;

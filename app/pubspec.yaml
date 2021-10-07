@@ -41,6 +41,7 @@ dependencies:
   flutter_appauth: 1.1.0
   flutter_secure_storage: 4.2.1
   cubit_form: 1.0.19-nullsafety.0
+  device_info_plus: 3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:app/logic/model/serialization.dart';
+import 'package:app/logic/models/serialization.dart';
 
 part 'profile.g.dart';
 
@@ -134,6 +134,4 @@ class FilledProfile extends Profile {
         isRegistrationFinished,
         updatedAt,
       ];
-
-
 }

@@ -1,6 +1,6 @@
 import 'package:app/app.dart';
 import 'package:app/config/localization.dart';
-import 'package:app/config/analytics_config.dart';
+import 'package:app/config/device_info_wrapper.dart';
 import 'package:app/ui/pages/error/error.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,7 +51,7 @@ class _MainState extends State<_Main> {
   @override
   Widget build(BuildContext context) {
     return BlocAndProviderConfig(
-      child: AnalyticsConfig(
+      child: DeviceInfoWrapper(
         child: MaterialApp(
           locale: context.locale,
           supportedLocales: context.supportedLocales,

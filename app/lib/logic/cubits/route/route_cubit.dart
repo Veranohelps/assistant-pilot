@@ -1,5 +1,5 @@
 import 'package:app/logic/api_maps/routes.dart';
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/models/route.dart';
 import 'package:bloc/bloc.dart';
 
 class RouteCubit extends Cubit<DersuRoute?> {

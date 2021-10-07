@@ -2,7 +2,7 @@ import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
-import 'package:app/logic/model/levels.dart';
+import 'package:app/logic/models/levels.dart';
 import 'package:app/ui/components/brand_bottom_sheet/brand_bottom_sheet.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/helpers/modals.dart';

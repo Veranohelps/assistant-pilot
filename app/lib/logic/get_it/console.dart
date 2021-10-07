@@ -1,5 +1,5 @@
 import 'package:app/config/hive_config.dart';
-import 'package:app/logic/model/console_message.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';

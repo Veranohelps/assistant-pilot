@@ -1,5 +1,5 @@
 import 'package:app/config/get_it_config.dart';
-import 'package:app/logic/model/console_message.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:package_info/package_info.dart';

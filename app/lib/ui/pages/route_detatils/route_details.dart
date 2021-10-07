@@ -1,7 +1,7 @@
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/route/route_cubit.dart';
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';

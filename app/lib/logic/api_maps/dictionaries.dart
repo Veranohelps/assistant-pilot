@@ -1,7 +1,7 @@
 import 'package:app/logic/api_maps/dersu_api.dart';
-import 'package:app/logic/model/levels.dart';
-import 'package:app/logic/model/url.dart';
-import 'package:app/logic/model/route_origin.dart';
+import 'package:app/logic/models/levels.dart';
+import 'package:app/logic/models/url.dart';
+import 'package:app/logic/models/route_origin.dart';
 
 final dictionaryUrl = '/dictionary';
 

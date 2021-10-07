@@ -1,7 +1,7 @@
 import 'package:app/config/brand_theme.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
-import 'package:app/logic/model/route.dart';
+import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_card/brand_card.dart';
 import 'package:app/ui/components/loader/loader.dart';
 import 'package:app/ui/pages/route_detatils/route_details.dart';
