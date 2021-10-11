@@ -13,7 +13,7 @@ void main() {
     "radiusInMeters": 100,
     "coordinate": {
       "type": "Point",
-      "coordinates": [-0.465726, 42.724505, 2088]
+      "coordinates": [-0.465726, 42.724505, 2088.0]
     },
     "updatedAt": "2021-09-09T13:54:50.909Z"
   };
@@ -27,11 +27,26 @@ void main() {
       expect(waypoint.type, json['type']);
       expect(waypoint.radiusInMeters, json['radiusInMeters']);
       expect(
-          waypoint.coordinate.longitude, json['coordinate']["coordinates"][0]);
+        identical(
+          waypoint.coordinate.longitude,
+          json['coordinate']["coordinates"][0],
+        ),
+        isTrue,
+      );
       expect(
-          waypoint.coordinate.latitude, json['coordinate']!["coordinates"][1]);
+        identical(
+          waypoint.coordinate.latitude,
+          json['coordinate']["coordinates"][1],
+        ),
+        isTrue,
+      );
       expect(
-          waypoint.coordinate.altitude, json['coordinate']["coordinates"][2]);
+        identical(
+          waypoint.coordinate.altitude,
+          json['coordinate']["coordinates"][2],
+        ),
+        isTrue,
+      );
     });
 
     test('toJson', () {

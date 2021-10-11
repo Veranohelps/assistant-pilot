@@ -17,7 +17,6 @@ class NotificationService {
     androidPlatformChannelSpecifics = AndroidNotificationDetails(
       packageInfo.packageName,
       packageInfo.appName,
-      '',
       importance: Importance.max,
       priority: Priority.high,
     );

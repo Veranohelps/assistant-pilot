@@ -56,7 +56,6 @@ class AuthenticationRepository {
       scopes: ['offline_access'],
     ));
 
-    print(result!.accessToken);
     return Option.of(result);
   }
 }

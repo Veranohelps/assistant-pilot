@@ -33,8 +33,6 @@ class UserApi extends PrivateDersuApi {
     return await fetch() as FilledProfile;
   }
 
-  final hasLoger = true;
-
   Future<FilledProfile> setNewLevels({required List<String> levels}) async {
     var client = await getClient();
 

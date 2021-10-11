@@ -22,7 +22,7 @@ jobs:
           service_account_email: ${{ secrets.GCP_EMAIL }}
           export_default_credentials: true
       - name: Get application configuration
-        run: gcloud secrets versions access 3 --secret="develop-app-configuration" > app/.env
+        run: gcloud secrets versions access 4 --secret="develop-app-configuration" > app/.env
       - name: Get JKS file for Android signing
         run: |
           gcloud secrets versions access 2 --secret="develop-app-android-jks" > key.b64

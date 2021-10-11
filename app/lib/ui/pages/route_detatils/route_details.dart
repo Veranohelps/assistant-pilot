@@ -4,7 +4,7 @@ import 'package:app/logic/cubits/route/route_cubit.dart';
 import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
-import 'package:app/ui/pages/route_detatils/map.dart';
+import 'package:app/ui/components/maps/static_map.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -46,8 +46,10 @@ class RouteDetails extends StatelessWidget {
                   children: [
                     ...buildBlock('Name', route.name),
                     SizedBox(
-                      height: 200,
-                      child: StaticMap(route: route),
+                      height: 400,
+                      child: StaticMap(
+                        route: route,
+                      ),
                     ),
                     SizedBox(height: 15),
                     Center(

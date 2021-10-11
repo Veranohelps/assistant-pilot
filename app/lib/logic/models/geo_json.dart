@@ -84,14 +84,14 @@ class PointCoordinates extends Equatable {
     required this.altitude,
   });
 
-  final num longitude;
-  final num latitude;
-  final num altitude;
+  final double longitude;
+  final double latitude;
+  final double altitude;
 
   factory PointCoordinates.fromJson(List list) => PointCoordinates(
-        longitude: list[0] as num,
-        latitude: list[1] as num,
-        altitude: list[2] as num,
+        longitude: (list[0] as num).toDouble(),
+        latitude: (list[1] as num).toDouble(),
+        altitude: (list[2] as num).toDouble(),
       );
 
   List<num> toJson() => [longitude, latitude, altitude];
