@@ -125,6 +125,76 @@ Returns all possible Dersu route origins
 }
 ```
 
+### Get weather prediction for a route
+
+This should return weather prediction for a routeId
+\
+\
+`/personal/route/:routeId/weather`
+
+#### Route Parameters
+
+| field   | description     |
+| ------- | --------------- |
+| routeId | id of the route |
+
+#### URL Parameters
+
+| field      | required | description                                                                       |
+| ---------- | -------- | --------------------------------------------------------------------------------- |
+| dateTime   | false    | start date for the prediction in UTC format (ISO 8601), default: current time     |
+
+#### Sample response
+
+- Array of "weather points of interest" in the form of altitude ranges. At least one guaranteed.
+- `forcast` is an array of weather data by date time. Amount returned TBD.
+
+```
+[
+    {
+        "range": "0-999",
+        "sunriseDateTime": "2021-10-11T08:03:00.000000",
+        "sunsetDateTime": "2021-10-11T19:24:00.000000",
+        "forecast":
+        [
+            {
+                "dateTime": "2021-10-11T00:00:00.000000",
+                "temperature": 13.32,
+                "feltTemperature": 10.21,
+                "precipitation": 0.00,
+                "precipitationProbability": 0,
+                "visibility": 17450,
+                "lowClouds": 0,
+                "midClouds": 0,
+                "hiClouds": 10,
+                "totalCloudCover": 3,
+                "sunshineTime": 0,
+                "windSpeed": 2.69,
+                "windGust": 4.08,
+                "isDay": 0,
+                "pictoCode": 5
+            }
+        ]
+    }
+]
+```
+
+
 #### Notes
 
 - As the globalId is an implementation detail for routes, it is omitted from all client API responses
+- Units for the predicion variables:
+  
+  ```
+        "temperature": "C",
+        "precipitation": "mm",
+        "precipitationProbability": "percent",
+        "visibility": "m",
+        "cloudCover": "percent",
+        "sunshineTime": "minutes"
+        "windSpeed": "ms-1",
+        "windGust": "ms-1",
+        "isDay": "0-night, 1-day",
+        "pictoCode": "1-35 codes, differents for night/day, i.e. 1 for isDay=0 is a different image than 1 for isDay=1"
+  ```
+- As we are using Meteoblue API, for forecast days 8 – 14, you get trend data. 1h data is for technical simplification only, there is no skill in 1h 14 day forecasts.

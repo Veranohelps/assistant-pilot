@@ -7,14 +7,20 @@ import { AppQuery } from '../../../common/utilities/app-query';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { IUser } from '../../../user/types/user.type';
-import { getRoutesQueryValidationSchema } from '../../route.validation-schema';
+import {
+  getDateQueryValidationSchema,
+  getRoutesQueryValidationSchema,
+} from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
+import { WeatherService } from '../../services/weather.service';
 import { IGetRoutesUrlParameters } from '../../types/route.type';
+import { IGetRouteWeatherUrlParameters } from '../../types/wheather-prediction.type';
+import MOCKED_RESPONSE = require('../../types/weather-prediction.json');
 
 @Controller('personal/route')
 @JwtProtected()
 export class PersonalRouteController {
-  constructor(private routeService: RouteService) {}
+  constructor(private routeService: RouteService, private weatherService: WeatherService) {}
 
   @Get('')
   @HttpCode(HttpStatus.OK)
@@ -32,7 +38,24 @@ export class PersonalRouteController {
   @HttpCode(HttpStatus.CREATED)
   async getRoute(@Tx() tx: TransactionManager, @Param('routeId') id: string) {
     const route = await this.routeService.findOne(tx, id);
-
     return successResponse('fetch route success', { route });
+  }
+
+  @Get(':routeId/weather')
+  @HttpCode(HttpStatus.OK)
+  async getRouteWeather(
+    @Tx() tx: TransactionManager,
+    @Param('routeId') id: string,
+    @ParsedUrlParameters(getDateQueryValidationSchema)
+    urlParameters: AppQuery<IGetRouteWeatherUrlParameters>,
+  ) {
+    const route = await this.routeService.findOne(tx, id);
+    const longitude = route.coordinate.coordinates[0][0];
+    const latitude = route.coordinate.coordinates[0][1];
+    const altitude = route.coordinate.coordinates[0][2];
+
+    //TODO: Call to weather service that makes the API call and parse the response
+    //Mocked response
+    return successResponse('fetch weather forecast success', MOCKED_RESPONSE);
   }
 }
