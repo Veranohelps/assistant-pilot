@@ -1,4 +1,5 @@
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
+import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
@@ -22,9 +23,10 @@ class BlocAndProviderConfig extends StatelessWidget {
         ChangeNotifierProvider<BackgroundGeolocation>(
             lazy: false, create: (_) => BackgroundGeolocation()),
         BlocProvider(lazy: false, create: (_) => auth),
-        BlocProvider(lazy: false, create: (_) => RoutesCubit(auth)),
+        BlocProvider(create: (_) => RoutesCubit()),
         BlocProvider(lazy: false, create: (_) => ProfileCubit(auth)),
         BlocProvider(lazy: false, create: (_) => dictionaries),
+        BlocProvider(lazy: false, create: (_) => DashboardCubit(auth)),
         BlocProvider(create: (_) => TimeFilterCubit()),
       ],
       child: child!,

@@ -9,10 +9,6 @@ import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
 } from '../../expedition/types/expedition-route.type';
-import {
-  ICreateExpeditionWaypoint,
-  IExpeditionWaypoint,
-} from '../../expedition/types/expedition-waypoint.type';
 import { ICreateExpedition, IExpedition } from '../../expedition/types/expedition.type';
 import { IRouteOrigin } from '../../route/types/route-origin.type';
 import { ICreateRoute, IRoute } from '../../route/types/route.type';
@@ -29,11 +25,6 @@ export interface IDatabaseTables {
     IExpedition,
     ICreateExpedition,
     Partial<Omit<IExpedition, 'id'>>
-  >;
-  ExpeditionWaypoint: Knex.CompositeTableType<
-    IExpeditionWaypoint,
-    ICreateExpeditionWaypoint,
-    Partial<Omit<IExpeditionWaypoint, 'id'>>
   >;
   ExpeditionRoute: Knex.CompositeTableType<
     IExpeditionRoute,

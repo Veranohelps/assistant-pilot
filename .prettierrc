@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": ["**.openapi.json"],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import 'package:app/config/get_it_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/get_it/analytics.dart';
 import 'package:app/ui/components/brand_tab_bar/brand_tab_bar.dart';
+import 'package:app/ui/pages/root_tabs/dashboard/dashboard.dart';
 import 'package:app/ui/pages/root_tabs/more/more.dart';
 import 'package:app/ui/pages/root_tabs/profile/profile.dart';
 import 'package:app/ui/pages/root_tabs/routes/routes.dart';
@@ -9,8 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
-import 'package:app/utils/extensions/extensions.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class RootPage extends StatefulWidget {
 
 final tabsData = [
   [
-    LocaleKeys.home_name,
+    LocaleKeys.dashboard_name,
     UniconsLine.home_alt,
   ],
   [
@@ -73,10 +72,7 @@ class _RootPageState extends State<RootPage>
         child: TabBarView(
           controller: tabController,
           children: [
-            _EmptyTab(
-              tabName: LocaleKeys.home_name.tr(),
-              icon: UniconsLine.home,
-            ),
+            Dashboard(),
             ProfileTab(),
             RoutesTab(),
             More(),
@@ -95,38 +91,4 @@ class ChangeTab {
   final ValueChanged<int> onPress;
 
   ChangeTab(this.onPress);
-}
-
-class _EmptyTab extends StatelessWidget {
-  const _EmptyTab({
-    Key? key,
-    required this.tabName,
-    required this.icon,
-  }) : super(key: key);
-
-  final String tabName;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(tabName),
-      ),
-      body: Center(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 100,
-          ),
-          Text(
-            tabName,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-          ),
-        ],
-      )),
-    );
-  }
 }

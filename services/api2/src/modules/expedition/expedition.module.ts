@@ -6,21 +6,16 @@ import { AdminExpeditionController } from './controllers/admin/admin.expedition.
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';
 import { ExpeditionResolver } from './graphql/resolvers/expedition.resolver';
 import { ExpeditionRouteService } from './services/expedition-route.service';
-import { ExpeditionWaypointService } from './services/expedition-waypoint.service';
 import { ExpeditionService } from './services/expedition.service';
 
 @Module({
   imports: [
-    DatabaseModule.forFeature(['Expedition', 'ExpeditionRoute', 'ExpeditionWaypoint']),
+    DatabaseModule.forFeature(['Expedition', 'ExpeditionRoute']),
     WaypointModule,
     RouteModule,
   ],
-  providers: [
-    ExpeditionService,
-    ExpeditionWaypointService,
-    ExpeditionRouteService,
-    ExpeditionResolver,
-  ],
   controllers: [AdminExpeditionController, PersonalExpeditionController],
+  providers: [ExpeditionService, ExpeditionRouteService, ExpeditionResolver],
+  exports: [ExpeditionService],
 })
 export class ExpeditionModule {}

@@ -1,41 +1,41 @@
 import { Knex } from 'knex';
 import { IPointGeometry } from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
-import { IWaypoint } from '../../waypoint/types/waypoint.type';
+import { IRoute, IRouteSlim } from '../../route/types/route.type';
+import { ICreateExpeditionRoutesDTO } from './expedition-route.type';
 
 export interface IExpedition {
   id: string;
+  userId: string | null;
   name: string;
   description: string | null;
   coordinate: IPointGeometry;
   startDateTime: Date;
-  endDateTime: Date;
   meta?: IDefaultMeta;
   createdAt?: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
 }
 
-export interface ICreateExpeditionDTO {
-  name: string;
-  description?: string | null;
-  longitude: number;
-  latitude: number;
-  altitude?: number | null;
-  startDateTime: Date;
-  endDateTime: Date;
-}
-
 export interface ICreateExpedition {
   name: string;
+  userId?: string;
   description?: string | null;
   startDateTime: Date;
-  endDateTime: Date;
   coordinate: Knex.Raw;
   meta?: IDefaultMeta;
 }
 
+export interface ICreateExpeditionDTO {
+  name: string;
+  description?: string | null;
+  routes: ICreateExpeditionRoutesDTO['routes'];
+}
+
 export interface IExpeditionFull extends IExpedition {
-  routes: { id: string; url: string }[];
-  waypoints: IWaypoint[];
+  routes: IRoute[];
+}
+
+export interface IExpeditionFullSlim extends IExpedition {
+  routes: IRouteSlim[];
 }

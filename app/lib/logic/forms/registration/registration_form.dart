@@ -23,7 +23,6 @@ class RegistrationFormCubit extends FormCubit {
     );
     isSubscribedToNewsletter = FieldCubit(
       initalValue: true,
-      validations: [],
     );
     addFields([
       firstName,

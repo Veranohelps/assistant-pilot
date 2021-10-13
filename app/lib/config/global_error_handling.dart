@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'dart:ui';
 
@@ -39,6 +41,11 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) {
               stackTrace: stack,
             )),
           );
+      developer.log(
+        'log me',
+        name: 'error',
+        error: jsonEncode(stack),
+      );
     },
   );
 }

@@ -1,8 +1,11 @@
 import { IDefaultMeta } from '../../database/types/database.type';
+import { IRoute, IRouteSlim } from '../../route/types/route.type';
 
 export interface IExpeditionRoute {
   expeditionId: string;
   routeId: string;
+  startDateTime: Date;
+  durationInHours: number | null;
   meta: IDefaultMeta;
   createdAt: Date;
   updatedAt: Date;
@@ -11,9 +14,23 @@ export interface IExpeditionRoute {
 export interface ICreateExpeditionRoute {
   expeditionId: string;
   routeId: string;
+  startDateTime: Date;
+  durationInHours?: number;
   meta?: IDefaultMeta;
 }
 
-export interface IExpeditionRouteFull extends IExpeditionRoute {
-  routes: { id: string; url: string }[];
+export interface ICreateExpeditionRoutesDTO {
+  routes: {
+    routeId: string;
+    startDateTime: Date;
+    durationInHours?: number;
+  }[];
+}
+
+export interface IExpeditionRouteWithRouteSlim extends IExpeditionRoute {
+  route: IRouteSlim;
+}
+
+export interface IExpeditionRouteWithRoute extends IExpeditionRoute {
+  route: IRoute;
 }

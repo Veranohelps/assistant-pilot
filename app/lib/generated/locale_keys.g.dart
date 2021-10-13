@@ -18,8 +18,8 @@ abstract class  LocaleKeys {
   static const planning_route_details_route_name = 'planning.route_details.route_name';
   static const planning_route_details = 'planning.route_details';
   static const planning = 'planning';
-  static const home_name = 'home.name';
-  static const home = 'home';
+  static const dashboard_name = 'dashboard.name';
+  static const dashboard = 'dashboard';
   static const more_name = 'more.name';
   static const more = 'more';
   static const errors_fatal = 'errors.fatal';

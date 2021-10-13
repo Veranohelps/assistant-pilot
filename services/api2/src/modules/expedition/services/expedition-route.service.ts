@@ -2,17 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import DataLoader from 'dataloader';
 import { ensureArray } from '../../common/utilities/ensure-array';
-import {
-  generateGroupRecord,
-  generateGroupRecord2,
-  generateRecord2,
-} from '../../common/utilities/generate-record';
+import { generateGroupRecord2, generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { RouteService } from '../../route/services/route.service';
 import { IRoute } from '../../route/types/route.type';
-import { IExpeditionRoute, IExpeditionRouteFull } from '../types/expedition-route.type';
+import {
+  ICreateExpeditionRoutesDTO,
+  IExpeditionRoute,
+  IExpeditionRouteWithRoute,
+  IExpeditionRouteWithRouteSlim,
+} from '../types/expedition-route.type';
 
 @Injectable()
 export class ExpeditionRouteService {
@@ -26,14 +27,16 @@ export class ExpeditionRouteService {
   async addRoutes(
     tx: TransactionManager,
     expeditionId: string,
-    routeIds: string[],
+    payload: ICreateExpeditionRoutesDTO,
   ): Promise<IExpeditionRoute[]> {
     const expeditionRoutes = await this.db
       .write(tx)
       .insert(
-        routeIds.map((routeId) => ({
+        payload.routes.map(({ routeId, startDateTime, durationInHours }) => ({
           expeditionId,
           routeId,
+          startDateTime,
+          durationInHours,
         })),
       )
       .returning('*');
@@ -41,35 +44,39 @@ export class ExpeditionRouteService {
     return expeditionRoutes;
   }
 
-  async getRoutes(
+  async getRoutesSlim(
     tx: TransactionManager | null,
     expeditionId: string | string[],
     namespace: string,
-  ): Promise<IExpeditionRouteFull[]> {
+  ): Promise<IExpeditionRouteWithRouteSlim[]> {
     const expeditionRoutes = await this.db
       .read(tx)
       .whereIn('expeditionId', ensureArray(expeditionId));
     const routes = await this.routeService
-      .findByIds(
+      .findByIdsSlim(
         tx,
         expeditionRoutes.map((e) => e.routeId),
       )
-      .then(generateGroupRecord2((r) => r.id));
-    const result = expeditionRoutes.map<IExpeditionRouteFull>((e) => ({
-      ...e,
-      routes: routes[e.routeId].map((r) => ({
-        id: r.id,
-        url: `${this.configService.get('APP_URL')}/${namespace}/route/${r.id}`,
-      })),
-    }));
+      .then(generateRecord2((r) => r.id));
+    const result = expeditionRoutes.map<IExpeditionRouteWithRouteSlim>((e) => {
+      const route = routes[e.routeId];
+
+      return {
+        ...e,
+        route: {
+          ...route,
+          url: `${this.configService.get('APP_URL')}/${namespace}/route/${route.id}`,
+        },
+      };
+    });
 
     return result;
   }
 
-  async getRoutes2(
+  async getWithRoutes(
     tx: TransactionManager | null,
     expeditionId: string | string[],
-  ): Promise<Record<string, IRoute[]>> {
+  ): Promise<IExpeditionRouteWithRoute[]> {
     const expeditionRoutes = await this.db
       .read(tx)
       .whereIn('expeditionId', ensureArray(expeditionId));
@@ -79,20 +86,17 @@ export class ExpeditionRouteService {
         expeditionRoutes.map((e) => e.routeId),
       )
       .then(generateRecord2((r) => r.id));
-    const result = generateGroupRecord(
-      expeditionRoutes,
-      (e) => e.expeditionId,
-      (e) => routes[e.routeId],
-    );
 
-    return result;
+    return expeditionRoutes.map((er) => ({ ...er, route: routes[er.routeId] }));
   }
 
   getRoutesLoader: DataLoader<string, IRoute[]> = new DataLoader(
     async (ids) => {
-      const record = await this.getRoutes2(null, ids as string[]);
+      const record = await this.getWithRoutes(null, ids as string[]).then(
+        generateGroupRecord2((r) => r.expeditionId),
+      );
 
-      return ids.map((id) => record[id] ?? []);
+      return ids.map((id) => record[id].map((er) => er.route) ?? []);
     },
     { cache: false },
   );

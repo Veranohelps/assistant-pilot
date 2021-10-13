@@ -6,4 +6,8 @@ class TimeFilterCubit extends Cubit<DateTime?> {
   void setNewTime(DateTime newTime) {
     emit(newTime);
   }
+
+  void resetTime() {
+    emit(null);
+  }
 }

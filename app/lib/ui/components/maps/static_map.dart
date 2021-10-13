@@ -16,7 +16,6 @@ class StaticMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(DateTime.now());
     return FlutterMap(
       options: MapOptions(
         allowPanning: false,

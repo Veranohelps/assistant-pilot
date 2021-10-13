@@ -1,95 +1,60 @@
 import { Injectable } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { gpx } from '@tmcw/togeojson';
-import { DOMParser } from 'xmldom';
+import { ConfigService } from '@nestjs/config';
+import { TWithUrl } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
-import { IGeoJSON } from '../../common/types/geojson.type';
 import { generateGroupRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { RouteService } from '../../route/services/route.service';
-import { ERouteOrigins } from '../../route/types/route-origin.type';
-import { WaypointService } from '../../waypoint/services/waypoint.service';
-import { ICreateExpeditionDTO, IExpedition, IExpeditionFull } from '../types/expedition.type';
+import {
+  ICreateExpeditionDTO,
+  IExpedition,
+  IExpeditionFull,
+  IExpeditionFullSlim,
+} from '../types/expedition.type';
 import { ExpeditionRouteService } from './expedition-route.service';
-import { ExpeditionWaypointService } from './expedition-waypoint.service';
 
 @Injectable()
 export class ExpeditionService {
   constructor(
     @InjectKnexClient('Expedition')
     private db: KnexClient<'Expedition'>,
-    private waypointService: WaypointService,
     private routeService: RouteService,
     private expeditionRouteService: ExpeditionRouteService,
-    private expeditionWaypointService: ExpeditionWaypointService,
+    private configService: ConfigService,
   ) {}
 
-  async createFromGeojson(
+  async create(
     tx: TransactionManager,
-    data: ICreateExpeditionDTO,
-    file: Express.Multer.File,
+    userId: string,
+    payload: ICreateExpeditionDTO,
   ): Promise<IExpeditionFull> {
-    const gpxDocument = new DOMParser().parseFromString(file.buffer.toString('utf-8'));
-    const parsedDocument: IGeoJSON = gpx(gpxDocument);
-    const waypoints = await this.waypointService.fromGeoJson(tx, parsedDocument);
-    const route = await this.routeService.fromGeoJson(tx, ERouteOrigins.DERSU, parsedDocument);
+    // for now, the expedition's coordinates defaults to the coordinate of the start route
+    const { routeId, startDateTime } = payload.routes[0];
+    const {
+      coordinate: {
+        coordinates: [[longitude, latitude, altitude]],
+      },
+    } = await this.routeService.findOne(tx, routeId);
     const [{ id }] = await this.db
       .write(tx)
       .insert({
-        name: data.name,
-        description: data.description,
-        startDateTime: data.startDateTime,
-        endDateTime: data.endDateTime,
+        name: payload.name,
+        description: payload.description,
+        startDateTime: startDateTime,
+        userId,
         coordinate: this.db.knex.raw(
-          `ST_GeogFromText('POINTZ(${data.longitude} ${data.latitude} ${data.altitude ?? 0})')`,
+          `ST_GeogFromText('POINTZ(${longitude} ${latitude} ${altitude ?? 0})')`,
         ),
       })
       .returning('*');
-    await this.expeditionRouteService.addRoutes(tx, id, [route.id]);
-    await this.expeditionWaypointService.addWaypoints(
-      tx,
-      id,
-      waypoints.map((w) => w.id),
-    );
+    await this.expeditionRouteService.addRoutes(tx, id, {
+      routes: payload.routes,
+    });
 
-    const result: IExpeditionFull = await this.getExpeditionFull(tx, id, 'admin');
-
-    return result;
-  }
-
-  async createFromGeojson2(
-    tx: TransactionManager,
-    data: ICreateExpeditionDTO,
-    gpxString: string,
-  ): Promise<IExpeditionFull> {
-    const gpxDocument = new DOMParser().parseFromString(gpxString);
-    const parsedDocument: IGeoJSON = gpx(gpxDocument);
-    const waypoints = await this.waypointService.fromGeoJson(tx, parsedDocument);
-    const route = await this.routeService.fromGeoJson(tx, ERouteOrigins.DERSU, parsedDocument);
-    const [{ id }] = await this.db
-      .write(tx)
-      .insert({
-        name: data.name,
-        description: data.description,
-        startDateTime: data.startDateTime,
-        endDateTime: data.endDateTime,
-        coordinate: this.db.knex.raw(
-          `ST_GeogFromText('POINTZ(${data.longitude} ${data.latitude} ${data.altitude ?? 0})')`,
-        ),
-      })
-      .returning('*');
-    await this.expeditionRouteService.addRoutes(tx, id, [route.id]);
-    await this.expeditionWaypointService.addWaypoints(
-      tx,
-      id,
-      waypoints.map((w) => w.id),
-    );
-
-    const result: IExpeditionFull = await this.getExpeditionFull(tx, id, 'admin');
+    const result: IExpeditionFull = await this.getExpeditionFull(tx, id);
 
     return result;
   }
@@ -97,62 +62,81 @@ export class ExpeditionService {
   async getExpeditionFull(
     tx: TransactionManager | null,
     id: string,
-    namespace: string,
+    userId?: string,
   ): Promise<IExpeditionFull> {
-    const expedition = await this.db.read(tx).where({ id }).first();
+    const builder = this.db.read(tx).where({ id }).first();
+
+    if (userId) builder.where({ userId });
+
+    const expedition = await builder;
 
     if (!expedition) {
       throw new NotFoundError(ErrorCodes.EXPEDITION_NOT_FOUND, 'Expedition not found');
     }
 
-    const [expeditionWaypoints, expeditionRoutes] = await Promise.all([
-      this.expeditionWaypointService.getWaypoints(tx, id),
-      this.expeditionRouteService.getRoutes(tx, id, namespace),
-    ]);
+    const expeditionRoutes = await this.expeditionRouteService.getWithRoutes(tx, id);
 
     const result = {
       ...expedition,
-      routes: expeditionRoutes.map((e) => e.routes).flat(),
-      waypoints: expeditionWaypoints.map((e) => e.waypoints).flat(),
+      routes: expeditionRoutes.map((e) => e.route),
     };
 
     return result;
   }
 
-  async getExpeditionsFull(namespace: string): Promise<IExpeditionFull[]> {
-    const expeditions = await this.db.read();
-    const [expeditionWaypoints, expeditionRoutes] = await Promise.all([
-      this.expeditionWaypointService
-        .getWaypoints(
-          null,
-          expeditions.map((e) => e.id),
-        )
-        .then(generateGroupRecord2((e) => e.expeditionId)),
-      this.expeditionRouteService
-        .getRoutes(
-          null,
-          expeditions.map((e) => e.id),
-          namespace,
-        )
-        .then(generateGroupRecord2((e) => e.expeditionId)),
-      ,
-    ]);
+  async getExpeditionsFull(namespace: string, userId?: string): Promise<IExpeditionFullSlim[]> {
+    const builder = this.db.read();
 
-    const result = expeditions.map<IExpeditionFull>((expedition) => ({
+    if (userId) builder.where({ userId });
+
+    const expeditions = await builder;
+    const expeditionRoutes = await this.expeditionRouteService
+      .getRoutesSlim(
+        null,
+        expeditions.map((e) => e.id),
+        namespace,
+      )
+      .then(generateGroupRecord2((e) => e.expeditionId));
+
+    const result = expeditions.map<IExpeditionFullSlim>((expedition) => ({
       ...expedition,
-      routes: expeditionRoutes[expedition.id].map((e) => e.routes).flat(),
-      waypoints:
-        expeditionWaypoints[expedition.id] !== undefined
-          ? expeditionWaypoints[expedition.id].map((e) => e.waypoints).flat()
-          : [],
+      routes: expeditionRoutes[expedition.id].map((e) => e.route).flat(),
     }));
 
     return result;
   }
 
+  appendUrl(expedition: IExpedition): TWithUrl<IExpedition>;
+  appendUrl(expeditions: IExpedition[]): TWithUrl<IExpedition>[];
+  appendUrl(
+    expeditions: IExpedition | IExpedition[],
+  ): TWithUrl<IExpedition>[] | TWithUrl<IExpedition> {
+    if (Array.isArray(expeditions)) {
+      return expeditions.map((expedition) => ({
+        ...expedition,
+        url: `${this.configService.get('APP_URL')}/personal/expedition/${expedition.id}`,
+      }));
+    }
+
+    return {
+      ...expeditions,
+      url: `${this.configService.get('APP_URL')}/personal/expedition/${expeditions.id}`,
+    };
+  }
+
   async getExpeditions(): Promise<IExpedition[]> {
     const expeditions = await this.db.read();
 
-    return expeditions;
+    return this.appendUrl(expeditions);
+  }
+
+  async getUpcomingExpeditions(userId: string): Promise<TWithUrl<IExpedition>[]> {
+    const expeditions = await this.db
+      .read()
+      .where('startDateTime', '>=', new Date())
+      .where({ userId })
+      .orderBy('createdAt', 'desc');
+
+    return this.appendUrl(expeditions);
   }
 }

@@ -7,7 +7,6 @@ export const GET_EXPEDITIONS = gql`
       name
       description
       startDateTime
-      endDateTime
       routes {
         id
         name

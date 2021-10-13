@@ -1,7 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { LineStringGeometryModel } from '../../../common/graphql/geojson.model';
 import { ILineStringGeometry } from '../../../common/types/geojson.type';
-import { IRoute } from '../../types/route.type';
+import { ICreateRouteDTO, IRoute } from '../../types/route.type';
 
 @ObjectType('Route')
 export class RouteModel implements IRoute {
@@ -25,4 +25,10 @@ export class RouteModel implements IRoute {
 
   @Field()
   updatedAt!: Date;
+}
+
+@InputType()
+export class CreateRouteInput implements ICreateRouteDTO {
+  @Field()
+  name!: string;
 }

@@ -9,11 +9,26 @@ import {
   Operation,
 } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
-import axios from 'axios';
+import ky from 'ky';
 import { apiBaseUrl } from '../config/environment';
 
-export const http = axios.create({
-  baseURL: apiBaseUrl,
+let token = '';
+
+export const http = ky.extend({
+  prefixUrl: apiBaseUrl,
+  hooks: {
+    beforeRequest: [
+      (req) => {
+        token = !token ? window.prompt('Please enter your admin token', '') ?? '' : token;
+
+        if (!token) {
+          window.alert('Please provide your admin token to complete the request');
+        }
+
+        req.headers.set('x-dersu-api-admin-token', token);
+      },
+    ],
+  },
 });
 
 class AdminTokenLink extends ApolloLink {

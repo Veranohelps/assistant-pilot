@@ -2,10 +2,12 @@
   "basis": {
     "accept": "Acceptar",
     "save": "Guardar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "confirm": "Confirmar"
+
   },
   "profile": {
-    "profile": "Perfil",
+    "name": "Perfil",
     "my_levels": {
       "name": "Mi nivel",
       "not_set_up": "No instalado",
@@ -21,8 +23,9 @@
       "route_name": "Name"
     }
   },
-  "home": {
-    "name": "Dersu home"
+  "dashboard": {
+    "name": "Dersu home",
+    "confirm": "Confirmar expedición"
   },
   "more": {
     "name": "Más"

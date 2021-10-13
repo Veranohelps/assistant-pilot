@@ -1,17 +1,16 @@
 import { generateId } from '../common/utilities/generate-id';
 import { IEntity } from '../database/types/entity.type';
 import { IExpeditionRoute } from './types/expedition-route.type';
-import { IExpeditionWaypoint } from './types/expedition-waypoint.type';
 import { IExpedition } from './types/expedition.type';
 
 export const expeditionEntity: IEntity<IExpedition> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
+    userId: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },
     coordinate: { type: 'string' },
     startDateTime: { type: 'date' },
-    endDateTime: { type: 'date' },
     meta: { type: 'json', select: false },
     createdAt: { type: 'date', select: false },
     updatedAt: { type: 'date' },
@@ -24,20 +23,12 @@ export const expeditionEntity: IEntity<IExpedition> = {
   },
 };
 
-export const expeditionWaypointEntity: IEntity<IExpeditionWaypoint> = {
-  columns: {
-    expeditionId: { type: 'string' },
-    waypointId: { type: 'string' },
-    meta: { type: 'json' },
-    createdAt: { type: 'date' },
-    updatedAt: { type: 'date' },
-  },
-};
-
 export const expeditionRouteEntity: IEntity<IExpeditionRoute> = {
   columns: {
     expeditionId: { type: 'string' },
     routeId: { type: 'string' },
+    startDateTime: { type: 'date' },
+    durationInHours: { type: 'number' },
     meta: { type: 'json' },
     createdAt: { type: 'date' },
     updatedAt: { type: 'date' },

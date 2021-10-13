@@ -1,11 +1,11 @@
 part of 'expeditions_cubit.dart';
 
-abstract class RoutesState extends AuthenticationDependendState {}
-
-class RoutesNotLoaded extends RoutesState {
+abstract class RoutesState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class RoutesInitial extends RoutesState {}
 
 class RoutesLoaded extends RoutesState {
   final List<DersuRouteShort> list;

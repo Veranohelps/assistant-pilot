@@ -5,6 +5,12 @@ class BrandLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.white);
+    return Material(
+      child: Center(
+        child: Container(
+          child: Text('loading...'),
+        ),
+      ),
+    );
   }
 }

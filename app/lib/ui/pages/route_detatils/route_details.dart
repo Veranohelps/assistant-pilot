@@ -5,6 +5,8 @@ import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';
+import 'package:app/ui/pages/create_planning/create_planning.dart';
+import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,6 +63,22 @@ class RouteDetails extends StatelessWidget {
                             : dateFormat2.format(selectedTime),
                       ),
                     ),
+                    SizedBox(height: 15),
+                    Center(
+                      child: buttons.primaryShort(
+                        onPressed: selectedTime == null
+                            ? null
+                            : () => Navigator.of(context).push(
+                                  materialRoute(
+                                    CreatePlanning(
+                                      startTime: selectedTime,
+                                      routeId: route.id,
+                                    ),
+                                  ),
+                                ),
+                        text: 'Confirm expedition',
+                      ),
+                    ),
                   ],
                 );
               },
@@ -82,13 +100,12 @@ class RouteDetails extends StatelessWidget {
 
   void setDate(BuildContext context) async {
     var today = DateTime.now();
+    var tommorow = today.add(Duration(days: 1));
     var day = await showDatePicker(
       context: context,
-      initialDate: today,
-      firstDate: today,
-      lastDate: today.add(Duration(
-        days: 31,
-      )),
+      initialDate: tommorow,
+      firstDate: tommorow,
+      lastDate: today.add(Duration(days: 31)),
     );
 
     if (day != null) {

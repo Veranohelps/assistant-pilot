@@ -2,7 +2,8 @@
   "basis": {
     "accept": "Accept",
     "save": "Save",
-    "close": "Close"
+    "close": "Close",
+    "confirm": "Confirm expedition"
   },
   "profile": {
     "name": "Profile",
@@ -21,7 +22,7 @@
       "route_name": "Name"
     }
   },
-  "home": {
+  "dashboard": {
     "name": "Dersu home"
   },
   "more": {

@@ -103,7 +103,7 @@ class _PrimaryShort extends StatelessWidget {
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
         decoration: BoxDecoration(
-          color: BrandColors.primary,
+          color: onPressed == null ? BrandColors.grey : BrandColors.primary,
           borderRadius: BorderRadius.circular(2),
         ),
         child: Text(
