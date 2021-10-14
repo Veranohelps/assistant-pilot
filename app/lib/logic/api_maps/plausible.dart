@@ -47,14 +47,6 @@ class PlausibleApi extends ApiMap {
   Future<BaseOptions> get options async {
     var userAgent = getIt<DeviceInfoService>().deviceInfoString();
 
-    if (Platform.isAndroid) {
-      userAgent =
-          'Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.62 Mobile Safari/537.36';
-    } else if (Platform.isIOS) {
-      userAgent =
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
-    }
-
     return BaseOptions(
       responseType: ResponseType.plain,
       baseUrl: 'https://plausible.io/',
