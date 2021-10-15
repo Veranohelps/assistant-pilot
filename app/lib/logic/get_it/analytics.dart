@@ -1,4 +1,7 @@
+import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/api_maps/plausible.dart';
+import 'package:app/logic/get_it/console.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +11,7 @@ class Analitics {
   }
 
   final plausibleApi = PlausibleApi();
+  late final console = getIt<ConsoleService>();
 
   void _sendCustomEvent({
     required CustomEvents type,
@@ -15,9 +19,19 @@ class Analitics {
     String? label,
     value,
   }) {
-    if (apiDefaultLog) {
-      print('type: $type, action: $action, label: $label, value: $value');
+    var textMessage = 'type: $type, action: $action';
+    if (label != null) {
+      textMessage += 'label: $label,';
     }
+
+    if (value != null) {
+      textMessage += 'value: $value,';
+    }
+    if (apiDefaultLog) {
+      print(textMessage);
+    }
+
+    console.addMessage(ConsoleMessage(text: textMessage));
 
     plausibleApi.sendPlausibleEvent(
       type: type,

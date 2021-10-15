@@ -18,7 +18,6 @@ class HiveConfig {
     await Hive.openBox(HiveContants.geoConfig.txt);
     await Hive.openBox(HiveContants.hydratedCubits.txt);
 
-    await Hive.openBox(HiveContants.tempMock.txt);
 
     var encryptionKey = await getEncryptionKey();
     await Hive.openBox(
@@ -54,8 +53,7 @@ enum HiveContants {
   authentication,
   refreshToken,
   hydratedCubits,
-  liveCubit,
-  tempMock
+  liveExpedition,
 }
 
 extension HiveContantseExt on HiveContants {

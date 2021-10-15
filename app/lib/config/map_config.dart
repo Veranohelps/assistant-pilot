@@ -7,7 +7,9 @@ import 'package:latlong2/latlong.dart';
 import 'brand_colors.dart';
 
 class MapConfig {
-  static const initZoom = 14.5;
+  static const staticInitZoom = 14.5;
+  static const liveInitZoom = 16.5;
+
   static const maxZoom = 18.0;
   static const minZoom = 7.0;
 

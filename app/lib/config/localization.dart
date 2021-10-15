@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_logger/easy_logger.dart';
 
 class Localization extends StatelessWidget {
   const Localization({
@@ -11,6 +12,10 @@ class Localization extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EasyLocalization.logger.enableLevels = [
+      LevelMessages.error,
+      LevelMessages.warning
+    ];
     return EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('es', 'ES')],
       path: 'assets/translations',

@@ -1,9 +1,11 @@
 {
   "basis": {
     "accept": "Accept",
+    "cancel": "Cancel",
     "save": "Save",
     "close": "Close",
-    "confirm": "Confirm expedition"
+    "confirm": "Confirm expedition",
+    "ok": "Ok"
   },
   "profile": {
     "name": "Profile",
@@ -40,5 +42,14 @@
     "firstName": "First name",
     "lastName": "Last name",
     "subscribe_text": "Subsciption to our newsletter"
+  },
+  "expedition": {
+    "warning": {
+      "title" : "Location",
+      "text": "Dersu uses your location during expeditions, even with the application closed, in order to alert you to potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'About' section of the application or at https://dersu.uz/en/privacy. Thanks."
+    },
+    "live": {
+      "finish" : "Finish the expedition"
+    }
   }
 }

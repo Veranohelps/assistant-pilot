@@ -35,3 +35,15 @@ ExpeditionFull _$ExpeditionFullFromJson(Map<String, dynamic> json) {
         .toList(),
   );
 }
+
+Map<String, dynamic> _$ExpeditionFullToJson(ExpeditionFull instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'userId': instance.userId,
+      'name': instance.name,
+      'description': instance.description,
+      'coordinate': instance.coordinate,
+      'startDateTime': instance.startDateTime.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'routes': instance.routes,
+    };

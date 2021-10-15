@@ -2,8 +2,11 @@
 
 abstract class  LocaleKeys {
   static const basis_accept = 'basis.accept';
+  static const basis_cancel = 'basis.cancel';
   static const basis_save = 'basis.save';
   static const basis_close = 'basis.close';
+  static const basis_confirm = 'basis.confirm';
+  static const basis_ok = 'basis.ok';
   static const basis = 'basis';
   static const profile_name = 'profile.name';
   static const profile_my_levels_name = 'profile.my_levels.name';
@@ -19,6 +22,7 @@ abstract class  LocaleKeys {
   static const planning_route_details = 'planning.route_details';
   static const planning = 'planning';
   static const dashboard_name = 'dashboard.name';
+  static const dashboard_confirm = 'dashboard.confirm';
   static const dashboard = 'dashboard';
   static const more_name = 'more.name';
   static const more = 'more';
@@ -32,5 +36,11 @@ abstract class  LocaleKeys {
   static const registration_lastName = 'registration.lastName';
   static const registration_subscribe_text = 'registration.subscribe_text';
   static const registration = 'registration';
+  static const expedition_warning_title = 'expedition.warning.title';
+  static const expedition_warning_text = 'expedition.warning.text';
+  static const expedition_warning = 'expedition.warning';
+  static const expedition_live_finish = 'expedition.live.finish';
+  static const expedition_live = 'expedition.live';
+  static const expedition = 'expedition';
 
 }

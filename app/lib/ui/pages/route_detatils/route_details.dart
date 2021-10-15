@@ -36,52 +36,49 @@ class RouteDetails extends StatelessWidget {
         create: (_) => RouteCubit()..getRoute(route.url),
         child: Builder(
           builder: (context) {
-            return BlocBuilder<RouteCubit, DersuRouteFull?>(
-              builder: (_, route) {
-                final dectionary = context.watch<DictionariesCubit>().state;
+            final dectionary = context.watch<DictionariesCubit>().state;
+            final route = context.watch<RouteCubit>().state;
 
-                if (route == null || dectionary is! DictionariesLoaded) {
-                  return BrandLoading();
-                }
-                return ListView(
-                  padding: EdgeInsets.all(10),
-                  children: [
-                    ...buildBlock('Name', route.name),
-                    SizedBox(
-                      height: 400,
-                      child: StaticMap(
-                        route: route,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Center(
-                      child: buttons.primaryShort(
-                        onPressed: () => setDate(context),
-                        label: 'time change',
-                        text: selectedTime == null
-                            ? 'no date'
-                            : dateFormat2.format(selectedTime),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Center(
-                      child: buttons.primaryShort(
-                        onPressed: selectedTime == null
-                            ? null
-                            : () => Navigator.of(context).push(
-                                  materialRoute(
-                                    CreatePlanning(
-                                      startTime: selectedTime,
-                                      routeId: route.id,
-                                    ),
-                                  ),
+            if (route == null || dectionary is! DictionariesLoaded) {
+              return BrandLoading();
+            }
+            return ListView(
+              padding: EdgeInsets.all(10),
+              children: [
+                ...buildBlock('Name', route.name),
+                SizedBox(
+                  height: 400,
+                  child: StaticMap(
+                    route: route,
+                  ),
+                ),
+                SizedBox(height: 15),
+                Center(
+                  child: buttons.primaryShort(
+                    onPressed: () => setDate(context),
+                    label: 'time change',
+                    text: selectedTime == null
+                        ? 'no date'
+                        : dateFormat2.format(selectedTime),
+                  ),
+                ),
+                SizedBox(height: 15),
+                Center(
+                  child: buttons.primaryShort(
+                    onPressed: selectedTime == null
+                        ? null
+                        : () => Navigator.of(context).push(
+                              materialRoute(
+                                CreatePlanning(
+                                  startTime: selectedTime,
+                                  routeId: route.id,
                                 ),
-                        text: 'Confirm expedition',
-                      ),
-                    ),
-                  ],
-                );
-              },
+                              ),
+                            ),
+                    text: 'Confirm expedition',
+                  ),
+                ),
+              ],
             );
           },
         ),

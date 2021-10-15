@@ -1,7 +1,10 @@
 import 'package:app/config/theme_typo.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
+import 'package:app/ui/components/brand_card/brand_card.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
+import 'package:app/ui/pages/expedition/expedition.dart';
+import 'package:app/utils/route_transitions/basic.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +20,6 @@ class Dashboard extends StatelessWidget {
       ),
       body: BlocBuilder<DashboardCubit, DashboardState>(
           builder: (context, state) {
-        print(state.runtimeType);
         var isLoading = state is DashboardInitial || state is DashboardLoading;
         if (isLoading) {
           return BrandLoading();
@@ -30,9 +32,12 @@ class Dashboard extends StatelessWidget {
           padding: EdgeInsets.all(20),
           itemBuilder: (context, index) {
             if (index == 0) {
-              return Text(
-                'Upcoming Expeditions',
-                style: ThemeTypo.h3,
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Text(
+                  'Upcoming Expeditions',
+                  style: ThemeTypo.h3,
+                ),
               );
             }
             if (isEmpty) {
@@ -41,10 +46,13 @@ class Dashboard extends StatelessWidget {
                 child: Text('Empty'),
               );
             } else {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(expeditions[index - 1].name),
+              var expedition = expeditions[index - 1];
+              return GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  materialRoute(ExpeditionPage(expedition: expedition)),
+                ),
+                child: BrandCard(
+                  child: Text(expedition.name),
                 ),
               );
             }

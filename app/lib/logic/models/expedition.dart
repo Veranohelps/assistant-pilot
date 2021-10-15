@@ -47,6 +47,7 @@ class ExpeditionShort extends Expedition {
           coordinate: coordinate,
           startDateTime: startDateTime,
           updatedAt: updatedAt,
+          description: description,
         );
 
   @override
@@ -60,10 +61,11 @@ class ExpeditionShort extends Expedition {
         updatedAt,
         url
       ];
-  static ExpeditionShort fromJson(Map<String, dynamic> json) => _$ExpeditionShortFromJson(json);
+  static ExpeditionShort fromJson(Map<String, dynamic> json) =>
+      _$ExpeditionShortFromJson(json);
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class ExpeditionFull extends Expedition {
   final List<DersuRouteFull> routes;
 
@@ -97,5 +99,7 @@ class ExpeditionFull extends Expedition {
         routes,
       ];
 
-  static fromJson(Map<String, dynamic> json) => _$ExpeditionFullFromJson(json);
+  static ExpeditionFull fromJson(Map<String, dynamic> json) => _$ExpeditionFullFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ExpeditionFullToJson(this);
 }

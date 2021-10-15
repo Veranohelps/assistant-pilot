@@ -29,7 +29,6 @@ Widget textButton({
       onPressed: analiticsOnPressWrapper(onPressed, text, label),
       text: text,
       style: ThemeTypo.p4,
-      padding: const EdgeInsets.symmetric(horizontal: 5),
       color: color,
     );
 
@@ -43,6 +42,28 @@ Widget primaryShort({
       onPressed: analiticsOnPressWrapper(onPressed, text, label),
     );
 
+Widget miniIconButton({
+  required VoidCallback onPressed,
+  required IconData icon,
+  required String label,
+  Color? backgroundColor,
+  Color? color,
+}) =>
+    TextButton(
+      onPressed: analiticsOnPressWrapper(onPressed, 'icon button', label),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(5),
+        minimumSize: Size(20, 20),
+        backgroundColor:
+            backgroundColor ?? BrandColors.primary.withOpacity(0.9),
+      ),
+      child: Icon(
+        icon,
+        size: 20,
+        color: color ?? BrandColors.white,
+      ),
+    );
+
 Widget primaryBig({
   required String text,
   String? label,
@@ -51,6 +72,22 @@ Widget primaryBig({
     _PrimaryBig(
       text: text,
       onPressed: analiticsOnPressWrapper(onPressed, text, label),
+    );
+
+Widget primaryElevatedButton({
+  required Widget child,
+  required VoidCallback? onPressed,
+  required String? label,
+}) =>
+    ElevatedButton(
+      onPressed: analiticsOnPressWrapper(onPressed, 'custom button', label),
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
+        minimumSize: Size.zero,
+        primary: BrandColors.active,
+        elevation: 0,
+      ),
+      child: child,
     );
 
 class _PrimaryBig extends StatelessWidget {
@@ -121,16 +158,13 @@ class _BrandTextButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     required this.style,
-    required this.padding,
-    Color? color,
-  })  : this.color = color ?? BrandColors.active,
-        super(key: key);
+    this.color,
+  }) : super(key: key);
 
   final VoidCallback? onPressed;
   final String text;
   final TextStyle style;
-  final EdgeInsets padding;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +179,7 @@ class _BrandTextButton extends StatelessWidget {
         child: Text(
           text,
           style: style.copyWith(
-            color: color,
+            color: color ?? BrandColors.active,
           ),
         ),
       ),

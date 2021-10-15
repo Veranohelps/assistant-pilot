@@ -1,6 +1,8 @@
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
+import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
+import 'package:app/logic/cubits/live/live_cubit.dart';
 
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
@@ -28,6 +30,8 @@ class BlocAndProviderConfig extends StatelessWidget {
         BlocProvider(lazy: false, create: (_) => dictionaries),
         BlocProvider(lazy: false, create: (_) => DashboardCubit(auth)),
         BlocProvider(create: (_) => TimeFilterCubit()),
+        BlocProvider(create: (_) => ExpeditionCubit()),
+        BlocProvider(create: (_) => LiveCubit()..load()),
       ],
       child: child!,
     );

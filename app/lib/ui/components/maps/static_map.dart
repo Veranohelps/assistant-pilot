@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:app/config/map_config.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:animations/animations.dart';
+import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
 
 class StaticMap extends StatelessWidget {
   StaticMap({required this.route});
@@ -16,11 +21,62 @@ class StaticMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      transitionDuration: Duration(milliseconds: 500),
+      closedColor: Colors.transparent,
+      openElevation: 0,
+      closedElevation: 0,
+      openBuilder: (BuildContext context, VoidCallback close) {
+        return ColoredBox(
+          color: Colors.black,
+          child: SafeArea(
+            bottom: false,
+            child: Scaffold(
+              body: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  getMap(),
+                  Positioned(
+                    right: 5,
+                    bottom: max(5, MediaQuery.of(context).padding.bottom),
+                    child: buttons.miniIconButton(
+                      label: 'exit full screen map',
+                      icon: Ionicons.balloon_sharp,
+                      onPressed: close,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      closedBuilder: (BuildContext _, VoidCallback open) {
+        return Stack(
+          children: [
+            getMap(),
+            Positioned(
+              right: 5,
+              bottom: 5,
+              child: buttons.miniIconButton(
+                label: 'open full screen map',
+                icon: Ionicons.expand_outline,
+                onPressed: open,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget getMap() {
     return FlutterMap(
       options: MapOptions(
         allowPanning: false,
         center: mapCameraPoint,
-        zoom: MapConfig.initZoom,
+        zoom: MapConfig.staticInitZoom,
         maxZoom: MapConfig.maxZoom,
         minZoom: MapConfig.minZoom,
         // interactiveFlags: InteractiveFlag.none,
