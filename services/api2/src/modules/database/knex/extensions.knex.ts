@@ -99,11 +99,17 @@ function withTx(this: Knex.QueryBuilder, tx?: TransactionManager) {
   return this;
 }
 
+let extended = false;
+
 export function extendKnex() {
+  if (extended) return;
+
   knex.QueryBuilder.extend('withColumns', withColumns);
   knex.QueryBuilder.extend('qb', withQb);
   knex.QueryBuilder.extend('tx', withTx);
   knex.QueryBuilder.extend('sDel', sDel);
   knex.QueryBuilder.extend('paranoid', paranoid);
   knex.QueryBuilder.extend('whereIn2', whereIn2);
+
+  extended = true;
 }

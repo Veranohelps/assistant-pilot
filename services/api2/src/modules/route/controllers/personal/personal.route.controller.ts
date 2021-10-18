@@ -15,6 +15,7 @@ import { RouteService } from '../../services/route.service';
 import { WeatherService } from '../../services/weather.service';
 import { IGetRoutesUrlParameters } from '../../types/route.type';
 import { IGetRouteWeatherUrlParameters } from '../../types/wheather-prediction.type';
+
 import MOCKED_RESPONSE = require('../../types/weather-prediction.json');
 
 @Controller('personal/route')

@@ -21,7 +21,7 @@ export class UserService {
   async signupUser(tx: TransactionManager, payload: ICreateUserDTO): Promise<IUser> {
     let [user] = await this.db
       .read(tx)
-      .insert(payload)
+      .insert({ ...payload })
       .onConflict('auth0Id')
       .ignore()
       .returning('*');

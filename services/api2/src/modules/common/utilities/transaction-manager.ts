@@ -112,4 +112,12 @@ export class TransactionManager {
   addCommit(cb: VoidFunction) {
     this.commits.push(cb);
   }
+
+  static async create() {
+    const tx = new TransactionManager();
+
+    await tx.init();
+
+    return tx;
+  }
 }

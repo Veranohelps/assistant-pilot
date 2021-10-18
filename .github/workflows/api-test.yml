@@ -18,8 +18,8 @@ jobs:
         working-directory: services/api2
         run: yarn
       - name: Test
-        working-directory: services/api2
-        run: yarn run test
+        working-directory: services/api2/test
+        run: docker compose up --build --abort-on-container-exit --exit-code-from api
       - name: Lint
         working-directory: services/api2
         run: yarn run lint:ci
