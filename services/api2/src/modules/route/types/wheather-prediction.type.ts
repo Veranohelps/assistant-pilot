@@ -9,13 +9,29 @@ export interface IPredictionCoordinates {
 }
 
 export interface IWeatherPrediction {
-  temperature: string;
-  precipitation: string;
-  visibility: string;
-  windspeed: string;
-  pictocode: string;
+  dateTime: Date;
+  sunriseDateTime: Date | null;
+  sunsetDateTime: Date | null;
+  ranges: IRange[];
+}
+export interface IRange {
+  range: string;
+  forecastHourly: IWeatherForecast[];
 }
 export interface IWeatherForecast {
-  time: string;
-  prediction: IWeatherPrediction;
+  dateTime: Date;
+  temperature: number;
+  feltTemperature: number;
+  precipitation: number;
+  precipitationProbability: number;
+  visibility: number;
+  lowClouds: number;
+  midClouds: number;
+  hiClouds: number;
+  totalCloudCover: number;
+  sunshineTime: number;
+  windSpeed: number;
+  windGust: number;
+  isDay: number;
+  pictoCode: number;
 }

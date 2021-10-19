@@ -79,6 +79,7 @@ jobs:
           TF_VAR_STRAPI_PASSWORD: ${{ secrets.STRAPI_PASSWORD }}
           TF_VAR_STRAPI_EMAIL: ${{ secrets.STRAPI_EMAIL }}
           TF_VAR_AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          TF_VAR_METEOBLUE_API_KEY: ${{ secrets.METEOBLUE_API_KEY }}
       - name: Terraform apply
         working-directory: services/terraform
         run: terraform apply -input=false tfplan

@@ -142,40 +142,54 @@ This should return weather prediction for a routeId
 
 | field      | required | description                                                                       |
 | ---------- | -------- | --------------------------------------------------------------------------------- |
-| dateTime   | false    | start date for the prediction in UTC format (ISO 8601), default: current time     |
+| dateTime   | false    | start date in UTC format for the prediction to start from (ISO 8601), default: current UTC time     |
 
 #### Sample response
 
-- Array of "weather points of interest" in the form of altitude ranges. At least one guaranteed.
-- `forcast` is an array of weather data by date time. Amount returned TBD.
+Array of days each with an array of "weather points of interest", with forecast by the hour. 
+
+At least one point of interest / range is guaranteed. This is typically the starting point of the route.
+
+Note that ranges may be negative `[-999-0]` since there are routes with points below sea level. 
+
+Pictocodes as per [Meteoblue documentation](https://content.meteoblue.com/en/specifications/standards/symbols-and-pictograms) (downloadeable set). Note that in order to use the day or night version of the pictocode you have to take `isDay` into account. 
+
+Meteograms to be implemented.
 
 ```
 [
     {
-        "range": "0-999",
-        "sunriseDateTime": "2021-10-11T08:03:00.000000",
-        "sunsetDateTime": "2021-10-11T19:24:00.000000",
-        "forecast":
-        [
+        "dateTime": "2021-10-18T00:00:00.000Z",
+        "sunriseDateTime": "2021-10-18T06:28:00.000Z",
+        "sunsetDateTime": "2021-10-18T17:33:00.000Z",
+        "ranges": [
             {
-                "dateTime": "2021-10-11T00:00:00.000000",
-                "temperature": 13.32,
-                "feltTemperature": 10.21,
-                "precipitation": 0.00,
-                "precipitationProbability": 0,
-                "visibility": 17450,
-                "lowClouds": 0,
-                "midClouds": 0,
-                "hiClouds": 10,
-                "totalCloudCover": 3,
-                "sunshineTime": 0,
-                "windSpeed": 2.69,
-                "windGust": 4.08,
-                "isDay": 0,
-                "pictoCode": 5
-            }
+                "range": "1000-1999",
+                "forecastHourly": [
+                    {
+                        "dateTime": "2021-10-18T21:00:00.000Z",
+                        "temperature": 11.18,
+                        "feltTemperature": 8.91,
+                        "precipitation": 0,
+                        "precipitationProbability": 0,
+                        "visibility": 11850,
+                        "lowClouds": 0,
+                        "midClouds": 0,
+                        "hiClouds": 100,
+                        "totalCloudCover": 30,
+                        "sunshineTime": 0,
+                        "windSpeed": 2.73,
+                        "windGust": 4.68,
+                        "isDay": 0,
+                        "pictoCode": 2
+                    },
+                    ...
+                ]
+            },
+            ...
         ]
-    }
+    },
+    ...
 ]
 ```
 

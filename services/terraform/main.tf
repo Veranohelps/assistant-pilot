@@ -182,6 +182,10 @@ resource "google_cloud_run_service" "api" {
           name = "STRAPI_URL"
           value = "https://${terraform.workspace}-cms.dersu.uz"
         }
+        env {
+          name = "METEOBLUE_API_KEY"
+          value = var.METEOBLUE_API_KEY
+        }        
         ports {
           container_port = 3033
         }

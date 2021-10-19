@@ -25,6 +25,7 @@ services:
       STRAPI_EMAIL: "dersu-api@example.com"
       STRAPI_PASSWORD: "rzcFxZo8r9D8byEfP!wwH.qp"
       STRAPI_URL: http://localhost:1337
+      METEOBLUE_API_KEY: 
     volumes:
       - ./api2/src:/home/dersu-api/src
   database:

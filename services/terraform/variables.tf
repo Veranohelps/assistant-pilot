@@ -33,3 +33,7 @@ variable "STRAPI_PASSWORD" {
 variable "STRAPI_EMAIL" {
   type = string
 }
+
+variable "METEOBLUE_API_KEY" {
+  type = string
+}

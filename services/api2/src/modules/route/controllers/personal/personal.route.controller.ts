@@ -16,8 +16,6 @@ import { WeatherService } from '../../services/weather.service';
 import { IGetRoutesUrlParameters } from '../../types/route.type';
 import { IGetRouteWeatherUrlParameters } from '../../types/wheather-prediction.type';
 
-import MOCKED_RESPONSE = require('../../types/weather-prediction.json');
-
 @Controller('personal/route')
 @JwtProtected()
 export class PersonalRouteController {
@@ -51,12 +49,7 @@ export class PersonalRouteController {
     urlParameters: AppQuery<IGetRouteWeatherUrlParameters>,
   ) {
     const route = await this.routeService.findOne(tx, id);
-    const longitude = route.coordinate.coordinates[0][0];
-    const latitude = route.coordinate.coordinates[0][1];
-    const altitude = route.coordinate.coordinates[0][2];
-
-    //TODO: Call to weather service that makes the API call and parse the response
-    //Mocked response
-    return successResponse('fetch weather forecast success', MOCKED_RESPONSE);
+    const apiResponse = await this.weatherService.getForecast(route.coordinate, urlParameters);
+    return apiResponse;
   }
 }
