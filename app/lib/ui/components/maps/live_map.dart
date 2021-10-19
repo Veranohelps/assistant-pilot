@@ -37,7 +37,7 @@ class _LiveMapState extends State<LiveMap> {
   bool _liveUpdate = false;
   bool _hasLiveUpdatePause = false;
   bool isFirstEventAfterCenter = true;
-  late final BackgroundGeolocationService geolocationService;
+  BackgroundGeolocationService? geolocationService;
   Marker? userMarker;
 
   @override
@@ -134,14 +134,14 @@ class _LiveMapState extends State<LiveMap> {
   @override
   void dispose() {
     _positionStream?.cancel();
-    geolocationService.stop();
+    geolocationService?.stop();
     super.dispose();
   }
 
   Future<void> _geoFence() async {
     geolocationService = getIt<BackgroundGeolocationService>();
-    await geolocationService.init();
-    await geolocationService.start(widget.route.waypoints, 150);
+    await geolocationService!.init();
+    await geolocationService!.start(widget.route.waypoints, 150);
   }
 
   @override
