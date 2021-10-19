@@ -18,7 +18,7 @@ export class PersonalExpeditionController {
   @Get('/')
   @HttpCode(HttpStatus.OK)
   async getAllExpeditions(@UserData() user: IUser) {
-    const expeditions = await this.expeditionService.getExpeditionsFull('personal', user.id);
+    const expeditions = await this.expeditionService.getExpeditionsFull(user.id);
 
     return successResponse('fetch personal expeditions', { expeditions });
   }

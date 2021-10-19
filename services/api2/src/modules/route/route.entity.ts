@@ -15,7 +15,17 @@ export const routeEntity: IEntity<IRoute> = {
       select: false,
       hooks: {
         beforeSelect: (builder, knex) => {
-          builder.select(knex.raw('ST_AsGeoJSON(coordinate)::json as coordinate'));
+          builder.select(knex.raw('ST_AsGeoJSON(??)::json as coordinate', ['Route.coordinate']));
+        },
+      },
+    },
+    boundingBox: {
+      type: 'string',
+      hooks: {
+        beforeSelect: (builder, knex) => {
+          builder.select(
+            knex.raw('ST_AsGeoJSON(??)::json as ??', ['Route.boundingBox', 'boundingBox']),
+          );
         },
       },
     },

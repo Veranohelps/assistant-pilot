@@ -2,7 +2,6 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import Joi from 'joi';
 import { ValidationPipe } from '../pipes/validation.pipe';
-import { AppQuery } from '../utilities/app-query';
 
 interface IParsedUrlParameterOptions {
   schema: Joi.ObjectSchema;
@@ -30,6 +29,6 @@ export const ParsedUrlParameters = createParamDecorator(
       query = await pipe.transform(query);
     }
 
-    return new AppQuery(query);
+    return query;
   },
 );

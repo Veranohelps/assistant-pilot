@@ -9,7 +9,6 @@ void main() {
     "id": "KWvknoVS9x52jBkqqDDmYO",
     "type": "waypoint",
     "name": "Cruce, recto",
-    "description": "Cruce, recto",
     "radiusInMeters": 100,
     "coordinate": {
       "type": "Point",
@@ -23,7 +22,6 @@ void main() {
       var waypoint = Waypoint.fromJson(json);
       expect(waypoint.id, json['id']);
       expect(waypoint.name, json['name']);
-      expect(waypoint.description, json['description']);
       expect(waypoint.type, json['type']);
       expect(waypoint.radiusInMeters, json['radiusInMeters']);
       expect(
@@ -53,7 +51,6 @@ void main() {
       var waypoint = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        description: "Cruce, recto",
         type: 'waypoint',
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
@@ -72,7 +69,6 @@ void main() {
       var waypoint1 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        description: "Cruce, recto",
         type: 'waypoint',
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
@@ -87,7 +83,6 @@ void main() {
       var waypoint2 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        description: "Cruce, recto",
         type: 'waypoint',
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
@@ -101,8 +96,7 @@ void main() {
 
       var waypoint3 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
-        name: "Cruce, recto",
-        description: "Cruce, rect",
+        name: "another",
         type: 'waypoint',
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),

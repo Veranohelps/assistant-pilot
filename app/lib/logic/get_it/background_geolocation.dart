@@ -9,13 +9,12 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 
 export 'package:provider/provider.dart';
 
-class BackgroundGeolocation extends ChangeNotifier {
+class BackgroundGeolocationService extends ChangeNotifier {
   final List<Waypoint> waypoints = [];
-  final List<String> shownWaypointsIds = [];
   Future<bg.Location> get currentPosition =>
       bg.BackgroundGeolocation.getCurrentPosition();
 
-  Future<void> requestPermissionTillAlwais() async {
+  Future<void> requestPermissionTillAlways() async {
     while (true) {
       var status = await bg.BackgroundGeolocation.requestPermission();
 
@@ -83,14 +82,13 @@ class BackgroundGeolocation extends ChangeNotifier {
 
     if (action.toLowerCase() == "enter") {
       notification.showNotification(
-        title: '$action: ${waypoint.name}, ${waypoint.type}',
-        text: waypoint.description,
+        title: '$action: ${waypoint.type}',
+        text: waypoint.name,
       );
     }
 
     getIt<ConsoleService>()
         .addMessage(ConsoleMessage(text: '$action: ${waypoint.id}'));
-    shownWaypointsIds.add(waypoint.id);
     // bg.BackgroundGeolocation.removeGeofence(waypoint.id);
     // notifyListeners();
   }

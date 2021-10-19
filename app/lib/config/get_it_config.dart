@@ -1,5 +1,6 @@
 import 'package:app/logic/get_it/analytics.dart';
 import 'package:app/logic/get_it/auth_token.dart';
+import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/logic/get_it/connectivity.dart';
 import 'package:app/logic/get_it/device_info.dart';
 import 'package:get_it/get_it.dart';
@@ -38,4 +39,6 @@ Future<void> preRenderGetItSetup() async {
   await getIt.allReady();
 }
 
-Future<void> afterFirstRenderGetItSetup() async {}
+Future<void> afterFirstRenderGetItSetup() async {
+  getIt.registerSingleton<BackgroundGeolocationService>(BackgroundGeolocationService());
+}

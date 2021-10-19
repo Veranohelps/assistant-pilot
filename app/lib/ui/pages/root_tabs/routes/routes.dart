@@ -44,7 +44,7 @@ class _RoutesTabState extends State<RoutesTab> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
-                  materialRoute(
+                  noAnimationRoute(
                     RouteDetails(
                       route: route,
                     ),

@@ -1,0 +1,366 @@
+openapi: 3.0.2
+info:
+  title: Dersu API
+  version: "1.0"
+servers:
+  - url: "https://develop-api.dersu.uz"
+    description: develop APIs
+components:
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+    AdminApiToken:
+      type: apiKey
+      in: header
+      name: x-dersu-admin-api-token
+  headers:
+    content-length:
+      schema:
+        type: string
+  responses:
+    base:
+      description: base response
+      headers:
+        content-length:
+          $ref: "#/components/headers/content-length"
+  schemas:
+    Response:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+    PointGeometry:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Point
+        coordinates:
+          type: array
+          minLength: 3
+          maxLength: 3
+          items:
+            type: number
+    LineStringGeometry:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - LineString
+          readOnly: true
+        coordinates:
+          type: array
+          minLength: 2
+          items:
+            type: array
+            minLength: 3
+            maxLength: 3
+            items:
+              type: number
+    PolygonGeometry:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Polygon
+          readOnly: true
+        coordinates:
+          type: array
+          minLength: 1
+          items:
+            type: array
+            minLength: 1
+            items:
+              type: array
+              minLength: 2
+              items:
+                type: number
+    ExpeditionSlim:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        userId:
+          type: string
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: a short description of this expedition
+        startDateTime:
+          type: string
+          format: date-time
+          readOnly: true
+          description: >-
+            when this expedition starts, computed from the startDateTime of the
+            first route.
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: when this expedition was last updated
+    Expedition:
+      allOf:
+        - $ref: "#/components/schemas/ExpeditionSlim"
+        - type: object
+          properties:
+            coordinate:
+              $ref: "#/components/schemas/PointGeometry"
+              description: >-
+                coordinate of this expedition, currently, this defaults to
+                starting point of the first route.
+    Waypoint:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        originId:
+          $ref: "#/components/schemas/RouteOrigin"
+          readOnly: true
+        userId:
+          type: string
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          description: name of this Waypoint
+        description:
+          type: string
+          description: short description of this waypoint
+          example: This is a dangerous point
+        radiusInMeters:
+          type: number
+          example: 150
+        coordinate:
+          $ref: "#/components/schemas/PointGeometry"
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: when this expedition was last updated
+    RouteOrigin:
+      type: string
+      enum:
+        - dersu
+        - manual
+        - strava
+        - garmin
+      description: identifies the origin of a route
+    RouteSlim:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        originId:
+          $ref: "#/components/schemas/RouteOrigin"
+          readOnly: true
+        userId:
+          type: string
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          description: name of this route
+        boundingBox:
+          $ref: "#/components/schemas/PolygonGeometry"
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: when this expedition was last updated
+    Route:
+      allOf:
+        - $ref: "#/components/schemas/RouteSlim"
+        - type: object
+          properties:
+            coordinate:
+              $ref: "#/components/schemas/LineStringGeometry"
+              description: >-
+                coordinate of this expedition, currently, this defaults to
+                starting point of the first route.
+            waypoints:
+              type: array
+              items:
+                $ref: "#/components/schemas/Waypoint"
+security:
+  - BearerToken: []
+paths:
+  ##############################################################
+  ####                EXPEDITION ENDPOINTS                  ####
+  ##############################################################
+  /personal/expedition/create:
+    post:
+      summary: create an expedition
+      tags:
+        - Personal
+        - Expedition
+      requestBody:
+        description: data to create an expedition
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: expedition name
+                  example: Expedition 1
+                description:
+                  type: string
+                  maxLength: 255
+                  description: a short description of the expedition
+                  example: "this is my first expedition, join at your own risk"
+                routes:
+                  type: array
+                  minLength: 1
+                  items:
+                    type: object
+                    properties:
+                      routeId:
+                        type: string
+                        description: id of route to be added to expedition
+                        example: routeId
+                      startDateTime:
+                        type: string
+                        format: date-time
+                        description: when expedition on this route will take place
+                        example: "2021-10-13T16:19:17.281Z"
+              required:
+                - name
+                - routes
+      responses:
+        "201":
+          description: Expedition created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          expedition:
+                            allOf:
+                              - $ref: "#/components/schemas/Expedition"
+                              - type: object
+                                properties:
+                                  routes:
+                                    type: array
+                                    items:
+                                      $ref: "#/components/schemas/Route"
+  /personal/expedition/{expeditionId}:
+    parameters:
+      - name: ExpeditionId
+        in: path
+        description: ID of the expedition
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Personal
+        - Expedition
+      summary: fetches an expedition by ID
+      responses:
+        "200":
+          $ref: "#/components/responses/base"
+          description: expedition to be returned
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          expedition:
+                            allOf:
+                              - $ref: "#/components/schemas/Expedition"
+                              - type: object
+                                properties:
+                                  routes:
+                                    type: array
+                                    items:
+                                      $ref: "#/components/schemas/Route"
+  ##############################################################
+  ####                   ROUTE ENDPOINTS                    ####
+  ##############################################################
+  #### PERSONAL
+  /personal/route:
+    get:
+      tags:
+        - Personal
+        - Route
+      summary: get all routes accessible by a user
+      responses:
+        200:
+          description: successfully returned routes for the user
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          routes:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/RouteSlim"
+  /personal/route/{routeId}:
+    parameters:
+      - name: routeId
+        in: path
+        description: ID of the route
+        required: true
+        schema:
+          type: string
+      - name: searchWaypointsBy
+        in: query
+        description: Determines how waypoints should be fetched
+        schema:
+          type: string
+          enum:
+            - track
+            - boundingBox
+    get:
+      tags:
+        - Personal
+        - Route
+      summary: Gets a route by ID, the route must be accessible to the user
+      responses:
+        200:
+          description: successfully returned the route with provided ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          route:
+                            $ref: "#/components/schemas/Route"

@@ -1,5 +1,5 @@
 import { IDefaultMeta } from '../../database/types/database.type';
-import { IRoute, IRouteSlim } from '../../route/types/route.type';
+import { IRoute, IRouteFull, IRouteSlim } from '../../route/types/route.type';
 
 export interface IExpeditionRoute {
   expeditionId: string;
@@ -9,6 +9,10 @@ export interface IExpeditionRoute {
   meta: IDefaultMeta;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IExpeditionRouteFull extends IExpeditionRoute {
+  route: IRouteFull;
 }
 
 export interface ICreateExpeditionRoute {

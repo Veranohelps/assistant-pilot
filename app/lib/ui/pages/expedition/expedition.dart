@@ -2,6 +2,7 @@ import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/models/expedition.dart';
+import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
@@ -69,10 +70,11 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
                             ],
                           ),
                         );
+
                         if (res) {
                           await context.read<LiveCubit>().set(fullExpedition);
                           Navigator.of(context).push(
-                            materialRoute(
+                            noAnimationRoute(
                               ExpeditionLive(),
                             ),
                           );

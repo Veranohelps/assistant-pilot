@@ -1,5 +1,8 @@
+import 'package:app/logic/models/serialization.dart';
+import 'package:app/logic/models/waypoint.dart';
 import 'package:equatable/equatable.dart';
 import 'package:app/logic/models/geo_json.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'route.g.dart';
@@ -31,6 +34,13 @@ abstract class DersuRoute extends Equatable {
 @JsonSerializable()
 class DersuRouteFull extends DersuRoute {
   final LineStringGeometry coordinate;
+  final List<Waypoint> waypoints;
+
+  @JsonKey(
+    fromJson: Serialization.fromJsonToLatLngBounds,
+    toJson: Serialization.fromLatLngBoundsToJson,
+  )
+  final LatLngBounds boundaries;
 
   DersuRouteFull({
     required String id,
@@ -38,6 +48,8 @@ class DersuRouteFull extends DersuRoute {
     required String originId,
     required DateTime updatedAt,
     required this.coordinate,
+    required this.boundaries,
+    this.waypoints = const [],
     String? userId,
   }) : super(
           id: id,

@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TWithUrl } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import { AppQuery } from '../../common/utilities/app-query';
+import { generateGroupRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
+import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
   ICreateRouteDTO,
   ICreateRouteResult,
-  IGetRoutesUrlParameters,
+  IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
 } from '../types/route.type';
@@ -23,7 +23,6 @@ export class RouteService {
   constructor(
     @InjectKnexClient('Route')
     private db: KnexClient<'Route'>,
-    private configService: ConfigService,
     private waypointService: WaypointService,
   ) {}
 
@@ -49,21 +48,21 @@ export class RouteService {
       )
       .flat()
       .filter((location) => location.altitude !== null && location.longitude !== null);
+    const geomString = `ST_GeogFromText('LINESTRINGZ(${coordinates
+      .map((c) => `${c.longitude} ${c.latitude} ${c.altitude ?? 0}`)
+      .join(',')})')`;
     const [route] = await this.db
       .write(tx)
       .insert({
         name: payload.name,
         userId,
         originId,
-        coordinate: this.db.knex.raw(
-          `ST_GeogFromText('LINESTRINGZ(${coordinates
-            .map((c) => `${c.longitude} ${c.latitude} ${c.altitude ?? 0}`)
-            .join(',')})')`,
-        ),
+        coordinate: this.db.knex.raw(geomString),
+        boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
       })
       .where('createdAt')
       .returning('*');
-    const waypoints = await this.waypointService.fromGeoJson(tx, geojson);
+    const waypoints = await this.waypointService.fromGeoJson(tx, originId, geojson);
 
     return { route, waypoints };
   }
@@ -98,11 +97,12 @@ export class RouteService {
   async getUserRoutes(
     tx: TransactionManager | null,
     userId: string,
-    urlParameters: AppQuery<IGetRoutesUrlParameters>,
-  ): Promise<TWithUrl<IRouteSlim>[]> {
+    options: IGetUserRoutesUrlParameters,
+  ): Promise<IRouteSlim[]> {
+    const opts = new AppQuery(options);
     const builder = this.db.read(tx);
 
-    urlParameters.withFilter(
+    opts.withField(
       'owner',
       (owners) => {
         if (owners.includes('me')) {
@@ -116,20 +116,38 @@ export class RouteService {
 
     const routes = await builder;
 
-    return routes.map((route) => ({
-      ...route,
-      url: `${this.configService.get('APP_URL')}/personal/route/${route.id}`,
-    }));
+    return routes;
   }
 
-  async getAdminRoutes(): Promise<TWithUrl<IRouteSlim>[]> {
+  async getAdminRoutes(): Promise<IRouteSlim[]> {
     const builder = this.db.read().orderBy('createdAt', 'desc');
 
     const routes = await builder;
 
-    return routes.map((route) => ({
-      ...route,
-      url: `${this.configService.get('APP_URL')}/personal/route/${route.id}`,
-    }));
+    return routes;
+  }
+
+  async findByIdsWithWaypoints(
+    tx: TransactionManager | null,
+    ids: string[],
+    options?: IGetRouteWaypointOptions,
+  ) {
+    const routes = await this.findByIds(tx, ids);
+    const waypointsRecord = await this.waypointService
+      .getRouteWaypoints(tx, ids, options)
+      .then(generateGroupRecord2((w) => w.routeId));
+
+    return routes.map((r) => ({ ...r, waypoints: waypointsRecord[r.id] ?? [] }));
+  }
+
+  async findOneWithWaypoints(
+    tx: TransactionManager | null,
+    id: string,
+    options?: IGetRouteWaypointOptions,
+  ) {
+    const route = await this.findOne(tx, id);
+    const waypoints = await this.waypointService.getRouteWaypoints(tx, [id], options);
+
+    return { ...route, waypoints };
   }
 }

@@ -21,6 +21,12 @@ export interface ILineStringGeometry {
   coordinates: [number, number, number | null][];
 }
 
+type T2dPoint = [number, number];
+export interface IPolygonGeometry {
+  type: 'Polygon';
+  coordinates: [T2dPoint, T2dPoint, T2dPoint, T2dPoint, T2dPoint][];
+}
+
 interface Feature {
   type: string;
   properties: IProperties;

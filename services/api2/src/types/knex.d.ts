@@ -28,6 +28,10 @@ declare module 'knex' {
 
       postgis(): KnexPostgis;
 
+      getContextValue(key: string): unknown;
+
+      setContextValue(key: string, value: any): QueryBuilder<TRecord, TResult>;
+
       sTest<T extends keyof ResolveTableType<TRecord>>(col: T, override: IEntityColumn<TRecord>);
     }
   }

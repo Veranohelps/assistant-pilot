@@ -71,11 +71,12 @@ class StaticMap extends StatelessWidget {
     );
   }
 
-  Widget getMap() {
+  Widget getMap([InteractiveFlag? interactiveFlags]) {
     return FlutterMap(
       options: MapOptions(
+        bounds: route.boundaries,
+        boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(10)),
         allowPanning: false,
-        center: mapCameraPoint,
         zoom: MapConfig.staticInitZoom,
         maxZoom: MapConfig.maxZoom,
         minZoom: MapConfig.minZoom,
@@ -83,15 +84,6 @@ class StaticMap extends StatelessWidget {
       ),
       layers: [
         MapConfig.tilesLayourOptions,
-        PolylineLayerOptions(
-          polylines: [
-            MapConfig.route(
-              route.coordinate.coordinates
-                  .map((p) => LatLng(p.latitude, p.longitude))
-                  .toList(),
-            ),
-          ],
-        ),
         CircleLayerOptions(
           circles: MapConfig.dots(
             route.coordinate.coordinates
@@ -99,12 +91,33 @@ class StaticMap extends StatelessWidget {
                 .toList(),
           ),
         ),
+        CircleLayerOptions(
+          circles: MapConfig.waypoints(route.waypoints),
+        ),
+        PolylineLayerOptions(
+          polylines: [
+            MapConfig.route(
+              route.coordinate.coordinates,
+              color: Colors.blue.withOpacity(0.5),
+              strokeWidth: 4,
+            ),
+          ],
+        ),
         MarkerLayerOptions(
           markers: [
             MapConfig.startMarker(LatLng(
               route.coordinate.coordinates[0].latitude,
               route.coordinate.coordinates[0].longitude,
             ))
+          ],
+        ),
+        PolylineLayerOptions(
+          polylines: [
+            MapConfig.route(
+              route.coordinate.coordinates,
+              color: Colors.red,
+              strokeWidth: 1,
+            ),
           ],
         ),
       ],

@@ -1,5 +1,5 @@
 import { Knex, knex } from 'knex';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep, get, merge, set } from 'lodash';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { entityMap } from '../database.entity';
 import { IEntityColumn } from '../types/entity.type';
@@ -99,6 +99,28 @@ function withTx(this: Knex.QueryBuilder, tx?: TransactionManager) {
   return this;
 }
 
+function setContextValue(this: Knex.QueryBuilder, key: string, value: any) {
+  if (/^(entityMap|columns).?/.test(key)) {
+    throw new Error('entityMap and columns keys are reserved');
+  }
+
+  const ctx = this.queryContext() ?? {};
+
+  set(ctx, key, value);
+  this.queryContext(ctx);
+
+  return this;
+}
+
+function getContextValue(this: Knex.QueryBuilder, key: string) {
+  const ctx = this.queryContext() ?? {};
+
+  get(ctx, key, null);
+  this.queryContext(ctx);
+
+  return this;
+}
+
 let extended = false;
 
 export function extendKnex() {
@@ -110,6 +132,8 @@ export function extendKnex() {
   knex.QueryBuilder.extend('sDel', sDel);
   knex.QueryBuilder.extend('paranoid', paranoid);
   knex.QueryBuilder.extend('whereIn2', whereIn2);
+  knex.QueryBuilder.extend('setContextValue', setContextValue);
+  knex.QueryBuilder.extend('getContextValue', getContextValue);
 
   extended = true;
 }

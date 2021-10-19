@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { generateId } from '../../common/utilities/generate-id';
+import { ERouteOrigins } from '../../route/types/route-origin.type';
 import { extendKnex } from '../knex/extensions.knex';
 
 extendKnex();
@@ -12,7 +13,9 @@ export async function up(knex: Knex): Promise<void> {
     await knex('Route')
       .withColumns('Route')
       .insert(
-        existingRoutes.map((r) => ({ ...r, originId: 'dersu', globalId: generateId() } as any)),
+        existingRoutes.map(
+          (r) => ({ ...r, originId: ERouteOrigins.DERSU, globalId: generateId() } as any),
+        ),
       )
       .onConflict('id')
       .merge(['originId', 'globalId'] as any);

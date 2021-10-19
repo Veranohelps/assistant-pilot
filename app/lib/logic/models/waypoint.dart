@@ -10,7 +10,6 @@ class Waypoint extends Equatable {
     required this.id,
     required this.type,
     required this.name,
-    required this.description,
     required this.radiusInMeters,
     required this.updatedAt,
     required this.coordinate,
@@ -19,10 +18,11 @@ class Waypoint extends Equatable {
   final String id;
   final String type;
   final String name;
-  final String description;
   final num radiusInMeters;
   final PointGeometry coordinate;
   final DateTime updatedAt;
+
+
 
   @override
   String toString() {
@@ -36,5 +36,5 @@ class Waypoint extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, name, description, type, radiusInMeters, updatedAt, coordinate];
+      [id, name, type, radiusInMeters, updatedAt, coordinate];
 }

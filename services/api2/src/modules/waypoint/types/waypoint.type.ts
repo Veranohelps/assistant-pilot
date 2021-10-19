@@ -4,6 +4,8 @@ import { IDefaultMeta } from '../../database/types/database.type';
 
 export interface IWaypoint {
   id: string;
+  userId: string | null;
+  originId: string;
   type: string;
   name: string;
   description: string | null;
@@ -17,6 +19,7 @@ export interface IWaypoint {
 
 export interface ICreateWaypoint {
   type: string;
+  originId: string;
   name: string;
   description?: string;
   radiusInMeters: number;
@@ -32,4 +35,8 @@ export interface ICreateWaypointDTO {
   longitude: number;
   latitude: number;
   altitude?: number | null;
+}
+
+export interface IGetRouteWaypointOptions {
+  searchWaypointsBy: 'track' | 'boundingBox';
 }

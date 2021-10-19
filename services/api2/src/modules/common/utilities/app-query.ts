@@ -9,7 +9,24 @@ export class AppQuery<T = Record<string, unknown>> {
     this.query = merge(cloneDeep(query), query);
   }
 
-  withFilter<K extends keyof T>(
+  withFieldValue<K extends keyof T>(
+    key: K,
+    value: T[K],
+    callback: VoidFunction,
+    elseCallback?: VoidFunction,
+  ) {
+    const val = this.query[key];
+
+    if (val !== value) {
+      elseCallback?.();
+    } else {
+      callback();
+    }
+
+    return this;
+  }
+
+  withField<K extends keyof T>(
     key: K,
     callback: TFilterCallback<T[K]>,
     elseCallback?: VoidFunction,
@@ -27,11 +44,15 @@ export class AppQuery<T = Record<string, unknown>> {
     return this;
   }
 
-  hasFilter(key: keyof T) {
-    const value = this.query[key];
+  hasField<K extends keyof T>(key: K) {
+    const val = this.query[key];
 
-    if (!value) return false;
+    return val !== undefined;
+  }
 
-    return true;
+  fieldEquals<K extends keyof T>(key: K, value: T[K]) {
+    const val = this.query[key];
+
+    return val === value;
   }
 }

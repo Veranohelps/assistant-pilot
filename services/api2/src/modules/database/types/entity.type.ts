@@ -25,6 +25,11 @@ export interface IEntityColumn<T> {
   };
 }
 
+export interface IVirtualEntityColumn<T> extends IEntityColumn<T> {
+  virtual: true;
+  create: (row: T, builder: Knex.QueryBuilder) => any;
+}
+
 export interface IRelationEntityColumn {
   alias?: string;
   policy: (builder: Knex.QueryBuilder) => void;
@@ -33,7 +38,7 @@ export interface IRelationEntityColumn {
 }
 
 export interface IEntity<T = any> {
-  columns: Record<keyof T, IEntityColumn<T>>;
+  columns: Record<keyof T, IEntityColumn<T> | IVirtualEntityColumn<T>>;
   relations?: Record<string, IRelationEntityColumn>;
   hooks?: {
     beforeSelect?: (builder: Knex.QueryBuilder, knex: Knex) => void;

@@ -15,10 +15,11 @@ import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
+import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { createRouteValidationSchema } from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
 import { ERouteOrigins } from '../../types/route-origin.type';
-import { ICreateRouteDTO } from '../../types/route.type';
+import { ICreateRouteDTO, IRouteSlim } from '../../types/route.type';
 
 @Controller('admin/route')
 @ApiAdminTokenProtected()
@@ -29,6 +30,8 @@ export class AdminRouteController {
   @HttpCode(HttpStatus.OK)
   async getRoutes() {
     const routes = await this.routeService.getAdminRoutes();
+
+    withUrl(routes, (r: IRouteSlim) => appUrls.admin.route.id(r.id));
 
     return successResponse('fetch routes success', { routes });
   }

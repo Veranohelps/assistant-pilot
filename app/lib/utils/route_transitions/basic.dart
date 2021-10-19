@@ -8,8 +8,12 @@ Route materialRoute(Widget widget, [arguments]) => MaterialPageRoute(
       ),
     );
 
-Route noAnimationRoute(Widget widget) => PageRouteBuilder(
+Route noAnimationRoute(Widget widget, [arguments]) => PageRouteBuilder(
       pageBuilder: (context, animation1, animation2) => widget,
+      settings: RouteSettings(
+        arguments: arguments,
+        name: widget.runtimeType.toString(),
+      ),
     );
 
 bool canPopHelper(BuildContext context) {

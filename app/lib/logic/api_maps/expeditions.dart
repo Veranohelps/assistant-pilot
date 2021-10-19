@@ -4,6 +4,8 @@ import 'package:app/logic/api_maps/dersu_api.dart';
 import 'package:app/logic/models/dto/create_expedition.dart';
 import 'package:app/logic/models/expedition.dart';
 
+import 'helpers.dart';
+
 final createUrl = '/expedition/create';
 
 class ExpeditionsApi extends PrivateDersuApi {
@@ -17,6 +19,11 @@ class ExpeditionsApi extends PrivateDersuApi {
     final client = await getClient();
     var res = await client.get(url);
     client.close();
-    return ExpeditionFull.fromJson(res.data['data']['expedition']);
+
+    var expedition = res.data['data']['expedition'];
+    expedition['routes'] = expedition['routes']
+        .map((route) => formatRoutesResponse(route))
+        .toList();
+    return ExpeditionFull.fromJson(expedition);
   }
 }

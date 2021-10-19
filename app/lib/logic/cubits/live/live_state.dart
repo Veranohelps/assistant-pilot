@@ -36,7 +36,6 @@ class LiveStateOn extends LiveState {
   String toJson() => json.encode(toMap());
 
   factory LiveStateOn.fromJson(String source) {
-    print(json.decode(source));
     return LiveStateOn.fromMap(json.decode(source));
   }
 }

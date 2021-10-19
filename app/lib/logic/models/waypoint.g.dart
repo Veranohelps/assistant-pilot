@@ -11,7 +11,6 @@ Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     type: json['type'] as String,
     name: json['name'] as String,
-    description: json['description'] as String,
     radiusInMeters: json['radiusInMeters'] as num,
     updatedAt: DateTime.parse(json['updatedAt'] as String),
     coordinate:
@@ -23,7 +22,6 @@ Map<String, dynamic> _$WaypointToJson(Waypoint instance) => <String, dynamic>{
       'id': instance.id,
       'type': instance.type,
       'name': instance.name,
-      'description': instance.description,
       'radiusInMeters': instance.radiusInMeters,
       'coordinate': instance.coordinate,
       'updatedAt': instance.updatedAt.toIso8601String(),

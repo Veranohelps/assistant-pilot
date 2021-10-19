@@ -63,9 +63,9 @@ class PointGeometry extends Geometry {
 
   final PointCoordinates coordinates;
 
-  num get longitude => coordinates.longitude;
-  num get latitude => coordinates.latitude;
-  num get altitude => coordinates.altitude;
+  double get longitude => coordinates.longitude;
+  double get latitude => coordinates.latitude;
+  double get altitude => coordinates.altitude;
 
   static PointGeometry fromJson(Map<String, dynamic> json) =>
       _$PointGeometryFromJson(json);

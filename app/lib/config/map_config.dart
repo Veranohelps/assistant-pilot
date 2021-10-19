@@ -1,3 +1,5 @@
+import 'package:app/logic/models/geo_json.dart';
+import 'package:app/logic/models/waypoint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -34,11 +36,15 @@ class MapConfig {
     );
   }
 
-  static Polyline route(List<LatLng> points) {
+  static Polyline route(
+    List<PointCoordinates> points, {
+    required Color color,
+    required double strokeWidth,
+  }) {
     return Polyline(
-      points: points,
-      strokeWidth: 4,
-      color: Colors.blue.withOpacity(0.5),
+      points: points.map((p) => LatLng(p.latitude, p.longitude)).toList(),
+      strokeWidth: strokeWidth,
+      color: color,
     );
   }
 
@@ -50,6 +56,21 @@ class MapConfig {
             useRadiusInMeter: true,
             point: point,
             color: BrandColors.red,
+            borderStrokeWidth: 0,
+          ),
+        )
+        .toList();
+  }
+
+  static List<CircleMarker> waypoints(List<Waypoint> list) {
+    return list
+        .map(
+          (waypoint) => CircleMarker(
+            radius: waypoint.radiusInMeters.toDouble(),
+            useRadiusInMeter: true,
+            point: LatLng(
+                waypoint.coordinate.latitude, waypoint.coordinate.longitude),
+            color: BrandColors.red.withOpacity(0.5),
             borderStrokeWidth: 0,
           ),
         )

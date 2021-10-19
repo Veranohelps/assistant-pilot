@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import DataLoader from 'dataloader';
+import AddFields from '../../common/utilities/add-fields';
 import { ensureArray } from '../../common/utilities/ensure-array';
 import { generateGroupRecord2, generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
@@ -47,30 +48,25 @@ export class ExpeditionRouteService {
   async getRoutesSlim(
     tx: TransactionManager | null,
     expeditionId: string | string[],
-    namespace: string,
   ): Promise<IExpeditionRouteWithRouteSlim[]> {
     const expeditionRoutes = await this.db
       .read(tx)
-      .whereIn('expeditionId', ensureArray(expeditionId));
-    const routes = await this.routeService
-      .findByIdsSlim(
-        tx,
-        expeditionRoutes.map((e) => e.routeId),
-      )
-      .then(generateRecord2((r) => r.id));
-    const result = expeditionRoutes.map<IExpeditionRouteWithRouteSlim>((e) => {
-      const route = routes[e.routeId];
+      .whereIn('expeditionId', ensureArray(expeditionId))
+      .then((res) =>
+        AddFields.target(res).add(
+          'route',
+          () =>
+            this.routeService
+              .findByIdsSlim(
+                tx,
+                res.map((e) => e.routeId),
+              )
+              .then(generateRecord2((r) => r.id)),
+          (er, record) => record[er.routeId],
+        ),
+      );
 
-      return {
-        ...e,
-        route: {
-          ...route,
-          url: `${this.configService.get('APP_URL')}/${namespace}/route/${route.id}`,
-        },
-      };
-    });
-
-    return result;
+    return expeditionRoutes;
   }
 
   async getWithRoutes(
@@ -81,7 +77,7 @@ export class ExpeditionRouteService {
       .read(tx)
       .whereIn('expeditionId', ensureArray(expeditionId));
     const routes = await this.routeService
-      .findByIds(
+      .findByIdsWithWaypoints(
         tx,
         expeditionRoutes.map((e) => e.routeId),
       )

@@ -49,7 +49,7 @@ class Dashboard extends StatelessWidget {
               var expedition = expeditions[index - 1];
               return GestureDetector(
                 onTap: () => Navigator.of(context).push(
-                  materialRoute(ExpeditionPage(expedition: expedition)),
+                  noAnimationRoute(ExpeditionPage(expedition: expedition)),
                 ),
                 child: BrandCard(
                   child: Text(expedition.name),

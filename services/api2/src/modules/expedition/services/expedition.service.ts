@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TWithUrl } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
+import { ILineStringGeometry } from '../../common/types/geojson.type';
 import { generateGroupRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
@@ -23,7 +22,6 @@ export class ExpeditionService {
     private db: KnexClient<'Expedition'>,
     private routeService: RouteService,
     private expeditionRouteService: ExpeditionRouteService,
-    private configService: ConfigService,
   ) {}
 
   async create(
@@ -34,10 +32,8 @@ export class ExpeditionService {
     // for now, the expedition's coordinates defaults to the coordinate of the start route
     const { routeId, startDateTime } = payload.routes[0];
     const {
-      coordinate: {
-        coordinates: [[longitude, latitude, altitude]],
-      },
-    } = await this.routeService.findOne(tx, routeId);
+      coordinates: [[longitude, latitude, altitude]],
+    } = (await this.routeService.findOne(tx, routeId)).coordinate as ILineStringGeometry;
     const [{ id }] = await this.db
       .write(tx)
       .insert({
@@ -84,7 +80,7 @@ export class ExpeditionService {
     return result;
   }
 
-  async getExpeditionsFull(namespace: string, userId?: string): Promise<IExpeditionFullSlim[]> {
+  async getExpeditionsFull(userId?: string): Promise<IExpeditionFullSlim[]> {
     const builder = this.db.read();
 
     if (userId) builder.where({ userId });
@@ -94,7 +90,6 @@ export class ExpeditionService {
       .getRoutesSlim(
         null,
         expeditions.map((e) => e.id),
-        namespace,
       )
       .then(generateGroupRecord2((e) => e.expeditionId));
 
@@ -106,37 +101,19 @@ export class ExpeditionService {
     return result;
   }
 
-  appendUrl(expedition: IExpedition): TWithUrl<IExpedition>;
-  appendUrl(expeditions: IExpedition[]): TWithUrl<IExpedition>[];
-  appendUrl(
-    expeditions: IExpedition | IExpedition[],
-  ): TWithUrl<IExpedition>[] | TWithUrl<IExpedition> {
-    if (Array.isArray(expeditions)) {
-      return expeditions.map((expedition) => ({
-        ...expedition,
-        url: `${this.configService.get('APP_URL')}/personal/expedition/${expedition.id}`,
-      }));
-    }
-
-    return {
-      ...expeditions,
-      url: `${this.configService.get('APP_URL')}/personal/expedition/${expeditions.id}`,
-    };
-  }
-
   async getExpeditions(): Promise<IExpedition[]> {
     const expeditions = await this.db.read();
 
-    return this.appendUrl(expeditions);
+    return expeditions;
   }
 
-  async getUpcomingExpeditions(userId: string): Promise<TWithUrl<IExpedition>[]> {
+  async getUpcomingExpeditions(userId: string): Promise<IExpedition[]> {
     const expeditions = await this.db
       .read()
       .where('startDateTime', '>=', new Date())
       .where({ userId })
       .orderBy('createdAt', 'desc');
 
-    return this.appendUrl(expeditions);
+    return expeditions;
   }
 }

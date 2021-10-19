@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { ILineStringGeometry } from '../../common/types/geojson.type';
+import { ILineStringGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
 import { IWaypoint } from '../../waypoint/types/waypoint.type';
 
@@ -9,7 +9,8 @@ export interface IRoute {
   globalId?: string;
   userId: string | null;
   name: string;
-  coordinate: ILineStringGeometry;
+  coordinate?: ILineStringGeometry;
+  boundingBox?: IPolygonGeometry;
   meta?: IDefaultMeta;
   createdAt?: Date;
   updatedAt: Date;
@@ -22,6 +23,7 @@ export interface ICreateRoute {
   globalId?: string;
   userId?: string;
   coordinate: Knex.Raw;
+  boundingBox: Knex.Raw;
   meta?: IDefaultMeta;
 }
 
@@ -33,14 +35,13 @@ export interface ICreateRouteDTO {
   name: string;
 }
 
-export interface IRouteSlim {
-  id: string;
-  originId: string;
-  userId: string | null;
-  name: string;
+export interface IRouteSlim extends Omit<IRoute, 'coordinate'> {}
+
+export interface IRouteFull extends IRoute {
+  waypoints?: IWaypoint[];
 }
 
-export interface IGetRoutesUrlParameters {
+export interface IGetUserRoutesUrlParameters {
   owner: string[];
 }
 
@@ -48,3 +49,13 @@ export interface ICreateRouteResult {
   route: IRoute;
   waypoints: IWaypoint[];
 }
+
+export interface IRouteWithWaypoints extends IRoute {
+  waypoints: IWaypoint[];
+}
+
+export interface IGetRouteUrlParameters {
+  searchWaypointsBy: 'track' | 'boundingBox';
+}
+
+// export interface IGetRouteWithWaypointsOptions extends IGetRouteWaypointOptions {}

@@ -8,6 +8,12 @@ export class WaypointModel implements IWaypoint {
   @Field()
   id!: string;
 
+  @Field({ nullable: true })
+  userId!: string;
+
+  @Field()
+  originId!: string;
+
   @Field()
   name!: string;
 

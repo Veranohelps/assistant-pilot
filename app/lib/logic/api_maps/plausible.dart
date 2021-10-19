@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/api_maps/api.dart';
 import 'package:app/logic/get_it/analytics.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -65,18 +66,26 @@ class PlausibleApi extends ApiMap {
   }) async {
     var client = await getClient();
 
-    client.post(
-      'api/event',
-      data: jsonEncode({
-        "n": type.toString().split('.')[1],
-        "u": "http://${FlutterConfig.get('PLAUSIBLE_URL')}/",
-        "d": "${FlutterConfig.get('PLAUSIBLE_URL')}",
-        "p":
-            "{\"action\": \"$action\", \"label\": \"$label\", \"value\": \"$value\"}",
-        "r": null,
-        "w": getIt<DeviceInfoService>().device?.screenWidth.toInt() ?? 0,
-        "h": getIt<DeviceInfoService>().device?.screenHeight.toInt() ?? 0,
-      }),
-    );
+    try {
+      await client.post(
+        'api/event',
+        data: jsonEncode({
+          "n": type.toString().split('.')[1],
+          "u": "http://${FlutterConfig.get('PLAUSIBLE_URL')}/",
+          "d": "${FlutterConfig.get('PLAUSIBLE_URL')}",
+          "p":
+              "{\"action\": \"$action\", \"label\": \"$label\", \"value\": \"$value\"}",
+          "r": null,
+          "w": getIt<DeviceInfoService>().device?.screenWidth.toInt() ?? 0,
+          "h": getIt<DeviceInfoService>().device?.screenHeight.toInt() ?? 0,
+        }),
+      );
+    } catch (e) {
+      print(e);
+      getIt<ConsoleService>()
+          .addMessage(ConsoleMessage.warn(text: e.toString()));
+    }
+
+    client.close();
   }
 }

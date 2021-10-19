@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
+import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
 import 'package:app/utils/geo_utils.dart';
@@ -33,6 +35,9 @@ class _LiveMapState extends State<LiveMap> {
   late MapController _controller;
   StreamSubscription<Position>? _positionStream;
   bool _liveUpdate = false;
+  bool _hasLiveUpdatePause = false;
+  bool isFirstEventAfterCenter = true;
+  late final BackgroundGeolocationService geolocationService;
   Marker? userMarker;
 
   @override
@@ -41,9 +46,10 @@ class _LiveMapState extends State<LiveMap> {
     WidgetsBinding.instance!.addPostFrameCallback(_afterLayout);
   }
 
+  Timer? delay;
+
   void _afterLayout(_) async {
     LatLng? position = await GeoUtils.getUserLocation();
-    var firstLoad = true;
     if (position != null) {
       _controller.move(position, zoom);
       _liveUpdate = true;
@@ -51,29 +57,50 @@ class _LiveMapState extends State<LiveMap> {
       _positionStream = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.bestForNavigation,
         intervalDuration: Duration(seconds: 5),
-      ).listen(_listenCurrentPosition);
+      ).listen(_locationListener);
 
-      _controller.mapEventStream.listen((event) async {
-        LatLng position = LatLng(event.center.latitude, event.center.longitude);
-        LatLng? userCurrentPosition = await GeoUtils.getUserLocation();
-        if (userCurrentPosition != null) {
-          var distance = GeoUtils.getDistance(userCurrentPosition, position);
-          if (firstLoad) {
-            firstLoad = false;
-          } else if (distance.abs() > 1000) {
-            setState(() {
-              _liveUpdate = false;
-            });
-          }
+      _controller.mapEventStream.listen(_mapListener);
+    }
+    _geoFence();
+  }
+
+  Future<void> _mapListener(event) async {
+    if (event is MapEventMoveStart ||
+        event is MapEventFlingAnimationStart ||
+        event is MapEventDoubleTapZoomStart ||
+        event is MapEventRotateStart) {
+      _hasLiveUpdatePause = true;
+    } else {
+      delay?.cancel();
+      delay = Timer(
+        Duration(seconds: 5),
+        () => _hasLiveUpdatePause = false,
+      );
+    }
+
+    LatLng position = LatLng(event.center.latitude, event.center.longitude);
+    LatLng? userCurrentPosition = await GeoUtils.getUserLocation();
+    if (userCurrentPosition != null) {
+      if (isFirstEventAfterCenter) {
+        isFirstEventAfterCenter = false;
+      } else {
+        var distance = GeoUtils.getDistance(userCurrentPosition, position);
+        var kZoom = pow(2, zoom - event.zoom) * pow(2, zoom - event.zoom);
+        if (distance.abs() > kZoom * 300) {
+          setState(() {
+            _liveUpdate = false;
+          });
         }
-      });
+      }
     }
   }
 
-  void _listenCurrentPosition(Position position) {
-    if (_liveUpdate) {
+  void _locationListener(Position position) {
+    if (_liveUpdate && !_hasLiveUpdatePause) {
       _controller.move(
-          LatLng(position.latitude, position.longitude), _controller.zoom);
+        LatLng(position.latitude, position.longitude),
+        _controller.zoom,
+      );
     }
     setState(() {
       userMarker = Marker(
@@ -93,8 +120,11 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   void _findMe() async {
-    _liveUpdate = true;
-
+    setState(() {
+      _liveUpdate = true;
+      _hasLiveUpdatePause = false;
+      isFirstEventAfterCenter = true;
+    });
     LatLng? position = await GeoUtils.getUserLocation();
     if (position != null) {
       _controller.move(position, _controller.zoom);
@@ -104,7 +134,14 @@ class _LiveMapState extends State<LiveMap> {
   @override
   void dispose() {
     _positionStream?.cancel();
+    geolocationService.stop();
     super.dispose();
+  }
+
+  Future<void> _geoFence() async {
+    geolocationService = getIt<BackgroundGeolocationService>();
+    await geolocationService.init();
+    await geolocationService.start(widget.route.waypoints, 150);
   }
 
   @override
@@ -119,6 +156,7 @@ class _LiveMapState extends State<LiveMap> {
             label: 'find my location',
             icon: Ionicons.location_outline,
             onPressed: _findMe,
+            backgroundColor: _liveUpdate ? Colors.blue : Colors.grey,
           ),
         ),
         Positioned(
@@ -172,29 +210,37 @@ class _LiveMapState extends State<LiveMap> {
       ),
       layers: [
         MapConfig.tilesLayourOptions,
-        PolylineLayerOptions(
-          polylines: [
-            MapConfig.route(
+        CircleLayerOptions(
+          circles: [
+            ...MapConfig.dots(
               widget.route.coordinate.coordinates
                   .map((p) => LatLng(p.latitude, p.longitude))
                   .toList(),
             ),
+            ...MapConfig.waypoints(widget.route.waypoints),
           ],
         ),
-        CircleLayerOptions(
-          circles: MapConfig.dots(
-            widget.route.coordinate.coordinates
-                .map((p) => LatLng(p.latitude, p.longitude))
-                .toList(),
-          ),
+        PolylineLayerOptions(
+          polylines: [
+            MapConfig.route(
+              widget.route.coordinate.coordinates,
+              color: Colors.blue.withOpacity(0.5),
+              strokeWidth: 4,
+            ),
+            MapConfig.route(
+              widget.route.coordinate.coordinates,
+              color: Colors.red,
+              strokeWidth: 1,
+            ),
+          ],
         ),
         MarkerLayerOptions(
           markers: [
-            if (userMarker != null) userMarker!,
             MapConfig.startMarker(LatLng(
               widget.route.coordinate.coordinates[0].latitude,
               widget.route.coordinate.coordinates[0].longitude,
-            ))
+            )),
+            if (userMarker != null) userMarker!,
           ],
         ),
       ],
