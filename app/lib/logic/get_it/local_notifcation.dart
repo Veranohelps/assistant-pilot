@@ -1,7 +1,6 @@
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/models/console_message.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:notification_permissions/notification_permissions.dart';
 import 'package:package_info/package_info.dart';
 
 class NotificationService {
@@ -57,7 +56,6 @@ class NotificationService {
     if (!_isInit) {
       await init();
     }
-    reAskPermitionsIfNeeded();
     getIt<ConsoleService>().addMessage(
       ConsoleMessage(text: 'showNotification: ' + title),
     );
@@ -69,20 +67,6 @@ class NotificationService {
         android: androidPlatformChannelSpecifics,
       ),
     );
-  }
-
-  Future<void> reAskPermitionsIfNeeded() async {
-    var permission =
-        await NotificationPermissions.getNotificationPermissionStatus();
-    if (permission == PermissionStatus.denied) {
-      NotificationPermissions.requestNotificationPermissions(
-        iosSettings: const NotificationSettingsIos(
-          sound: true,
-          badge: true,
-          alert: true,
-        ),
-      );
-    }
   }
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

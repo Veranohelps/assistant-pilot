@@ -56,7 +56,7 @@ class BackgroundGeolocationService extends ChangeNotifier {
   }
 
   Future<void> start(List<Waypoint> waypoints, int waypointPrecision) async {
-    getIt<NotificationService>().init();
+    await getIt<NotificationService>().init();
     var geofences = waypoints.map((wp) {
       return bg.Geofence(
         identifier: wp.id,
