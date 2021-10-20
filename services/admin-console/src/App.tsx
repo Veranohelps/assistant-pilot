@@ -1,17 +1,20 @@
+import { BrowserRouter } from 'react-router-dom';
 import ApolloClientProvider from './components/ApolloClientProvider';
 import AppThemeProvider from './components/AppThemeProvider';
 import ReactQueryProvider from './components/ReactQueryProvider';
-import Expedition from './views/Route';
+import AppRoutes from './routes';
 
 function App() {
   return (
-    <ReactQueryProvider>
-      <ApolloClientProvider>
-        <AppThemeProvider>
-          <Expedition />
-        </AppThemeProvider>
-      </ApolloClientProvider>
-    </ReactQueryProvider>
+    <BrowserRouter>
+      <ReactQueryProvider>
+        <ApolloClientProvider>
+          <AppThemeProvider>
+            <AppRoutes />
+          </AppThemeProvider>
+        </ApolloClientProvider>
+      </ReactQueryProvider>
+    </BrowserRouter>
   );
 }
 

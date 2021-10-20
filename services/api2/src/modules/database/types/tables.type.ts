@@ -20,7 +20,7 @@ import { ICreateWaypoint, IWaypoint } from '../../waypoint/types/waypoint.type';
 
 export interface IDatabaseTables {
   Waypoint: Knex.CompositeTableType<IWaypoint, ICreateWaypoint, Partial<Omit<IWaypoint, 'id'>>>;
-  Route: Knex.CompositeTableType<IRoute, ICreateRoute, Partial<Omit<IRoute, 'id'>>>;
+  Route: Knex.CompositeTableType<IRoute, ICreateRoute, Partial<ICreateRoute>>;
   Expedition: Knex.CompositeTableType<
     IExpedition,
     ICreateExpedition,

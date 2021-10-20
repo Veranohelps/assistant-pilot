@@ -1,9 +1,11 @@
 import {
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -16,7 +18,10 @@ import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
-import { createRouteValidationSchema } from '../../route.validation-schema';
+import {
+  createRouteValidationSchema,
+  updateRouteValidationSchema,
+} from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
 import { ERouteOrigins } from '../../types/route-origin.type';
 import { ICreateRouteDTO, IRouteSlim } from '../../types/route.type';
@@ -60,5 +65,39 @@ export class AdminRouteController {
     );
 
     return successResponse('Route created', result);
+  }
+
+  @Patch(':routeId/update')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('gpx'))
+  async edit(
+    @UploadedFile() file: Express.Multer.File,
+    @Tx() tx: TransactionManager,
+    @Param('routeId') routeId: string,
+    @ParsedBody(updateRouteValidationSchema) payload: Partial<ICreateRouteDTO>,
+  ) {
+    const route = await this.routeService.updateRoute(
+      tx,
+      routeId,
+      ERouteOrigins.DERSU,
+      payload,
+      null,
+      file?.buffer ? gpxToGeoJSON(file.buffer.toString('utf-8')) : null,
+    );
+
+    return successResponse('Route updated', { route });
+  }
+
+  @Delete(':routeId')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('gpx'))
+  async deleteRoute(
+    @UploadedFile() file: Express.Multer.File,
+    @Tx() tx: TransactionManager,
+    @Param('routeId') routeId: string,
+  ) {
+    await this.routeService.deleteRoute(tx, routeId, ERouteOrigins.DERSU);
+
+    return successResponse('Route deleted');
   }
 }

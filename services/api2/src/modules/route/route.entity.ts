@@ -10,6 +10,7 @@ export const routeEntity: IEntity<IRoute> = {
     originId: { type: 'string' },
     userId: { type: 'string' },
     name: { type: 'string' },
+    description: { type: 'string' },
     coordinate: {
       type: 'string',
       select: false,

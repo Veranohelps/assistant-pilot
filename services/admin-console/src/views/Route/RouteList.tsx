@@ -1,12 +1,30 @@
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from '../../components/Button';
+import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
+import appRoutes from '../../config/appRoutes';
 import { getRoutesService } from '../../services/routeService';
+import { className } from '../../utils/style';
+
+const cls = className();
 
 const Container = styled.div`
   width: 90%;
   max-width: 500px;
   margin: 0 auto;
+  padding: 2rem 0;
+
+  ${cls.get('header')} {
+    text-align: center;
+    position: relative;
+
+    ${cls.get('createLink')} {
+      position: absolute;
+      right: 0;
+    }
+  }
 
   .routeList {
     padding: 2rem 0;
@@ -30,15 +48,18 @@ const Container = styled.div`
 `;
 
 const RouteList = () => {
-  const routesQuery = useQuery(['routes'], getRoutesService, {
+  const routesQuery = useQuery(['route'], getRoutesService, {
     select: (res) => res.data.routes,
   });
 
   return (
     <Container>
-      <Typography textStyle="md24" textAlign="center">
-        Route List
-      </Typography>
+      <div className={cls.set('header')}>
+        <Typography textStyle="md24">Route List</Typography>
+        <Link className={cls.set('createLink')} to={appRoutes.route.create}>
+          <Button>Create Route</Button>
+        </Link>
+      </div>
       <div className="routeList">
         {routesQuery.data?.map((route) => {
           return (
@@ -46,15 +67,18 @@ const RouteList = () => {
               <Typography textStyle="sm18" display="block">
                 {route.name}
               </Typography>
+              <Typography textStyle="sm14" display="block">
+                {route.description}
+              </Typography>
+              <br />
               <div className="routeContainer">
-                <Typography display="block">{route.name}</Typography>
                 <Typography as="a" href={route.url}>
                   URL: {route.url}
                 </Typography>
               </div>
-              <div>
-                <br />
-              </div>
+              <FlexBox justify="flex-end">
+                <Link to={appRoutes.route.edit(route.id)}>Edit route</Link>
+              </FlexBox>
             </div>
           );
         })}

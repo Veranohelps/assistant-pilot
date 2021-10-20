@@ -18,6 +18,7 @@ type Route {
   globalId: String!
   userId: String!
   name: String!
+  description: String!
   coordinate: [LineStringGeometry!]!
   updatedAt: DateTime!
 }

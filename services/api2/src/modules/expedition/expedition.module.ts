@@ -16,6 +16,6 @@ import { ExpeditionService } from './services/expedition.service';
   ],
   controllers: [AdminExpeditionController, PersonalExpeditionController],
   providers: [ExpeditionService, ExpeditionRouteService, ExpeditionResolver],
-  exports: [ExpeditionService],
+  exports: [ExpeditionService, ExpeditionRouteService],
 })
 export class ExpeditionModule {}

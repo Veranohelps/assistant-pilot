@@ -11,6 +11,12 @@ export const getDateQueryValidationSchema = Joi.object({
 
 export const createRouteValidationSchema = Joi.object<ICreateRouteDTO>({
   name: Joi.string().required(),
+  description: Joi.string(),
+});
+
+export const updateRouteValidationSchema = Joi.object<ICreateRouteDTO>({
+  name: Joi.string(),
+  description: Joi.string(),
 });
 
 export const getRouteValidationSchema = Joi.object<IGetRouteUrlParameters>({

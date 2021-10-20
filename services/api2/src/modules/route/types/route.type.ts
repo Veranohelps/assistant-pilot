@@ -2,13 +2,15 @@ import { Knex } from 'knex';
 import { ILineStringGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
 import { IWaypoint } from '../../waypoint/types/waypoint.type';
+import { ERouteOrigins } from './route-origin.type';
 
 export interface IRoute {
   id: string;
-  originId: string;
+  originId: ERouteOrigins;
   globalId?: string;
   userId: string | null;
   name: string;
+  description: string | null;
   coordinate?: ILineStringGeometry;
   boundingBox?: IPolygonGeometry;
   meta?: IDefaultMeta;
@@ -19,7 +21,8 @@ export interface IRoute {
 
 export interface ICreateRoute {
   name: string;
-  originId: string;
+  description?: string;
+  originId: ERouteOrigins;
   globalId?: string;
   userId?: string;
   coordinate: Knex.Raw;
@@ -33,6 +36,7 @@ export interface IRouteFindOptions {
 
 export interface ICreateRouteDTO {
   name: string;
+  description?: string;
 }
 
 export interface IRouteSlim extends Omit<IRoute, 'coordinate'> {}

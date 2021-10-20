@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { createGlobalStyle, StyleSheetManager, ThemeProvider } from 'styled-components';
+import appTheme from '../config/appTheme';
 import { appEnv } from '../config/environment';
-import { IAppTheme, ITheme } from '../types/theme';
 
 interface IProps {
   children: React.ReactNode;
@@ -38,59 +38,9 @@ html {
   }`;
 
 const AppThemeProvider = (props: IProps) => {
-  const theme = useMemo<IAppTheme>(() => {
-    const defaultTheme: ITheme = {
-      colors: {
-        primaryColor: '#F3CE7D',
-        accentColor: '#FFDA8A',
-        bgPrimaryColor: '#F7F2EC',
-        bgAccentColor: '#fff',
-        bgPrimaryColor2: '#ECE5FF',
-      },
-      text: {
-        colors: {
-          primary: '#17161B',
-          primary600: '#17161b99',
-          accent: '#F7F7F7',
-        },
-        style: {
-          sm12: {
-            weight: 'normal',
-            size: 12,
-          },
-          sm14: {
-            weight: 'normal',
-            size: 14,
-          },
-          sm16: {
-            weight: 'normal',
-            size: 16,
-          },
-          sm18: {
-            weight: 'normal',
-            size: 18,
-          },
-          md20: {
-            weight: 'normal',
-            size: 20,
-          },
-          md24: {
-            weight: 'normal',
-            size: 24,
-          },
-          lg36: {
-            weight: 'normal',
-            size: 36,
-          },
-        },
-      },
-    };
-    return defaultTheme;
-  }, []);
-
   return (
     <StyleSheetManager disableVendorPrefixes={appEnv === 'local'}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={appTheme}>
         <GlobalStyle />
         {props.children}
       </ThemeProvider>

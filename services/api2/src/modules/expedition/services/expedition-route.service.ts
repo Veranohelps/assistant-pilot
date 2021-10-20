@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import DataLoader from 'dataloader';
 import AddFields from '../../common/utilities/add-fields';
 import { ensureArray } from '../../common/utilities/ensure-array';
@@ -21,8 +20,8 @@ export class ExpeditionRouteService {
   constructor(
     @InjectKnexClient('ExpeditionRoute')
     private db: KnexClient<'ExpeditionRoute'>,
+    @Inject(forwardRef(() => RouteService))
     private routeService: RouteService,
-    private configService: ConfigService,
   ) {}
 
   async addRoutes(
@@ -84,6 +83,15 @@ export class ExpeditionRouteService {
       .then(generateRecord2((r) => r.id));
 
     return expeditionRoutes.map((er) => ({ ...er, route: routes[er.routeId] }));
+  }
+
+  async deleteRouteFromExpeditions(
+    tx: TransactionManager,
+    routeId: string,
+  ): Promise<IExpeditionRoute[]> {
+    const deleted = await this.db.write(tx).where({ routeId }).del().returning('*');
+
+    return deleted;
   }
 
   getRoutesLoader: DataLoader<string, IRoute[]> = new DataLoader(

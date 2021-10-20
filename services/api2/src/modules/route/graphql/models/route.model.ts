@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { LineStringGeometryModel } from '../../../common/graphql/geojson.model';
 import { ILineStringGeometry } from '../../../common/types/geojson.type';
+import { ERouteOrigins } from '../../types/route-origin.type';
 import { ICreateRouteDTO, IRoute } from '../../types/route.type';
 
 @ObjectType('Route')
@@ -9,7 +10,7 @@ export class RouteModel implements IRoute {
   id!: string;
 
   @Field()
-  originId!: string;
+  originId!: ERouteOrigins;
 
   @Field()
   globalId!: string;
@@ -19,6 +20,9 @@ export class RouteModel implements IRoute {
 
   @Field()
   name!: string;
+
+  @Field()
+  description!: string;
 
   @Field(() => [LineStringGeometryModel])
   coordinate!: ILineStringGeometry;

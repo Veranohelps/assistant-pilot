@@ -55,10 +55,10 @@ export const appUrls = {
   },
   admin: {
     route: {
-      id: (id: string) => `${appUrl}/personal/route/${id}`,
+      id: (id: string) => `${appUrl}/admin/route/${id}`,
     },
     expedition: {
-      id: (id: string) => `${appUrl}/personal/expedition/${id}`,
+      id: (id: string) => `${appUrl}/admin/expedition/${id}`,
     },
   },
 };

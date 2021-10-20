@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
@@ -7,6 +7,7 @@ import { generateGroupRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
+import { ExpeditionRouteService } from '../../expedition/services/expedition-route.service';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
 import { ERouteOrigins } from '../types/route-origin.type';
@@ -24,15 +25,11 @@ export class RouteService {
     @InjectKnexClient('Route')
     private db: KnexClient<'Route'>,
     private waypointService: WaypointService,
+    @Inject(forwardRef(() => ExpeditionRouteService))
+    private expeditionRouteService: ExpeditionRouteService,
   ) {}
 
-  async fromGeoJson(
-    tx: TransactionManager,
-    originId: ERouteOrigins,
-    payload: ICreateRouteDTO,
-    geojson: IGeoJSON,
-    userId?: string,
-  ): Promise<ICreateRouteResult> {
+  geoJsonToLineString(geojson: IGeoJSON) {
     const coordinates = geojson.features
       .filter((feature) => feature.geometry.type === 'LineString')
       .map((feat) =>
@@ -48,13 +45,25 @@ export class RouteService {
       )
       .flat()
       .filter((location) => location.altitude !== null && location.longitude !== null);
-    const geomString = `ST_GeogFromText('LINESTRINGZ(${coordinates
+
+    return `ST_GeogFromText('LINESTRINGZ(${coordinates
       .map((c) => `${c.longitude} ${c.latitude} ${c.altitude ?? 0}`)
       .join(',')})')`;
+  }
+
+  async fromGeoJson(
+    tx: TransactionManager,
+    originId: ERouteOrigins,
+    payload: ICreateRouteDTO,
+    geojson: IGeoJSON,
+    userId?: string,
+  ): Promise<ICreateRouteResult> {
+    const geomString = this.geoJsonToLineString(geojson);
     const [route] = await this.db
       .write(tx)
       .insert({
         name: payload.name,
+        description: payload.description,
         userId,
         originId,
         coordinate: this.db.knex.raw(geomString),
@@ -65,6 +74,60 @@ export class RouteService {
     const waypoints = await this.waypointService.fromGeoJson(tx, originId, geojson);
 
     return { route, waypoints };
+  }
+
+  async updateRoute(
+    tx: TransactionManager,
+    id: string,
+    originId: ERouteOrigins,
+    payload: Partial<ICreateRouteDTO>,
+    userId?: string | null,
+    geojson?: IGeoJSON | null,
+  ): Promise<IRoute> {
+    const geomString = geojson ? this.geoJsonToLineString(geojson) : null;
+    const builder = this.db
+      .write(tx)
+      .update({
+        name: payload.name,
+        description: payload.description,
+        ...(geomString && {
+          coordinate: this.db.knex.raw(geomString),
+          boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+        }),
+      })
+      .where({ id, originId, userId })
+      .returning('*');
+
+    if (userId) builder.where({ userId });
+
+    const [route] = await builder;
+
+    if (!route) {
+      throw new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found');
+    }
+
+    if (geojson) {
+      await this.waypointService.fromGeoJson(tx, route.originId, geojson);
+    }
+
+    return route;
+  }
+
+  async deleteRoute(
+    tx: TransactionManager,
+    id: string,
+    originId: ERouteOrigins,
+    userId: string | null = null,
+  ): Promise<IRoute> {
+    await this.expeditionRouteService.deleteRouteFromExpeditions(tx, id);
+
+    const [route] = await this.db.write(tx).where({ id, originId, userId }).del().returning('*');
+
+    if (!route) {
+      throw new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found');
+    }
+
+    return route;
   }
 
   async findOne(tx: TransactionManager | null, id: string): Promise<IRoute> {

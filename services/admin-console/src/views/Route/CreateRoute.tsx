@@ -1,21 +1,48 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import { Button } from '../../components/Button';
+import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
-import { createRouteService } from '../../services/routeService';
+import appRoutes from '../../config/appRoutes';
+import {
+  createRouteService, deleteRouteService, editRouteService, getRouteByIdService
+} from '../../services/routeService';
+import { ICreateRoutePayload } from '../../types/route';
+import { className } from '../../utils/style';
+
+const cls = className();
 
 const Container = styled.div`
   margin: 0 auto;
   width: 90%;
   max-width: 500px;
+  padding: 2rem 0;
+
+  ${cls.get('header')} {
+    text-align: center;
+    position: relative;
+
+    ${cls.get('deleteButton')} {
+      position: absolute;
+      right: 0;
+    }
+  }
 
   form {
     padding: 2rem 0;
+
+    input,
+    textarea {
+      padding: 5px 8px;
+      border-radius: 4px;
+    }
   }
 
-  .submitButton {
+  ${cls.get('submitButton')} {
     padding: 10px;
     margin: auto;
     display: block;
@@ -27,47 +54,38 @@ const InputContainer = styled.div`
   grid-auto-flow: row;
   margin-bottom: 14px;
 
-  .formLabel {
+  ${cls.get('formLabel')} {
     margin-bottom: 5px;
   }
 
-  .errorMsg {
+  ${cls.get('errorMsg')} {
     margin-top: 2px;
   }
 `;
-const FormInput = styled(Field)`
-  padding: 5px 8px;
-  border-radius: 4px;
-`;
+// const FormInput = styled(Field)`
+//   padding: 5px 8px;
+//   border-radius: 4px;
+// `;
 
 interface IForm {
   name: string;
   description: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  longitude: number | null;
-  latitude: number | null;
-  altitude: number | null;
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
-  startDate: null,
-  endDate: null,
-  longitude: null,
-  latitude: null,
-  altitude: null,
 };
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
+  description: yup.string(),
 });
 
 const ErrorMsg = (props: { name: string }) => {
   return (
     <ErrorMessage name={props.name}>
       {(msg) => (
-        <Typography className="errorMsg" textStyle="sm12" style={{ color: 'red' }}>
+        <Typography className={cls.set('errorMsg')} textStyle="sm12" style={{ color: 'red' }}>
           {msg}
         </Typography>
       )}
@@ -76,47 +94,127 @@ const ErrorMsg = (props: { name: string }) => {
 };
 const FormLabel = (props: { children: string }) => {
   return (
-    <Typography className="formLabel" textStyle="sm14" textColor="primary600">
+    <Typography className={cls.set('formLabel')} textStyle="sm14" textColor="primary600">
       {props.children}
     </Typography>
   );
 };
 
-const CreateRoute = () => {
+interface IProps {
+  isEditing?: boolean;
+}
+
+const CreateRoute = (props: IProps) => {
+  const params = useParams<'routeId'>();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState(initialFormData);
   const [file, setFile] = useState<File | null>(null);
   const queryClient = useQueryClient();
-  const { mutateAsync: createRoute } = useMutation(createRouteService, {
-    onSuccess: () => queryClient.invalidateQueries('routes'),
+  const invalidate = () => queryClient.invalidateQueries('route');
+  const createRoute = useMutation(createRouteService, {
+    onSuccess: () => {
+      invalidate();
+      navigate(appRoutes.route.dashboard);
+    },
   });
+  const editRoute = useMutation(
+    (data: Partial<ICreateRoutePayload>) => editRouteService(params.routeId as string, data),
+    {
+      onSuccess: () => {
+        invalidate();
+      },
+    }
+  );
+  const deleteRoute = useMutation(deleteRouteService, {
+    onSuccess: () => {
+      invalidate();
+      navigate(appRoutes.route.dashboard);
+    },
+  });
+  const routesQuery = useQuery(
+    ['route', params.routeId],
+    () => getRouteByIdService(params.routeId!),
+    {
+      select: (res) => res.data.route,
+      refetchOnMount: true,
+      staleTime: Infinity,
+    }
+  );
+
+  useEffect(() => {
+    if (props.isEditing && routesQuery.data) {
+      setFormData({
+        name: routesQuery.data.name,
+        description: routesQuery.data.description ?? '',
+      });
+    }
+  }, [routesQuery.data, props.isEditing]);
 
   return (
     <Container>
-      <Typography textStyle="md24" textAlign="center">
-        New Route
-      </Typography>
+      <div className={cls.set('header')}>
+        <Typography textStyle="md24">{props.isEditing ? 'Edit Route' : 'New Route'}</Typography>{' '}
+        <Button
+          className={cls.set('deleteButton')}
+          onClick={() => {
+            if (window.confirm('Are you sure you want to permanently delete this route?')) {
+              deleteRoute.mutateAsync(params.routeId as string);
+            }
+          }}
+          disabled={deleteRoute.isLoading}
+        >
+          Delete Route
+        </Button>
+      </div>
       <Formik
-        initialValues={initialFormData}
+        initialValues={formData}
+        enableReinitialize
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          if (!file) {
-            return alert('Please upload a valid GPX file');
-          }
+          if (props.isEditing) {
+            if (file) {
+              if (
+                !window.confirm(
+                  'You are updating the coordinates of this route, this would have serious implications for ongoing and upcoming expeditions. Are you sure?'
+                )
+              ) {
+                return;
+              }
+            }
 
-          await createRoute({
-            name: values.name,
-            gpx: file,
-          });
+            await editRoute.mutateAsync({
+              name: values.name,
+              description: values.description || null,
+              gpx: file ?? undefined,
+            });
+          } else {
+            if (!file) {
+              return alert('Please upload a valid GPX file');
+            }
+
+            await createRoute.mutateAsync({
+              name: values.name,
+              description: values.description || null,
+              gpx: file,
+            });
+          }
 
           resetForm();
         }}
       >
-        {({ isSubmitting }) => {
+        {({ isSubmitting, values }) => {
+          console.log(values);
           return (
             <Form>
               <InputContainer>
                 <FormLabel>Name</FormLabel>
-                <FormInput name="name" />
+                <Field name="name" />
                 <ErrorMsg name="name" />
+              </InputContainer>
+              <InputContainer>
+                <FormLabel>Description</FormLabel>
+                <Field name="description" as="textarea" />
+                <ErrorMsg name="description" />
               </InputContainer>
               <InputContainer>
                 <FormLabel>Upload GPX</FormLabel>
@@ -130,10 +228,17 @@ const CreateRoute = () => {
                   }}
                 />
               </InputContainer>
-
-              <button type="submit" className="submitButton">
-                {isSubmitting ? 'Creating Route...' : 'Create Route'}
-              </button>
+              <FlexBox box={{ mTop: 30 }}>
+                <Button type="submit" className="submitButton">
+                  {props.isEditing
+                    ? isSubmitting
+                      ? 'Saving changes...'
+                      : 'Edit Route'
+                    : isSubmitting
+                    ? 'Creating Route...'
+                    : 'Create Route'}
+                </Button>
+              </FlexBox>
             </Form>
           );
         }}
