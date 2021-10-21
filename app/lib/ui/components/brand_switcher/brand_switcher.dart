@@ -17,7 +17,7 @@ class BrandSwitcher extends StatelessWidget {
       width: 43,
       alignment: isAcitve ? Alignment.topRight : Alignment.topLeft,
       decoration: BoxDecoration(
-        color: isAcitve ? BrandColors.primary : BrandColors.grey,
+        color: isAcitve ? BrandColors.primary : BrandColors.mGrey,
         borderRadius: BorderRadius.circular(17.5),
       ),
       child: Container(

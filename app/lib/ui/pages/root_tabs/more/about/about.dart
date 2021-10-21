@@ -1,3 +1,5 @@
+import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
 import 'package:app/ui/pages/error/error.dart';
 import 'package:app/ui/pages/loader/generic_loader.dart';
 import 'package:flutter/material.dart';
@@ -57,13 +59,15 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Acerca de")),
       body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         children: [
           ListTile(title: Text("Versión: " + packageInfo.version)),
           ListTile(title: Text("Build: " + packageInfo.buildNumber)),
           ListTile(title: Text(whatsNew)),
-          ElevatedButton(
-              onPressed: _launchPrivacyPolicy,
-              child: Text("Política de privacidad"))
+          BrandButtons.primaryBig(
+            onPressed: _launchPrivacyPolicy,
+            text: "Política de privacidad",
+          )
         ],
       ),
     );

@@ -46,7 +46,9 @@ class _BrandTabBarState extends State<BrandTabBar> {
     return Container(
       height: _kBottomTabBarHeight + paddingBottom,
       decoration: BoxDecoration(
-          boxShadow: kElevationToShadow[1], color: BrandColors.white),
+        boxShadow: kElevationToShadow[1],
+        color: BrandColors.earthBlack,
+      ),
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: SafeArea(
         child: Row(

@@ -16,7 +16,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
 
 class LiveMap extends StatefulWidget {
@@ -152,7 +152,7 @@ class _LiveMapState extends State<LiveMap> {
         Positioned(
           right: 5,
           bottom: max(5, MediaQuery.of(context).padding.bottom),
-          child: buttons.miniIconButton(
+          child: BrandButtons.miniIconButton(
             label: 'find my location',
             icon: Ionicons.location_outline,
             onPressed: _findMe,
@@ -162,7 +162,7 @@ class _LiveMapState extends State<LiveMap> {
         Positioned(
           right: 5,
           top: max(5, MediaQuery.of(context).padding.bottom),
-          child: buttons.primaryElevatedButton(
+          child: BrandButtons.primaryElevatedButton(
             label: 'Exit expedition',
             onPressed: () {
               context.read<LiveCubit>().clean();

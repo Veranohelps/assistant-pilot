@@ -21,15 +21,15 @@ class RootPage extends StatefulWidget {
 final tabsData = [
   [
     LocaleKeys.dashboard_name,
-    UniconsLine.home_alt,
+    Icons.filter_hdr_outlined,
   ],
   [
     LocaleKeys.profile_name,
-    UniconsLine.user,
+    Icons.account_circle_outlined,
   ],
   [
     LocaleKeys.planning_name,
-    UniconsLine.book,
+    Icons.map_outlined,
   ],
   [
     LocaleKeys.more_name,

@@ -25,7 +25,7 @@ class HintText extends StatelessWidget {
               : Text(
                   text,
                   style: ThemeTypo.p4.copyWith(
-                    color: BrandColors.grey,
+                    color: BrandColors.mGrey,
                   ),
                 );
         });

@@ -7,7 +7,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:animations/animations.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 
 class StaticMap extends StatelessWidget {
   StaticMap({required this.route});
@@ -40,7 +40,7 @@ class StaticMap extends StatelessWidget {
                   Positioned(
                     right: 5,
                     bottom: max(5, MediaQuery.of(context).padding.bottom),
-                    child: buttons.miniIconButton(
+                    child: BrandButtons.miniIconButton(
                       label: 'exit full screen map',
                       icon: Ionicons.balloon_sharp,
                       onPressed: close,
@@ -59,7 +59,7 @@ class StaticMap extends StatelessWidget {
             Positioned(
               right: 5,
               bottom: 5,
-              child: buttons.miniIconButton(
+              child: BrandButtons.miniIconButton(
                 label: 'open full screen map',
                 icon: Ionicons.expand_outline,
                 onPressed: open,

@@ -3,92 +3,94 @@ import 'package:app/config/get_it_config.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:flutter/material.dart';
 
-VoidCallback? analiticsOnPressWrapper(
-  VoidCallback? onPressed,
-  String text,
-  String? label,
-) {
-  if (onPressed == null) {
-    return null;
+class BrandButtons {
+  static VoidCallback? analiticsOnPressWrapper(
+    VoidCallback? onPressed,
+    String text,
+    String? label,
+  ) {
+    if (onPressed == null) {
+      return null;
+    }
+    return () {
+      getIt<Analitics>().sendClickEvent(action: text, label: label);
+      onPressed();
+    };
   }
-  return () {
-    getIt<Analitics>().sendClickEvent(action: text, label: label);
-    onPressed();
-  };
+
+  static Widget textButton({
+    Key? key,
+    required VoidCallback onPressed,
+    required String text,
+    String? label,
+    Color? color,
+  }) =>
+      _BrandTextButton(
+        key: key,
+        onPressed: analiticsOnPressWrapper(onPressed, text, label),
+        text: text,
+        style: ThemeTypo.p4,
+        color: color,
+      );
+
+  static Widget primaryShort({
+    required String text,
+    String? label,
+    required VoidCallback? onPressed,
+  }) =>
+      _PrimaryShort(
+        text: text,
+        onPressed: analiticsOnPressWrapper(onPressed, text, label),
+      );
+
+  static Widget miniIconButton({
+    required VoidCallback onPressed,
+    required IconData icon,
+    required String label,
+    Color? backgroundColor,
+    Color? color,
+  }) =>
+      TextButton(
+        onPressed: analiticsOnPressWrapper(onPressed, 'icon button', label),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.all(5),
+          minimumSize: Size(20, 20),
+          backgroundColor:
+              backgroundColor ?? BrandColors.buttonColor.withOpacity(0.9),
+        ),
+        child: Icon(
+          icon,
+          size: 20,
+          color: color ?? BrandColors.white,
+        ),
+      );
+
+  static Widget primaryBig({
+    required String text,
+    String? label,
+    required VoidCallback? onPressed,
+  }) =>
+      _PrimaryBig(
+        text: text,
+        onPressed: analiticsOnPressWrapper(onPressed, text, label),
+      );
+
+  static Widget primaryElevatedButton({
+    required Widget child,
+    required VoidCallback? onPressed,
+    required String? label,
+  }) =>
+      ElevatedButton(
+        onPressed: analiticsOnPressWrapper(onPressed, 'custom button', label),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
+          minimumSize: Size.zero,
+          primary: BrandColors.buttonColor,
+          elevation: 0,
+        ),
+        child: child,
+      );
 }
-
-Widget textButton({
-  Key? key,
-  required VoidCallback onPressed,
-  required String text,
-  String? label,
-  Color? color,
-}) =>
-    _BrandTextButton(
-      key: key,
-      onPressed: analiticsOnPressWrapper(onPressed, text, label),
-      text: text,
-      style: ThemeTypo.p4,
-      color: color,
-    );
-
-Widget primaryShort({
-  required String text,
-  String? label,
-  required VoidCallback? onPressed,
-}) =>
-    _PrimaryShort(
-      text: text,
-      onPressed: analiticsOnPressWrapper(onPressed, text, label),
-    );
-
-Widget miniIconButton({
-  required VoidCallback onPressed,
-  required IconData icon,
-  required String label,
-  Color? backgroundColor,
-  Color? color,
-}) =>
-    TextButton(
-      onPressed: analiticsOnPressWrapper(onPressed, 'icon button', label),
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.all(5),
-        minimumSize: Size(20, 20),
-        backgroundColor:
-            backgroundColor ?? BrandColors.primary.withOpacity(0.9),
-      ),
-      child: Icon(
-        icon,
-        size: 20,
-        color: color ?? BrandColors.white,
-      ),
-    );
-
-Widget primaryBig({
-  required String text,
-  String? label,
-  required VoidCallback? onPressed,
-}) =>
-    _PrimaryBig(
-      text: text,
-      onPressed: analiticsOnPressWrapper(onPressed, text, label),
-    );
-
-Widget primaryElevatedButton({
-  required Widget child,
-  required VoidCallback? onPressed,
-  required String? label,
-}) =>
-    ElevatedButton(
-      onPressed: analiticsOnPressWrapper(onPressed, 'custom button', label),
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
-        minimumSize: Size.zero,
-        primary: BrandColors.active,
-        elevation: 0,
-      ),
-      child: child,
-    );
 
 class _PrimaryBig extends StatelessWidget {
   const _PrimaryBig({
@@ -110,7 +112,7 @@ class _PrimaryBig extends StatelessWidget {
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 9, 10, 11),
         decoration: BoxDecoration(
-          color: onPressed == null ? BrandColors.grey : BrandColors.primary,
+          color: onPressed == null ? BrandColors.mGrey : BrandColors.primary,
           borderRadius: BorderRadius.circular(2),
         ),
         child: Text(
@@ -140,7 +142,7 @@ class _PrimaryShort extends StatelessWidget {
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 4, 10, 6),
         decoration: BoxDecoration(
-          color: onPressed == null ? BrandColors.grey : BrandColors.primary,
+          color: onPressed == null ? BrandColors.mGrey : BrandColors.primary,
           borderRadius: BorderRadius.circular(2),
         ),
         child: Text(
@@ -179,7 +181,7 @@ class _BrandTextButton extends StatelessWidget {
         child: Text(
           text,
           style: style.copyWith(
-            color: color ?? BrandColors.active,
+            color: color ?? BrandColors.buttonColor,
           ),
         ),
       ),

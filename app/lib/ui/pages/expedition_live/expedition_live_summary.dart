@@ -1,7 +1,7 @@
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/utils/extensions/duration.dart';
 import 'package:flutter/material.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ExpeditionSummary extends StatelessWidget {
@@ -23,7 +23,7 @@ class ExpeditionSummary extends StatelessWidget {
             Text('You finished your expedition'),
             Text('Durations ${duration.toDayHourMinuteSecondFormat()}'),
             SizedBox(height: 10),
-            buttons.primaryBig(
+            BrandButtons.primaryBig(
               onPressed: () =>
                   Navigator.popUntil(context, (route) => route.isFirst),
               text: LocaleKeys.basis_ok.tr(),

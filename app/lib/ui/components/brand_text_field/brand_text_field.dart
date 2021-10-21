@@ -69,7 +69,7 @@ class BrandTextField extends StatelessWidget {
     return CubitFormMaskedTextField(
       autofocus: this.autofocus,
       formFieldCubit: formFieldCubit as FieldCubit<String>,
-      cursorColor: BrandColors.grey,
+      cursorColor: BrandColors.mGrey,
       maskFormatter: maskFormatter!,
       style: TextStyle(fontSize: 16, height: 1.2),
       keyboardType: keyboardType,
@@ -84,7 +84,7 @@ class BrandTextField extends StatelessWidget {
       autofocus: this.autofocus,
       formFieldCubit: formFieldCubit as FieldCubit<String>,
       obscureText: obscureText,
-      cursorColor: BrandColors.grey,
+      cursorColor: BrandColors.mGrey,
       style: TextStyle(fontSize: 16, height: 1.2),
       keyboardType: keyboardType,
       maxLines: maxLines,
@@ -107,14 +107,14 @@ var defaultInputDecoration = InputDecoration(
   focusedErrorBorder: errorBorder,
   errorBorder: errorBorder,
   helperStyle: ThemeTypo.p0.copyWith(
-    color: BrandColors.grey,
+    color: BrandColors.mGrey,
   ),
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(color: BrandColors.primary),
     borderRadius: BorderRadius.circular(12),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: BrandColors.grey),
+    borderSide: BorderSide(color: BrandColors.mGrey),
     borderRadius: BorderRadius.circular(12),
   ),
   contentPadding: EdgeInsets.symmetric(vertical: 11.5, horizontal: 12),

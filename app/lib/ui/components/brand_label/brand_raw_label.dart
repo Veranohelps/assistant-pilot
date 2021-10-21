@@ -22,7 +22,7 @@ class BrandRawLabel extends StatelessWidget {
     if (isDisabled) {
       labelColor = BrandColors.black;
     } else {
-      labelColor = isEmpty ? BrandColors.black : BrandColors.grey;
+      labelColor = isEmpty ? BrandColors.black : BrandColors.mGrey;
     }
     return Container(
       padding: EdgeInsets.only(bottom: 6),
@@ -35,7 +35,7 @@ class BrandRawLabel extends StatelessWidget {
               TextSpan(
                 text: ' *',
                 style: ThemeTypo.p0.copyWith(
-                    color: isEmpty ? BrandColors.red : BrandColors.grey),
+                    color: isEmpty ? BrandColors.red : BrandColors.mGrey),
                 children: [],
               ),
           ],

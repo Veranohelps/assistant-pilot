@@ -32,7 +32,7 @@ class _RoutesTabState extends State<RoutesTab> {
     var routesState = context.watch<RoutesCubit>().state;
 
     if (routesState is! RoutesLoaded) {
-      return BrandLoading();
+      return BrandLoader();
     }
     return Scaffold(
       appBar: AppBar(title: Text(LocaleKeys.planning_name.tr())),

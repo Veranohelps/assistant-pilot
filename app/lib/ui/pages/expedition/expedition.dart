@@ -10,7 +10,7 @@ import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 var format = DateFormat.MMMMd().add_Hm();
@@ -44,7 +44,7 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
             child: Container(
               height: 60,
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: buttons.primaryBig(
+              child: BrandButtons.primaryBig(
                 text: 'GO',
                 onPressed: fullExpedition == null
                     ? null
@@ -91,7 +91,7 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
                 SizedBox(
                   height: 200,
                   child: fullExpedition == null
-                      ? BrandLoading()
+                      ? BrandLoader()
                       : StaticMap(route: fullExpedition.routes.first),
                 ),
                 SizedBox(height: 20),

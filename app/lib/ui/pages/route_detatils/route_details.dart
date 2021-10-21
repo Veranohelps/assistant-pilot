@@ -10,7 +10,7 @@ import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 
 final dateFormat = DateFormat.yMMMd();
 final dateFormat2 = DateFormat.yMMMMEEEEd().add_jm();
@@ -40,7 +40,7 @@ class RouteDetails extends StatelessWidget {
             final route = context.watch<RouteCubit>().state;
 
             if (route == null || dectionary is! DictionariesLoaded) {
-              return BrandLoading();
+              return BrandLoader();
             }
             return ListView(
               padding: EdgeInsets.all(10),
@@ -54,7 +54,7 @@ class RouteDetails extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Center(
-                  child: buttons.primaryShort(
+                  child: BrandButtons.primaryShort(
                     onPressed: () => setDate(context),
                     label: 'time change',
                     text: selectedTime == null
@@ -64,7 +64,7 @@ class RouteDetails extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Center(
-                  child: buttons.primaryShort(
+                  child: BrandButtons.primaryShort(
                     onPressed: selectedTime == null
                         ? null
                         : () => Navigator.of(context).push(

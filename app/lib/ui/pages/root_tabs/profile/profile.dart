@@ -2,7 +2,7 @@ import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/pages/root_tabs/profile/levels/levels.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class ProfileTab extends StatelessWidget {
           ),
           Spacer(),
           Center(
-            child: buttons.primaryShort(
+            child: BrandButtons.primaryShort(
               text: LocaleKeys.profile_logout.tr(),
               onPressed: context.read<AuthenticationCubit>().logout,
             ),
@@ -54,7 +54,7 @@ class ProfileTab extends StatelessWidget {
             height: 80,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: BrandColors.grey,
+              color: BrandColors.mGrey,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -74,7 +74,7 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   Text('${state.profile.firstName} ${state.profile.lastName}')
                       .h2,
-                  Text(state.profile.email).p1.withColor(BrandColors.grey),
+                  Text(state.profile.email).p1.withColor(BrandColors.mGrey),
                 ],
               );
             },
@@ -103,7 +103,7 @@ class _NavItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: BrandColors.grey,
+              color: BrandColors.mGrey,
               width: 1,
             ),
           ),

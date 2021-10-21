@@ -1,6 +1,6 @@
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/utils/extensions/extensions.dart';
 
 class AuthenticationPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class AuthenticationPage extends StatelessWidget {
           children: <Widget>[
             Text('Login').h1,
             SizedBox(height: 30),
-            buttons.primaryShort(
+            BrandButtons.primaryShort(
               text: 'Login',
               onPressed: authenticationCubit.state is NotAuthenticated
                   ? authenticationCubit.login

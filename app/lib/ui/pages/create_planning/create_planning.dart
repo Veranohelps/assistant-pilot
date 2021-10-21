@@ -5,7 +5,7 @@ import 'package:app/logic/forms/create_expedition/create_expedition.dart';
 import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 
 class CreatePlanning extends StatelessWidget {
   const CreatePlanning({
@@ -54,7 +54,7 @@ class CreatePlanning extends StatelessWidget {
                     isRequired: false,
                   ),
                   SizedBox(height: 14),
-                  buttons.primaryBig(
+                  BrandButtons.primaryBig(
                       text: 'Create',
                       onPressed:
                           form.state.isSubmitting || form.state.hasErrorToShow

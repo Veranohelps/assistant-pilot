@@ -10,7 +10,7 @@ import 'package:app/utils/extensions/text_extension.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 
 class LevelsSetting extends StatefulWidget {
   const LevelsSetting({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
     var dictionariesState = context.watch<DictionariesCubit>().state;
     if (profileState is! ProfileDersuRegistrationFinished ||
         dictionariesState is! DictionariesLoaded) {
-      return BrandLoading();
+      return BrandLoader();
     }
 
     var items = <LevelsCatalogData>[];
@@ -84,7 +84,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                     flex: 1,
                     child: Center(
                       child: hasLevel
-                          ? buttons.primaryShort(
+                          ? BrandButtons.primaryShort(
                               onPressed: () => onLevelChange(
                                 context,
                                 currentLevel,
@@ -93,7 +93,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                               label: 'Level - Change',
                               text: currentLevel!.name,
                             )
-                          : buttons.textButton(
+                          : BrandButtons.textButton(
                               label: 'Level - Not set up',
                               onPressed: () => onLevelChange(
                                 context,
@@ -102,7 +102,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                               ),
                               text:
                                   LocaleKeys.profile_my_levels_not_set_up.tr(),
-                              color: BrandColors.grey,
+                              color: BrandColors.mGrey,
                             ),
                     ),
                   ),
@@ -111,7 +111,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
             }).toList(),
             Spacer(),
             Center(
-              child: buttons.primaryShort(
+              child: BrandButtons.primaryShort(
                 text: LocaleKeys.profile_my_levels_save_and_close.tr(),
                 onPressed: () {
                   context.read<ProfileCubit>().setNewAssessments(assessments);
@@ -155,6 +155,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                 ),
               ),
               Slider(
+                
                 value: _currentSliderValue.toDouble(),
                 min: 0,
                 max: 4,
@@ -165,7 +166,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                   });
                 },
               ),
-              buttons.textButton(
+              BrandButtons.textButton(
                   label: 'Change level config',
                   text: LocaleKeys.basis_close.tr(),
                   onPressed: () {

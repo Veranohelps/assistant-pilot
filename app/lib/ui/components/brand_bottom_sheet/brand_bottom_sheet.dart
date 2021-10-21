@@ -22,7 +22,7 @@ class BrandBottomSheet extends StatelessWidget {
             height: 5,
             width: 40,
             decoration: BoxDecoration(
-              color: BrandColors.grey,
+              color: BrandColors.mGrey,
               borderRadius: BorderRadius.circular(5),
             ),
           ),

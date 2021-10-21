@@ -2,7 +2,7 @@ import 'package:app/config/brand_theme.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/forms/registration/registration_form.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart' as buttons;
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/brand_switcher/brand_switcher.dart';
 import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
@@ -18,7 +18,7 @@ class Registration extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state is ProfileNotReady) {
-          return BrandLoading();
+          return BrandLoader();
         } else if (state is ProfileDersuRegistrationNotFinished) {
           return Scaffold(
             appBar: AppBar(title: Text(LocaleKeys.registration_name.tr())),
@@ -64,7 +64,7 @@ class Registration extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: 14),
-                      buttons.primaryBig(
+                      BrandButtons.primaryBig(
                           text: LocaleKeys.basis_accept.tr(),
                           onPressed: form.state.isSubmitting ||
                                   form.state.hasErrorToShow

@@ -22,7 +22,7 @@ class Dashboard extends StatelessWidget {
           builder: (context, state) {
         var isLoading = state is DashboardInitial || state is DashboardLoading;
         if (isLoading) {
-          return BrandLoading();
+          return BrandLoader();
         }
 
         var expeditions = (state as DashboardLoaded).upcomingExpeditions;

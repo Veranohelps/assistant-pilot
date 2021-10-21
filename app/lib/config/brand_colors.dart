@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 
 class BrandColors {
   /// Main colors
-  static const Color primary = blue;
-  static const Color secondary = grey;
+  static const Color primary = earthBlack;
+  static const Color secondary = yellow;
   static const Color warning = red;
   static const Color errors = red;
   static const Color text = black;
-  static const Color headlineColor = grey;
-  static const Color defaultScaffolBackground = white;
-  static const Color active = primary;
-  static const Color inactive = grey;
+  static const Color headlineColor = black;
+  static const Color defaultScaffolBackground = pampas;
+  static const Color active = yellow;
+  static const Color inactive = mGrey;
+  static const Color buttonColor = earthBlack;
+
+  /// Brand Colors
+  static const Color earthBlack = Color(0xFF313131);
+  static const Color yellow = Color(0xFFF9DA79);
+  static const Color pampas = Color(0xFFF6F2F0);
 
   /// UI Colors
-  static const Color black = Colors.black;
-  static const Color grey = Colors.grey;
-  static const Color blue = Colors.blue;
-  static const Color white = Colors.white;
+  static const Color black = Color(0xFF090909);
+  static const Color dGray = Color(0xFF626161);
+  static const Color mGrey = Color(0xFF949291);
+  static const Color lGray = Color(0xFFC5C2C0);
+  static const Color white = Color(0xFFFFFBF9);
+  static const Color red = Color(0xFFE87474);
 
-  static const Color red = Color(0xFFEB592D);
-  static const Color green = Color(0xFF00FF40);
+  /// Extra Brand Colors
 
-  static final Color blueWithOpacity = blue.withOpacity(0.8);
-  static final Color redWithOpacity = red.withOpacity(0.8);
-  static final Color greenWithOpacity = green.withOpacity(0.8);
+  static const Color larchGreen = Color(0xFF193830);
+  static const Color mintGreen = Color(0xFF89D281);
+  static const Color lightCerulean = Color(0xFF86CEE4);
+  static const Color wispPink = Color(0xFFF4E9E6);
+  static const Color pink = Color(0xFFE2B0C2);
+  static const Color umber = Color(0xFF2F212B);
+  static const Color softNavy = Color(0xFF656D98);
 }

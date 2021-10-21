@@ -46,7 +46,7 @@ class _ExpeditionLiveState extends State<ExpeditionLive> {
           child: isReady
               ? LiveMap(
                   route: state.expedition.routes[0], startTime: state.startTime)
-              : BrandLoading()),
+              : BrandLoader()),
     );
   }
 }

@@ -40,12 +40,12 @@ class _AppState extends State<App> {
     if (authState is NotAuthenticated) {
       return AuthenticationPage();
     } else if (authState is AuthenticationInitial) {
-      return BrandLoading();
+      return BrandLoader();
     } else if (authState is Authenticated ||
         authState is AuthenticationLoading) {
       var profileState = context.watch<ProfileCubit>().state;
       if (profileState is ProfileNotReady) {
-        return BrandLoading();
+        return BrandLoader();
       } else if (profileState is ProfileDersuRegistrationNotFinished) {
         return Registration();
       }
