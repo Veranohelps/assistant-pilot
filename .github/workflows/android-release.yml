@@ -33,11 +33,11 @@ jobs:
       - name: Test
         working-directory: app
         run: flutter test
+      - name: Generate What Is New Files
+        run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
       - name: Build app bundle
         working-directory: app
         run: flutter build appbundle
-      - name: Generate What Is New Files
-        run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
       - name: Write SA KEY file
         run: echo $GCP_SA_KEY > ./sa-key.json
         env:
