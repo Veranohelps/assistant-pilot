@@ -253,7 +253,7 @@ resource "google_secret_manager_secret_version" "api-configuration" {
   secret_data = <<EOT
 NODE_ENV="production"
 APP_PORT=3033
-APP_URL="http://localhost:3033"
+APP_URL="https://${terraform.workspace}-api.dersu.uz"
 DB_HOST="/cloudsql/${google_sql_database_instance.instance.connection_name}"
 DB_USER="${google_sql_user.user.name}"
 DB_PASSWORD="${random_password.database-password.result}"
