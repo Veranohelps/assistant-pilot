@@ -25,7 +25,7 @@ import { WaypointModule } from './waypoint/waypoint.module';
         return err;
       },
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: join(process.cwd(), 'secrets/.env') }),
     CommonModule,
     ExpeditionModule,
     DatabaseModule,

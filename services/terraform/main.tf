@@ -1,92 +1,6 @@
 
 ############## SERVICES
 
-resource "google_cloud_run_service" "strapi" {
-  project = var.project_id
-  provider = google-beta
-  name     = "${terraform.workspace}-strapi"
-  location = var.region
-
-  template {
-    spec {
-      containers {
-        image = "gcr.io/dersu-assistant/strapi:${var.dersu_strapi_docker_image_tag}"
-        # resources {
-        #   limits = {
-        #     cpu = "2000m"
-        #     memory = "1024Mi"
-        #   }
-        # }
-        env {
-          name = "NODE_ENV"
-          value = "production"
-        }
-        env {
-          name = "ADMIN_JWT_SECRET"
-          value = random_password.strapi-jwt-secret.result
-        }
-        env {
-          name = "DATABASE_CLIENT"
-          value = "postgres"
-        }
-        env {
-          name = "DATABASE_HOST"
-          value = "/cloudsql/${google_sql_database_instance.instance.connection_name}"
-        }
-        env {
-          name = "DATABASE_PORT"
-          value = 5432
-        }
-        env {
-          name = "DATABASE_USERNAME"
-          value = google_sql_user.user.name
-        }
-        env {
-          name = "DATABASE_PASSWORD"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.db-password-secret.secret_id
-              key = "latest"
-            }
-          }
-        }
-        env {
-          name = "DATABASE_NAME"
-          value = google_sql_database.database.name
-        }       
-        ports {
-          container_port = 1337
-        }
-      }
-    }
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/minScale"      = "1"
-        "autoscaling.knative.dev/maxScale"      = "1000"
-        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.instance.connection_name
-        "run.googleapis.com/client-name"        = "terraform"
-      }
-    }
-  }
-
-  metadata {
-    annotations = {
-      generated-by = "magic-modules"
-      "run.googleapis.com/launch-stage" = "BETA"
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-
-  lifecycle {
-    ignore_changes = [
-        metadata.0.annotations,
-    ]
-  }  
-}
 resource "google_cloud_run_service" "api" {
   project = var.project_id
   provider = google-beta
@@ -102,92 +16,23 @@ resource "google_cloud_run_service" "api" {
         #     cpu = "2000m"
         #     memory = "1024Mi"
         #   }
-        # }
-        env {
-          name = "APP_PORT"
-          value = 3033
+        # }  
+        volume_mounts {
+          name = "configuration"
+          mount_path = "/home/dersu-api/secrets"
         }
-        env {
-          name = "APP_URL"
-          value = "https://${terraform.workspace}-api.dersu.uz"
-        }
-        env {
-          name = "NODE_ENV"
-          value = "production"
-        }
-        env {
-          name = "DB_HOST"
-          value = "/cloudsql/${google_sql_database_instance.instance.connection_name}"
-        }
-        env {
-          name = "DB_USER"
-          value = google_sql_user.user.name
-        }
-        env {
-          name = "DB_PASSWORD"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.db-password-secret.secret_id
-              key = "latest"
-            }
-          }
-        }
-        env {
-          name = "DB_DATABASE"
-          value = google_sql_database.database.name
-        }
-        env {
-          name = "API_ADMIN_TOKEN"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.api-admin-token-secret.secret_id
-              key = "latest"
-            }
-          }
-        }
-        env {
-          name = "AUTH0_TENANT"
-          value = "dersu-develop.eu"
-        }
-        env {
-          name = "AUTH0_ISSUER_URL"
-          value = "https://dersu-develop.eu.auth0.com/"
-        }
-        env {
-          name = "AUTH0_AUDIENCE"
-          value = "dersu-develop"
-        }
-        env {
-          name = "AUTH0_CLIENT_ID"
-          value = "lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
-        }
-        env {
-          name = "AUTH0_CLIENT_SECRET"
-          value = var.AUTH0_CLIENT_SECRET
-        }  
-        env {
-          name = "STRAPI_EMAIL"
-          value = var.STRAPI_EMAIL
-        }
-        env {
-          name = "STRAPI_PASSWORD"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.strapi-password-secret.secret_id
-              key = "latest"
-            }
-          }
-        }
-        env {
-          name = "STRAPI_URL"
-          value = "https://${terraform.workspace}-cms.dersu.uz"
-        }
-        env {
-          name = "METEOBLUE_API_KEY"
-          value = var.METEOBLUE_API_KEY
-        }        
         ports {
           container_port = 3033
+        }
+      }
+      volumes {
+        name = "configuration"
+        secret {
+          secret_name = google_secret_manager_secret.api-configuration-secret.secret_id
+          items {
+            key = data.google_secret_manager_secret_version.api-configuration-version.version
+            path = ".env"
+          }
         }
       }
     }
@@ -211,30 +56,6 @@ resource "google_cloud_run_service" "api" {
   traffic {
     percent         = 100
     latest_revision = true
-  }
-
-  lifecycle {
-    ignore_changes = [
-        metadata.0.annotations,
-    ]
-  }  
-}
-
-resource "google_cloud_run_domain_mapping" "strapi" {
-  provider   = google-beta
-  location   = var.region
-  name       = "${terraform.workspace}-cms.dersu.uz"
-
-  metadata {
-    annotations = {
-      generated-by = "magic-modules"
-      "run.googleapis.com/launch-stage" = "BETA"
-    }    
-    namespace = var.project_id
-  }
-
-  spec {
-    route_name = google_cloud_run_service.strapi.name
   }
 
   lifecycle {
@@ -335,15 +156,6 @@ resource "google_cloud_run_service_iam_policy" "noauth-api" {
   location    = google_cloud_run_service.api.location
   project     = google_cloud_run_service.api.project
   service     = google_cloud_run_service.api.name
-
-  policy_data = data.google_iam_policy.noauth.policy_data
-}
-
-resource "google_cloud_run_service_iam_policy" "noauth-strapi" {
-  location    = google_cloud_run_service.strapi.location
-  project     = google_cloud_run_service.strapi.project
-  service     = google_cloud_run_service.strapi.name
-
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
@@ -351,7 +163,6 @@ resource "google_cloud_run_service_iam_policy" "noauth-admin-console" {
   location    = google_cloud_run_service.admin-console.location
   project     = google_cloud_run_service.admin-console.project
   service     = google_cloud_run_service.admin-console.name
-
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
@@ -409,25 +220,7 @@ resource "google_secret_manager_secret_version" "db-password" {
   secret_data = random_password.database-password.result
 }
 
-resource "google_secret_manager_secret" "strapi-password-secret" {
-  project = var.project_id
-  secret_id = "${terraform.workspace}-strapi-password"
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "strapi-password" {
-  secret = google_secret_manager_secret.strapi-password-secret.name
-  secret_data = var.STRAPI_PASSWORD
-}
 resource "random_password" "api-admin-token" {
-  length           = 25
-  special          = true
-}
-
-resource "random_password" "strapi-jwt-secret" {
   length           = 25
   special          = true
 }
@@ -444,4 +237,53 @@ resource "google_secret_manager_secret" "api-admin-token-secret" {
 resource "google_secret_manager_secret_version" "api-admin-token" {
   secret = google_secret_manager_secret.api-admin-token-secret.name
   secret_data = random_password.api-admin-token.result
+}
+
+resource "google_secret_manager_secret" "api-configuration-secret" {
+  project = var.project_id
+  secret_id = "${terraform.workspace}-api-configuration"
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "api-configuration" {
+  secret = google_secret_manager_secret.api-configuration-secret.name
+  secret_data = <<EOT
+NODE_ENV="production"
+APP_PORT=3033
+APP_URL="http://localhost:3033"
+DB_HOST="/cloudsql/${google_sql_database_instance.instance.connection_name}"
+DB_USER="${google_sql_user.user.name}"
+DB_PASSWORD="${random_password.database-password.result}"
+DB_DATABASE="${google_sql_database.database.name}"
+AUTH0_ISSUER_URL="https://dersu-develop.eu.auth0.com/"
+AUTH0_AUDIENCE="dersu-develop"
+AUTH0_TENANT="dersu-develop.eu"
+AUTH0_CLIENT_ID="lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
+AUTH0_CLIENT_SECRET="${data.google_secret_manager_secret_version.auth0-client-secret-version.secret_data}"
+API_ADMIN_TOKEN="${random_password.api-admin-token.result}"
+METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-apikey-version.secret_data}"
+EOT
+}
+
+# NOTE (JD): This data resource has an explicit dependency on the secret version
+# resource so it waits for it to be created in order to get the latest version by number (not "latest")
+# Ideally the resource would expose `version`, but it does not!!
+data "google_secret_manager_secret_version" "api-configuration-version" {
+  secret = google_secret_manager_secret.api-configuration-secret.name
+  depends_on = [google_secret_manager_secret_version.api-configuration]
+}
+
+data "google_secret_manager_secret_version" "auth0-client-secret-version" {
+  secret = "${terraform.workspace}-auth0-client-secret"
+  project = var.project_id
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "meteoblue-apikey-version" {
+  secret = "${terraform.workspace}-meteoblue-apikey"
+  project = var.project_id
+  version = 1
 }
