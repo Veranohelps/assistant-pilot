@@ -285,5 +285,5 @@ data "google_secret_manager_secret_version" "auth0-client-secret-version" {
 data "google_secret_manager_secret_version" "meteoblue-apikey-version" {
   secret = "${terraform.workspace}-meteoblue-apikey"
   project = var.project_id
-  version = 1
+  version = 2
 }
