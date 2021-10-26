@@ -16,7 +16,7 @@ class Waypoint extends Equatable {
   });
 
   final String id;
-  final String type;
+  final List<String> type;
   final String name;
   final num radiusInMeters;
   final PointGeometry coordinate;
