@@ -7,7 +7,7 @@ import 'package:app/logic/models/geo_json.dart';
 void main() {
   Map<String, dynamic> json = {
     "id": "KWvknoVS9x52jBkqqDDmYO",
-    "type": "waypoint",
+    "type": ["waypoint"],
     "name": "Cruce, recto",
     "radiusInMeters": 100,
     "coordinate": {
