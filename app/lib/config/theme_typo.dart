@@ -12,63 +12,66 @@ class ThemeTypo {
   );
 
   static final h1 = defaultText.copyWith(
-    fontSize: 28,
-    fontWeight: FontWeight.bold,
-    height: 1.3,
-    letterSpacing: -1.4,
+    fontSize: 34,
+    fontWeight: NamedWeight.bold,
+    height: 1.2,
+    color: BrandColors.text,
+    letterSpacing: -34 / 100 * 2,
   );
 
   static final h2 = defaultText.copyWith(
-    fontSize: 24,
-    fontWeight: NamedWeight.medium,
-    height: 1.2,
-    letterSpacing: -1.4,
-  );
-
-  static final h3 = defaultText.copyWith(
     fontSize: 20,
-    fontWeight: NamedWeight.medium,
-    height: 1,
-    letterSpacing: -1.17,
-  );
-  static final h4 = defaultText.copyWith(
-    fontSize: 15,
-    fontWeight: NamedWeight.medium,
-    height: 1.4,
-  );
-
-  static final h5 = defaultText.copyWith(
-    fontSize: 12,
     fontWeight: NamedWeight.bold,
-    height: 1.5,
-  );
-
-  static final h6 = defaultText.copyWith(
-    fontSize: 12,
-    fontWeight: NamedWeight.medium,
-    height: 1.5,
+    height: 1.2,
+    letterSpacing: -20 / 100 * 2,
   );
 
   static final p0 = defaultText.copyWith(
-    fontSize: 14,
-    height: 1.5,
+    fontSize: 13,
+    height: 1.2,
   );
 
-  static final p1 = defaultText.copyWith(
-    fontSize: 12,
-    height: 1.3,
-  );
-
-  static final p2 = defaultText.copyWith(
+  static final overline = defaultText.copyWith(
     fontSize: 10,
+    fontWeight: NamedWeight.medium,
+    height: 16 / 10,
+    letterSpacing: 1.5,
   );
 
-  static final p4 = defaultText.copyWith(
-    fontSize: 15,
-    fontWeight: NamedWeight.regular,
-    height: 1.4,
-    letterSpacing: -1,
+  static final martaButtonText = defaultText.copyWith(
+    fontSize: 14,
+    height: 16 / 14,
+    letterSpacing: 1.25,
+  );
+
+  static final martaTab = defaultText.copyWith(
+    fontSize: 14,
+    height: 16 / 14,
+    fontWeight: NamedWeight.medium,
+    letterSpacing: 1.25,
   );
 
   static final temp = TextStyle(color: Colors.red);
+}
+
+class MType {
+  static const h6 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    height: 24 / 20,
+    letterSpacing: 0.15,
+  );
+
+  static final subtitle1 = TextStyle(
+    fontSize: 16,
+    height: 24 / 16,
+    letterSpacing: 0.15,
+  );
+
+  static final overline = TextStyle(
+    fontSize: 10,
+    height: 16 / 10,
+    letterSpacing: 1.15,
+    fontWeight: FontWeight.w500,
+  );
 }

@@ -1,8 +1,14 @@
+import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/route/route_cubit.dart';
 import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
+import 'package:app/logic/cubits/weather/weather_cubit.dart';
 import 'package:app/logic/models/route.dart';
+import 'package:app/logic/models/weather/hourly_forecast.dart';
+import 'package:app/ui/components/brand_fake_input/brand_fake_input.dart';
+import 'package:app/ui/components/brand_icons/dersu_icons_icons.dart';
+import 'package:app/ui/components/brand_label/brand_raw_label.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';
 import 'package:app/ui/pages/create_planning/create_planning.dart';
@@ -11,9 +17,17 @@ import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:provider/provider.dart';
+import 'package:app/utils/extensions/extensions.dart';
 
-final dateFormat = DateFormat.yMMMd();
-final dateFormat2 = DateFormat.yMMMMEEEEd().add_jm();
+part 'ruta.dart';
+part 'condiciones.dart';
+
+final dateFormat2 = DateFormat.yMMMMd().add_jm();
+final dataFormat1 = DateFormat('dd/MM/yy');
+final weekDay = DateFormat.EEEE();
+
+final hhMMFormat = DateFormat.jm();
 
 class RouteDetails extends StatelessWidget {
   const RouteDetails({
@@ -27,95 +41,42 @@ class RouteDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectedTime = context.watch<TimeFilterCubit>().state;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(route.name),
-      ),
-      body: BlocProvider(
-        create: (_) => RouteCubit()..getRoute(route.url),
-        child: Builder(
-          builder: (context) {
-            final dectionary = context.watch<DictionariesCubit>().state;
-            final route = context.watch<RouteCubit>().state;
-
-            if (route == null || dectionary is! DictionariesLoaded) {
-              return BrandLoader();
-            }
-            return ListView(
-              padding: EdgeInsets.all(10),
-              children: [
-                ...buildBlock('Name', route.name),
-                SizedBox(
-                  height: 400,
-                  child: StaticMap(
-                    route: route,
-                  ),
+    return BlocProvider(
+      create: (_) => RouteCubit()..getRoute(route.url),
+      child: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('GUARDAR'),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: Container(
+                padding: EdgeInsets.only(left: 48),
+                child: TabBar(
+                  indicatorColor: BrandColors.active,
+                  isScrollable: true,
+                  labelStyle: ThemeTypo.martaTab,
+                  tabs: [
+                    Tab(text: 'Ruta'.toUpperCase()),
+                    Tab(text: 'Condiciones'.toUpperCase()),
+                    Tab(text: 'Terreno'.toUpperCase()),
+                    Tab(text: 'Grupo'.toUpperCase()),
+                  ],
                 ),
-                SizedBox(height: 15),
-                Center(
-                  child: BrandButtons.primaryShort(
-                    onPressed: () => setDate(context),
-                    label: 'time change',
-                    text: selectedTime == null
-                        ? 'no date'
-                        : dateFormat2.format(selectedTime),
-                  ),
-                ),
-                SizedBox(height: 15),
-                Center(
-                  child: BrandButtons.primaryShort(
-                    onPressed: selectedTime == null
-                        ? null
-                        : () => Navigator.of(context).push(
-                              materialRoute(
-                                CreatePlanning(
-                                  startTime: selectedTime,
-                                  routeId: route.id,
-                                ),
-                              ),
-                            ),
-                    text: 'Confirm expedition',
-                  ),
-                ),
-              ],
-            );
-          },
+              ),
+            ),
+          ),
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              RutaTab(),
+              CondicionesTab(),
+              Center(child: Text('Terreno')),
+              Center(child: Text('Grupo')),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  List<Widget> buildBlock(String title, String value) {
-    return [
-      Text(title, style: ThemeTypo.h4),
-      SizedBox(height: 5),
-      Text(value, style: ThemeTypo.p0),
-      SizedBox(height: 10),
-    ];
-  }
-
-  void setDate(BuildContext context) async {
-    var today = DateTime.now();
-    var tommorow = today.add(Duration(days: 1));
-    var day = await showDatePicker(
-      context: context,
-      initialDate: tommorow,
-      firstDate: tommorow,
-      lastDate: today.add(Duration(days: 31)),
-    );
-
-    if (day != null) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: 8, minute: 0),
-      );
-
-      if (time != null) {
-        final dayTime =
-            DateTime(day.year, day.month, day.day, time.hour, time.minute);
-        context.read<TimeFilterCubit>().setNewTime(dayTime);
-      }
-    }
   }
 }

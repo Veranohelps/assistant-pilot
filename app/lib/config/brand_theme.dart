@@ -6,9 +6,11 @@ final brandTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: BrandColors.defaultScaffolBackground,
   primaryColor: BrandColors.primary,
-  colorScheme: ColorScheme.fromSwatch(
-    accentColor: BrandColors.secondary,
-  ),
+  colorScheme: ColorScheme.light(
+      primary: BrandColors.primary,
+      onPrimary: BrandColors.white,
+      onSurface: BrandColors.primary // body text color
+      ),
   appBarTheme: AppBarTheme(
     backgroundColor: BrandColors.primary,
   ),
@@ -18,6 +20,19 @@ final brandTheme = ThemeData(
     activeTrackColor: BrandColors.lGray,
     thumbColor: BrandColors.primary,
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: Colors.black, // button text color
+    ),
+  ),
+  // tabBarTheme: TabBarTheme(
+  //   indicator: UnderlineTabIndicator(
+  //     borderSide: BorderSide(
+  //       color: BrandColors.active,
+  //       width: 2,
+  //     ),
+  //   ),
+  // ),
 );
 
 const paddingH25V0 = EdgeInsets.symmetric(horizontal: 25);

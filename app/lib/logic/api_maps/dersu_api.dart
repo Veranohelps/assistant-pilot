@@ -29,7 +29,7 @@ abstract class PrivateDersuApi extends ApiMap {
         print(e.message);
         print(e.response);
 
-        return handler.next(e);
+        // return handler.next(e);
       }));
     }
 

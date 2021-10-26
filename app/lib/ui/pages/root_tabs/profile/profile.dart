@@ -74,7 +74,7 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   Text('${state.profile.firstName} ${state.profile.lastName}')
                       .h2,
-                  Text(state.profile.email).p1.withColor(BrandColors.mGrey),
+                  Text(state.profile.email).p0.withColor(BrandColors.mGrey),
                 ],
               );
             },

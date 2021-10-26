@@ -67,7 +67,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
               if (levelData is Category) {
                 return Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Text(levelData.name).h3,
+                  child: Text(levelData.name).p0,
                 );
               }
               levelData = levelData as Skill;
@@ -78,7 +78,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: Text('${levelData.name}:').h4,
+                    child: Text('${levelData.name}:').p0,
                   ),
                   Expanded(
                     flex: 1,
@@ -143,7 +143,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
             children: [
               Text('Set: ${skill.name}').h1,
               SizedBox(height: 20),
-              Text(selectedLevel.name).h3,
+              Text(selectedLevel.name).p0,
               SizedBox(height: 20),
               Container(
                 height: 100,
@@ -155,7 +155,6 @@ class _LevelsSettingState extends State<LevelsSetting> {
                 ),
               ),
               Slider(
-                
                 value: _currentSliderValue.toDouble(),
                 min: 0,
                 max: 4,

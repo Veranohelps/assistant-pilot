@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer' as developer;
 
 import 'dart:ui';
 
@@ -31,6 +29,9 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) {
       runApp();
     },
     (Object error, StackTrace stack) async {
+      print(error);
+      print(stack);
+
       getIt<Analitics>().sendErrorEvent(
         action: error.toString(),
         value: stack.toString(),
@@ -41,11 +42,6 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) {
               stackTrace: stack,
             )),
           );
-      developer.log(
-        'log me',
-        name: 'error',
-        error: jsonEncode(stack),
-      );
     },
   );
 }

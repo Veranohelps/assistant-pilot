@@ -29,7 +29,7 @@ class BrandButtons {
         key: key,
         onPressed: analiticsOnPressWrapper(onPressed, text, label),
         text: text,
-        style: ThemeTypo.p4,
+        style: ThemeTypo.martaButtonText,
         color: color,
       );
 
@@ -117,7 +117,7 @@ class _PrimaryBig extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: ThemeTypo.p4,
+          style: ThemeTypo.martaButtonText,
         ).withColor(Colors.white),
       ),
     );
@@ -147,7 +147,7 @@ class _PrimaryShort extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: ThemeTypo.p4,
+          style: ThemeTypo.martaButtonText,
         ).withColor(Colors.white),
       ),
     );

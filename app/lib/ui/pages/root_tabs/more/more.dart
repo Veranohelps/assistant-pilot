@@ -85,7 +85,7 @@ class _NavItem extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: ThemeTypo.h6.copyWith(color: BrandColors.white),
+          style: ThemeTypo.p0.copyWith(color: BrandColors.white),
           textAlign: TextAlign.center,
         ),
       ),

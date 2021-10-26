@@ -16,7 +16,6 @@ import 'config/hive_config.dart';
 
 var apiDefaultLog = false;
 
-
 Future<void> main() async {
   globalErrorHandling(
     () async {

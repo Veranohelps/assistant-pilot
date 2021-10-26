@@ -25,14 +25,11 @@ class PlausibleApi extends ApiMap {
         maxWidth: 90,
       ));
     }
+    dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
+      print('PlausibleApi error');
 
-    /// plausible HandshakeException: Handshake error in client
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+      return handler.next(e);
+    }));
 
     /// plausible HandshakeException: Handshake error in client
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -81,7 +78,6 @@ class PlausibleApi extends ApiMap {
         }),
       );
     } catch (e) {
-      print(e);
       getIt<ConsoleService>()
           .addMessage(ConsoleMessage.warn(text: e.toString()));
     }

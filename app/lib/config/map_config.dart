@@ -1,5 +1,6 @@
 import 'package:app/logic/models/geo_json.dart';
 import 'package:app/logic/models/waypoint.dart';
+import 'package:app/ui/components/tile_provider/tile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -18,6 +19,7 @@ class MapConfig {
   static final tilesLayourOptions = TileLayerOptions(
     urlTemplate:
         "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}@2x.png?apikey=${FlutterConfig.get('THUNDER_FOREST_API')}",
+    tileProvider: const BrandTileProvider(),
   );
 
   static Marker startMarker(LatLng point) {

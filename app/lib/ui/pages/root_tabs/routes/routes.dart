@@ -45,15 +45,13 @@ class _RoutesTabState extends State<RoutesTab> {
               onTap: () {
                 Navigator.of(context).push(
                   noAnimationRoute(
-                    RouteDetails(
-                      route: route,
-                    ),
+                    RouteDetails(route: route),
                     route.name,
                   ),
                 );
               },
               child: BrandCard(
-                child: Text(route.name).h3,
+                child: Text(route.name).p0,
               ),
             ),
         ],

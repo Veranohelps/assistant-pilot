@@ -4,15 +4,8 @@ import 'package:flutter/material.dart';
 extension TextExtension on Text {
   Text get h1 => copyWith(style: ThemeTypo.h1);
   Text get h2 => copyWith(style: ThemeTypo.h2);
-  Text get h3 => copyWith(style: ThemeTypo.h3);
-  Text get h4 => copyWith(style: ThemeTypo.h4);
-  Text get h5 => copyWith(style: ThemeTypo.h5);
-  Text get h6 => copyWith(style: ThemeTypo.h6);
 
   Text get p0 => copyWith(style: ThemeTypo.p0);
-  Text get p1 => copyWith(style: ThemeTypo.p1);
-  Text get p2 => copyWith(style: ThemeTypo.p2);
-  Text get p4 => copyWith(style: ThemeTypo.p4);
 
   Text get temp => copyWith(style: ThemeTypo.temp);
 

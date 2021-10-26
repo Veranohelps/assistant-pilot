@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/DersuIcons.ttf
 ///
-/// 
+///
 ///
 import 'package:flutter/widgets.dart';
 
@@ -21,5 +21,8 @@ class DersuIcons {
   static const _kFontFam = 'DersuIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData logo = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData logo =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData triangle =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

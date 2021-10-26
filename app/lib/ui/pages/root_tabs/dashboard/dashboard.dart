@@ -36,7 +36,7 @@ class Dashboard extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: Text(
                   'Upcoming Expeditions',
-                  style: ThemeTypo.h3,
+                  style: ThemeTypo.p0,
                 ),
               );
             }

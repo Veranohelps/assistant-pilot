@@ -13,7 +13,7 @@ class LiveCubit extends Cubit<LiveState> {
 
   var box = Hive.box(HiveContants.hydratedCubits.txt);
 
-  void load() {
+  void load() async {
     var saved = box.get(HiveContants.liveExpedition.txt);
     if (saved != null) {
       emit(LiveStateOn.fromJson(saved));

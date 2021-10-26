@@ -14,4 +14,22 @@ class Serialization {
       LatLngBounds latLngBounds) {
     return latLngBounds.toJson();
   }
+
+  static List<int> rangeFromString(String rangeString) {
+    var firstNumberLessThenZero = false;
+    if (rangeString[0] == '-') {
+      firstNumberLessThenZero = true;
+      rangeString = rangeString.substring(1);
+    }
+
+    var arr = rangeString.split('-');
+    var from = int.parse(arr[0]);
+    var to = int.parse(arr[1]);
+    return [from * (firstNumberLessThenZero ? -1 : 1), to];
+  }
+
+  static DateTime fromUtcStringToLocal(String utc) {
+    // return DateTime.parse(utc).toLocal();
+    return DateTime.parse(utc);
+  }
 }

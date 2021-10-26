@@ -26,10 +26,10 @@ class ErrorScreen extends StatelessWidget {
                     SizedBox(height: 100),
                     Text('🤯 🤬 😵', style: TextStyle(fontSize: 50)),
                     Text(LocaleKeys.errors_fatal.tr()).h1,
-                    Text(error?.toString() ?? LocaleKeys.errors_fatal.tr()).h4,
+                    Text(error?.toString() ?? LocaleKeys.errors_fatal.tr()).p0,
                     if (stackTrace != null) ...[
-                      Text('Stack trace: ').h6,
-                      Text(stackTrace.toString()).p2,
+                      Text('Stack trace: ').p0,
+                      Text(stackTrace.toString()).p0,
                     ],
                   ],
                 ),
