@@ -1723,6 +1723,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@craco/craco@npm:^5.0.0":
+  version: 5.9.0
+  resolution: "@craco/craco@npm:5.9.0"
+  dependencies:
+    cross-spawn: ^7.0.0
+    lodash: ^4.17.15
+    webpack-merge: ^4.2.2
+  peerDependencies:
+    react-scripts: "*"
+  bin:
+    craco: bin/craco.js
+  checksum: 84222fb32310f4390a38a9831a98a87e60cddd9706abdc92c215889e0b40d92b1dc96c966fbd3515ff22b6369398f2a98fc26100549a299ffd2b2fc119dff761
+  languageName: node
+  linkType: hard
+
+"@craco/craco@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "@craco/craco@npm:6.3.0"
+  dependencies:
+    cross-spawn: ^7.0.0
+    lodash: ^4.17.15
+    semver: ^7.3.2
+    webpack-merge: ^4.2.2
+  peerDependencies:
+    react-scripts: ^4.0.0
+  bin:
+    craco: bin/craco.js
+  checksum: 0cc2de18e8bd9f0b79134850691cdc93037ea0aa4ec9d087ccf29e5146e3cba95256535653cdb32103cbd24d86ad2f75932f32d852445631404f5e0989c1cd2e
+  languageName: node
+  linkType: hard
+
 "@csstools/convert-colors@npm:^1.4.0":
   version: 1.4.0
   resolution: "@csstools/convert-colors@npm:1.4.0"
@@ -2689,6 +2720,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-leaflet/core@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@react-leaflet/core@npm:1.1.1"
+  peerDependencies:
+    leaflet: ^1.7.1
+    react: ^17.0.1
+    react-dom: ^17.0.1
+  checksum: 2fc4a80e5524f9437ac6cef0f95e63388f2df6ecc5107fef85fd097eb2455436e796d41a4c43cdcbb983a4132403646823ba1dc0d953e866eb80808cbfaf0232
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-node-resolve@npm:^7.1.1":
   version: 7.1.3
   resolution: "@rollup/plugin-node-resolve@npm:7.1.3"
@@ -3072,6 +3114,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/geojson@npm:*":
+  version: 7946.0.8
+  resolution: "@types/geojson@npm:7946.0.8"
+  checksum: 6049a39b025cfe323d5cf87333d87c133ec963cdbd349c49295bee779827ee4b46a3041fd8bd2e7a4b02d6d1e26f3002968875928941bbed08477bfd5f6f9284
+  languageName: node
+  linkType: hard
+
 "@types/glob@npm:^7.1.1":
   version: 7.1.4
   resolution: "@types/glob@npm:7.1.4"
@@ -3186,6 +3235,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: b5f8aa592cc21c16d99e69aec0976f12b893b055e4456d90148a610a6b6088e297b2ba5f38f8c8280cef006cfd8f9ec99e069905020882619dc5fc8aa46f5f27
+  languageName: node
+  linkType: hard
+
+"@types/leaflet@npm:^1.7.5":
+  version: 1.7.5
+  resolution: "@types/leaflet@npm:1.7.5"
+  dependencies:
+    "@types/geojson": "*"
+  checksum: 922f3d1176017c350be997773df72d0fd8f31c2f0340a20d3a91eb31540c3e6ef09eb020cec85c74b05afd54f4095e406ab3a45c9328c31ea17f95aa6ef69c6e
   languageName: node
   linkType: hard
 
@@ -3904,17 +3962,21 @@ __metadata:
   resolution: "admin-console@workspace:."
   dependencies:
     "@apollo/client": ^3.4.15
+    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.14.5
+    "@craco/craco": ^6.3.0
     "@fontsource/fira-sans": ^4.5.0
     "@graphql-codegen/cli": ^2.2.0
     "@graphql-codegen/typed-document-node": ^2.1.4
     "@graphql-codegen/typescript": ^2.2.2
     "@graphql-codegen/typescript-operations": ^2.1.5
     "@graphql-typed-document-node/core": ^3.1.0
+    "@react-leaflet/core": ^1.1.1
     "@testing-library/jest-dom": ^5.14.1
     "@testing-library/react": ^12.1.1
     "@testing-library/user-event": ^13.2.1
     "@types/apollo-upload-client": ^14.1.0
     "@types/jest": ^27.0.2
+    "@types/leaflet": ^1.7.5
     "@types/lodash": ^4
     "@types/node": ^16.10.2
     "@types/prettier": ^2
@@ -3923,19 +3985,24 @@ __metadata:
     "@types/react-is": ^17
     "@types/styled-components": ^5.1.14
     apollo-upload-client: ^16.0.0
+    craco-babel-loader: ^0.1.4
     csstype: ^3.0.9
     date-fns: ^2.24.0
+    emittery: ^0.10.0
     eslint-config-react-app: ^6.0.0
     formik: ^2.2.9
     graphql: ^15.6.0
     history: ^5.0.1
     ky: ^0.28.6
+    leaflet: ^1.7.1
+    localforage: ^1.10.0
     lodash: ^4.17.21
     nanoid: ^3.1.30
     prettier: ^2.4.1
     react: ^17.0.2
     react-dom: ^17.0.2
     react-is: ^17.0.2
+    react-leaflet: ^3.2.2
     react-query: ^3.24.5
     react-router-dom: next
     react-scripts: 4.0.3
@@ -6088,6 +6155,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"craco-babel-loader@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "craco-babel-loader@npm:0.1.4"
+  dependencies:
+    "@craco/craco": ^5.0.0
+  checksum: 1769cc4bab6248cfd6f165917b29deb312f7281450ce2ed1e536df250bfafec8dfead851aa81ba152cf194809b388020d8fdf3426ecbebc068bd6eb300bdfd7d
+  languageName: node
+  linkType: hard
+
 "create-ecdh@npm:^4.0.0":
   version: 4.0.4
   resolution: "create-ecdh@npm:4.0.4"
@@ -7139,6 +7215,13 @@ __metadata:
     minimalistic-assert: ^1.0.1
     minimalistic-crypto-utils: ^1.0.1
   checksum: d56d21fd04e97869f7ffcc92e18903b9f67f2d4637a23c860492fbbff5a3155fd9ca0184ce0c865dd6eb2487d234ce9551335c021c376cd2d3b7cb749c7d10f4
+  languageName: node
+  linkType: hard
+
+"emittery@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "emittery@npm:0.10.0"
+  checksum: 2616a802df51e3f412b9b33f1b43161f7bc96037142cada6ecdbf35ddef1368e30d4f8e47fddc10b0753ccf91d3483b20ebca535b4b1e47526440e13150e2bc7
   languageName: node
   linkType: hard
 
@@ -9293,6 +9376,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"immediate@npm:~3.0.5":
+  version: 3.0.6
+  resolution: "immediate@npm:3.0.6"
+  checksum: f9b3486477555997657f70318cc8d3416159f208bec4cca3ff3442fd266bc23f50f0c9bd8547e1371a6b5e82b821ec9a7044a4f7b944798b25aa3cc6d5e63e62
+  languageName: node
+  linkType: hard
+
 "immer@npm:8.0.1":
   version: 8.0.1
   resolution: "immer@npm:8.0.1"
@@ -11099,6 +11189,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"leaflet@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "leaflet@npm:1.7.1"
+  checksum: f69149ab482eeb6cdabd837939c4782c97a7a18bc0b2a9330d4a828ca0dc6e035981f2ecdb71c6646aa173bc369cd3b4fd6bbe5d81df4c59c45254f9e9361d03
+  languageName: node
+  linkType: hard
+
 "leven@npm:^3.1.0":
   version: 3.1.0
   resolution: "leven@npm:3.1.0"
@@ -11123,6 +11220,15 @@ fsevents@^1.2.7:
     prelude-ls: ~1.1.2
     type-check: ~0.3.2
   checksum: 0d084a524231a8246bb10fec48cdbb35282099f6954838604f3c7fc66f2e16fa66fd9cc2f3f20a541a113c4dafdf181e822c887c8a319c9195444e6c64ac395e
+  languageName: node
+  linkType: hard
+
+"lie@npm:3.1.1":
+  version: 3.1.1
+  resolution: "lie@npm:3.1.1"
+  dependencies:
+    immediate: ~3.0.5
+  checksum: 6da9f2121d2dbd15f1eca44c0c7e211e66a99c7b326ec8312645f3648935bc3a658cf0e9fa7b5f10144d9e2641500b4f55bd32754607c3de945b5f443e50ddd1
   languageName: node
   linkType: hard
 
@@ -11236,6 +11342,15 @@ fsevents@^1.2.7:
     emojis-list: ^3.0.0
     json5: ^1.0.1
   checksum: d150b15e7a42ac47d935c8b484b79e44ff6ab4c75df7cc4cb9093350cf014ec0b17bdb60c5d6f91a37b8b218bd63b973e263c65944f58ca2573e402b9a27e717
+  languageName: node
+  linkType: hard
+
+"localforage@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "localforage@npm:1.10.0"
+  dependencies:
+    lie: 3.1.1
+  checksum: f2978b434dafff9bcb0d9498de57d97eba165402419939c944412e179cab1854782830b5ec196212560b22712d1dd03918939f59cf1d4fc1d756fca7950086cf
   languageName: node
   linkType: hard
 
@@ -14503,6 +14618,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-leaflet@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "react-leaflet@npm:3.2.2"
+  dependencies:
+    "@react-leaflet/core": ^1.1.1
+  peerDependencies:
+    leaflet: ^1.7.1
+    react: ^17.0.1
+    react-dom: ^17.0.1
+  checksum: d5e5f34dea05e4d48d1d8c5c455b62ac1d2d417620b025f1098ca4014d83e81c97db3d5adef6abaa0c0c429aa6230564f50091aab4e7ebd9402d1fc541573967
+  languageName: node
+  linkType: hard
+
 "react-query@npm:^3.24.5":
   version: 3.24.5
   resolution: "react-query@npm:3.24.5"
@@ -17708,6 +17836,15 @@ typescript@^4.4.3:
   peerDependencies:
     webpack: 2 || 3 || 4
   checksum: ed1387774031a59bc1bd5f79150e7a49dcf5048a6d5e9652672637bed7f93df6220cbd88b2e371e7c8c8e7640b3a8ed6895f771c6b05a8bb90b721f82001ac25
+  languageName: node
+  linkType: hard
+
+"webpack-merge@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "webpack-merge@npm:4.2.2"
+  dependencies:
+    lodash: ^4.17.15
+  checksum: ce58bc8ab53a3dd5d9a0df65684571349eef53372bf8f224521072110485391335b26ab097c5f07829b88d0c146056944149566e5a953f05997b0fe2cbaf8dd6
   languageName: node
   linkType: hard
 

@@ -2,6 +2,7 @@ import { Knex, knex } from 'knex';
 import { cloneDeep, get, merge, set } from 'lodash';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { entityMap } from '../database.entity';
+import { TEntityRecord } from '../types/database.type';
 import { IEntityColumn } from '../types/entity.type';
 import { IDatabaseTables } from '../types/tables.type';
 import { attachKnexListeners } from './helpers.knex';
@@ -121,6 +122,21 @@ function getContextValue(this: Knex.QueryBuilder, key: string) {
   return this;
 }
 
+function cReturning(this: Knex.QueryBuilder) {
+  const entityMap = this.queryContext().entityMap as TEntityRecord;
+  const { columns } = entityMap[(this as any)._single.table as keyof IDatabaseTables];
+
+  const cols: string[] = [];
+
+  Object.keys(columns).forEach((key) => {
+    cols.push(columns[key].returning ?? key);
+  });
+
+  this.returning(cols);
+
+  return this;
+}
+
 let extended = false;
 
 export function extendKnex() {
@@ -134,6 +150,7 @@ export function extendKnex() {
   knex.QueryBuilder.extend('whereIn2', whereIn2);
   knex.QueryBuilder.extend('setContextValue', setContextValue);
   knex.QueryBuilder.extend('getContextValue', getContextValue);
+  knex.QueryBuilder.extend('cReturning', cReturning);
 
   extended = true;
 }

@@ -36,17 +36,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["@apollo/client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.4.15"],
+            ["@babel/plugin-proposal-nullish-coalescing-operator", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5"],
+            ["@craco/craco", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0"],
             ["@fontsource/fira-sans", "npm:4.5.0"],
             ["@graphql-codegen/cli", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.0"],
             ["@graphql-codegen/typed-document-node", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.1.4"],
             ["@graphql-codegen/typescript", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.2"],
             ["@graphql-codegen/typescript-operations", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.1.5"],
             ["@graphql-typed-document-node/core", "virtual:c03242b0eadaac8e6b880ea986f0c55993bc90a6a841daf6ec290868f4951348f804db81b61039ff2ea8f9777c5dc48652dea93022516de5ca618cbd859cb848#npm:3.1.0"],
+            ["@react-leaflet/core", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.1.1"],
             ["@testing-library/jest-dom", "npm:5.14.1"],
             ["@testing-library/react", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:12.1.1"],
             ["@testing-library/user-event", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:13.2.1"],
             ["@types/apollo-upload-client", "npm:14.1.0"],
             ["@types/jest", "npm:27.0.2"],
+            ["@types/leaflet", "npm:1.7.5"],
             ["@types/lodash", "npm:4.14.175"],
             ["@types/node", "npm:16.10.2"],
             ["@types/prettier", "npm:2.4.1"],
@@ -55,19 +59,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-is", "npm:17.0.2"],
             ["@types/styled-components", "npm:5.1.14"],
             ["apollo-upload-client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:16.0.0"],
+            ["craco-babel-loader", "npm:0.1.4"],
             ["csstype", "npm:3.0.9"],
             ["date-fns", "npm:2.24.0"],
+            ["emittery", "npm:0.10.0"],
             ["eslint-config-react-app", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.0.0"],
             ["formik", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.9"],
             ["graphql", "npm:15.6.0"],
             ["history", "npm:5.0.1"],
             ["ky", "npm:0.28.6"],
+            ["leaflet", "npm:1.7.1"],
+            ["localforage", "npm:1.10.0"],
             ["lodash", "npm:4.17.21"],
             ["nanoid", "npm:3.1.30"],
             ["prettier", "npm:2.4.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:17.0.2"],
             ["react-is", "npm:17.0.2"],
+            ["react-leaflet", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.2.2"],
             ["react-query", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.24.5"],
             ["react-router-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.0.0-beta.7"],
             ["react-scripts", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:4.0.3"],
@@ -1026,6 +1035,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
+        ["virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5", {
+          "packageLocation": "./.yarn/__virtual__/@babel-plugin-proposal-nullish-coalescing-operator-virtual-8f51c38644/0/cache/@babel-plugin-proposal-nullish-coalescing-operator-npm-7.14.5-f47974419f-033d9483c2.zip/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/",
+          "packageDependencies": [
+            ["@babel/plugin-proposal-nullish-coalescing-operator", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5"],
+            ["@babel/core", null],
+            ["@babel/helper-plugin-utils", "npm:7.14.5"],
+            ["@babel/plugin-syntax-nullish-coalescing-operator", "virtual:8f51c38644f1cee88f0834520413121ebd2321f27152f0e545adbf2b0191165f76bfd626e478a214c9caac1ac571f03062a59594ca339456ea8ea9c39c366649#npm:7.8.3"],
+            ["@types/babel__core", null]
+          ],
+          "packagePeers": [
+            "@babel/core",
+            "@types/babel__core"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:a162a86acb8899e5411bc68791458fde3dc0b0c0a9f36df7fbd90296a840fc05013ce81e5451ba9bfdc5b80aa9a88b9aec450f7de0328c2775a619c7b1f33961#npm:7.14.5", {
           "packageLocation": "./.yarn/__virtual__/@babel-plugin-proposal-nullish-coalescing-operator-virtual-73cd38d9fb/0/cache/@babel-plugin-proposal-nullish-coalescing-operator-npm-7.14.5-f47974419f-033d9483c2.zip/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/",
           "packageDependencies": [
@@ -1911,6 +1935,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@babel/plugin-syntax-nullish-coalescing-operator", "virtual:22eeb29ceb1d9481d5b7feb65db02c95356845c2fe5bc91c389f5f75dee6fd065a62cacec5d766c9738b2858e7ea799460e4613b5d983d420fe23d4b4a2f8e73#npm:7.8.3"],
             ["@babel/core", "npm:7.12.3"],
+            ["@babel/helper-plugin-utils", "npm:7.14.5"],
+            ["@types/babel__core", null]
+          ],
+          "packagePeers": [
+            "@babel/core",
+            "@types/babel__core"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:8f51c38644f1cee88f0834520413121ebd2321f27152f0e545adbf2b0191165f76bfd626e478a214c9caac1ac571f03062a59594ca339456ea8ea9c39c366649#npm:7.8.3", {
+          "packageLocation": "./.yarn/__virtual__/@babel-plugin-syntax-nullish-coalescing-operator-virtual-b097b46068/0/cache/@babel-plugin-syntax-nullish-coalescing-operator-npm-7.8.3-8a723173b5-87aca49189.zip/node_modules/@babel/plugin-syntax-nullish-coalescing-operator/",
+          "packageDependencies": [
+            ["@babel/plugin-syntax-nullish-coalescing-operator", "virtual:8f51c38644f1cee88f0834520413121ebd2321f27152f0e545adbf2b0191165f76bfd626e478a214c9caac1ac571f03062a59594ca339456ea8ea9c39c366649#npm:7.8.3"],
+            ["@babel/core", null],
             ["@babel/helper-plugin-utils", "npm:7.14.5"],
             ["@types/babel__core", null]
           ],
@@ -4306,6 +4344,55 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@craco/craco", [
+        ["npm:5.9.0", {
+          "packageLocation": "./.yarn/cache/@craco-craco-npm-5.9.0-c341bc8850-84222fb323.zip/node_modules/@craco/craco/",
+          "packageDependencies": [
+            ["@craco/craco", "npm:5.9.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["npm:6.3.0", {
+          "packageLocation": "./.yarn/cache/@craco-craco-npm-6.3.0-4eac7788b6-0cc2de18e8.zip/node_modules/@craco/craco/",
+          "packageDependencies": [
+            ["@craco/craco", "npm:6.3.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0", {
+          "packageLocation": "./.yarn/__virtual__/@craco-craco-virtual-b740782501/0/cache/@craco-craco-npm-6.3.0-4eac7788b6-0cc2de18e8.zip/node_modules/@craco/craco/",
+          "packageDependencies": [
+            ["@craco/craco", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0"],
+            ["@types/react-scripts", null],
+            ["cross-spawn", "npm:7.0.3"],
+            ["lodash", "npm:4.17.21"],
+            ["react-scripts", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:4.0.3"],
+            ["semver", "npm:7.3.5"],
+            ["webpack-merge", "npm:4.2.2"]
+          ],
+          "packagePeers": [
+            "@types/react-scripts",
+            "react-scripts"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:ff8e052e7974982aae5af44df477e4fd69b3cf67a847cdc8f4675f965fb9fe2a3997a470dbc46ef533f3f0c79b5b366e07b89bcdc94a7ccf449b6801d8e71a52#npm:5.9.0", {
+          "packageLocation": "./.yarn/__virtual__/@craco-craco-virtual-8bf7744b20/0/cache/@craco-craco-npm-5.9.0-c341bc8850-84222fb323.zip/node_modules/@craco/craco/",
+          "packageDependencies": [
+            ["@craco/craco", "virtual:ff8e052e7974982aae5af44df477e4fd69b3cf67a847cdc8f4675f965fb9fe2a3997a470dbc46ef533f3f0c79b5b366e07b89bcdc94a7ccf449b6801d8e71a52#npm:5.9.0"],
+            ["@types/react-scripts", null],
+            ["cross-spawn", "npm:7.0.3"],
+            ["lodash", "npm:4.17.21"],
+            ["react-scripts", null],
+            ["webpack-merge", "npm:4.2.2"]
+          ],
+          "packagePeers": [
+            "@types/react-scripts",
+            "react-scripts"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@csstools/convert-colors", [
         ["npm:1.4.0", {
           "packageLocation": "./.yarn/cache/@csstools-convert-colors-npm-1.4.0-43f8302fcb-26069eeb84.zip/node_modules/@csstools/convert-colors/",
@@ -5709,6 +5796,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@react-leaflet/core", [
+        ["npm:1.1.1", {
+          "packageLocation": "./.yarn/cache/@react-leaflet-core-npm-1.1.1-859cffbcb8-2fc4a80e55.zip/node_modules/@react-leaflet/core/",
+          "packageDependencies": [
+            ["@react-leaflet/core", "npm:1.1.1"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.1.1", {
+          "packageLocation": "./.yarn/__virtual__/@react-leaflet-core-virtual-7aaad773e2/0/cache/@react-leaflet-core-npm-1.1.1-859cffbcb8-2fc4a80e55.zip/node_modules/@react-leaflet/core/",
+          "packageDependencies": [
+            ["@react-leaflet/core", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.1.1"],
+            ["@types/leaflet", "npm:1.7.5"],
+            ["@types/react", "npm:17.0.26"],
+            ["@types/react-dom", "npm:17.0.9"],
+            ["leaflet", "npm:1.7.1"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/leaflet",
+            "@types/react-dom",
+            "@types/react",
+            "leaflet",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@rollup/plugin-node-resolve", [
         ["npm:7.1.3", {
           "packageLocation": "./.yarn/cache/@rollup-plugin-node-resolve-npm-7.1.3-42815f6ad9-e787c35f12.zip/node_modules/@rollup/plugin-node-resolve/",
@@ -6208,6 +6325,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/geojson", [
+        ["npm:7946.0.8", {
+          "packageLocation": "./.yarn/cache/@types-geojson-npm-7946.0.8-df9187edab-6049a39b02.zip/node_modules/@types/geojson/",
+          "packageDependencies": [
+            ["@types/geojson", "npm:7946.0.8"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/glob", [
         ["npm:7.1.4", {
           "packageLocation": "./.yarn/cache/@types-glob-npm-7.1.4-d45247eaa2-6911a95644.zip/node_modules/@types/glob/",
@@ -6341,6 +6467,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/keyv", "npm:3.1.3"],
             ["@types/node", "npm:16.10.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/leaflet", [
+        ["npm:1.7.5", {
+          "packageLocation": "./.yarn/cache/@types-leaflet-npm-1.7.5-a9a09f775c-922f3d1176.zip/node_modules/@types/leaflet/",
+          "packageDependencies": [
+            ["@types/leaflet", "npm:1.7.5"],
+            ["@types/geojson", "npm:7946.0.8"]
           ],
           "linkType": "HARD",
         }]
@@ -7237,17 +7373,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["admin-console", "workspace:."],
             ["@apollo/client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.4.15"],
+            ["@babel/plugin-proposal-nullish-coalescing-operator", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5"],
+            ["@craco/craco", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0"],
             ["@fontsource/fira-sans", "npm:4.5.0"],
             ["@graphql-codegen/cli", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.0"],
             ["@graphql-codegen/typed-document-node", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.1.4"],
             ["@graphql-codegen/typescript", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.2"],
             ["@graphql-codegen/typescript-operations", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.1.5"],
             ["@graphql-typed-document-node/core", "virtual:c03242b0eadaac8e6b880ea986f0c55993bc90a6a841daf6ec290868f4951348f804db81b61039ff2ea8f9777c5dc48652dea93022516de5ca618cbd859cb848#npm:3.1.0"],
+            ["@react-leaflet/core", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.1.1"],
             ["@testing-library/jest-dom", "npm:5.14.1"],
             ["@testing-library/react", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:12.1.1"],
             ["@testing-library/user-event", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:13.2.1"],
             ["@types/apollo-upload-client", "npm:14.1.0"],
             ["@types/jest", "npm:27.0.2"],
+            ["@types/leaflet", "npm:1.7.5"],
             ["@types/lodash", "npm:4.14.175"],
             ["@types/node", "npm:16.10.2"],
             ["@types/prettier", "npm:2.4.1"],
@@ -7256,19 +7396,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-is", "npm:17.0.2"],
             ["@types/styled-components", "npm:5.1.14"],
             ["apollo-upload-client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:16.0.0"],
+            ["craco-babel-loader", "npm:0.1.4"],
             ["csstype", "npm:3.0.9"],
             ["date-fns", "npm:2.24.0"],
+            ["emittery", "npm:0.10.0"],
             ["eslint-config-react-app", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.0.0"],
             ["formik", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:2.2.9"],
             ["graphql", "npm:15.6.0"],
             ["history", "npm:5.0.1"],
             ["ky", "npm:0.28.6"],
+            ["leaflet", "npm:1.7.1"],
+            ["localforage", "npm:1.10.0"],
             ["lodash", "npm:4.17.21"],
             ["nanoid", "npm:3.1.30"],
             ["prettier", "npm:2.4.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:17.0.2"],
             ["react-is", "npm:17.0.2"],
+            ["react-leaflet", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.2.2"],
             ["react-query", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.24.5"],
             ["react-router-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.0.0-beta.7"],
             ["react-scripts", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:4.0.3"],
@@ -9885,6 +10030,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["craco-babel-loader", [
+        ["npm:0.1.4", {
+          "packageLocation": "./.yarn/cache/craco-babel-loader-npm-0.1.4-ff8e052e79-1769cc4bab.zip/node_modules/craco-babel-loader/",
+          "packageDependencies": [
+            ["craco-babel-loader", "npm:0.1.4"],
+            ["@craco/craco", "virtual:ff8e052e7974982aae5af44df477e4fd69b3cf67a847cdc8f4675f965fb9fe2a3997a470dbc46ef533f3f0c79b5b366e07b89bcdc94a7ccf449b6801d8e71a52#npm:5.9.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["create-ecdh", [
         ["npm:4.0.4", {
           "packageLocation": "./.yarn/cache/create-ecdh-npm-4.0.4-1048ce2035-0dd7fca971.zip/node_modules/create-ecdh/",
@@ -11113,6 +11268,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["emittery", [
+        ["npm:0.10.0", {
+          "packageLocation": "./.yarn/cache/emittery-npm-0.10.0-35900f559d-2616a802df.zip/node_modules/emittery/",
+          "packageDependencies": [
+            ["emittery", "npm:0.10.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:0.7.2", {
           "packageLocation": "./.yarn/cache/emittery-npm-0.7.2-4a6f20265e-908cd933d4.zip/node_modules/emittery/",
           "packageDependencies": [
@@ -13760,6 +13922,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["immediate", [
+        ["npm:3.0.6", {
+          "packageLocation": "./.yarn/cache/immediate-npm-3.0.6-c27588a2d3-f9b3486477.zip/node_modules/immediate/",
+          "packageDependencies": [
+            ["immediate", "npm:3.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["immer", [
         ["npm:8.0.1", {
           "packageLocation": "./.yarn/cache/immer-npm-8.0.1-e4136eda12-63d875c048.zip/node_modules/immer/",
@@ -15775,6 +15946,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["leaflet", [
+        ["npm:1.7.1", {
+          "packageLocation": "./.yarn/cache/leaflet-npm-1.7.1-dc40ced5a1-f69149ab48.zip/node_modules/leaflet/",
+          "packageDependencies": [
+            ["leaflet", "npm:1.7.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["leven", [
         ["npm:3.1.0", {
           "packageLocation": "./.yarn/cache/leven-npm-3.1.0-b7697736a3-638401d534.zip/node_modules/leven/",
@@ -15800,6 +15980,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["levn", "npm:0.4.1"],
             ["prelude-ls", "npm:1.2.1"],
             ["type-check", "npm:0.4.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["lie", [
+        ["npm:3.1.1", {
+          "packageLocation": "./.yarn/cache/lie-npm-3.1.1-91350720d9-6da9f2121d.zip/node_modules/lie/",
+          "packageDependencies": [
+            ["lie", "npm:3.1.1"],
+            ["immediate", "npm:3.0.6"]
           ],
           "linkType": "HARD",
         }]
@@ -15933,6 +16123,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["big.js", "npm:5.2.2"],
             ["emojis-list", "npm:3.0.0"],
             ["json5", "npm:2.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["localforage", [
+        ["npm:1.10.0", {
+          "packageLocation": "./.yarn/cache/localforage-npm-1.10.0-cf9ea9a436-f2978b434d.zip/node_modules/localforage/",
+          "packageDependencies": [
+            ["localforage", "npm:1.10.0"],
+            ["lie", "npm:3.1.1"]
           ],
           "linkType": "HARD",
         }]
@@ -19626,6 +19826,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/react-is-npm-17.0.2-091bbb8db6-9d6d111d89.zip/node_modules/react-is/",
           "packageDependencies": [
             ["react-is", "npm:17.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["react-leaflet", [
+        ["npm:3.2.2", {
+          "packageLocation": "./.yarn/cache/react-leaflet-npm-3.2.2-02604d439e-d5e5f34dea.zip/node_modules/react-leaflet/",
+          "packageDependencies": [
+            ["react-leaflet", "npm:3.2.2"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.2.2", {
+          "packageLocation": "./.yarn/__virtual__/react-leaflet-virtual-5b9404c770/0/cache/react-leaflet-npm-3.2.2-02604d439e-d5e5f34dea.zip/node_modules/react-leaflet/",
+          "packageDependencies": [
+            ["react-leaflet", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.2.2"],
+            ["@react-leaflet/core", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.1.1"],
+            ["@types/leaflet", "npm:1.7.5"],
+            ["@types/react", "npm:17.0.26"],
+            ["@types/react-dom", "npm:17.0.9"],
+            ["leaflet", "npm:1.7.1"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/leaflet",
+            "@types/react-dom",
+            "@types/react",
+            "leaflet",
+            "react-dom",
+            "react"
           ],
           "linkType": "HARD",
         }]
@@ -23389,6 +23620,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/webpack",
             "webpack"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["webpack-merge", [
+        ["npm:4.2.2", {
+          "packageLocation": "./.yarn/cache/webpack-merge-npm-4.2.2-f98139a8eb-ce58bc8ab5.zip/node_modules/webpack-merge/",
+          "packageDependencies": [
+            ["webpack-merge", "npm:4.2.2"],
+            ["lodash", "npm:4.17.21"]
           ],
           "linkType": "HARD",
         }]

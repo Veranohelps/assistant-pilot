@@ -43,7 +43,7 @@ export class UserLevelService {
       )
       .onConflict(['skillId', 'userId'])
       .merge()
-      .returning('*');
+      .cReturning();
 
     // push new results to history
     await this.assessmentHistoryService.create(tx, userId, assessmentId, levels);

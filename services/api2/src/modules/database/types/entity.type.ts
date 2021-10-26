@@ -20,6 +20,7 @@ export interface IEntityColumn<T> {
     update?: defaultFunction<T>;
     select?: defaultFunction<T>;
   };
+  returning?: any;
   hooks?: {
     beforeSelect?: (builder: Knex.QueryBuilder, knex: Knex) => void;
   };

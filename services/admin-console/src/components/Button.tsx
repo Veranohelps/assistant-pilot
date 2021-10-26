@@ -22,7 +22,7 @@ export const buttonMixin = (props: IButtonProps) => {
     background: ${(p) => p.theme.button[props.buttonStyle ?? 'flat'].backgroundColor};
     border: 1px solid ${(p) => p.theme.button[props.buttonStyle ?? 'flat'].borderColor};
     padding: 8px 17px;
-    ${typographyMixin(props.typography ? props.typography : { textStyle: 'sm14' })}
+    ${typographyMixin(props.typography ? props.typography : { textStyle: 'sm14', display: 'inline-flex' })}
     color: ${(p) =>
       props.textColor
         ? p.theme.colors.text[props.textColor]

@@ -70,8 +70,14 @@ export class RouteService {
         boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
       })
       .where('createdAt')
-      .returning('*');
-    const waypoints = await this.waypointService.fromGeoJson(tx, originId, geojson);
+      .cReturning();
+
+    const { waypoints } = await this.waypointService.fromGeoJson(
+      tx,
+      originId,
+      userId ?? null,
+      geojson,
+    );
 
     return { route, waypoints };
   }
@@ -96,7 +102,7 @@ export class RouteService {
         }),
       })
       .where({ id, originId, userId })
-      .returning('*');
+      .cReturning();
 
     if (userId) builder.where({ userId });
 
@@ -107,7 +113,7 @@ export class RouteService {
     }
 
     if (geojson) {
-      await this.waypointService.fromGeoJson(tx, route.originId, geojson);
+      await this.waypointService.fromGeoJson(tx, route.originId, route.userId, geojson);
     }
 
     return route;
@@ -121,7 +127,7 @@ export class RouteService {
   ): Promise<IRoute> {
     await this.expeditionRouteService.deleteRouteFromExpeditions(tx, id);
 
-    const [route] = await this.db.write(tx).where({ id, originId, userId }).del().returning('*');
+    const [route] = await this.db.write(tx).where({ id, originId, userId }).del().cReturning();
 
     if (!route) {
       throw new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found');

@@ -52,6 +52,9 @@ export const appUrls = {
     expedition: {
       id: (id: string) => `${appUrl}/personal/expedition/${id}`,
     },
+    waypoint: {
+      id: (id: string) => `${appUrl}/personal/waypoint/${id}`,
+    },
   },
   admin: {
     route: {
@@ -59,6 +62,9 @@ export const appUrls = {
     },
     expedition: {
       id: (id: string) => `${appUrl}/admin/expedition/${id}`,
+    },
+    waypoint: {
+      id: (id: string) => `${appUrl}/admin/waypoint/${id}`,
     },
   },
 };

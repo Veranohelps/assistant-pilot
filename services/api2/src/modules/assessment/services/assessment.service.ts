@@ -18,7 +18,7 @@ export class AssessmentService {
     createdBy: string,
     payload: ICreateAssessmentDTO,
   ): Promise<ICreateAssessmentResult> {
-    const [assessment] = await this.db.write(tx).insert({ userId: createdBy }).returning('*');
+    const [assessment] = await this.db.write(tx).insert({ userId: createdBy }).cReturning();
 
     const userLevels = await this.userLevelService.create(
       tx,

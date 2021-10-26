@@ -55,4 +55,10 @@ export class AppQuery<T = Record<string, unknown>> {
 
     return val === value;
   }
+
+  static withOptions<T = Record<string, unknown>>(options: T) {
+    const query = new AppQuery(options);
+
+    return query;
+  }
 }

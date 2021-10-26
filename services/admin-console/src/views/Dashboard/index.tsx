@@ -28,7 +28,7 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className={cls.set('item')}>
-          <Link to={appRoutes.dashboard}>
+          <Link to={appRoutes.waypoint.dashboard}>
             <Typography textStyle="sm18" textAlign="center">
               Waypoints
             </Typography>

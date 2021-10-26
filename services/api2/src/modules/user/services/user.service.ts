@@ -24,7 +24,7 @@ export class UserService {
       .insert({ ...payload })
       .onConflict('auth0Id')
       .ignore()
-      .returning('*');
+      .cReturning();
 
     // if a user with with the provided Auth0Id already exists
     // we return the existing user
@@ -47,7 +47,7 @@ export class UserService {
         otherName: payload.otherName,
         isRegistrationFinished: true,
       })
-      .returning('*');
+      .cReturning();
 
     return user;
   }

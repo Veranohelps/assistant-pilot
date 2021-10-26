@@ -11,21 +11,16 @@ import {
 import { createUploadLink } from 'apollo-upload-client';
 import ky from 'ky';
 import { apiBaseUrl } from '../config/environment';
+import localStorage from '../utils/localStorage';
 
-let token = '';
+let tokenStore = localStorage({ name: 'DersuTokenStore' });
 
 export const http = ky.extend({
   prefixUrl: apiBaseUrl,
   hooks: {
     beforeRequest: [
-      (req) => {
-        token = !token ? window.prompt('Please enter your admin token', '') ?? '' : token;
-
-        if (!token) {
-          window.alert('Please provide your admin token to complete the request');
-        }
-
-        req.headers.set('x-dersu-api-admin-token', token);
+      async (req) => {
+        req.headers.set('x-dersu-api-admin-token', (await tokenStore.getItem('token')) ?? '');
       },
     ],
   },

@@ -17,6 +17,7 @@ COPY .pnp.cjs .pnp.cjs
 
 COPY .prettierrc .prettierrc
 COPY tsconfig.json tsconfig.json
+COPY craco.config.js craco.config.js
 COPY public public
 COPY src src
 

@@ -40,7 +40,7 @@ export class AssessmentHistoryService {
           isCurrent: true,
         })),
       )
-      .returning('*');
+      .cReturning();
     // get existing assessment result
 
     return history;

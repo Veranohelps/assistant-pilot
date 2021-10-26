@@ -33,6 +33,8 @@ declare module 'knex' {
       setContextValue(key: string, value: any): QueryBuilder<TRecord, TResult>;
 
       sTest<T extends keyof ResolveTableType<TRecord>>(col: T, override: IEntityColumn<TRecord>);
+
+      cReturning(): QueryBuilder<TRecord, DeferredKeySelection<TRecord, never>[]>;
     }
   }
 }

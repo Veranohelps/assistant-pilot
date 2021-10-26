@@ -45,7 +45,7 @@ export class ExpeditionService {
           `ST_GeogFromText('POINTZ(${longitude} ${latitude} ${altitude ?? 0})')`,
         ),
       })
-      .returning('*');
+      .cReturning();
     await this.expeditionRouteService.addRoutes(tx, id, {
       routes: payload.routes,
     });

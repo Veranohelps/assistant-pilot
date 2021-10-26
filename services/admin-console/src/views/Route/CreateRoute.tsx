@@ -154,17 +154,19 @@ const CreateRoute = (props: IProps) => {
     <Container>
       <div className={cls.set('header')}>
         <Typography textStyle="md24">{props.isEditing ? 'Edit Route' : 'New Route'}</Typography>{' '}
-        <Button
-          className={cls.set('deleteButton')}
-          onClick={() => {
-            if (window.confirm('Are you sure you want to permanently delete this route?')) {
-              deleteRoute.mutateAsync(params.routeId as string);
-            }
-          }}
-          disabled={deleteRoute.isLoading}
-        >
-          Delete Route
-        </Button>
+        {props.isEditing && (
+          <Button
+            className={cls.set('deleteButton')}
+            onClick={() => {
+              if (window.confirm('Are you sure you want to permanently delete this route?')) {
+                deleteRoute.mutateAsync(params.routeId as string);
+              }
+            }}
+            disabled={deleteRoute.isLoading}
+          >
+            Delete Route
+          </Button>
+        )}
       </div>
       <Formik
         initialValues={formData}
@@ -203,7 +205,6 @@ const CreateRoute = (props: IProps) => {
         }}
       >
         {({ isSubmitting, values }) => {
-          console.log(values);
           return (
             <Form>
               <InputContainer>

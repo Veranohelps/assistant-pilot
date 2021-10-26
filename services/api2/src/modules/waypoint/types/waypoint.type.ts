@@ -1,12 +1,13 @@
 import { Knex } from 'knex';
-import { IPointGeometry } from '../../common/types/geojson.type';
+import { IPointGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
+import { ERouteOrigins } from '../../route/types/route-origin.type';
 
 export interface IWaypoint {
   id: string;
   userId: string | null;
   originId: string;
-  type: string;
+  type: string[];
   name: string;
   description: string | null;
   radiusInMeters: number;
@@ -18,8 +19,9 @@ export interface IWaypoint {
 }
 
 export interface ICreateWaypoint {
-  type: string;
+  type: string[];
   originId: string;
+  userId?: string | null;
   name: string;
   description?: string;
   radiusInMeters: number;
@@ -28,15 +30,29 @@ export interface ICreateWaypoint {
 }
 
 export interface ICreateWaypointDTO {
-  type: string;
+  type: string[];
   name: string;
-  description?: string;
+  description: string;
   radiusInMeters: number;
   longitude: number;
   latitude: number;
-  altitude?: number | null;
+  altitude: number;
 }
 
 export interface IGetRouteWaypointOptions {
   searchWaypointsBy: 'track' | 'boundingBox';
+}
+
+export interface IFindWaypointByGeometryOptions {
+  originId?: ERouteOrigins;
+  userId?: string;
+}
+
+export interface IFindWaypointByBoundingBoxUrlParameters {
+  boundingBox: IPolygonGeometry;
+}
+
+export interface IWaypointFindOneOptions {
+  userId?: string;
+  originId?: ERouteOrigins;
 }

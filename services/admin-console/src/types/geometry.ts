@@ -11,6 +11,12 @@ interface IProperties {
   coordinateProperties: ICoordinateProperties;
 }
 
+type T2dPoint = [number, number];
+export interface IPolygonGeometry {
+  type: 'Polygon';
+  coordinates: [T2dPoint, T2dPoint, T2dPoint, T2dPoint, T2dPoint][];
+}
+
 export interface IPointGeometry {
   type: 'Point';
   coordinates: [number, number, number | null];
@@ -24,7 +30,7 @@ export interface ILineStringGeometry {
 interface Feature {
   type: string;
   properties: IProperties;
-  geometry: IPointGeometry | ILineStringGeometry;
+  geometry: IPointGeometry | ILineStringGeometry | IPolygonGeometry;
 }
 
 export interface IGeoJSON {

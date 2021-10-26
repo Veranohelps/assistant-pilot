@@ -39,7 +39,7 @@ export class ExpeditionRouteService {
           durationInHours,
         })),
       )
-      .returning('*');
+      .cReturning();
 
     return expeditionRoutes;
   }
@@ -89,7 +89,7 @@ export class ExpeditionRouteService {
     tx: TransactionManager,
     routeId: string,
   ): Promise<IExpeditionRoute[]> {
-    const deleted = await this.db.write(tx).where({ routeId }).del().returning('*');
+    const deleted = await this.db.write(tx).where({ routeId }).del().cReturning();
 
     return deleted;
   }

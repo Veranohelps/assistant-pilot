@@ -65,4 +65,7 @@ export enum DatabaseConstraints {
 
   // ROUTE-ORIGIN
   ROUTE_ORIGIN_PKEY = 'ROUTE_ORIGIN_PKEY',
+
+  // WAYPOINT-TYPE
+  WAYPOINT_TYPE_PKEY = 'WAYPOINT_TYPE_PKEY',
 }
