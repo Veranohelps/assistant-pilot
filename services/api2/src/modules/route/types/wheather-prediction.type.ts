@@ -16,6 +16,7 @@ export interface IWeatherPrediction {
 }
 export interface IRange {
   range: string;
+  meteogram: string | null;
   forecastHourly: IWeatherForecast[];
 }
 export interface IWeatherForecast {

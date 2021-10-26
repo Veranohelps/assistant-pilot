@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import crypto from 'crypto';
 import got from 'got';
 import {
   IRange,
@@ -11,39 +12,72 @@ import {
 export class MeteoblueService {
   constructor(private configService: ConfigService) {}
 
+  METEOBLUE_URL = 'https://my.meteoblue.com';
+  METEOBLUE_API_KEY = this.configService.get('METEOBLUE_API_KEY');
+  METEOBLUE_API_SECRET = this.configService.get('METEOBLUE_API_SECRET');
+  THREE_MONTHS_MILLISECONDS = 3 * 30 * 24 * 60 * 60 * 1000;
+
+  getSignature(message: string): string {
+    const hmac = crypto.createHmac('sha256', this.METEOBLUE_API_SECRET);
+    const data = hmac.update(message);
+    return data.digest('hex');
+  }
+
+  getQueryParams(
+    longitude: number,
+    latitude: number,
+    altitude: number,
+    json = true,
+    tz = true,
+  ): string {
+    let params =
+      `apikey=${this.METEOBLUE_API_KEY}&` +
+      `lat=${latitude}&` +
+      `lon=${longitude}&` +
+      `asl=${altitude}&` +
+      `&expire=${Date.now() + this.THREE_MONTHS_MILLISECONDS}`;
+
+    if (json) {
+      params = params + `&format=json`;
+    }
+
+    if (tz) {
+      params = params + `&tz=utc&timeformat=iso8601`;
+    }
+    return params;
+  }
+
   async callTrendPro(longitude: number, latitude: number, altitude: number): Promise<string> {
-    const response = await got('https://my.meteoblue.com/packages/trendpro-1h_basic-1h', {
-      searchParams: {
-        apikey: this.configService.get('METEOBLUE_API_KEY'),
-        lat: latitude,
-        lon: longitude,
-        asl: altitude,
-        format: 'json',
-        tz: 'utc',
-        timeformat: 'iso8601',
-      },
-    });
-    return response.body;
+    try {
+      const queryPath =
+        `/packages/trendpro-1h_basic-1h?` + this.getQueryParams(longitude, latitude, altitude);
+      const signature = this.getSignature(queryPath);
+      const fullUrl = `${this.METEOBLUE_URL}${queryPath}&sig=${signature}`;
+      const response = await got(fullUrl);
+      return response.body;
+    } catch (error) {
+      throw error;
+    }
   }
   async callSunMoon(longitude: number, latitude: number, altitude: number): Promise<string> {
-    const response = await got('https://my.meteoblue.com/packages/sunmoon', {
-      searchParams: {
-        apikey: this.configService.get('METEOBLUE_API_KEY'),
-        lon: longitude,
-        lat: latitude,
-        asl: altitude,
-        format: 'json',
-        tz: 'utc',
-        timeformat: 'iso8601',
-      },
-    });
-    return response.body;
+    try {
+      const queryPath = `/packages/sunmoon?` + this.getQueryParams(longitude, latitude, altitude);
+      const signature = this.getSignature(queryPath);
+      const fullUrl = `${this.METEOBLUE_URL}${queryPath}&sig=${signature}`;
+      const response = await got(fullUrl);
+      return response.body;
+    } catch (error) {
+      throw error;
+    }
   }
   parseResponse(
     resTrendPro: string[],
     resSunMoon: string,
     startDateTime: Date,
     ranges: string[],
+    longitude: number,
+    latitude: number,
+    altitude: number,
   ): IWeatherPrediction[] {
     let offset = 0;
     if (startDateTime.getUTCDate() == new Date().getUTCDate()) {
@@ -55,7 +89,7 @@ export class MeteoblueService {
     const dayOffset = startDateTime.getUTCDate() - new Date().getUTCDate();
     const arrayRangesData: IRange[][] = [];
     let weatherForecast: IWeatherForecast[] = [];
-    ranges.forEach(function (v: string, i: number) {
+    ranges.forEach((v: string, i: number) => {
       const meteoblueResponseTrendPro = JSON.parse(resTrendPro[i]);
       const time = meteoblueResponseTrendPro.trend_1h.time;
       const temperature = meteoblueResponseTrendPro.trend_1h.temperature;
@@ -94,8 +128,14 @@ export class MeteoblueService {
         };
         weatherForecast.push(forecastHourly);
         if (k % 24 === 23) {
+          const meteogramQueryPath = '/visimage/meteogram_web?';
+          const queryParams = this.getQueryParams(latitude, longitude, altitude, false, false);
+          const signature = this.getSignature(meteogramQueryPath + queryParams);
+          const meteogramUrl =
+            this.METEOBLUE_URL + meteogramQueryPath + queryParams + '&sig=' + signature;
           const rangeData = {
             range: ranges[i],
+            meteogram: Math.trunc(k / 24) < 5 ? meteogramUrl : '',
             forecastHourly: weatherForecast,
           };
           const index = Math.trunc(k / 24) - dayOffset;

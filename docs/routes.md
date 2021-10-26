@@ -154,7 +154,9 @@ Note that ranges may be negative `[-999-0]` since there are routes with points b
 
 Pictocodes as per [Meteoblue documentation](https://content.meteoblue.com/en/specifications/standards/symbols-and-pictograms) (downloadeable set). Note that in order to use the day or night version of the pictocode you have to take `isDay` into account. 
 
-Meteograms to be implemented.
+Meteograms for the next 5 days from the current day. For predictions over five days, meteograms aren't provided for now. More information about Meteograms at [Meteoblue Forecast images](https://docs.meteoblue.com/en/weather-apis/images-api/forecast-images).
+
+All calls to Meteoblue are signed and timestamped with a 3 months expiry date as described in [Signing API calls](https://docs.meteoblue.com/en/weather-apis/introduction/overview#signing-api-calls).
 
 ```
 [
@@ -165,6 +167,7 @@ Meteograms to be implemented.
         "ranges": [
             {
                 "range": "1000-1999",
+                "meteogram": "https://my.meteoblue.com/visimage/meteogram_web?lat=42.93277&lon=-0.834385&asl=1057.192",
                 "forecastHourly": [
                     {
                         "dateTime": "2021-10-18T21:00:00.000Z",

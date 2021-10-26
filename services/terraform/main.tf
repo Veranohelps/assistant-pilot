@@ -264,7 +264,8 @@ AUTH0_TENANT="dersu-develop.eu"
 AUTH0_CLIENT_ID="lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
 AUTH0_CLIENT_SECRET="${data.google_secret_manager_secret_version.auth0-client-secret-version.secret_data}"
 API_ADMIN_TOKEN="${random_password.api-admin-token.result}"
-METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-apikey-version.secret_data}"
+METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-api-key-version.secret_data}"
+METEOBLUE_API_SECRET="${data.google_secret_manager_secret_version.meteoblue-api-secret-version.secret_data}"
 EOT
 }
 
@@ -282,8 +283,14 @@ data "google_secret_manager_secret_version" "auth0-client-secret-version" {
   version = 1
 }
 
-data "google_secret_manager_secret_version" "meteoblue-apikey-version" {
-  secret = "${terraform.workspace}-meteoblue-apikey"
+data "google_secret_manager_secret_version" "meteoblue-api-key-version" {
+  secret = "${terraform.workspace}-meteoblue-api-key"
   project = var.project_id
-  version = 4
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "meteoblue-api-secret-version" {
+  secret = "${terraform.workspace}-meteoblue-api-secret"
+  project = var.project_id
+  version = 1
 }

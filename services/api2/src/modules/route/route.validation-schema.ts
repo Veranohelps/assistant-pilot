@@ -6,7 +6,7 @@ export const getUserRoutesQueryValidationSchema = Joi.object({
 });
 
 export const getDateQueryValidationSchema = Joi.object({
-  dateTime: Joi.date().iso(),
+  dateTime: Joi.date().iso().greater('now'),
 });
 
 export const createRouteValidationSchema = Joi.object<ICreateRouteDTO>({

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ErrorCodes } from '../../common/errors/error-codes';
+import { BadRequestError } from '../../common/errors/http.error';
 import { MeteoblueService } from '../../common/services/meteoblue.service';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
 import { AppQuery } from '../../common/utilities/app-query';
@@ -25,16 +27,14 @@ export class WeatherService {
       altitude = 0;
     }
     //one call a trendpro for each meteo point of interest, so we'll have an array of api responses from trendpro package
-    const apiResponseTrendPro = await this.meteoblueService.callTrendPro(
-      longitude,
-      latitude,
-      altitude,
-    );
-    const apiResponseSunMoon = await this.meteoblueService.callSunMoon(
-      longitude,
-      latitude,
-      altitude,
-    );
+    let apiResponseTrendPro, apiResponseSunMoon;
+    try {
+      apiResponseTrendPro = await this.meteoblueService.callTrendPro(longitude, latitude, altitude);
+      apiResponseSunMoon = await this.meteoblueService.callSunMoon(longitude, latitude, altitude);
+    } catch (error: any) {
+      const errorMessage = JSON.parse(error.response.body).error_message;
+      throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
+    }
     let limSup, limInf;
     if (altitude <= 0) {
       limInf = -999;
@@ -50,6 +50,9 @@ export class WeatherService {
       apiResponseSunMoon,
       new Date(startDateTime),
       [range],
+      longitude,
+      latitude,
+      altitude,
     );
     return forecast;
   }
