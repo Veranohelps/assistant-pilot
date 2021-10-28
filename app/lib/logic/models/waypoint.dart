@@ -8,7 +8,7 @@ part 'waypoint.g.dart';
 class Waypoint extends Equatable {
   Waypoint({
     required this.id,
-    required this.type,
+    required this.typeIds,
     required this.name,
     required this.radiusInMeters,
     required this.updatedAt,
@@ -16,17 +16,15 @@ class Waypoint extends Equatable {
   });
 
   final String id;
-  final List<String> type;
+  final List<String> typeIds;
   final String name;
   final num radiusInMeters;
   final PointGeometry coordinate;
   final DateTime updatedAt;
 
-
-
   @override
   String toString() {
-    return "Waypoint (type: $type)";
+    return "Waypoint (typeIds: $typeIds)";
   }
 
   factory Waypoint.fromJson(Map<String, dynamic> json) =>
@@ -36,5 +34,5 @@ class Waypoint extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, name, type, radiusInMeters, updatedAt, coordinate];
+      [id, name, ...typeIds, radiusInMeters, updatedAt, coordinate];
 }

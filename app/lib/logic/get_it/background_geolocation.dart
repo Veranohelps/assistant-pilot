@@ -82,7 +82,7 @@ class BackgroundGeolocationService extends ChangeNotifier {
 
     if (action.toLowerCase() == "enter") {
       notification.showNotification(
-        title: '$action: ${waypoint.type}',
+        title: '$action: ${waypoint.typeIds}',
         text: waypoint.name,
       );
     }

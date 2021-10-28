@@ -9,7 +9,7 @@ part of 'waypoint.dart';
 Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
   return Waypoint(
     id: json['id'] as String,
-    type: (json['type'] as List<dynamic>).map((e) => e as String).toList(),
+    typeIds: (json['typeIds'] as List<dynamic>).map((e) => e as String).toList(),
     name: json['name'] as String,
     radiusInMeters: json['radiusInMeters'] as num,
     updatedAt: DateTime.parse(json['updatedAt'] as String),
@@ -20,7 +20,7 @@ Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$WaypointToJson(Waypoint instance) => <String, dynamic>{
       'id': instance.id,
-      'type': instance.type,
+      'typeIds': instance.typeIds,
       'name': instance.name,
       'radiusInMeters': instance.radiusInMeters,
       'coordinate': instance.coordinate,
