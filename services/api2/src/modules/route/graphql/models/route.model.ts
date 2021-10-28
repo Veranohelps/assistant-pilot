@@ -15,6 +15,9 @@ export class RouteModel implements IRoute {
   @Field()
   globalId!: string;
 
+  @Field(() => [String])
+  activityTypeIds!: string[];
+
   @Field()
   userId!: string;
 
@@ -35,4 +38,7 @@ export class RouteModel implements IRoute {
 export class CreateRouteInput implements ICreateRouteDTO {
   @Field()
   name!: string;
+
+  @Field(() => [String])
+  activityTypes!: string[];
 }

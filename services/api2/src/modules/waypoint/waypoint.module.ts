@@ -9,6 +9,6 @@ import { WaypointService } from './services/waypoint.service';
   imports: [DatabaseModule.forFeature(['Waypoint', 'WaypointType'])],
   controllers: [AdminWaypointController, AdminWaypointTypeController],
   providers: [WaypointService, WaypointTypeService],
-  exports: [WaypointService],
+  exports: [WaypointService, WaypointTypeService],
 })
 export class WaypointModule {}

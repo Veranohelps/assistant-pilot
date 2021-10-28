@@ -5,6 +5,7 @@ import { IWaypoint } from './waypoint';
 export interface IRoute {
   id: string;
   originId: string;
+  activityTypeIds: string[];
   userId: string | null;
   name: string;
   description: string | null;
@@ -36,4 +37,5 @@ export interface ICreateRoutePayload {
   name: string;
   description?: string | null;
   gpx: File;
+  activityTypes: string[];
 }

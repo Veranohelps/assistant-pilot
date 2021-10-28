@@ -10,6 +10,7 @@ import {
   IExpeditionRoute,
 } from '../../expedition/types/expedition-route.type';
 import { ICreateExpedition, IExpedition } from '../../expedition/types/expedition.type';
+import { IActivityType, ICreateActivityType } from '../../route/types/activity-type.type';
 import { IRouteOrigin } from '../../route/types/route-origin.type';
 import { ICreateRoute, IRoute } from '../../route/types/route.type';
 import { ICreateSkillCategory, ISkillCategory } from '../../skill/types/skill-category.type';
@@ -64,5 +65,10 @@ export interface IDatabaseTables {
     IWaypointType,
     IWaypointType,
     Partial<Omit<IWaypointType, 'id'>>
+  >;
+  ActivityType: Knex.CompositeTableType<
+    IActivityType,
+    ICreateActivityType,
+    Partial<Omit<IActivityType, 'id'>>
   >;
 }

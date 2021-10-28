@@ -13,6 +13,7 @@ abstract class DersuRoute extends Equatable {
   final String? userId;
   final String id;
   final DateTime updatedAt;
+  final List<String> activityTypeIds;
 
   DersuRoute({
     required this.id,
@@ -20,6 +21,7 @@ abstract class DersuRoute extends Equatable {
     required this.originId,
     required this.userId,
     required this.updatedAt,
+    required this.activityTypeIds,
   });
 
   @override
@@ -28,7 +30,7 @@ abstract class DersuRoute extends Equatable {
   }
 
   @override
-  List<Object?> get props => [name, originId, userId, id];
+  List<Object?> get props => [name, originId, userId, id, ...activityTypeIds];
 }
 
 @JsonSerializable()
@@ -47,6 +49,7 @@ class DersuRouteFull extends DersuRoute {
     required String name,
     required String originId,
     required DateTime updatedAt,
+    required List<String> activityTypeIds,
     required this.coordinate,
     required this.boundaries,
     this.waypoints = const [],
@@ -57,12 +60,23 @@ class DersuRouteFull extends DersuRoute {
           originId: originId,
           userId: userId,
           updatedAt: updatedAt,
+          activityTypeIds: activityTypeIds,
         );
 
   List<PointCoordinates> get coordinates => coordinate.coordinates;
 
   @override
-  List<Object?> get props => [name, originId, userId, coordinate, id];
+  List<Object?> get props => [
+        id,
+        name,
+        originId,
+        userId,
+        updatedAt,
+        ...activityTypeIds,
+        coordinate,
+        boundaries,
+        ...waypoints,
+      ];
 
   factory DersuRouteFull.fromJson(Map<String, dynamic> json) =>
       _$DersuRouteFullFromJson(json);
@@ -79,6 +93,7 @@ class DersuRouteShort extends DersuRoute {
     required String name,
     required String originId,
     required DateTime updatedAt,
+    required List<String> activityTypeIds,
     required this.url,
     String? userId,
   }) : super(
@@ -87,10 +102,19 @@ class DersuRouteShort extends DersuRoute {
           originId: originId,
           userId: userId,
           updatedAt: updatedAt,
+          activityTypeIds: activityTypeIds,
         );
 
   @override
-  List<Object?> get props => [name, originId, userId, url, id];
+  List<Object?> get props => [
+        id,
+        name,
+        originId,
+        userId,
+        updatedAt,
+        ...activityTypeIds,
+        url,
+      ];
 
   factory DersuRouteShort.fromJson(Map<String, dynamic> json) =>
       _$DersuRouteShortFromJson(json);

@@ -4,7 +4,7 @@ import {
   userLevelEntity,
 } from '../assessment/assessment.entity';
 import { expeditionEntity, expeditionRouteEntity } from '../expedition/expedition.entity';
-import { routeEntity, routeOriginEntity } from '../route/route.entity';
+import { activityTypeEntity, routeEntity, routeOriginEntity } from '../route/route.entity';
 import { skillCategoryEntity, skillEntity, skillLevelEntity } from '../skill/skill.entity';
 import { userEntity } from '../user/user.entity';
 import { waypointEntity, waypointTypeEntity } from '../waypoint/waypoint.entity';
@@ -25,4 +25,5 @@ export const entityMap: Record<keyof IDatabaseTables, IEntity> = {
   AssessmentHistory: assessmentHistoryEntity,
   RouteOrigin: routeOriginEntity,
   WaypointType: waypointTypeEntity,
+  ActivityType: activityTypeEntity,
 };

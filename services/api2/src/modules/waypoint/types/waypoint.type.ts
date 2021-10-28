@@ -7,7 +7,7 @@ export interface IWaypoint {
   id: string;
   userId: string | null;
   originId: string;
-  type: string[];
+  typeIds: string[];
   name: string;
   description: string | null;
   radiusInMeters: number;
@@ -19,7 +19,7 @@ export interface IWaypoint {
 }
 
 export interface ICreateWaypoint {
-  type: string[];
+  typeIds: string[];
   originId: string;
   userId?: string | null;
   name: string;
@@ -30,7 +30,7 @@ export interface ICreateWaypoint {
 }
 
 export interface ICreateWaypointDTO {
-  type: string[];
+  types: string[];
   name: string;
   description: string;
   radiusInMeters: number;

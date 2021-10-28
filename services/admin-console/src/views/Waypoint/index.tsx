@@ -39,7 +39,6 @@ const WaypointLayers = (props: { onWaypointSelect: (waypoint: IWaypoint) => void
   const map = useMapEvents({
     zoomend: () => setBounds(boundsToPolygon(map.getBounds())),
     moveend: () => setBounds(boundsToPolygon(map.getBounds())),
-    click: (e) => console.log(e.latlng),
   });
   const [bounds, setBounds] = useState<IPolygonGeometry>(boundsToPolygon(map.getBounds()));
   const waypointsQuery = useQuery(['waypoint', bounds], () => waypointsByBoundingBox(bounds), {

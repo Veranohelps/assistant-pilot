@@ -1,3 +1,4 @@
+import L from 'leaflet';
 import React, { MutableRefObject, useRef, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -6,7 +7,6 @@ import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import { createWaypointBulkService } from '../../services/waypointService';
 import { className } from '../../utils/style';
-import L from 'leaflet';
 
 const cls = className();
 

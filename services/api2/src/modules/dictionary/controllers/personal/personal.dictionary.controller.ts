@@ -20,6 +20,14 @@ export class PersonalDictionaryController {
         url: `${this.configService.get('APP_URL')}/personal/dictionary/route-origin`,
       },
       { id: 'skill', url: `${this.configService.get('APP_URL')}/personal/dictionary/skill` },
+      {
+        id: 'waypoint-type',
+        url: `${this.configService.get('APP_URL')}/personal/dictionary/waypoint-type`,
+      },
+      {
+        id: 'activity-type',
+        url: `${this.configService.get('APP_URL')}/personal/dictionary/activity-type`,
+      },
     ];
 
     return successResponse('Dictionaries', { dictionaries });
@@ -39,5 +47,21 @@ export class PersonalDictionaryController {
     const routeOrigins = await this.dictionaryService.routeOrigins();
 
     return successResponse('Route Origin Dictionary', { routeOrigins });
+  }
+
+  @Get('waypoint-type')
+  @HttpCode(HttpStatus.OK)
+  getWaypointTypeDictionary() {
+    const waypointTypes = this.dictionaryService.waypointTypes();
+
+    return successResponse('Waypoint Type Dictionary', { waypointTypes });
+  }
+
+  @Get('activity-type')
+  @HttpCode(HttpStatus.OK)
+  getActivityTypeDictionary() {
+    const activityTypes = this.dictionaryService.activityTypes();
+
+    return successResponse('Activity Type Dictionary', { activityTypes });
   }
 }

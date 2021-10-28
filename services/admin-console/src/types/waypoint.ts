@@ -3,7 +3,7 @@ import { IBaseResponse } from './request';
 
 export interface IWaypoint {
   id: string;
-  type: string[];
+  typeIds: string[];
   name: string;
   description: string | null;
   radiusInMeters: number;
@@ -24,7 +24,7 @@ export interface IGetWaypointResponse extends IBaseResponse {
 }
 
 export interface ICreateWaypointPayload {
-  type: string[];
+  types: string[];
   name: string;
   description?: string;
   radiusInMeters: number;

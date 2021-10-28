@@ -14,7 +14,7 @@ export const pointGeometryValidationSchema = Joi.object({
 });
 
 export const createWaypointValidationSchema = Joi.object({
-  type: Joi.array().min(1).items(Joi.string()).required(),
+  types: Joi.array().min(1).items(Joi.string()).required(),
   name: Joi.string().required(),
   description: Joi.string().default(null),
   radiusInMeters: Joi.number().default(100),
@@ -24,7 +24,7 @@ export const createWaypointValidationSchema = Joi.object({
 });
 
 export const updateWaypointValidationSchema = Joi.object({
-  type: Joi.array().min(1).items(Joi.string()),
+  types: Joi.array().min(1).items(Joi.string()),
   name: Joi.string(),
   description: Joi.string(),
   radiusInMeters: Joi.number(),

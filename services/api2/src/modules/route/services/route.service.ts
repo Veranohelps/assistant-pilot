@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
+import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
 import { generateGroupRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
@@ -18,6 +19,7 @@ import {
   IRoute,
   IRouteSlim,
 } from '../types/route.type';
+import { ActivityTypeService } from './activity-type.service';
 
 @Injectable()
 export class RouteService {
@@ -27,6 +29,7 @@ export class RouteService {
     private waypointService: WaypointService,
     @Inject(forwardRef(() => ExpeditionRouteService))
     private expeditionRouteService: ExpeditionRouteService,
+    private activityTypeService: ActivityTypeService,
   ) {}
 
   geoJsonToLineString(geojson: IGeoJSON) {
@@ -51,6 +54,16 @@ export class RouteService {
       .join(',')})')`;
   }
 
+  validateActivityType(types: string[]): string[] {
+    const record = this.activityTypeService.findByIds(types);
+
+    if (!types.every((t) => !!record[t])) {
+      throw new NotFoundError(ErrorCodes.ACTIVITY_TYPE_NOT_FOUND, 'Activity type not found');
+    }
+
+    return types;
+  }
+
   async fromGeoJson(
     tx: TransactionManager,
     originId: ERouteOrigins,
@@ -64,6 +77,7 @@ export class RouteService {
       .insert({
         name: payload.name,
         description: payload.description,
+        activityTypeIds: this.validateActivityType(payload.activityTypes),
         userId,
         originId,
         coordinate: this.db.knex.raw(geomString),
@@ -96,6 +110,9 @@ export class RouteService {
       .update({
         name: payload.name,
         description: payload.description,
+        activityTypeIds: payload.activityTypes
+          ? this.validateActivityType(payload.activityTypes)
+          : undefined,
         ...(geomString && {
           coordinate: this.db.knex.raw(geomString),
           boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
@@ -214,9 +231,14 @@ export class RouteService {
     id: string,
     options?: IGetRouteWaypointOptions,
   ) {
-    const route = await this.findOne(tx, id);
-    const waypoints = await this.waypointService.getRouteWaypoints(tx, [id], options);
+    const route = await this.findOne(tx, id).then((r) =>
+      AddFields.target(r)
+        .add('waypoints', () => this.waypointService.getRouteWaypoints(tx, [r.id], options))
+        .add('activityTypes', () =>
+          Object.values(this.activityTypeService.findByIds(r.activityTypeIds)),
+        ),
+    );
 
-    return { ...route, waypoints };
+    return route;
   }
 }

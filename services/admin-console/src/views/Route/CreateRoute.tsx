@@ -8,6 +8,7 @@ import { Button } from '../../components/Button';
 import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import appRoutes from '../../config/appRoutes';
+import { getActivityTypesService } from '../../services/activityTypeService';
 import {
   createRouteService, deleteRouteService, editRouteService, getRouteByIdService
 } from '../../services/routeService';
@@ -40,6 +41,22 @@ const Container = styled.div`
       padding: 5px 8px;
       border-radius: 4px;
     }
+
+    ${cls.get('activityTypes')} {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+
+      label {
+        margin: 5px 10px 0;
+        display: flex;
+        align-items: center;
+
+        input {
+          margin-right: 5px;
+        }
+      }
+    }
   }
 
   ${cls.get('submitButton')} {
@@ -62,19 +79,17 @@ const InputContainer = styled.div`
     margin-top: 2px;
   }
 `;
-// const FormInput = styled(Field)`
-//   padding: 5px 8px;
-//   border-radius: 4px;
-// `;
 
 interface IForm {
   name: string;
   description: string;
+  activityTypes: string[];
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
+  activityTypes: [],
 };
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
@@ -92,9 +107,9 @@ const ErrorMsg = (props: { name: string }) => {
     </ErrorMessage>
   );
 };
-const FormLabel = (props: { children: string }) => {
+const FormLabel = (props: { children: React.ReactNode }) => {
   return (
-    <Typography className={cls.set('formLabel')} textStyle="sm14" textColor="primary600">
+    <Typography className={cls.set('formLabel')} as="label" textStyle="sm14" textColor="primary600">
       {props.children}
     </Typography>
   );
@@ -131,7 +146,7 @@ const CreateRoute = (props: IProps) => {
       navigate(appRoutes.route.dashboard);
     },
   });
-  const routesQuery = useQuery(
+  const routeQuery = useQuery(
     ['route', params.routeId],
     () => getRouteByIdService(params.routeId!),
     {
@@ -140,15 +155,20 @@ const CreateRoute = (props: IProps) => {
       staleTime: Infinity,
     }
   );
+  const activityTypesQuery = useQuery(['activity-type'], getActivityTypesService, {
+    select: (res) => res.data.activityTypes,
+    staleTime: Infinity,
+  });
 
   useEffect(() => {
-    if (props.isEditing && routesQuery.data) {
+    if (props.isEditing && routeQuery.data) {
       setFormData({
-        name: routesQuery.data.name,
-        description: routesQuery.data.description ?? '',
+        name: routeQuery.data.name,
+        description: routeQuery.data.description ?? '',
+        activityTypes: routeQuery.data.activityTypeIds,
       });
     }
-  }, [routesQuery.data, props.isEditing]);
+  }, [routeQuery.data, props.isEditing]);
 
   return (
     <Container>
@@ -188,6 +208,7 @@ const CreateRoute = (props: IProps) => {
               name: values.name,
               description: values.description || null,
               gpx: file ?? undefined,
+              activityTypes: values.activityTypes,
             });
           } else {
             if (!file) {
@@ -198,13 +219,14 @@ const CreateRoute = (props: IProps) => {
               name: values.name,
               description: values.description || null,
               gpx: file,
+              activityTypes: values.activityTypes,
             });
           }
 
           resetForm();
         }}
       >
-        {({ isSubmitting, values }) => {
+        {({ isSubmitting }) => {
           return (
             <Form>
               <InputContainer>
@@ -228,6 +250,20 @@ const CreateRoute = (props: IProps) => {
                     setFile(gpx);
                   }}
                 />
+              </InputContainer>
+              <InputContainer>
+                <FormLabel>Activity type</FormLabel>
+                <div className={cls.set('activityTypes')}>
+                  {activityTypesQuery.data?.map((type) => {
+                    return (
+                      <FormLabel>
+                        <Field type="checkbox" name="activityTypes" value={type.id} />
+                        {type.name}
+                      </FormLabel>
+                    );
+                  })}
+                </div>
+                <ErrorMsg name="type" />
               </InputContainer>
               <FlexBox box={{ mTop: 30 }}>
                 <Button type="submit" className="submitButton">

@@ -36,7 +36,9 @@ export const createWaypointBulkService = async (gpx: File) => {
 
   form.append('gpx', gpx);
 
-  const response = await waypointHttp.post('create-bulk', { body: form }).json<IBulkCreateWaypointResponse>();
+  const response = await waypointHttp
+    .post('create-bulk', { body: form })
+    .json<IBulkCreateWaypointResponse>();
 
   return response.data;
 };

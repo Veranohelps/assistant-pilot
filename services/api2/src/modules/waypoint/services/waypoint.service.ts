@@ -36,7 +36,7 @@ export class WaypointService {
         return {
           name: point.properties.name,
           description: point.properties.desc,
-          type: [],
+          typeIds: [],
           radiusInMeters: 100,
           originId,
           userId,
@@ -86,7 +86,7 @@ export class WaypointService {
       .insert({
         name: payload.name,
         description: payload.description,
-        type: this.validateWaypointType(payload.type),
+        typeIds: this.validateWaypointType(payload.types),
         radiusInMeters: payload.radiusInMeters,
         originId,
         userId,
@@ -113,7 +113,7 @@ export class WaypointService {
       .update({
         name: payload.name,
         description: payload.description,
-        type: payload.type ? this.validateWaypointType(payload.type) : undefined,
+        typeIds: payload.types ? this.validateWaypointType(payload.types) : undefined,
         radiusInMeters: payload.radiusInMeters,
         originId,
         coordinate: this.db.knex.raw(

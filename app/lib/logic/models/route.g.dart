@@ -12,6 +12,9 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     originId: json['originId'] as String,
     updatedAt: DateTime.parse(json['updatedAt'] as String),
+    activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     coordinate:
         LineStringGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
     boundaries: Serialization.fromJsonToLatLngBounds(
@@ -30,6 +33,7 @@ Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
       'userId': instance.userId,
       'id': instance.id,
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'activityTypeIds': instance.activityTypeIds,
       'coordinate': instance.coordinate,
       'waypoints': instance.waypoints,
       'boundaries': Serialization.fromLatLngBoundsToJson(instance.boundaries),
@@ -41,6 +45,9 @@ DersuRouteShort _$DersuRouteShortFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     originId: json['originId'] as String,
     updatedAt: DateTime.parse(json['updatedAt'] as String),
+    activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     url: json['url'] as String,
     userId: json['userId'] as String?,
   );

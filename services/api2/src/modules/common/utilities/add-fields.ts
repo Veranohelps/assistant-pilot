@@ -7,7 +7,7 @@ class AddFields<T> implements Pick<Promise<T>, 'then' | 'catch' | 'finally'> {
   promises: any[] = [];
   resolvers: {
     key: string;
-    getFn: (entities: any) => Promise<any>;
+    getFn: (entities: any) => Promise<any> | any;
     resolveFn?: (entity: TFlatten<T>, group: any) => any;
   }[] = [];
 
@@ -31,7 +31,7 @@ class AddFields<T> implements Pick<Promise<T>, 'then' | 'catch' | 'finally'> {
 
   add<K extends string, CResult, RResult = CResult>(
     key: K,
-    getFn: () => Promise<CResult>,
+    getFn: () => Promise<CResult> | CResult,
     resolveFn?: (entity: TFlatten<T>, group: CResult) => RResult,
   ) {
     this.promises.push(getFn());

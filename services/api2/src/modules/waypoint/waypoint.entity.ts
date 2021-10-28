@@ -9,7 +9,7 @@ export const waypointEntity: IEntity<IWaypoint> = {
     id: { type: 'string', defaults: { insert: () => generateId() } },
     userId: { type: 'string' },
     originId: { type: 'string' },
-    type: { type: 'array' },
+    typeIds: { type: 'array' },
     name: { type: 'string' },
     description: { type: 'string' },
     radiusInMeters: { type: 'number' },

@@ -1,5 +1,7 @@
 import { generateId } from '../common/utilities/generate-id';
+import { knexClient } from '../database/knex/init-knex';
 import { IEntity } from '../database/types/entity.type';
+import { IActivityType } from './types/activity-type.type';
 import { IRouteOrigin } from './types/route-origin.type';
 import { IRoute } from './types/route.type';
 
@@ -8,12 +10,14 @@ export const routeEntity: IEntity<IRoute> = {
     id: { type: 'string', defaults: { insert: () => generateId() } },
     globalId: { type: 'string', select: false, defaults: { insert: () => generateId() } },
     originId: { type: 'string' },
+    activityTypeIds: { type: 'array' },
     userId: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },
     coordinate: {
       type: 'string',
       select: false,
+      returning: knexClient.raw('ST_AsGeoJSON(??)::json as coordinate', ['Route.coordinate']),
       hooks: {
         beforeSelect: (builder, knex) => {
           builder.select(knex.raw('ST_AsGeoJSON(??)::json as coordinate', ['Route.coordinate']));
@@ -22,6 +26,7 @@ export const routeEntity: IEntity<IRoute> = {
     },
     boundingBox: {
       type: 'string',
+      returning: knexClient.raw('ST_AsGeoJSON(??)::json as coordinate', ['Route.boundingBox']),
       hooks: {
         beforeSelect: (builder, knex) => {
           builder.select(
@@ -38,6 +43,14 @@ export const routeEntity: IEntity<IRoute> = {
 };
 
 export const routeOriginEntity: IEntity<IRouteOrigin> = {
+  columns: {
+    id: { type: 'string', defaults: { insert: () => generateId() } },
+    name: { type: 'string' },
+    description: { type: 'string' },
+  },
+};
+
+export const activityTypeEntity: IEntity<IActivityType> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
     name: { type: 'string' },

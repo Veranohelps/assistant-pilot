@@ -16,6 +16,7 @@ type Route {
   id: String!
   originId: String!
   globalId: String!
+  activityTypeIds: [String!]!
   userId: String!
   name: String!
   description: String!

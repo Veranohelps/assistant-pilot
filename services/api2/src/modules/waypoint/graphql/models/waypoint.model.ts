@@ -18,7 +18,7 @@ export class WaypointModel implements IWaypoint {
   name!: string;
 
   @Field(() => [String])
-  type!: string[];
+  typeIds!: string[];
 
   @Field()
   description!: string;

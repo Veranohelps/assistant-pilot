@@ -7,9 +7,7 @@ import { Button } from '../../components/Button';
 import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import {
-  createWaypointService,
-  deleteWaypointService,
-  updateWaypointService
+  createWaypointService, deleteWaypointService, updateWaypointService
 } from '../../services/waypointService';
 import { getWaypointTypesService } from '../../services/waypointTypeService';
 import { ICreateWaypointPayload, IWaypoint } from '../../types/waypoint';
@@ -156,7 +154,7 @@ const WaypointForm = (props: IProps) => {
       invalidate();
     },
   });
-  const waypointTypesQuery = useQuery(['waypoint-types'], getWaypointTypesService, {
+  const waypointTypesQuery = useQuery(['waypoint-type'], getWaypointTypesService, {
     select: (res) => res.data.waypointTypes,
     staleTime: Infinity,
   });
@@ -182,7 +180,7 @@ const WaypointForm = (props: IProps) => {
         latitude: selectedWaypoint.coordinate!.coordinates[1],
         altitude: selectedWaypoint.coordinate!.coordinates[2],
         radiusInMeters: selectedWaypoint.radiusInMeters,
-        type: selectedWaypoint.type,
+        type: selectedWaypoint.typeIds,
       });
     }
   }, [selectedWaypoint]);
@@ -215,7 +213,7 @@ const WaypointForm = (props: IProps) => {
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           const data: ICreateWaypointPayload = {
-            type: values.type,
+            types: values.type,
             name: values.name,
             description: values.description || undefined,
             radiusInMeters: values.radiusInMeters!,
