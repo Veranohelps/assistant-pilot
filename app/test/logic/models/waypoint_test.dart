@@ -7,7 +7,7 @@ import 'package:app/logic/models/geo_json.dart';
 void main() {
   Map<String, dynamic> json = {
     "id": "KWvknoVS9x52jBkqqDDmYO",
-    "type": ["waypoint"],
+    "typeIds": ["waypoint"],
     "name": "Cruce, recto",
     "radiusInMeters": 100,
     "coordinate": {
@@ -22,7 +22,7 @@ void main() {
       var waypoint = Waypoint.fromJson(json);
       expect(waypoint.id, json['id']);
       expect(waypoint.name, json['name']);
-      expect(waypoint.type, json['type']);
+      expect(waypoint.typeIds, json['typeIds']);
       expect(waypoint.radiusInMeters, json['radiusInMeters']);
       expect(
         identical(
@@ -51,7 +51,7 @@ void main() {
       var waypoint = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        type: ['waypoint'],
+        typeIds: ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -69,7 +69,7 @@ void main() {
       var waypoint1 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        type: ['waypoint'],
+        typeIds: ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -83,7 +83,7 @@ void main() {
       var waypoint2 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        type: ['waypoint'],
+        typeIds: ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -97,7 +97,7 @@ void main() {
       var waypoint3 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "another",
-        type: ['waypoint'],
+        typeIds: ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
