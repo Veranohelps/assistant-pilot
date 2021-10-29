@@ -1,26 +1,13 @@
 import { IPointGeometry } from '../../common/types/geojson.type';
 
-export interface IGetRouteWeatherUrlParameters {
-  dateTime: string;
-}
+export interface IGetRouteWeatherUrlParameters {}
 
 export interface IPredictionCoordinates {
   coordinate: IPointGeometry;
 }
 
-export interface IWeatherPrediction {
-  dateTime: Date;
-  sunriseDateTime: Date | null;
-  sunsetDateTime: Date | null;
-  ranges: IRange[];
-}
-export interface IRange {
+export interface IRangeHourly {
   range: string;
-  meteogram: string | null;
-  forecastHourly: IWeatherForecast[];
-}
-export interface IWeatherForecast {
-  dateTime: Date;
   temperature: number;
   feltTemperature: number;
   precipitation: number;
@@ -33,6 +20,27 @@ export interface IWeatherForecast {
   sunshineTime: number;
   windSpeed: number;
   windGust: number;
-  isDay: number;
+  isDay: boolean;
   pictoCode: number;
+}
+export interface IForecastHourly {
+  dateTime: Date;
+  ranges: IRangeHourly[];
+}
+export interface ISunCalendar {
+  dateTime: string;
+  sunriseDateTime: string;
+  sunsetDateTime: string;
+  moonriseDateTime: string;
+  moonsetDatetime: string;
+  moonPhaseName: string;
+}
+export interface IMeteograms {
+  range: string;
+  meteogram: string;
+}
+export interface IWeatherPredictionDaily {
+  meteograms: IMeteograms[];
+  sunCalendar: ISunCalendar[];
+  forecastHourly: IForecastHourly[];
 }

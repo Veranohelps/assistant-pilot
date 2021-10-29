@@ -2,6 +2,7 @@ import 'package:app/app.dart';
 import 'package:app/config/localization.dart';
 import 'package:app/config/device_info_wrapper.dart';
 import 'package:app/ui/pages/error/error.dart';
+import 'package:app/utils/debug.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'config/global_error_handling.dart';
 import 'config/hive_config.dart';
 
 var apiDefaultLog = false;
+
+final hhMMFormat = DateFormat.jm();
 
 Future<void> main() async {
   globalErrorHandling(
@@ -63,10 +66,13 @@ class _MainState extends State<_Main> {
           home: App(),
           navigatorObservers: [getIt.get<Analitics>().navigatorObserver],
           builder: (BuildContext context, Widget? widget) {
-            ErrorWidget.builder =
-                (FlutterErrorDetails errorDetails) => ErrorScreen(
-                      error: Exception('...rendering error'),
-                    );
+            if (Application.isInReleaseMode) {
+              ErrorWidget.builder =
+                  (FlutterErrorDetails errorDetails) => ErrorScreen(
+                        error: Exception('...rendering error'),
+                      );
+            }
+
             return widget!;
           },
         ),

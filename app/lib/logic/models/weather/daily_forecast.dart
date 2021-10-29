@@ -1,27 +1,38 @@
-import 'package:app/logic/models/serialization.dart';
-import 'package:app/logic/models/weather/range_forecast.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'package:app/logic/models/time_with_timezone.dart';
 
 part 'daily_forecast.g.dart';
 
 @JsonSerializable(createToJson: false)
-class DayForecast {
-  List<RangeForecast> ranges;
+class SunCalendarItem {
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
+  TimeWithTimeZone dateTime;
 
-  DateTime dateTime;
-  @JsonKey(fromJson: Serialization.fromUtcStringToLocal)
-  DateTime sunriseDateTime;
-  @JsonKey(fromJson: Serialization.fromUtcStringToLocal)
-  DateTime sunsetDateTime;
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
+  TimeWithTimeZone sunriseDateTime;
 
-  DayForecast({
-    required this.ranges,
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
+  TimeWithTimeZone sunsetDateTime;
+
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
+  TimeWithTimeZone moonriseDateTime;
+
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
+  TimeWithTimeZone moonsetDatetime;
+
+  String moonPhaseName;
+
+  SunCalendarItem({
     required this.dateTime,
     required this.sunriseDateTime,
     required this.sunsetDateTime,
+    required this.moonriseDateTime,
+    required this.moonsetDatetime,
+    required this.moonPhaseName,
   });
 
-  static DayForecast fromJson(Map<String, dynamic> json) {
-    return _$DayForecastFromJson(json);
+  static SunCalendarItem fromJson(Map<String, dynamic> json) {
+    return _$SunCalendarItemFromJson(json);
   }
 }

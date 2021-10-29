@@ -140,60 +140,72 @@ This should return weather prediction for a routeId
 
 #### URL Parameters
 
-| field      | required | description                                                                       |
-| ---------- | -------- | --------------------------------------------------------------------------------- |
-| dateTime   | false    | start date in UTC format for the prediction to start from (ISO 8601), default: current UTC time     |
+None.
 
 #### Sample response
 
-Array of days each with an array of "weather points of interest", with forecast by the hour. 
+Array of meteograms (one per point of interest), `forecastDaily` data for sunrise/sunset and array `forecastHourly` data (one per point of interest)
 
-At least one point of interest / range is guaranteed. This is typically the starting point of the route.
+At least one point of interest / range is guaranteed, which is the starting point of the route.
 
 Note that ranges may be negative `[-999-0]` since there are routes with points below sea level. 
 
 Pictocodes as per [Meteoblue documentation](https://content.meteoblue.com/en/specifications/standards/symbols-and-pictograms) (downloadeable set). Note that in order to use the day or night version of the pictocode you have to take `isDay` into account. 
 
-Meteograms for the next 5 days from the current day. For predictions over five days, meteograms aren't provided for now. More information about Meteograms at [Meteoblue Forecast images](https://docs.meteoblue.com/en/weather-apis/images-api/forecast-images).
+Meteograms provide information for the following 5 days from the time of request. More information about Meteograms at [Meteoblue Forecast images](https://docs.meteoblue.com/en/weather-apis/images-api/forecast-images).
+
+Daily and hourly forecasts provide information for the following 8 days from the time of request.
 
 All calls to Meteoblue are signed and timestamped with a 3 months expiry date as described in [Signing API calls](https://docs.meteoblue.com/en/weather-apis/introduction/overview#signing-api-calls).
 
+All dates and times returned are **local route times**. Meteoblue calculates the timezone based on latitude / longitude information as described in their [Time Zones](https://docs.meteoblue.com/en/weather-apis/packages-api/introduction%23time-zone) documentation. Date time are returned in _date time with timezone offset_ format such as: `YYYY-MM-DDTHH:MM(+|-)HH:MM`.
+
 ```
-[
+{
+  "meteograms": [
     {
-        "dateTime": "2021-10-18T00:00:00.000Z",
-        "sunriseDateTime": "2021-10-18T06:28:00.000Z",
-        "sunsetDateTime": "2021-10-18T17:33:00.000Z",
-        "ranges": [
-            {
-                "range": "1000-1999",
-                "meteogram": "https://my.meteoblue.com/visimage/meteogram_web?lat=42.93277&lon=-0.834385&asl=1057.192",
-                "forecastHourly": [
-                    {
-                        "dateTime": "2021-10-18T21:00:00.000Z",
-                        "temperature": 11.18,
-                        "feltTemperature": 8.91,
-                        "precipitation": 0,
-                        "precipitationProbability": 0,
-                        "visibility": 11850,
-                        "lowClouds": 0,
-                        "midClouds": 0,
-                        "hiClouds": 100,
-                        "totalCloudCover": 30,
-                        "sunshineTime": 0,
-                        "windSpeed": 2.73,
-                        "windGust": 4.68,
-                        "isDay": 0,
-                        "pictoCode": 2
-                    },
-                    ...
-                ]
-            },
-            ...
-        ]
+      "range": "0-999",
+      "meteogram": "https://my.meteoblue.com/visimage/meteogram_web?lat=-4.832458&lon=43.257164&tz=Australia%2FAdelaide&expire=1643132177979&asl=233"
     },
     ...
-]
+  ],
+  "forecastDaily": [
+    {
+      "dateTime": "2021-10-27T00:00+11:00",
+      "sunriseDateTime": "2021-10-27T05:59+11:00",
+      "sunsetDateTime": "2021-10-27T19:20+11:00",
+    },
+    ...
+  ],
+  "forecastHourly": [
+    {
+      "dateTime": "2021-10-28T00:00+10:30",
+      "ranges": [
+        {
+          "range": "0-999",
+          "data": {
+              "temperature": 21.22,
+              "feltTemperature": 21.17,
+              "precipitation": 0,
+              "precipitationProbability": 0,
+              "visibility": 29820,
+              "lowClouds": 0,
+              "midClouds": 0,
+              "hiClouds": 57,
+              "totalCloudCover": 17,
+              "sunshineTime": 49,
+              "windSpeed": 1.58,
+              "windGust": 3.6,
+              "isDay": 1,
+              "pictoCode": 1
+          }
+        },
+        ...
+      ]
+    }
+  ]
+}        
+
 ```
 
 

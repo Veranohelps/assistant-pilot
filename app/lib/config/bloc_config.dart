@@ -27,7 +27,7 @@ class BlocAndProviderConfig extends StatelessWidget {
         BlocProvider(lazy: false, create: (_) => ProfileCubit(auth)),
         BlocProvider(lazy: false, create: (_) => dictionaries),
         BlocProvider(lazy: false, create: (_) => DashboardCubit(auth)),
-        BlocProvider(create: (_) => TimeFilterCubit()),
+        BlocProvider(lazy: false, create: (_) => TimeFilterCubit()),
         BlocProvider(create: (_) => ExpeditionCubit()),
         BlocProvider(create: (_) => LiveCubit()..load()),
       ],

@@ -5,13 +5,16 @@ import 'package:app/logic/cubits/route/route_cubit.dart';
 import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
 import 'package:app/logic/cubits/weather/weather_cubit.dart';
 import 'package:app/logic/models/route.dart';
-import 'package:app/logic/models/weather/hourly_forecast.dart';
+import 'package:app/logic/models/time_with_timezone.dart';
+import 'package:app/logic/models/weather/range_forecast.dart';
+import 'package:app/ui/components/brand_divider/brand_divider.dart';
 import 'package:app/ui/components/brand_fake_input/brand_fake_input.dart';
 import 'package:app/ui/components/brand_icons/dersu_icons_icons.dart';
 import 'package:app/ui/components/brand_label/brand_raw_label.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';
 import 'package:app/ui/pages/create_planning/create_planning.dart';
+import 'package:app/ui/pages/image_viewer/image_viewer.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +22,11 @@ import 'package:intl/intl.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
 import 'package:app/utils/extensions/extensions.dart';
-
+import 'dart:async' show StreamSubscription;
+import 'package:async/async.dart' show StreamGroup;
 part 'ruta.dart';
 part 'condiciones.dart';
+part 'helpers.dart';
 
 final dateFormat2 = DateFormat.yMMMMd().add_jm();
 final dataFormat1 = DateFormat('dd/MM/yy');
@@ -33,11 +38,9 @@ class RouteDetails extends StatelessWidget {
   const RouteDetails({
     Key? key,
     required this.route,
-    this.isLife = false,
   }) : super(key: key);
 
   final DersuRouteShort route;
-  final bool isLife;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class RouteDetails extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             children: [
               RutaTab(),
-              CondicionesTab(),
+              CondicionesTab(routeId: route.id),
               Center(child: Text('Terreno')),
               Center(child: Text('Grupo')),
             ],

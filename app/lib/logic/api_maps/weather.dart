@@ -1,15 +1,14 @@
-import 'package:app/logic/models/weather/daily_forecast.dart';
+import 'package:app/logic/models/weather/weather_forecast.dart';
 
 import 'dersu_api.dart';
 
 class WeatherApi extends PrivateDersuApi {
-  Future<List<DayForecast>> weather(String id, DateTime dateTime) async {
+  Future<WeatherForecast> weather(String id) async {
     final client = await getClient();
-    var res = await client.get('/route/$id/weather',
-        queryParameters: {"dateTime": dateTime.toIso8601String()});
+    var res = await client.get(
+      '/route/$id/weather',
+    );
     client.close();
-    return res.data
-        .map<DayForecast>((json) => DayForecast.fromJson(json))
-        .toList();
+    return WeatherForecast.fromJson(res.data);
   }
 }

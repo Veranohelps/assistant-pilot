@@ -9,7 +9,6 @@ import { TransactionManager } from '../../../common/utilities/transaction-manage
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
 import {
-  getDateQueryValidationSchema,
   getRouteValidationSchema,
   getUserRoutesQueryValidationSchema,
 } from '../../route.validation-schema';
@@ -20,7 +19,6 @@ import {
   IGetUserRoutesUrlParameters,
   IRouteSlim,
 } from '../../types/route.type';
-import { IGetRouteWeatherUrlParameters } from '../../types/wheather-prediction.type';
 
 @Controller('personal/route')
 @JwtProtected()
@@ -56,16 +54,10 @@ export class PersonalRouteController {
 
   @Get(':routeId/weather')
   @HttpCode(HttpStatus.OK)
-  async getRouteWeather(
-    @Tx() tx: TransactionManager,
-    @Param('routeId') id: string,
-    @ParsedUrlParameters(getDateQueryValidationSchema)
-    urlParameters: IGetRouteWeatherUrlParameters,
-  ) {
+  async getRouteWeather(@Tx() tx: TransactionManager, @Param('routeId') id: string) {
     const route = await this.routeService.findOne(tx, id);
     const apiResponse = await this.weatherService.getForecast(
       route.coordinate as ILineStringGeometry,
-      urlParameters,
     );
 
     return apiResponse;

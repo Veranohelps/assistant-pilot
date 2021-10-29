@@ -55,6 +55,12 @@ class ThemeTypo {
 }
 
 class MType {
+  static const h5 = TextStyle(
+    fontSize: 24,
+    height: 24 / 24,
+    letterSpacing: 0.18,
+  );
+
   static const h6 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w500,

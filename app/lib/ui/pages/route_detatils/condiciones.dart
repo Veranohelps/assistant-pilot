@@ -1,7 +1,12 @@
 part of 'route_details.dart';
 
 class CondicionesTab extends StatefulWidget {
-  const CondicionesTab({Key? key}) : super(key: key);
+  const CondicionesTab({
+    Key? key,
+    required this.routeId,
+  }) : super(key: key);
+
+  final String routeId;
 
   @override
   State<CondicionesTab> createState() => _CondicionesTabState();
@@ -38,12 +43,12 @@ class _CondicionesTabState extends State<CondicionesTab> {
                       intputText: selectedTime == null
                           ? 'no date'
                           : dateFormat2.format(selectedTime),
-                      onPress: () => setDate(context),
+                      onPress: () => setTimeFilterDate(context),
                     ),
                   ),
                   SizedBox(width: 5),
                   IconButton(
-                    onPressed: () => setDate(context),
+                    onPressed: () => setTimeFilterDate(context),
                     icon: Icon(Icons.edit),
                   )
                 ],
@@ -52,39 +57,22 @@ class _CondicionesTabState extends State<CondicionesTab> {
           ),
         ),
         Divider(height: 20),
-        BlocProvider(
-          create: (_) => WeatherCubit(
-            context.read<RouteCubit>(),
-            context.read<TimeFilterCubit>(),
+        Expanded(
+          child: BlocProvider(
+            create: (_) => WeatherCubit()..fetchWeather(widget.routeId),
+            child: Builder(
+              builder: (context) {
+                if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
+                    context.watch<TimeFilterCubit>().state == null) {
+                  return Center(child: Text('choose date and time'));
+                }
+                return _WeatherBlock();
+              },
+            ),
           ),
-          child: _WeatherBlock(),
         ),
       ],
     );
-  }
-
-  void setDate(BuildContext context) async {
-    var today = DateTime.now();
-    var tommorow = today.add(Duration(days: 1));
-    var day = await showDatePicker(
-      context: context,
-      initialDate: tommorow,
-      firstDate: tommorow,
-      lastDate: today.add(Duration(days: 31)),
-    );
-
-    if (day != null) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: 8, minute: 0),
-      );
-
-      if (time != null) {
-        final dayTime =
-            DateTime(day.year, day.month, day.day, time.hour, time.minute);
-        context.read<TimeFilterCubit>().setNewTime(dayTime);
-      }
-    }
   }
 }
 
@@ -98,20 +86,45 @@ class _WeatherBlock extends StatefulWidget {
 class _WeatherBlockState extends State<_WeatherBlock> {
   int selectedDayTabIndex = 0;
 
+  final controller = ScrollController();
+  late StreamSubscription subscirption;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback(_afterLayout);
+    super.initState();
+  }
+
+  void _afterLayout(_) {
+    var a = context.read<TimeFilterCubit>();
+    var b = context.read<WeatherCubit>();
+    _checkTabs(a.state!, (b.state as WeatherLoaded).weather.days);
+
+    subscirption = StreamGroup.merge([a.stream, b.stream]).listen(
+      (_) => _checkTabs(a.state!, (b.state as WeatherLoaded).weather.days),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    subscirption.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, weatherState) {
-        if (weatherState is! WeatherLoaded) {
-          return Center(child: Text('choose date and time'));
-        }
+        final weather = (weatherState as WeatherLoaded).weather;
 
-        var days = weatherState.weather;
+        final selectedDay = weather.days[selectedDayTabIndex];
+        final weatherInSelectedDay =
+            weather.currentDayHorlyForecast(selectedDay);
+        final planningDay = context.read<TimeFilterCubit>().state!;
 
-        var selectedDay = days[selectedDayTabIndex];
-        var planningDay = context.read<TimeFilterCubit>().state!;
-
-        var selectedTime = Duration(hours: planningDay.hour);
+        final weatherInStartingHour = weatherInSelectedDay
+            .firstWhere((el) => el.dateTime.hour == planningDay.hour);
 
         return Column(
           children: [
@@ -120,10 +133,11 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
+                controller: controller,
                 children: [
-                  ...days
+                  ...weather.days
                       .asMap()
-                      .map((k, v) => MapEntry(
+                      .map((k, day) => MapEntry(
                           k,
                           GestureDetector(
                             onTap: () =>
@@ -145,11 +159,11 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                               child: Column(
                                 children: [
                                   Text(
-                                    weekDay.format(v.dateTime).toUpperCase(),
+                                    weekDay.format(day).toUpperCase(),
                                     style: ThemeTypo.martaTab,
                                   ),
                                   Text(
-                                    dataFormat1.format(v.dateTime),
+                                    dataFormat1.format(day),
                                     style: ThemeTypo.martaTab,
                                   ),
                                 ],
@@ -161,59 +175,96 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                 ],
               ),
             ),
-            Divider(height: 20),
-            ...selectedDay.ranges
-                .asMap()
-                .map((key, range) {
-                  var time = selectedDay.dateTime
-                      .add(Duration(hours: 4 * key))
-                      .add(selectedTime);
-
-                  HourlyForecast data;
-
-                  if (days.any((el) => isSameDate(el.dateTime, time))) {
-                    data = days
-                        .firstWhere((i) => isSameDate(i.dateTime, time))
-                        .ranges[key]
-                        .forecastHourly
-                        .firstWhere((n) {
-                      return n.dateTime == time;
-                    });
-                  } else {
-                    data = days.last.ranges[key].forecastHourly.last;
-                  }
-                  return MapEntry(
-                    key,
-                    WeatherCard(
-                      hourlyForecast: data,
-                      time: time,
-                      range: days.last.ranges[key].range,
+            BrandDivider(
+              margin: EdgeInsets.only(left: 16),
+              height: 20,
+            ),
+            Container(
+              child: Row(
+                children: [
+                  SizedBox(width: 16),
+                  Text(
+                    'Metereología',
+                    style: MType.h5,
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(materialRoute(ImageViewer(
+                        title: 'ver completa',
+                        url: weather.meteograms[0].url,
+                      )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 10),
+                      child: Text('ver completa'.toUpperCase()),
                     ),
-                  );
-                })
-                .values
-                .toList()
+                  ),
+                ],
+              ),
+            ),
+            BrandDivider(
+              margin: EdgeInsets.only(left: 16),
+            ),
+            WeatherCard(
+              rangeForecast: weatherInStartingHour.ranges[0],
+              dateTime: weatherInStartingHour.dateTime,
+            ),
           ],
         );
       },
     );
+  }
+
+  void _checkTabs(DateTime time, List<TimeWithTimeZone> days) {
+    var hasThisDate = days.any(
+      (el) => el.isSameDate(
+        TimeWithTimeZone(
+          el.timeZoneOffset,
+          time.year,
+          time.month,
+          time.day,
+        ),
+      ),
+    );
+    if (hasThisDate) {
+      var index = days.indexOf(
+        TimeWithTimeZone(
+          days[0].timeZoneOffset,
+          time.year,
+          time.month,
+          time.day,
+        ),
+      );
+      if (selectedDayTabIndex != index) {
+        setState(() {
+          selectedDayTabIndex = index;
+          controller.animateTo(
+            index * 120,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.linear,
+          );
+        });
+      }
+    }
   }
 }
 
 class WeatherCard extends StatelessWidget {
   const WeatherCard({
     Key? key,
-    required this.hourlyForecast,
-    required this.time,
-    required this.range,
+    required this.rangeForecast,
+    required this.dateTime,
   }) : super(key: key);
 
-  final HourlyForecast hourlyForecast;
-  final DateTime time;
-  final List<int> range;
+  final RangeForecast rangeForecast;
+  final TimeWithTimeZone dateTime;
 
   @override
   Widget build(BuildContext context) {
+    final range = rangeForecast.range;
+
     return Container(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -231,7 +282,7 @@ class WeatherCard extends StatelessWidget {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  hhMMFormat.format(hourlyForecast.dateTime).toString(),
+                  hhMMFormat.format(dateTime).toString(),
                   style: MType.subtitle1,
                 ),
               ],
@@ -242,15 +293,15 @@ class WeatherCard extends StatelessWidget {
               children: [
                 getColumnBlock(
                   'TEMPERATURA',
-                  '${hourlyForecast.temperature} °C',
+                  '${rangeForecast.temperature} °C',
                 ),
                 getColumnBlock(
                   'Viento'.toUpperCase(),
-                  '${hourlyForecast.windSpeed} km/h',
+                  '${rangeForecast.windSpeed} km/h',
                 ),
                 getColumnBlock(
                   'precipitaciones'.toUpperCase(),
-                  '${hourlyForecast.precipitation} %',
+                  '${rangeForecast.precipitation} %',
                 )
               ],
             )

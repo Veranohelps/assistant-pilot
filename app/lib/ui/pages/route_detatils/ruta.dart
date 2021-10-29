@@ -27,7 +27,7 @@ class RutaTab extends StatelessWidget {
         SizedBox(height: 15),
         Center(
           child: BrandButtons.primaryShort(
-            onPressed: () => setDate(context),
+            onPressed: () => setTimeFilterDate(context),
             label: 'time change',
             text: selectedTime == null
                 ? 'no date'
@@ -61,29 +61,5 @@ class RutaTab extends StatelessWidget {
       Text(value, style: ThemeTypo.p0),
       SizedBox(height: 10),
     ];
-  }
-
-  void setDate(BuildContext context) async {
-    var today = DateTime.now();
-    var tommorow = today.add(Duration(days: 1));
-    var day = await showDatePicker(
-      context: context,
-      initialDate: tommorow,
-      firstDate: tommorow,
-      lastDate: today.add(Duration(days: 31)),
-    );
-
-    if (day != null) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: 8, minute: 0),
-      );
-
-      if (time != null) {
-        final dayTime =
-            DateTime(day.year, day.month, day.day, time.hour, time.minute);
-        context.read<TimeFilterCubit>().setNewTime(dayTime);
-      }
-    }
   }
 }

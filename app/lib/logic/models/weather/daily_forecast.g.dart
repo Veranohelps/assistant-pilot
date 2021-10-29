@@ -6,15 +6,14 @@ part of 'daily_forecast.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DayForecast _$DayForecastFromJson(Map<String, dynamic> json) {
-  return DayForecast(
-    ranges: (json['ranges'] as List<dynamic>)
-        .map((e) => RangeForecast.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    dateTime: DateTime.parse(json['dateTime'] as String),
-    sunriseDateTime:
-        Serialization.fromUtcStringToLocal(json['sunriseDateTime'] as String),
-    sunsetDateTime:
-        Serialization.fromUtcStringToLocal(json['sunsetDateTime'] as String),
+SunCalendarItem _$SunCalendarItemFromJson(Map<String, dynamic> json) {
+  return SunCalendarItem(
+    dateTime: TimeWithTimeZone.parse(json['dateTime'] as String),
+    sunriseDateTime: TimeWithTimeZone.parse(json['sunriseDateTime'] as String),
+    sunsetDateTime: TimeWithTimeZone.parse(json['sunsetDateTime'] as String),
+    moonriseDateTime:
+        TimeWithTimeZone.parse(json['moonriseDateTime'] as String),
+    moonsetDatetime: TimeWithTimeZone.parse(json['moonsetDatetime'] as String),
+    moonPhaseName: json['moonPhaseName'] as String,
   );
 }

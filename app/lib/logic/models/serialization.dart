@@ -29,7 +29,6 @@ class Serialization {
   }
 
   static DateTime fromUtcStringToLocal(String utc) {
-    // return DateTime.parse(utc).toLocal();
     return DateTime.parse(utc);
   }
 }
