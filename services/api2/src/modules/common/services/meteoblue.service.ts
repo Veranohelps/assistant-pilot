@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import crypto from 'crypto';
 import got from 'got';
+import { IWeatherPredictionDaily } from '../../route/types/wheather-prediction.type';
+import { parseResponseHourly } from '../../weather/meteoblue.parser';
+import { ErrorCodes } from '../errors/error-codes';
+import { BadRequestError } from '../errors/http.error';
+import { IPointGeometry } from '../types/geojson.type';
 
 @Injectable()
 export class MeteoblueService {
@@ -12,6 +17,65 @@ export class MeteoblueService {
   METEOBLUE_API_SECRET = this.configService.get('METEOBLUE_API_SECRET');
   THREE_MONTHS_MILLISECONDS = 3 * 30 * 24 * 60 * 60 * 1000;
   METEOGRAM_QUERY_PATH = '/visimage/meteogram_web?';
+
+  async getForecast(pointsOfInterest: IPointGeometry[]): Promise<IWeatherPredictionDaily> {
+    const startingPoint = pointsOfInterest[0];
+    const longitude = startingPoint.coordinates[0];
+    const latitude = startingPoint.coordinates[1];
+    const startingPointAltitude = startingPoint.coordinates[2];
+
+    if (startingPointAltitude == null) {
+      throw new Error('Missing altitude for starting point');
+    }
+
+    // We only make ONE call to get sunmon information since we assume it's the same info
+    // for all points in the route
+    let apiResponseTrendPro, apiResponseSunMoon;
+    try {
+      apiResponseTrendPro = await this.callTrendPro(longitude, latitude, startingPointAltitude);
+    } catch (error: any) {
+      const errorMessage = JSON.parse(error.response.body).error_message;
+      throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
+    }
+
+    try {
+      apiResponseSunMoon = await this.callSunMoon(longitude, latitude, startingPointAltitude);
+    } catch (error: any) {
+      const errorMessage = JSON.parse(error.response.body).error_message;
+      throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
+    }
+
+    let limInf, limSup;
+    if (startingPointAltitude <= 0) {
+      limInf = -999;
+      limSup = 0;
+    } else {
+      limInf = Math.floor(startingPointAltitude / 1000) * 1000;
+      limSup = Math.ceil(startingPointAltitude / 1000) * 1000 - 1;
+    }
+    const startingPointRange = `${limInf}-${limSup}`;
+
+    const queryParams = this.getQueryParams(
+      longitude,
+      latitude,
+      startingPointAltitude,
+      false,
+      false,
+      5,
+    );
+    const signature = this.getSignature(this.METEOGRAM_QUERY_PATH + queryParams);
+    const meteogramUrl =
+      this.METEOBLUE_URL + this.METEOGRAM_QUERY_PATH + queryParams + '&sig=' + signature;
+
+    const forecast = parseResponseHourly(
+      [apiResponseTrendPro],
+      apiResponseSunMoon,
+      [startingPointRange],
+      meteogramUrl,
+    );
+
+    return forecast;
+  }
 
   getSignature(message: string): string {
     const hmac = crypto.createHmac('sha256', this.METEOBLUE_API_SECRET);

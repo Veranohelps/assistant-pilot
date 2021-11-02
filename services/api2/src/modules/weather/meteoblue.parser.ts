@@ -95,6 +95,11 @@ export function parseResponseHourly(
   });
 
   return {
+    metadata: {
+      provider: 'Meteoblue',
+      timezone: meteoblueResponseSunMoon.metadata.timezone_abbrevation,
+      timezoneUTCOffsetInMinutes: meteoblueResponseSunMoon.metadata.utc_timeoffset * 60,
+    },
     meteograms: meteograms,
     sunCalendar: sunCalendar,
     forecastHourly: forecastHourly,

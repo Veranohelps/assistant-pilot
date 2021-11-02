@@ -10,21 +10,21 @@ export interface IRangeHourly {
   range: string;
   temperature: number;
   feltTemperature: number;
-  precipitation: number;
+  precipitation: number | null;
   precipitationProbability: number;
   visibility: number;
   lowClouds: number;
   midClouds: number;
   hiClouds: number;
-  totalCloudCover: number;
-  sunshineTime: number;
+  totalCloudCover: number | null;
+  sunshineTime: number | null;
   windSpeed: number;
   windGust: number;
-  isDay: boolean;
-  pictoCode: number;
+  isDay: boolean | null;
+  pictoCode: number | string;
 }
 export interface IForecastHourly {
-  dateTime: Date;
+  dateTime: string;
   ranges: IRangeHourly[];
 }
 export interface ISunCalendar {
@@ -40,6 +40,11 @@ export interface IMeteograms {
   meteogram: string;
 }
 export interface IWeatherPredictionDaily {
+  metadata: {
+    provider: string;
+    timezone: string;
+    timezoneUTCOffsetInMinutes: number;
+  };
   meteograms: IMeteograms[];
   sunCalendar: ISunCalendar[];
   forecastHourly: IForecastHourly[];
