@@ -52,19 +52,32 @@ export class GcpService {
   }
 
   checkImage(file: Express.Multer.File) {
-    if (file.mimetype != 'image/jpeg' && file.mimetype != 'image/png') {
+    const mimetype = file.mimetype.toLowerCase();
+    if (mimetype != 'image/jpeg' && mimetype != 'image/jpg' && mimetype != 'image/png') {
       throw new BadRequestError(
         ErrorCodes.INVALID_MIME_TYPE,
-        'MimeType must be: image/jpeg or image/png',
+        'MimeType must be: image/jpeg, image/jpg or image/png',
       );
     }
-    const type = imageType(file.buffer); //checks the real type
-    if (type?.mime != 'image/jpeg' && type?.mime != 'image/png') {
-      throw new BadRequestError(ErrorCodes.INVALID_MIME_TYPE, 'MimeType must be: image/jpeg');
+
+    //checks the real type
+    const actualType = imageType(file.buffer);
+    const actualMimeType = actualType?.mime.toLowerCase();
+    if (
+      actualMimeType != 'image/jpeg' &&
+      actualMimeType != 'image/jpg' &&
+      actualMimeType != 'image/png'
+    ) {
+      throw new BadRequestError(
+        ErrorCodes.INVALID_MIME_TYPE,
+        'MimeType must be: image/jpeg, image/jpg or image/png',
+      );
     }
+
     if (file.size > 1024 * 1024) {
       throw new BadRequestError(ErrorCodes.INVALID_IMAGE_SIZE, 'File size must not exceed 1Mb');
     }
+
     const dimensions = sizeOf(file.buffer);
     if (
       dimensions &&

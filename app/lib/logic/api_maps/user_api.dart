@@ -60,11 +60,12 @@ class UserApi extends PrivateDersuApi {
 
   Future<String> updateAvatar(File file) async {
     String fileName = file.path.split('/').last;
+    var fileExt = fileName.split('.').last;
     var formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
         filename: fileName,
-        contentType: MediaType("image", "jpeg"), 
+        contentType: MediaType("image", fileExt),
       ),
     });
     var client = await getClient();

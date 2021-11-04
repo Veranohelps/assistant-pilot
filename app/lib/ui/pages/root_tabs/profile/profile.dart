@@ -77,7 +77,7 @@ class ProfileTab extends StatelessWidget {
               AvatarButtonWidget(
                 onAvatarDelete: context.read<ProfileCubit>().deleteAvatar,
                 onFileSelected: context.read<ProfileCubit>().updateAvatar,
-                url: state.profile.avatar.isEmpty ? null : state.profile.avatar,
+                url: state.profile.avatar,
               ),
               SizedBox(width: 20),
               Column(

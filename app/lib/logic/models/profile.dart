@@ -67,7 +67,7 @@ class FilledProfile extends Profile {
 
   final String firstName;
   final String lastName;
-  final String avatar;
+  final String? avatar;
   final Map<String, String> currentLevels;
 
   final bool isSubscribedToNewsletter;
@@ -125,7 +125,7 @@ class FilledProfile extends Profile {
       auth0Id: this.auth0Id,
       email: this.email,
       isRegistrationFinished: this.isRegistrationFinished,
-      avatar: '',
+      avatar: null,
       updatedAt: this.updatedAt,
       currentLevels: this.currentLevels,
     );
