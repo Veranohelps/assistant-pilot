@@ -1,11 +1,20 @@
+import 'dart:io';
+
 import 'package:app/logic/api_maps/dersu_api.dart';
 import 'package:app/logic/models/profile.dart';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 const mockKey = 'UserMockKey';
 
 const profileUrl = '/user/profile';
-const editProfileUrl = '/user/complete-registration';
+const updateProfileUrl = '/user/edit-profile';
+
+const finishRegistrationUrl = '/user/complete-registration';
 const assessmentSubmitUrl = '/assessment/submit';
+
+const deleteAvatarUrl = '/user/delete-avatar';
+const updateAvatarUrl = '/user/update-avatar';
 
 class UserApi extends PrivateDersuApi {
   Future<Profile> fetch() async {
@@ -23,7 +32,7 @@ class UserApi extends PrivateDersuApi {
     required bool isSubscribedToNewsletter,
   }) async {
     var client = await getClient();
-    await client.patch(editProfileUrl, data: {
+    await client.patch(finishRegistrationUrl, data: {
       'firstName': firstName,
       'lastName': lastName,
       'isSubscribedToNewsletter': isSubscribedToNewsletter,
@@ -40,5 +49,40 @@ class UserApi extends PrivateDersuApi {
     client.close();
 
     return await fetch() as FilledProfile;
+  }
+
+  Future<void> deleteAvatar() async {
+    var client = await getClient();
+
+    await client.delete(deleteAvatarUrl);
+    client.close();
+  }
+
+  Future<String> updateAvatar(File file) async {
+    String fileName = file.path.split('/').last;
+    var formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+        contentType: MediaType("image", "jpeg"), 
+      ),
+    });
+    var client = await getClient();
+
+    var res = await client.patch(updateAvatarUrl, data: formData);
+    client.close();
+
+    return res.data['data']['user']['avatar'];
+  }
+
+  Future<void> updateProfile(String firstName, String lastName) async {
+    var client = await getClient();
+
+    await client.patch(updateProfileUrl, data: {
+      'firstName': firstName,
+      'lastName': lastName,
+    });
+
+    client.close();
   }
 }

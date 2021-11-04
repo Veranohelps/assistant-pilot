@@ -7,7 +7,7 @@ export interface IUser {
   otherName: string | null;
   isRegistrationFinished: boolean;
   isSubscribedToNewsletter: boolean;
-  avatar: string;
+  avatar: string | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -36,6 +36,11 @@ export interface ICompleteUserRegistrationDTO {
   firstName: string;
   lastName: string;
   otherName?: string;
+}
+
+export interface IEditedProfileDTO {
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface IUserProfile {

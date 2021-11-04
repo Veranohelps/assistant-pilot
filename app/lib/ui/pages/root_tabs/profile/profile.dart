@@ -2,13 +2,20 @@ import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
+import 'package:app/logic/forms/profile_edit/profile_edit.dart';
+import 'package:app/ui/components/avatar_button/avatar_button.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:app/ui/pages/root_tabs/profile/levels/levels.dart';
+import 'package:app/ui/components/brand_loading/brand_loading.dart';
+import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
+import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
 import 'package:app/utils/route_transitions/basic.dart';
+import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unicons/unicons.dart';
 import 'package:app/utils/extensions/extensions.dart';
+
+part 'pages/edit.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -24,7 +31,17 @@ class ProfileTab extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 20),
-          buildHeader(),
+          Container(
+            padding: EdgeInsets.only(right: 20),
+            alignment: Alignment.centerRight,
+            child: BrandButtons.primaryShort(
+              text: 'Editar perfil',
+              onPressed: () {
+                Navigator.of(context).push(materialRoute(_EditProfile()));
+              },
+            ),
+          ),
+          buildProfileInfo(),
           SizedBox(height: 20),
           Divider(),
           _NavItem(
@@ -44,43 +61,36 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: BrandColors.mGrey,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              UniconsLine.camera,
-              color: BrandColors.white,
-              size: 30,
-            ),
-          ),
-          SizedBox(width: 20),
-          BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, state) {
-              if (state is! ProfileDersuRegistrationFinished) {
-                return Container();
-              }
-              return Column(
+  Widget buildProfileInfo() {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        if (state is! ProfileDersuRegistrationFinished) {
+          return Container();
+        }
+        var profile = state.profile;
+        print(profile.avatar);
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              SizedBox(height: 40),
+              AvatarButtonWidget(
+                onAvatarDelete: context.read<ProfileCubit>().deleteAvatar,
+                onFileSelected: context.read<ProfileCubit>().updateAvatar,
+                url: state.profile.avatar.isEmpty ? null : state.profile.avatar,
+              ),
+              SizedBox(width: 20),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${state.profile.firstName} ${state.profile.lastName}')
-                      .h2,
-                  Text(state.profile.email).p0.withColor(BrandColors.mGrey),
+                  Text(profile.firstName).h2,
+                  Text(profile.lastName).h2,
                 ],
-              );
-            },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

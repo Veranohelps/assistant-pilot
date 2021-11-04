@@ -11,6 +11,9 @@ services:
     volumes:
       - ./api2/src:/home/dersu-api/src
       - ./api2/.env:/home/dersu-api/secrets/.env
+      - $GOOGLE_APPLICATION_CREDENTIALS:/home/dersu-api/sa.json
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /home/dersu-api/sa.json
   database:
     image: postgis/postgis:13-3.1
     shm_size: 256MB

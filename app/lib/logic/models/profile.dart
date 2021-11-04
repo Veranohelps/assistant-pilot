@@ -116,6 +116,21 @@ class FilledProfile extends Profile {
     );
   }
 
+  FilledProfile deleteAvatar() {
+    return FilledProfile(
+      firstName: this.firstName,
+      lastName: this.lastName,
+      isSubscribedToNewsletter: this.isSubscribedToNewsletter,
+      id: this.id,
+      auth0Id: this.auth0Id,
+      email: this.email,
+      isRegistrationFinished: this.isRegistrationFinished,
+      avatar: '',
+      updatedAt: this.updatedAt,
+      currentLevels: this.currentLevels,
+    );
+  }
+
   @override
   String toString() {
     return 'FilledProfile(firstName: $firstName, lastName: $lastName, avatar: $avatar, currentLevels: $currentLevels, isSubscribedToNewsletter: $isSubscribedToNewsletter, id: $id, auth0Id: $auth0Id, email: $email, isRegistrationFinished: $isRegistrationFinished, updatedAt: $updatedAt)';

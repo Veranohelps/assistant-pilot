@@ -5,3 +5,7 @@ export const completeUserRegistrationValidationSchema = Joi.object({
   lastName: Joi.string().required(),
   otherName: Joi.string(),
 });
+export const editedUserValidationSchema = Joi.object({
+  firstName: Joi.string(),
+  lastName: Joi.string(),
+});

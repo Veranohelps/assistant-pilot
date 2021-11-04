@@ -1,4 +1,5 @@
 import 'package:app/app.dart';
+import 'package:app/config/brand_theme.dart';
 import 'package:app/config/localization.dart';
 import 'package:app/config/device_info_wrapper.dart';
 import 'package:app/ui/pages/error/error.dart';
@@ -7,10 +8,9 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
-
+import 'package:overlay_support/overlay_support.dart';
 import 'config/bloc_config.dart';
 import 'config/bloc_observer.dart';
-import 'config/brand_theme.dart';
 import 'config/get_it_config.dart';
 import 'config/global_error_handling.dart';
 import 'config/hive_config.dart';
@@ -55,26 +55,28 @@ class _MainState extends State<_Main> {
   Widget build(BuildContext context) {
     return BlocAndProviderConfig(
       child: DeviceInfoWrapper(
-        child: MaterialApp(
-          locale: context.locale,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
-          navigatorKey: getIt.get<NavigationService>().navigatorKey,
-          debugShowCheckedModeBanner: false,
-          theme: brandTheme,
-          title: 'Dersu Assistant App',
-          home: App(),
-          navigatorObservers: [getIt.get<Analitics>().navigatorObserver],
-          builder: (BuildContext context, Widget? widget) {
-            if (Application.isInReleaseMode) {
-              ErrorWidget.builder =
-                  (FlutterErrorDetails errorDetails) => ErrorScreen(
-                        error: Exception('...rendering error'),
-                      );
-            }
+        child: OverlaySupport.global(
+          child: MaterialApp(
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            navigatorKey: getIt.get<NavigationService>().navigatorKey,
+            debugShowCheckedModeBanner: false,
+            theme: brandTheme,
+            title: 'Dersu Assistant App',
+            home: App(),
+            navigatorObservers: [getIt.get<Analitics>().navigatorObserver],
+            builder: (BuildContext context, Widget? widget) {
+              if (Application.isInReleaseMode) {
+                ErrorWidget.builder =
+                    (FlutterErrorDetails errorDetails) => ErrorScreen(
+                          error: Exception('...rendering error'),
+                        );
+              }
 
-            return widget!;
-          },
+              return widget!;
+            },
+          ),
         ),
       ),
     );

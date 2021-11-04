@@ -9,13 +9,11 @@ final dictionaryUrl = '/dictionary';
 class DictionariesApi extends PrivateDersuApi {
   Future<List<ActivityType>> fetchActiveTypes() async {
     var allDictionaries = await getDictionaryUrls();
-    print(allDictionaries);
     var activityTypesUrl =
         allDictionaries.firstWhere((element) => element.id == 'activity-type');
 
     var client = await getClient();
     var res = await client.get(activityTypesUrl.url);
-    print(res.data);
     client.close();
     return (res.data['data']['activityTypes'] as List)
         .map<ActivityType>((json) => ActivityType.fromJson(json))
@@ -26,7 +24,7 @@ class DictionariesApi extends PrivateDersuApi {
     var allDictionaries = await getDictionaryUrls();
     var routesUrl =
         allDictionaries.firstWhere((element) => element.id == 'route-origin');
-
+    print(routesUrl);
     var client = await getClient();
     var res = await client.get(routesUrl.url);
     client.close();

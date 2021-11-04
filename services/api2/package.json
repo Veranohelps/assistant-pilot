@@ -24,6 +24,7 @@
     "migrations": "knex migrate:latest"
   },
   "dependencies": {
+    "@google-cloud/storage": "^5.3.0",
     "@nestjs/common": "^8.0.8",
     "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.8",
@@ -45,6 +46,8 @@
     "graphql-tools": "^8.2.0",
     "graphql-type-json": "^0.3.2",
     "graphql-upload": "^12.0.0",
+    "image-size": "^1.0.0",
+    "image-type": "^4.1.0",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.4",
@@ -60,6 +63,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.0",
+    "uuid": "^8.3.2",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
@@ -81,6 +85,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/pg": "^8.6.1",
     "@types/supertest": "^2.0.11",
+    "@types/uuid": "^8",
     "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",

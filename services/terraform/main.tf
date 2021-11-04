@@ -266,6 +266,7 @@ AUTH0_CLIENT_SECRET="${data.google_secret_manager_secret_version.auth0-client-se
 API_ADMIN_TOKEN="${random_password.api-admin-token.result}"
 METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-api-key-version.secret_data}"
 METEOBLUE_API_SECRET="${data.google_secret_manager_secret_version.meteoblue-api-secret-version.secret_data}"
+PROFILE_IMAGES_BUCKET_NAME="${google_storage_bucket.profile-images-bucket.name}"
 EOT
 }
 
@@ -293,4 +294,21 @@ data "google_secret_manager_secret_version" "meteoblue-api-secret-version" {
   secret = "${terraform.workspace}-meteoblue-api-secret"
   project = var.project_id
   version = 1
+}
+
+resource "random_id" "random-bucket-suffix" {
+  byte_length = 6
+}
+
+resource "google_storage_bucket" "profile-images-bucket" {
+  project = var.project_id
+  name = "${terraform.workspace}-profile-images-${random_id.random-bucket-suffix.hex}"
+  location = "EU"
+  storage_class = "STANDARD"
+}
+
+resource "google_storage_default_object_access_control" "public_rule" {
+  bucket = google_storage_bucket.profile-images-bucket.name
+  role   = "READER"
+  entity = "allUsers"
 }

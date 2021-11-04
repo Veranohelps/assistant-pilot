@@ -6,5 +6,5 @@ docker run --rm -it \
 	-e GOOGLE_APPLICATION_CREDENTIALS=/home/sa.json \
 	hashicorp/terraform:1.0.3 \
 	apply \
-	-var="dersu_api_docker_image_tag=juan-35829bf" \
-	-var="dersu_admin_console_docker_image_tag=juan-35829bf"
+	-var="dersu_api_docker_image_tag=juan-6d3114a" \
+	-var="dersu_admin_console_docker_image_tag=juan-6d3114a"

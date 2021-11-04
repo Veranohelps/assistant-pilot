@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/logic/api_maps/user_api.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
@@ -38,7 +40,7 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
     emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 
-  Future<void> set({
+  Future<void> setProfile({
     required String firstName,
     required bool isSubscribedToNewsletter,
     required String lastName,
@@ -51,6 +53,14 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
     emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 
+  Future<void> deleteAvatar() async {
+    await api.deleteAvatar();
+    var newUser = (state as ProfileDersuRegistrationFinished)
+        .profile
+        .copyWith(avatar: '');
+    emit(ProfileDersuRegistrationFinished(newUser));
+  }
+
   @override
   void clear() {
     emit(ProfileNotReady());
@@ -61,5 +71,24 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
     var newProfile = profile.copyWith(currentLevels: currentLevels);
     await api.setNewLevels(levels: newProfile.currentLevels.values.toList());
     emit(ProfileDersuRegistrationFinished(newProfile));
+  }
+
+  Future<void> updateAvatar(File file) async {
+    var newAvatar = await api.updateAvatar(file);
+    var newUser = (state as ProfileDersuRegistrationFinished)
+        .profile
+        .copyWith(avatar: newAvatar);
+    await Future.delayed(Duration(seconds: 2));
+    emit(ProfileDersuRegistrationFinished(newUser));
+  }
+
+  Future<void> updateProfile(
+      {required String firstName, required String lastName}) async {
+    await api.updateProfile(firstName, lastName);
+    var newUser = (state as ProfileDersuRegistrationFinished).profile.copyWith(
+          firstName: firstName,
+          lastName: lastName,
+        );
+    emit(ProfileDersuRegistrationFinished(newUser));
   }
 }

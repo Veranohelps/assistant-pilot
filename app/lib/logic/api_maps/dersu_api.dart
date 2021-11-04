@@ -1,5 +1,6 @@
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/get_it/auth_token.dart';
+import 'package:app/utils/debug.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ abstract class PrivateDersuApi extends ApiMap {
         compact: true,
         maxWidth: 90,
       ));
-
+    }
+    if (Application.isInDebugMode)
       dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
         print(e.requestOptions.path);
         print(e.requestOptions.data);
@@ -31,8 +33,6 @@ abstract class PrivateDersuApi extends ApiMap {
 
         // return handler.next(e);
       }));
-    }
-
     return dio;
   }
 

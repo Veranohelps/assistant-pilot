@@ -12,7 +12,7 @@ export const getTimeZoneQueryValidationSchema = Joi.object({
 export const createRouteValidationSchema = Joi.object<ICreateRouteDTO>({
   name: Joi.string().required(),
   description: Joi.string(),
-  activityTypes: Joi.array().min(1).items(Joi.string()).required(),
+  //activityTypes: Joi.array().min(1).items(Joi.string()).required(),
 });
 
 export const updateRouteValidationSchema = Joi.object<ICreateRouteDTO>({

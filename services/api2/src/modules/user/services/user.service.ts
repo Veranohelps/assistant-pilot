@@ -7,6 +7,7 @@ import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import {
   ICompleteUserRegistrationDTO,
   ICreateUserDTO,
+  IEditedProfileDTO,
   IUser,
   IUserProfile,
 } from '../types/user.type';
@@ -76,5 +77,32 @@ export class UserService {
     const user = await this.findOne(tx, id);
 
     return { user };
+  }
+  async editedProfile(
+    tx: TransactionManager,
+    id: string,
+    payload: IEditedProfileDTO,
+  ): Promise<IUser> {
+    const [user] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+      })
+      .cReturning();
+
+    return user;
+  }
+
+  async updateAvatar(tx: TransactionManager, id: string, avatarUrl: string | null) {
+    const [user] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({
+        avatar: avatarUrl,
+      })
+      .cReturning();
+    return user;
   }
 }
