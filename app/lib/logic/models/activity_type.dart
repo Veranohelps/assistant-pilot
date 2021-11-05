@@ -4,7 +4,7 @@ part 'activity_type.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ActivityType extends Equatable {
-  ActivityType({
+  const ActivityType({
     required this.id,
     required this.name,
     required this.description,

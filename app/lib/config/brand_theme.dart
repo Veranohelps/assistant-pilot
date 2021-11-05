@@ -6,15 +6,15 @@ final brandTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: BrandColors.defaultScaffolBackground,
   primaryColor: BrandColors.primary,
-  colorScheme: ColorScheme.light(
+  colorScheme: const ColorScheme.light(
       primary: BrandColors.primary,
       onPrimary: BrandColors.white,
       onSurface: BrandColors.primary // body text color
       ),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: BrandColors.primary,
   ),
-  sliderTheme: SliderThemeData(
+  sliderTheme: const SliderThemeData(
     valueIndicatorColor: BrandColors.primary,
     inactiveTrackColor: BrandColors.lGray,
     activeTrackColor: BrandColors.lGray,
@@ -39,6 +39,6 @@ const paddingH25V0 = EdgeInsets.symmetric(horizontal: 25);
 
 final shadow = BoxShadow(
   blurRadius: 15,
-  offset: Offset(0, 4),
+  offset: const Offset(0, 4),
   color: BrandColors.black.withOpacity(0.08),
 );

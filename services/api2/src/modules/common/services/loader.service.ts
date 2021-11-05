@@ -38,9 +38,7 @@ export class LoaderService {
 
   routeLoader: DataLoader<string, IRoute> = new DataLoader(
     async (ids) => {
-      const routeRecord = await this.routeService
-        .findByIds(null, ids as string[])
-        .then(generateRecord2((route) => route.id));
+      const routeRecord = await this.routeService.findByIds(null, ids as string[]);
 
       return ids.map(
         (id) => routeRecord[id] ?? new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found'),

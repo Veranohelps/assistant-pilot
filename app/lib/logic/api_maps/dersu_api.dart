@@ -10,6 +10,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'api.dart';
 
 abstract class PrivateDersuApi extends ApiMap {
+  @override
   Future<Dio> getClient() async {
     var dio = Dio(await options);
     if (hasLoger) {
@@ -23,19 +24,25 @@ abstract class PrivateDersuApi extends ApiMap {
         maxWidth: 90,
       ));
     }
-    if (Application.isInDebugMode)
-      dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
-        print(e.requestOptions.path);
-        print(e.requestOptions.data);
+    if (Application.isInDebugMode) {
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onError: (DioError e, handler) {
+            print(e.requestOptions.path);
+            print(e.requestOptions.data);
 
-        print(e.message);
-        print(e.response);
+            print(e.message);
+            print(e.response);
 
-        // return handler.next(e);
-      }));
+            // return handler.next(e);
+          },
+        ),
+      );
+    }
     return dio;
   }
 
+  @override
   @protected
   Future<BaseOptions> get options async {
     final authToken = getIt<AuthTokenService>();

@@ -15,7 +15,7 @@ abstract class DersuRoute extends Equatable {
   final DateTime updatedAt;
   final List<String> activityTypeIds;
 
-  DersuRoute({
+  const DersuRoute({
     required this.id,
     required this.name,
     required this.originId,
@@ -44,7 +44,7 @@ class DersuRouteFull extends DersuRoute {
   )
   final LatLngBounds boundaries;
 
-  DersuRouteFull({
+  const DersuRouteFull({
     required String id,
     required String name,
     required String originId,
@@ -88,7 +88,7 @@ class DersuRouteFull extends DersuRoute {
 class DersuRouteShort extends DersuRoute {
   final String url;
 
-  DersuRouteShort({
+  const DersuRouteShort({
     required String id,
     required String name,
     required String originId,

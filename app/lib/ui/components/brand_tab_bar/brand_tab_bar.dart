@@ -2,10 +2,10 @@ import 'package:app/config/brand_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-final _kBottomTabBarHeight = 51.0;
+const _kBottomTabBarHeight = 51.0;
 
 class BrandTabBar extends StatefulWidget {
-  BrandTabBar({
+  const BrandTabBar({
     Key? key,
     required this.controller,
     required this.tabsData,

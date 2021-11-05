@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
@@ -145,7 +147,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
               SizedBox(height: 20),
               Text(selectedLevel.name).p0,
               SizedBox(height: 20),
-              Container(
+              SizedBox(
                 height: 100,
                 child: Center(
                   child: Text(

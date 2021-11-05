@@ -1,8 +1,8 @@
 import {
-  ISunCalendar,
   IForecastHourly,
   IMeteograms,
   IRangeHourly,
+  ISunCalendar,
 } from '../route/types/wheather-prediction.type';
 
 export function parseResponseHourly(

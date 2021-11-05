@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+// ignore: constant_identifier_names
 const DERSU_HIVE_ENCRYPTION_KEY = 'dersuHiveEncryptionKey';
 
 class HiveConfig {
@@ -18,7 +19,6 @@ class HiveConfig {
     await Hive.openBox(HiveContants.geoConfig.txt);
     await Hive.openBox(HiveContants.hydratedCubits.txt);
 
-
     var encryptionKey = await getEncryptionKey();
     await Hive.openBox(
       HiveContants.authentication.txt,
@@ -27,7 +27,7 @@ class HiveConfig {
   }
 
   static Future<Uint8List> getEncryptionKey() async {
-    final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
     var containsEncryptionKey = await secureStorage.containsKey(
       key: DERSU_HIVE_ENCRYPTION_KEY,
     );
@@ -57,5 +57,5 @@ enum HiveContants {
 }
 
 extension HiveContantseExt on HiveContants {
-  String get txt => this.toString().split('.')[1];
+  String get txt => toString().split('.')[1];
 }

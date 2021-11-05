@@ -11,7 +11,7 @@ class WeatherWaiting extends WeatherState {}
 class WeatherLoaded extends WeatherState {
   final WeatherForecast weather;
 
-  WeatherLoaded({
+  const WeatherLoaded({
     required this.weather,
   });
 

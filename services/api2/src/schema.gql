@@ -17,6 +17,7 @@ type Route {
   originId: String!
   globalId: String!
   activityTypeIds: [String!]!
+  levelIds: [String!]!
   userId: String!
   name: String!
   description: String!
@@ -31,6 +32,7 @@ scalar DateTime
 
 type Expedition {
   id: String!
+  activityTypeIds: [String!]!
   userId: String!
   name: String!
   description: String

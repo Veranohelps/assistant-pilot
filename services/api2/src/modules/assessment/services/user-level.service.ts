@@ -24,7 +24,7 @@ export class UserLevelService {
     assessmentId: string,
     levelIds: string[],
   ): Promise<IUserLevel[]> {
-    const levels = await this.skillLevelService.findByIds(tx, levelIds);
+    const levels = Object.values(await this.skillLevelService.findByIds(tx, levelIds));
 
     if (!levels.length) {
       throw new NotFoundError(ErrorCodes.SKILL_LEVEL_NOT_FOUND, 'Skill level not found');

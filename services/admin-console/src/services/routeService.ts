@@ -19,6 +19,9 @@ export const createRouteService = async (data: ICreateRoutePayload) => {
   data.activityTypes.forEach((type) => {
     form.append('activityTypes', type);
   });
+  data.levels.forEach((level) => {
+    form.append('levels', level);
+  });
   data.description && form.append('description', data.description);
 
   const response = await routeHttp.post('create', { body: form }).json<IGetRoutesResult>();
@@ -39,6 +42,9 @@ export const editRouteService = async (id: string, data: Partial<ICreateRoutePay
   data.name && form.append('name', data.name);
   data.activityTypes?.forEach((type) => {
     form.append('activityTypes', type);
+  });
+  data.levels?.forEach((level) => {
+    form.append('levels', level);
   });
   data.description && form.append('description', data.description);
 

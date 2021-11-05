@@ -67,7 +67,7 @@ class BrandTextField extends StatelessWidget {
 
   Widget maskFormtedField() {
     return CubitFormMaskedTextField(
-      autofocus: this.autofocus,
+      autofocus: autofocus,
       formFieldCubit: formFieldCubit as FieldCubit<String>,
       cursorColor: BrandColors.mGrey,
       maskFormatter: maskFormatter!,
@@ -81,7 +81,7 @@ class BrandTextField extends StatelessWidget {
 
   Widget normalField() {
     return CubitFormTextField(
-      autofocus: this.autofocus,
+      autofocus: autofocus,
       formFieldCubit: formFieldCubit as FieldCubit<String>,
       obscureText: obscureText,
       cursorColor: BrandColors.mGrey,

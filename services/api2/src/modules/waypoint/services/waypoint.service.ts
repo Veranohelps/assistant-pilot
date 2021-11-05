@@ -3,6 +3,7 @@ import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, IPolygonGeometry } from '../../common/types/geojson.type';
 import { AppQuery } from '../../common/utilities/app-query';
+import { generateGroupRecord } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -34,8 +35,8 @@ export class WaypointService {
       .filter((feature) => feature.geometry.type === 'Point')
       .map((point) => {
         return {
-          name: point.properties.name,
-          description: point.properties.desc,
+          name: point.properties?.name ?? '',
+          description: point.properties?.desc ?? '',
           typeIds: [],
           radiusInMeters: 100,
           originId,
@@ -220,7 +221,7 @@ export class WaypointService {
 
     const waypoints = (await builder) as unknown as (IWaypoint & { routeId: string })[];
 
-    return waypoints;
+    return generateGroupRecord(waypoints, (w) => w.routeId);
   }
 
   async findByBoundingBox(

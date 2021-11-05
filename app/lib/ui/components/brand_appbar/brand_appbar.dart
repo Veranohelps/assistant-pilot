@@ -21,7 +21,7 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: BrandColors.primary,
       ),
       child: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: kToolbarHeight,
           child: Stack(
             alignment: Alignment.center,

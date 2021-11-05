@@ -6,6 +6,7 @@ import { IExpedition } from './types/expedition.type';
 export const expeditionEntity: IEntity<IExpedition> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
+    activityTypeIds: { type: 'array' },
     userId: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },

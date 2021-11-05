@@ -29,11 +29,11 @@ export interface IPolygonGeometry {
 
 interface Feature {
   type: string;
-  properties: IProperties;
+  properties?: IProperties;
   geometry: IPointGeometry | ILineStringGeometry;
 }
 
 export interface IGeoJSON {
-  type: string;
+  type?: string;
   features: Feature[];
 }

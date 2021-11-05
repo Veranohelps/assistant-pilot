@@ -1,16 +1,20 @@
 import 'dart:math';
 
-import 'package:app/config/map_config.dart';
-import 'package:app/logic/models/route.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:animations/animations.dart';
+
+import 'package:app/config/map_config.dart';
+import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 
 class StaticMap extends StatelessWidget {
-  StaticMap({required this.route});
+  const StaticMap({
+    Key? key,
+    required this.route,
+  }) : super(key: key);
 
   final DersuRouteFull route;
 
@@ -23,7 +27,7 @@ class StaticMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 500),
       closedColor: Colors.transparent,
       openElevation: 0,
       closedElevation: 0,
@@ -75,7 +79,7 @@ class StaticMap extends StatelessWidget {
     return FlutterMap(
       options: MapOptions(
         bounds: route.boundaries,
-        boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(10)),
+        boundsOptions: const FitBoundsOptions(padding: EdgeInsets.all(10)),
         allowPanning: false,
         zoom: MapConfig.staticInitZoom,
         maxZoom: MapConfig.maxZoom,

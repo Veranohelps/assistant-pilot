@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
-Function pageBuilder = (Widget widget) => (
+Widget Function(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+) pageBuilder(Widget widget) => (
       BuildContext context,
       Animation<double> animation,
       Animation<double> secondaryAnimation,
     ) =>
         widget;
 
-Function transitionsBuilder = (
+Widget transitionsBuilder(
   BuildContext context,
   Animation<double> animation,
   Animation<double> secondaryAnimation,
@@ -21,7 +25,7 @@ Function transitionsBuilder = (
     child: Container(
       decoration: animation.isCompleted
           ? null
-          : BoxDecoration(
+          : const BoxDecoration(
               border: Border(
                 right: BorderSide(
                   color: Colors.black,
@@ -31,13 +35,13 @@ Function transitionsBuilder = (
       child: child,
     ),
   );
-};
+}
 
 class SlideRightRoute extends PageRouteBuilder {
   SlideRightRoute(this.widget)
       : super(
           pageBuilder: pageBuilder(widget),
-          transitionsBuilder: transitionsBuilder as Widget Function(BuildContext, Animation<double>, Animation<double>, Widget),
+          transitionsBuilder: transitionsBuilder,
         );
 
   final Widget widget;

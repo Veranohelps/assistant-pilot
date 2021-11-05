@@ -18,6 +18,9 @@ export class RouteModel implements IRoute {
   @Field(() => [String])
   activityTypeIds!: string[];
 
+  @Field(() => [String])
+  levelIds!: string[];
+
   @Field()
   userId!: string;
 

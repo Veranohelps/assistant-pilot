@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 part of 'route_details.dart';
 
 class RutaTab extends StatelessWidget {
@@ -12,8 +14,11 @@ class RutaTab extends StatelessWidget {
       return BrandLoader();
     }
 
-    var selectedTime = context.watch<TimeFilterCubit>().state;
+    var selectedTime = context.watch<SelectTimeCubit>().state;
+    var selectedActivityTypes = context.watch<SelectActivityTypesCubit>().state;
 
+    var availableSelectedTypesIds =
+        selectedActivityTypes.where((id) => route.activityTypeIds.contains(id));
     return ListView(
       padding: EdgeInsets.all(10),
       children: [
@@ -35,15 +40,22 @@ class RutaTab extends StatelessWidget {
           ),
         ),
         SizedBox(height: 15),
+        if (availableSelectedTypesIds.isEmpty) ...[
+          Text(
+            'Don\'t forget to select at least one activity type\non Terano tab',
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20)
+        ],
         Center(
           child: BrandButtons.primaryShort(
-            onPressed: selectedTime == null
+            onPressed: selectedTime == null || availableSelectedTypesIds.isEmpty
                 ? null
                 : () => Navigator.of(context).push(
                       materialRoute(
                         CreatePlanning(
                           startTime: selectedTime,
-                          routeId: route.id,
+                          route: route,
                         ),
                       ),
                     ),

@@ -15,7 +15,7 @@ class WeatherForecast {
   final List<HourlyForecast> forecastHourly;
   final List<Meteogram> meteograms;
 
-  WeatherForecast({
+  const WeatherForecast({
     required this.sunCalendar,
     required this.forecastHourly,
     required this.meteograms,

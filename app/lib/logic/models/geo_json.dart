@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'geo_json.g.dart';
@@ -41,6 +42,7 @@ class LineStringGeometry extends Geometry {
   @JsonKey(ignore: true)
   final GeometryTypes type = GeometryTypes.lineString;
 
+  @override
   final List<PointCoordinates> coordinates;
 
   static LineStringGeometry fromJson(Map<String, dynamic> json) =>
@@ -61,6 +63,7 @@ class PointGeometry extends Geometry {
   @JsonKey(ignore: true)
   final GeometryTypes type = GeometryTypes.point;
 
+  @override
   final PointCoordinates coordinates;
 
   double get longitude => coordinates.longitude;
@@ -77,8 +80,9 @@ class PointGeometry extends Geometry {
   List<Object?> get props => coordinates.props;
 }
 
+@immutable
 class PointCoordinates extends Equatable {
-  PointCoordinates({
+  const PointCoordinates({
     required this.latitude,
     required this.longitude,
     required this.altitude,

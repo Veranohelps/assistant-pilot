@@ -7,6 +7,7 @@ part of 'route.dart';
 // **************************************************************************
 
 DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) {
+  print(json['waypoints']);
   return DersuRouteFull(
     id: json['id'] as String,
     name: json['name'] as String,

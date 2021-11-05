@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-Function pageBuilder = (Widget widget) => (
+Widget Function(BuildContext, Animation<double>, Animation<double>) pageBuilder(
+        Widget widget) =>
+    (
       BuildContext context,
       Animation<double> animation,
       Animation<double> secondaryAnimation,
     ) =>
         widget;
 
-Function transitionsBuilder = (
+Widget transitionsBuilder(
   BuildContext context,
   Animation<double> animation,
   Animation<double> secondaryAnimation,
@@ -21,7 +23,7 @@ Function transitionsBuilder = (
     child: Container(
       decoration: animation.isCompleted
           ? null
-          : BoxDecoration(
+          : const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: Colors.black,
@@ -31,16 +33,15 @@ Function transitionsBuilder = (
       child: child,
     ),
   );
-};
+}
 
 class SlideBottomRoute extends PageRouteBuilder {
   SlideBottomRoute(this.widget)
       : super(
           pageBuilder: pageBuilder(widget),
-          transitionDuration: Duration(milliseconds: 150),
-          reverseTransitionDuration: Duration(milliseconds: 150),
-          transitionsBuilder: transitionsBuilder as Widget Function(
-              BuildContext, Animation<double>, Animation<double>, Widget),
+          transitionDuration: const Duration(milliseconds: 150),
+          reverseTransitionDuration: const Duration(milliseconds: 150),
+          transitionsBuilder: transitionsBuilder,
         );
 
   final Widget widget;

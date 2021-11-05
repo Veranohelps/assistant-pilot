@@ -36,7 +36,7 @@ class BrandRawLabel extends StatelessWidget {
                 text: ' *',
                 style: ThemeTypo.p0.copyWith(
                     color: isEmpty ? BrandColors.red : BrandColors.mGrey),
-                children: [],
+                children: const [],
               ),
           ],
         ),

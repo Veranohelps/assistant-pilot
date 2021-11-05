@@ -6,7 +6,7 @@ import 'package:app/logic/models/expedition.dart';
 
 import 'helpers.dart';
 
-final createUrl = '/expedition/create';
+const createUrl = '/expedition/create';
 
 class ExpeditionsApi extends PrivateDersuApi {
   Future<void> create(CreateExpeditionDto expeditionData) async {

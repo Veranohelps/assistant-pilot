@@ -6,7 +6,7 @@ part 'waypoint.g.dart';
 
 @JsonSerializable()
 class Waypoint extends Equatable {
-  Waypoint({
+  const Waypoint({
     required this.id,
     required this.typeIds,
     required this.name,

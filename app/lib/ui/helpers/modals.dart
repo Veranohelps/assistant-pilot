@@ -6,7 +6,7 @@ Future<T?> showBrandBottomSheet<T>({
   required WidgetBuilder builder,
 }) =>
     showCupertinoModalBottomSheet<T>(
-      topRadius: Radius.circular(30),
+      topRadius: const Radius.circular(30),
       builder: builder,
       barrierColor: Colors.black45,
       context: context,

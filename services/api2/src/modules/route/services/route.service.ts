@@ -1,20 +1,22 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { uniq } from 'lodash';
+import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
-import { NotFoundError } from '../../common/errors/http.error';
+import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
-import { generateGroupRecord2 } from '../../common/utilities/generate-record';
+import { generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { ExpeditionRouteService } from '../../expedition/services/expedition-route.service';
+import { SkillLevelService } from '../../skill/services/skill-level.service';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
   ICreateRouteDTO,
-  ICreateRouteResult,
   IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
@@ -30,6 +32,7 @@ export class RouteService {
     @Inject(forwardRef(() => ExpeditionRouteService))
     private expeditionRouteService: ExpeditionRouteService,
     private activityTypeService: ActivityTypeService,
+    private skillLevelService: SkillLevelService,
   ) {}
 
   geoJsonToLineString(geojson: IGeoJSON) {
@@ -54,14 +57,51 @@ export class RouteService {
       .join(',')})')`;
   }
 
-  validateActivityType(types: string[]): string[] {
-    const record = this.activityTypeService.findByIds(types);
+  async validateLevelsAndActivities(
+    tx: TransactionManager | null,
+    levelIds: string[],
+    activityTypeIds: string[],
+  ): Promise<void> {
+    const activityTypes = Object.values(this.activityTypeService.findByIds(activityTypeIds));
+    const skillIds = Object.values(await this.skillLevelService.findByIds(tx, levelIds)).map(
+      (level) => level.skillId,
+    );
 
-    if (!types.every((t) => !!record[t])) {
-      throw new NotFoundError(ErrorCodes.ACTIVITY_TYPE_NOT_FOUND, 'Activity type not found');
+    if (skillIds.length !== uniq(skillIds).length) {
+      throw new BadRequestError(
+        ErrorCodes.INVALID_ROUTE_LEVEL_IDS,
+        'A route can only specify 1 level per skill',
+      );
     }
 
-    return types;
+    // for every activity type associated with a skill, check that the skill is provided
+    const isLevelsValid = activityTypes.every((type) =>
+      type.skillId ? skillIds.includes(type.skillId) : true,
+    );
+
+    if (!isLevelsValid) {
+      throw new BadRequestError(
+        ErrorCodes.INVALID_ROUTE_LEVEL_IDS,
+        'Some activity types you chose require certain skills that are not provided',
+      );
+    }
+
+    // for every level, check that activities associated with the level's skill is provided
+    const skillActivityTypes = Object.values(
+      this.activityTypeService.getSkillsActivities(skillIds),
+    );
+    const isActivitiesValid = skillActivityTypes.every(
+      (types) => !types.length || types.some((t) => activityTypeIds.includes(t.id)),
+    );
+
+    if (!isActivitiesValid) {
+      throw new BadRequestError(
+        ErrorCodes.INVALID_ROUTE_ACTIVITY_TYPE_IDS,
+        'Some levels you chose for this route require that you provide choose certain activity types',
+      );
+    }
+
+    return;
   }
 
   async fromGeoJson(
@@ -70,14 +110,38 @@ export class RouteService {
     payload: ICreateRouteDTO,
     geojson: IGeoJSON,
     userId?: string,
-  ): Promise<ICreateRouteResult> {
+  ): Promise<IRoute> {
     const geomString = this.geoJsonToLineString(geojson);
+
+    const [existingRoute, existingRouteByUser] = await Promise.all([
+      this.db
+        .read(tx, { overrides: { globalId: { select: true } } })
+        .where('coordinate', this.db.knex.raw(geomString))
+        .first(),
+      this.db
+        .read(tx)
+        .where('coordinate', this.db.knex.raw(geomString))
+        .where('userId', userId ?? null)
+        .first(),
+    ]);
+
+    if (existingRouteByUser) {
+      throw new BadRequestError(
+        ErrorCodes.DUPLICATE_ROUTE,
+        'You have an existing route with the same track as the route you are attempting to upload, if this is intentional, consider cloning the existing route',
+      );
+    }
+
+    await this.validateLevelsAndActivities(tx, payload.levels ?? [], payload.activityTypes);
+
     const [route] = await this.db
       .write(tx)
       .insert({
+        globalId: existingRoute?.globalId,
         name: payload.name,
         description: payload.description,
-        activityTypeIds: this.validateActivityType(payload.activityTypes),
+        levelIds: payload.levels,
+        activityTypeIds: payload.activityTypes,
         userId,
         originId,
         coordinate: this.db.knex.raw(geomString),
@@ -86,14 +150,40 @@ export class RouteService {
       .where('createdAt')
       .cReturning();
 
-    const { waypoints } = await this.waypointService.fromGeoJson(
-      tx,
-      originId,
-      userId ?? null,
-      geojson,
-    );
+    return route;
+  }
 
-    return { route, waypoints };
+  async cloneRoute(
+    tx: TransactionManager,
+    routeId: string,
+    payload: ICreateRouteDTO,
+    userId?: string,
+  ): Promise<IRoute> {
+    const sourceRoute = await this.findOne(tx, routeId);
+
+    const geomString = this.geoJsonToLineString({
+      features: [{ type: 'Feature', geometry: sourceRoute.coordinate as ILineStringGeometry }],
+    });
+
+    await this.validateLevelsAndActivities(tx, payload.levels ?? [], payload.activityTypes);
+
+    const [route] = await this.db
+      .write(tx)
+      .insert({
+        globalId: sourceRoute.globalId,
+        name: payload.name,
+        description: payload.description,
+        levelIds: payload.levels,
+        activityTypeIds: payload.activityTypes,
+        userId,
+        originId: sourceRoute.originId,
+        coordinate: this.db.knex.raw(geomString),
+        boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+      })
+      .where('createdAt')
+      .cReturning();
+
+    return route;
   }
 
   async updateRoute(
@@ -110,9 +200,8 @@ export class RouteService {
       .update({
         name: payload.name,
         description: payload.description,
-        activityTypeIds: payload.activityTypes
-          ? this.validateActivityType(payload.activityTypes)
-          : undefined,
+        activityTypeIds: payload.activityTypes ?? undefined,
+        levelIds: payload.levels ?? undefined,
         ...(geomString && {
           coordinate: this.db.knex.raw(geomString),
           boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
@@ -128,6 +217,8 @@ export class RouteService {
     if (!route) {
       throw new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found');
     }
+
+    await this.validateLevelsAndActivities(tx, route.levelIds ?? [], route.activityTypeIds);
 
     if (geojson) {
       await this.waypointService.fromGeoJson(tx, route.originId, route.userId, geojson);
@@ -155,7 +246,7 @@ export class RouteService {
 
   async findOne(tx: TransactionManager | null, id: string): Promise<IRoute> {
     const route = await this.db
-      .read(tx, { overrides: { coordinate: { select: true } } })
+      .read(tx, { overrides: { coordinate: { select: true }, globalId: { select: true } } })
       .where({ id })
       .first();
 
@@ -166,16 +257,20 @@ export class RouteService {
     return route;
   }
 
-  async findByIdsSlim(tx: TransactionManager | null, ids: string[]): Promise<IRouteSlim[]> {
-    const routes = await this.db.read(tx).whereIn('id', ids);
+  async findByIdsSlim(tx: TransactionManager | null, ids: string[]): Promise<SRecord<IRouteSlim>> {
+    const routes = await this.db
+      .read(tx)
+      .whereIn('id', ids)
+      .then(generateRecord2((r) => r.id));
 
     return routes;
   }
 
-  async findByIds(tx: TransactionManager | null, ids: string[]): Promise<IRoute[]> {
+  async findByIds(tx: TransactionManager | null, ids: string[]): Promise<SRecord<IRoute>> {
     const routes = await this.db
       .read(tx, { overrides: { coordinate: { select: true } } })
-      .whereIn('id', ids);
+      .whereIn('id', ids)
+      .then(generateRecord2((r) => r.id));
 
     return routes;
   }
@@ -218,12 +313,18 @@ export class RouteService {
     ids: string[],
     options?: IGetRouteWaypointOptions,
   ) {
-    const routes = await this.findByIds(tx, ids);
-    const waypointsRecord = await this.waypointService
-      .getRouteWaypoints(tx, ids, options)
-      .then(generateGroupRecord2((w) => w.routeId));
+    const routes = await this.findByIds(tx, ids)
+      .then((res) => Object.values(res))
+      .then((res) =>
+        AddFields.target(res).add(
+          'waypoints',
+          () => this.waypointService.getRouteWaypoints(tx, ids, options),
+          (route, record) => record[route.id] ?? [],
+        ),
+      )
+      .then(generateRecord2((r) => r.id));
 
-    return routes.map((r) => ({ ...r, waypoints: waypointsRecord[r.id] ?? [] }));
+    return routes;
   }
 
   async findOneWithWaypoints(
@@ -233,7 +334,9 @@ export class RouteService {
   ) {
     const route = await this.findOne(tx, id).then((r) =>
       AddFields.target(r)
-        .add('waypoints', () => this.waypointService.getRouteWaypoints(tx, [r.id], options))
+        .add('waypoints', () =>
+          this.waypointService.getRouteWaypoints(tx, [r.id], options).then((w) => w[r.id] ?? []),
+        )
         .add('activityTypes', () =>
           Object.values(this.activityTypeService.findByIds(r.activityTypeIds)),
         ),

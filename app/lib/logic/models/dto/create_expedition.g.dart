@@ -9,6 +9,7 @@ part of 'create_expedition.dart';
 Map<String, dynamic> _$CreateExpeditionDtoToJson(CreateExpeditionDto instance) {
   final val = <String, dynamic>{
     'routes': instance.routes,
+    'activityTypes': instance.activityTypes,
     'name': instance.name,
   };
 

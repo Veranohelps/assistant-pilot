@@ -1,7 +1,9 @@
 import 'package:app/config/brand_theme.dart';
 import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
-import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
+import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
+import 'package:app/logic/cubits/select_time/select_time.dart';
 import 'package:app/logic/forms/create_expedition/create_expedition.dart';
+import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +12,11 @@ import 'package:app/ui/components/brand_button/brand_button.dart';
 class CreatePlanning extends StatelessWidget {
   const CreatePlanning({
     Key? key,
-    required this.routeId,
+    required this.route,
     required this.startTime,
   }) : super(key: key);
 
-  final String routeId;
+  final DersuRouteFull route;
   final DateTime startTime;
 
   @override
@@ -26,9 +28,10 @@ class CreatePlanning extends StatelessWidget {
         child: BlocProvider(
           create: (context) => CreateExpeditionFormCubit(
             startTime: startTime,
-            routeId: routeId,
+            route: route,
             dashboardCubit: context.read<DashboardCubit>(),
-            timeFilterCubit: context.read<TimeFilterCubit>(),
+            selectTimeCubit: context.read<SelectTimeCubit>(),
+            selectActivityTypesCubit: context.read<SelectActivityTypesCubit>(),
           ),
           child: Builder(builder: (context) {
             final form = context.watch<CreateExpeditionFormCubit>();

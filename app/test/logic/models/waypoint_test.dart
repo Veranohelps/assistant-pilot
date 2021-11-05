@@ -51,7 +51,7 @@ void main() {
       var waypoint = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        typeIds: ['waypoint'],
+        typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -69,7 +69,7 @@ void main() {
       var waypoint1 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        typeIds: ['waypoint'],
+        typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -83,7 +83,7 @@ void main() {
       var waypoint2 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
-        typeIds: ['waypoint'],
+        typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
@@ -97,7 +97,7 @@ void main() {
       var waypoint3 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "another",
-        typeIds: ['waypoint'],
+        typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(

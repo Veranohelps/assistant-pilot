@@ -10,6 +10,7 @@ export interface IRoute {
   originId: ERouteOrigins;
   globalId?: string;
   activityTypeIds: string[];
+  levelIds: string[];
   userId: string | null;
   name: string;
   description: string | null;
@@ -26,6 +27,7 @@ export interface ICreateRoute {
   description?: string;
   originId: ERouteOrigins;
   activityTypeIds: string[];
+  levelIds?: string[];
   globalId?: string;
   userId?: string;
   coordinate: Knex.Raw;
@@ -41,6 +43,7 @@ export interface ICreateRouteDTO {
   name: string;
   description?: string;
   activityTypes: string[];
+  levels?: string[];
 }
 
 export interface IRouteSlim extends Omit<IRoute, 'coordinate'> {}

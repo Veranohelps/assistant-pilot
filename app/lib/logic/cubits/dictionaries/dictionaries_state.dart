@@ -17,7 +17,7 @@ class DictionariesLoaded extends DictionariesState {
   bool get isNotEmtpy => props.isNotEmpty;
   bool get isEmpty => props.isEmpty;
 
-  DictionariesLoaded({
+  const DictionariesLoaded({
     required this.dictionaryLevels,
     required this.routeOrigins,
     required this.activeTypes,

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'levels.g.dart';
 
 class LevelsCatalogData<T> extends Equatable {
-  LevelsCatalogData({
+  const LevelsCatalogData({
     required this.id,
     required this.name,
     required this.description,
@@ -22,7 +22,7 @@ class LevelsCatalogData<T> extends Equatable {
 
 @JsonSerializable()
 class Category extends LevelsCatalogData<Skill> {
-  Category({
+  const Category({
     required String id,
     required String name,
     required String description,
@@ -34,6 +34,7 @@ class Category extends LevelsCatalogData<Skill> {
           children: children,
         );
 
+  @override
   @JsonKey(name: 'skills')
   final List<Skill> children;
 
@@ -47,7 +48,7 @@ class Category extends LevelsCatalogData<Skill> {
 
 @JsonSerializable()
 class Skill extends LevelsCatalogData<Level> {
-  Skill({
+  const Skill({
     required String id,
     required String name,
     required String description,
@@ -59,6 +60,7 @@ class Skill extends LevelsCatalogData<Level> {
           children: children,
         );
 
+  @override
   @JsonKey(name: 'levels')
   final List<Level> children;
 
@@ -77,7 +79,7 @@ class Skill extends LevelsCatalogData<Level> {
 
 @JsonSerializable()
 class Level extends Equatable {
-  Level({
+  const Level({
     required this.id,
     required this.name,
     required this.description,

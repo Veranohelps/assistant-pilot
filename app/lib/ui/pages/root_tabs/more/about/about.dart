@@ -1,11 +1,14 @@
-import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:app/ui/pages/error/error.dart';
-import 'package:app/ui/pages/loader/generic_loader.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_config/flutter_config.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:app/ui/pages/error/error.dart';
+import 'package:app/ui/pages/loader/generic_loader.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
@@ -51,7 +54,11 @@ class AboutScreenData {
 class AboutScreen extends StatelessWidget {
   final PackageInfo packageInfo;
   final String whatsNew;
-  AboutScreen({required this.packageInfo, required this.whatsNew});
+  const AboutScreen({
+    Key? key,
+    required this.packageInfo,
+    required this.whatsNew,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:app/logic/models/levels.dart';
 import 'package:app/logic/models/url.dart';
 import 'package:app/logic/models/route_origin.dart';
 
-final dictionaryUrl = '/dictionary';
+const dictionaryUrl = '/dictionary';
 
 class DictionariesApi extends PrivateDersuApi {
   Future<List<ActivityType>> fetchActiveTypes() async {
@@ -24,7 +24,6 @@ class DictionariesApi extends PrivateDersuApi {
     var allDictionaries = await getDictionaryUrls();
     var routesUrl =
         allDictionaries.firstWhere((element) => element.id == 'route-origin');
-    print(routesUrl);
     var client = await getClient();
     var res = await client.get(routesUrl.url);
     client.close();

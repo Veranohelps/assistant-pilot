@@ -28,7 +28,7 @@ class DashboardCubit extends AuthenticationDependendCubit<DashboardState> {
   }
 
   @override
-  void load(_) {
+  void load(user) {
     fetch();
   }
 }

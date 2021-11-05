@@ -15,7 +15,7 @@ class DashboardEmpty extends DashboardState {}
 class DashboardLoaded extends DashboardState {
   final List<ExpeditionShort> upcomingExpeditions;
 
-  DashboardLoaded({
+  const DashboardLoaded({
     required this.upcomingExpeditions,
   });
 

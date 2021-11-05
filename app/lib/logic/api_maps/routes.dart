@@ -2,7 +2,7 @@ import 'package:app/logic/api_maps/dersu_api.dart';
 import 'package:app/logic/api_maps/helpers.dart';
 import 'package:app/logic/models/route.dart';
 
-final routesUrl = '/route';
+const routesUrl = '/route';
 
 class RoutesApi extends PrivateDersuApi {
   Future<List<DersuRouteShort>> routes() async {

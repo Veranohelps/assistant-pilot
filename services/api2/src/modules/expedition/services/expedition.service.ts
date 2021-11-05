@@ -1,18 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ErrorCodes } from '../../common/errors/error-codes';
-import { NotFoundError } from '../../common/errors/http.error';
+import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
-import { generateGroupRecord2 } from '../../common/utilities/generate-record';
+import AddFields from '../../common/utilities/add-fields';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
+import { ActivityTypeService } from '../../route/services/activity-type.service';
 import { RouteService } from '../../route/services/route.service';
-import {
-  ICreateExpeditionDTO,
-  IExpedition,
-  IExpeditionFull,
-  IExpeditionFullSlim,
-} from '../types/expedition.type';
+import { ICreateExpeditionDTO, IExpedition, IExpeditionFull } from '../types/expedition.type';
 import { ExpeditionRouteService } from './expedition-route.service';
 
 @Injectable()
@@ -22,7 +18,23 @@ export class ExpeditionService {
     private db: KnexClient<'Expedition'>,
     private routeService: RouteService,
     private expeditionRouteService: ExpeditionRouteService,
+    private activityTypeService: ActivityTypeService,
   ) {}
+
+  async validateExpeditionActivityTypes(tx: TransactionManager | null, expedition: IExpedition) {
+    const expeditionRoutes = await this.expeditionRouteService
+      .getRoutesSlim(tx, [expedition.id])
+      .then((res) => Object.values(res).flat());
+    const possibleActivities = expeditionRoutes.map((er) => er.route.activityTypeIds).flat();
+    const isValid = expedition.activityTypeIds.every((id) => possibleActivities.includes(id));
+
+    if (!isValid) {
+      throw new BadRequestError(
+        ErrorCodes.INVALID_EXPEDITION_ACTIVITIES,
+        'The activities types for this expedition is not allowed by any of the selected routes',
+      );
+    }
+  }
 
   async create(
     tx: TransactionManager,
@@ -39,6 +51,7 @@ export class ExpeditionService {
       .insert({
         name: payload.name,
         description: payload.description,
+        activityTypeIds: payload.activityTypes,
         startDateTime: startDateTime,
         userId,
         coordinate: this.db.knex.raw(
@@ -50,7 +63,7 @@ export class ExpeditionService {
       routes: payload.routes,
     });
 
-    const result: IExpeditionFull = await this.getExpeditionFull(tx, id);
+    const result = await this.getExpeditionFull(tx, id);
 
     return result;
   }
@@ -70,35 +83,43 @@ export class ExpeditionService {
       throw new NotFoundError(ErrorCodes.EXPEDITION_NOT_FOUND, 'Expedition not found');
     }
 
-    const expeditionRoutes = await this.expeditionRouteService.getWithRoutes(tx, id);
-
-    const result = {
-      ...expedition,
-      routes: expeditionRoutes.map((e) => e.route),
-    };
+    const result = await AddFields.target(expedition)
+      .add('routes', () =>
+        this.expeditionRouteService
+          .getWithRoutes(tx, [id])
+          .then((eRs) => eRs[expedition.id].map((eR) => eR.route)),
+      )
+      .add('activityTypes', () =>
+        Object.values(this.activityTypeService.findByIds(expedition.activityTypeIds)),
+      );
 
     return result;
   }
 
-  async getExpeditionsFull(userId?: string): Promise<IExpeditionFullSlim[]> {
+  async getExpeditionsFull(userId?: string): Promise<IExpeditionFull[]> {
     const builder = this.db.read();
 
     if (userId) builder.where({ userId });
 
-    const expeditions = await builder;
-    const expeditionRoutes = await this.expeditionRouteService
-      .getRoutesSlim(
-        null,
-        expeditions.map((e) => e.id),
-      )
-      .then(generateGroupRecord2((e) => e.expeditionId));
+    const expeditions = await builder.then((res) =>
+      AddFields.target(res)
+        .add(
+          'routes',
+          () =>
+            this.expeditionRouteService.getRoutesSlim(
+              null,
+              res.map((e) => e.id),
+            ),
+          (exp, record) => record[exp.id].map((er) => er.route),
+        )
+        .add('activityTypes', () =>
+          Object.values(
+            this.activityTypeService.findByIds(res.map((e) => e.activityTypeIds).flat()),
+          ),
+        ),
+    );
 
-    const result = expeditions.map<IExpeditionFullSlim>((expedition) => ({
-      ...expedition,
-      routes: expeditionRoutes[expedition.id].map((e) => e.route).flat(),
-    }));
-
-    return result;
+    return expeditions;
   }
 
   async getExpeditions(): Promise<IExpedition[]> {
@@ -112,7 +133,14 @@ export class ExpeditionService {
       .read()
       .where('startDateTime', '>=', new Date())
       .where({ userId })
-      .orderBy('createdAt', 'desc');
+      .orderBy('createdAt', 'desc')
+      .then((res) =>
+        AddFields.target(res).add('activityTypes', () =>
+          Object.values(
+            this.activityTypeService.findByIds(res.map((e) => e.activityTypeIds).flat()),
+          ),
+        ),
+      );
 
     return expeditions;
   }

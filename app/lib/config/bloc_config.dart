@@ -6,7 +6,8 @@ import 'package:app/logic/cubits/live/live_cubit.dart';
 
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
-import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
+import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
+import 'package:app/logic/cubits/select_time/select_time.dart';
 import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,8 @@ class BlocAndProviderConfig extends StatelessWidget {
         BlocProvider(lazy: false, create: (_) => ProfileCubit(auth)),
         BlocProvider(lazy: false, create: (_) => dictionaries),
         BlocProvider(lazy: false, create: (_) => DashboardCubit(auth)),
-        BlocProvider(lazy: false, create: (_) => TimeFilterCubit()),
+        BlocProvider(lazy: false, create: (_) => SelectTimeCubit()),
+        BlocProvider(lazy: false, create: (_) => SelectActivityTypesCubit()),
         BlocProvider(create: (_) => ExpeditionCubit()),
         BlocProvider(create: (_) => LiveCubit()..load()),
       ],

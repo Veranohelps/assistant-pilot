@@ -68,7 +68,6 @@ class ProfileTab extends StatelessWidget {
           return Container();
         }
         var profile = state.profile;
-        print(profile.avatar);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(

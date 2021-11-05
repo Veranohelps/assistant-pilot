@@ -1,8 +1,10 @@
+import { HTTPError } from 'ky';
 import React from 'react';
 import {
   DefaultOptions, MutationCache, QueryCache, QueryClient, QueryClientProvider
 } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { IBaseResponse } from '../types/request';
 
 interface TProps {
   children: React.ReactNode;
@@ -25,6 +27,32 @@ export const queryClientConfig: IQueryClientConfig = {
         if (count > 3) return false;
 
         return false;
+      },
+      onError: (err) => {
+        if (err instanceof HTTPError) {
+          err.response
+            .json()
+            .then((res) =>
+              alert(
+                (res as IBaseResponse).message ??
+                  'Sorry we encountered an issue completing your request '
+              )
+            );
+        }
+      },
+    },
+    mutations: {
+      onError: (err) => {
+        if (err instanceof HTTPError) {
+          err.response
+            .json()
+            .then((res) =>
+              alert(
+                (res as IBaseResponse).message ??
+                  'Sorry we encountered an issue completing your request '
+              )
+            );
+        }
       },
     },
   },

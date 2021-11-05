@@ -17,9 +17,9 @@ class Localization extends StatelessWidget {
       LevelMessages.warning
     ];
     return EasyLocalization(
-      supportedLocales: [Locale('en', 'US'), Locale('es', 'ES')],
+      supportedLocales: const [Locale('en', 'US'), Locale('es', 'ES')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
       saveLocale: false,
       child: child,
       useFallbackTranslations: true,

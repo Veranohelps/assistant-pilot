@@ -5,8 +5,6 @@ import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
 import 'package:app/logic/models/profile.dart';
 
-import 'package:flutter_appauth/flutter_appauth.dart';
-
 part 'profile_state.dart';
 
 class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
@@ -15,7 +13,8 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
 
   final api = UserApi();
 
-  void load(TokenResponse token) async {
+  @override
+  void load(user) async {
     var profile = await api.fetch();
     late ProfileState state;
     if (profile is FilledProfile) {

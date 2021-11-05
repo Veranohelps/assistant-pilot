@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IPointGeometry } from '../types/geojson.type';
+import got from 'got';
 import {
-  IWeatherPredictionDaily,
   IForecastHourly,
   ISunCalendar,
+  IWeatherPredictionDaily,
 } from '../../route/types/wheather-prediction.type';
-import got from 'got';
+import { IPointGeometry } from '../types/geojson.type';
 
 @Injectable()
 export class OpenWeatherService {

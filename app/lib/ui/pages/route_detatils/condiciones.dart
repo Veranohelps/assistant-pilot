@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 part of 'route_details.dart';
 
 class CondicionesTab extends StatefulWidget {
@@ -18,7 +20,7 @@ class _CondicionesTabState extends State<CondicionesTab> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedTime = context.watch<TimeFilterCubit>().state;
+    var selectedTime = context.watch<SelectTimeCubit>().state;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +65,7 @@ class _CondicionesTabState extends State<CondicionesTab> {
             child: Builder(
               builder: (context) {
                 if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
-                    context.watch<TimeFilterCubit>().state == null) {
+                    context.watch<SelectTimeCubit>().state == null) {
                   return Center(child: Text('choose date and time'));
                 }
                 return _WeatherBlock();
@@ -96,7 +98,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
   }
 
   void _afterLayout(_) {
-    var a = context.read<TimeFilterCubit>();
+    var a = context.read<SelectTimeCubit>();
     var b = context.read<WeatherCubit>();
     _checkTabs(a.state!, (b.state as WeatherLoaded).weather.days);
 
@@ -121,14 +123,14 @@ class _WeatherBlockState extends State<_WeatherBlock> {
         final selectedDay = weather.days[selectedDayTabIndex];
         final weatherInSelectedDay =
             weather.currentDayHorlyForecast(selectedDay);
-        final planningDay = context.read<TimeFilterCubit>().state!;
+        final planningDay = context.read<SelectTimeCubit>().state!;
 
         final weatherInStartingHour = weatherInSelectedDay
             .firstWhere((el) => el.dateTime.hour == planningDay.hour);
 
         return Column(
           children: [
-            Container(
+            SizedBox(
               height: 52,
               child: ListView(
                 shrinkWrap: true,
@@ -179,30 +181,28 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               margin: EdgeInsets.only(left: 16),
               height: 20,
             ),
-            Container(
-              child: Row(
-                children: [
-                  SizedBox(width: 16),
-                  Text(
-                    'Metereología',
-                    style: MType.h5,
+            Row(
+              children: [
+                SizedBox(width: 16),
+                Text(
+                  'Metereología',
+                  style: MType.h5,
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(materialRoute(ImageViewer(
+                      title: 'ver completa',
+                      url: weather.meteograms[0].url,
+                    )));
+                  },
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    child: Text('ver completa'.toUpperCase()),
                   ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(materialRoute(ImageViewer(
-                        title: 'ver completa',
-                        url: weather.meteograms[0].url,
-                      )));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 10),
-                      child: Text('ver completa'.toUpperCase()),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             BrandDivider(
               margin: EdgeInsets.only(left: 16),

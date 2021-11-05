@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/route/route_cubit.dart';
-import 'package:app/logic/cubits/time_filter/time_filter_cubit.dart';
+import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
+import 'package:app/logic/cubits/select_time/select_time.dart';
 import 'package:app/logic/cubits/weather/weather_cubit.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/logic/models/time_with_timezone.dart';
@@ -24,9 +27,11 @@ import 'package:provider/provider.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'dart:async' show StreamSubscription;
 import 'package:async/async.dart' show StreamGroup;
+
 part 'ruta.dart';
 part 'condiciones.dart';
 part 'helpers.dart';
+part 'terreno.dart';
 
 final dateFormat2 = DateFormat.yMMMMd().add_jm();
 final dataFormat1 = DateFormat('dd/MM/yy');
@@ -74,7 +79,7 @@ class RouteDetails extends StatelessWidget {
             children: [
               RutaTab(),
               CondicionesTab(routeId: route.id),
-              Center(child: Text('Terreno')),
+              TerrenoTab(),
               Center(child: Text('Grupo')),
             ],
           ),

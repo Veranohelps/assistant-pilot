@@ -4,7 +4,7 @@ import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/utils/extensions/extensions.dart';
 
 class AuthenticationPage extends StatelessWidget {
-  AuthenticationPage();
+  const AuthenticationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

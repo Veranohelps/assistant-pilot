@@ -15,14 +15,16 @@ abstract class Expedition extends Equatable {
   final PointGeometry coordinate;
   final DateTime startDateTime;
   final DateTime updatedAt;
+  final List<String> activityTypeIds;
 
-  Expedition({
+  const Expedition({
     required this.id,
     required this.userId,
     required this.name,
     required this.coordinate,
     required this.startDateTime,
     required this.updatedAt,
+    required this.activityTypeIds,
     this.description,
   });
 }
@@ -31,12 +33,13 @@ abstract class Expedition extends Equatable {
 class ExpeditionShort extends Expedition {
   final String url;
 
-  ExpeditionShort({
+  const ExpeditionShort({
     required String id,
     required String name,
     required PointGeometry coordinate,
     required DateTime startDateTime,
     required DateTime updatedAt,
+    required List<String> activityTypeIds,
     String? userId,
     String? description,
     required this.url,
@@ -48,6 +51,7 @@ class ExpeditionShort extends Expedition {
           startDateTime: startDateTime,
           updatedAt: updatedAt,
           description: description,
+          activityTypeIds: activityTypeIds,
         );
 
   @override
@@ -69,12 +73,13 @@ class ExpeditionShort extends Expedition {
 class ExpeditionFull extends Expedition {
   final List<DersuRouteFull> routes;
 
-  ExpeditionFull({
+  const ExpeditionFull({
     required String id,
     required String name,
     required PointGeometry coordinate,
     required DateTime startDateTime,
     required DateTime updatedAt,
+    required List<String> activityTypeIds,
     String? userId,
     String? description,
     required this.routes,
@@ -85,6 +90,7 @@ class ExpeditionFull extends Expedition {
           coordinate: coordinate,
           startDateTime: startDateTime,
           updatedAt: updatedAt,
+          activityTypeIds: activityTypeIds,
         );
 
   @override
@@ -99,7 +105,8 @@ class ExpeditionFull extends Expedition {
         routes,
       ];
 
-  static ExpeditionFull fromJson(Map<String, dynamic> json) => _$ExpeditionFullFromJson(json);
+  static ExpeditionFull fromJson(Map<String, dynamic> json) =>
+      _$ExpeditionFullFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExpeditionFullToJson(this);
 }

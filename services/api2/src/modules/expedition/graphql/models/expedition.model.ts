@@ -10,6 +10,9 @@ export class ExpeditionModel implements IExpedition {
   @Field()
   id!: string;
 
+  @Field(() => [String])
+  activityTypeIds!: string[];
+
   @Field()
   userId!: string;
 

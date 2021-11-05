@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 extension DurationFormatter on Duration {
   String toDayHourMinuteSecondFormat() {
     this.toString();

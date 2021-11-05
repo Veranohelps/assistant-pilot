@@ -3,6 +3,7 @@ import { MeteoblueService } from '../common/services/meteoblue.service';
 import { OpenWeatherService } from '../common/services/openweather.service';
 import { DatabaseModule } from '../database/database.module';
 import { ExpeditionModule } from '../expedition/expedition.module';
+import { SkillModule } from '../skill/skill.module';
 import { WaypointModule } from '../waypoint/waypoint.module';
 import { AdminActivityTypeController } from './controllers/admin/admin.activity-type.controller';
 import { AdminRouteController } from './controllers/admin/admin.route.controller';
@@ -17,6 +18,7 @@ import { WeatherService } from './services/weather.service';
     DatabaseModule.forFeature(['Route', 'RouteOrigin', 'ActivityType']),
     WaypointModule,
     forwardRef(() => ExpeditionModule),
+    SkillModule,
   ],
   providers: [
     RouteService,

@@ -51,7 +51,7 @@ class ThemeTypo {
     letterSpacing: 1.25,
   );
 
-  static final temp = TextStyle(color: Colors.red);
+  static const temp = TextStyle(color: Colors.red);
 }
 
 class MType {
@@ -68,13 +68,13 @@ class MType {
     letterSpacing: 0.15,
   );
 
-  static final subtitle1 = TextStyle(
+  static const subtitle1 = TextStyle(
     fontSize: 16,
     height: 24 / 16,
     letterSpacing: 0.15,
   );
 
-  static final overline = TextStyle(
+  static const overline = TextStyle(
     fontSize: 10,
     height: 16 / 10,
     letterSpacing: 1.15,

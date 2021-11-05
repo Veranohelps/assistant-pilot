@@ -12,13 +12,15 @@ export const getTimeZoneQueryValidationSchema = Joi.object({
 export const createRouteValidationSchema = Joi.object<ICreateRouteDTO>({
   name: Joi.string().required(),
   description: Joi.string(),
-  //activityTypes: Joi.array().min(1).items(Joi.string()).required(),
+  activityTypes: Joi.array().single().min(1).items(Joi.string()).required(),
+  levels: Joi.array().items(Joi.string()),
 });
 
 export const updateRouteValidationSchema = Joi.object<ICreateRouteDTO>({
   name: Joi.string(),
   description: Joi.string(),
-  activityTypes: Joi.array().min(1).items(Joi.string()),
+  activityTypes: Joi.array().single().min(1).items(Joi.string()).default([]),
+  levels: Joi.array().single().items(Joi.string()).default([]),
 });
 
 export const getRouteValidationSchema = Joi.object<IGetRouteUrlParameters>({

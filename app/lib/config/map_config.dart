@@ -27,8 +27,8 @@ class MapConfig {
       width: 30.0,
       height: 30.0,
       point: point,
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.only(bottom: 12, left: 12),
+      builder: (ctx) => const Padding(
+        padding: EdgeInsets.only(bottom: 12, left: 12),
         child: Icon(
           Ionicons.flag_outline,
           color: Colors.black,

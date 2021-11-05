@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { generateRecord, generateRecord2 } from '../../common/utilities/generate-record';
+import { ErrorCodes } from '../../common/errors/error-codes';
+import { NotFoundError } from '../../common/errors/http.error';
+import {
+  generateGroupRecord,
+  generateRecord,
+  generateRecord2,
+} from '../../common/utilities/generate-record';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { IActivityType } from '../types/activity-type.type';
@@ -18,9 +24,31 @@ export class ActivityTypeService {
   }
 
   findByIds(ids: string[]): Record<string, IActivityType> {
-    return generateRecord(
-      ids.map((id) => this.cachedTypes[id]),
-      (t) => t.id,
+    const record = generateRecord(
+      ids,
+      (id) => id,
+      (id) => {
+        if (!this.cachedTypes[id]) {
+          throw new NotFoundError(ErrorCodes.ACTIVITY_TYPE_NOT_FOUND, 'Activity type not found');
+        }
+
+        return this.cachedTypes[id];
+      },
+    );
+
+    return record;
+  }
+
+  getSkillsActivities(skillIds: string[]): Record<string, IActivityType[]> {
+    const skillIdRecord = generateRecord(
+      Object.values(this.cachedTypes).filter((t) => !!t.skillId),
+      (type) => type.skillId as string,
+    );
+
+    return generateGroupRecord(
+      skillIds,
+      (sId) => sId,
+      (sId) => skillIdRecord[sId] ?? undefined,
     );
   }
 

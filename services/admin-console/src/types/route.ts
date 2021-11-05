@@ -6,6 +6,7 @@ export interface IRoute {
   id: string;
   originId: string;
   activityTypeIds: string[];
+  levelIds: string[];
   userId: string | null;
   name: string;
   description: string | null;
@@ -38,4 +39,5 @@ export interface ICreateRoutePayload {
   description?: string | null;
   gpx: File;
   activityTypes: string[];
+  levels: string[];
 }

@@ -21,6 +21,9 @@ jobs:
       - name: Get Flutter dependencies
         working-directory: app
         run: flutter pub get
+      - name: Lint
+        working-directory: app
+        run: flutter analyze
       - name: Test
         working-directory: app
         run: flutter test

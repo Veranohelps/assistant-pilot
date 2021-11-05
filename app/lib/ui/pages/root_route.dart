@@ -71,7 +71,7 @@ class _RootPageState extends State<RootPage>
         create: (_) => ChangeTab(tabController.animateTo),
         child: TabBarView(
           controller: tabController,
-          children: [
+          children: const [
             Dashboard(),
             ProfileTab(),
             RoutesTab(),

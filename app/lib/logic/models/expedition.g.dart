@@ -14,6 +14,9 @@ ExpeditionShort _$ExpeditionShortFromJson(Map<String, dynamic> json) {
         PointGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
     startDateTime: DateTime.parse(json['startDateTime'] as String),
     updatedAt: DateTime.parse(json['updatedAt'] as String),
+    activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     userId: json['userId'] as String?,
     description: json['description'] as String?,
     url: json['url'] as String,
@@ -28,6 +31,9 @@ ExpeditionFull _$ExpeditionFullFromJson(Map<String, dynamic> json) {
         PointGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
     startDateTime: DateTime.parse(json['startDateTime'] as String),
     updatedAt: DateTime.parse(json['updatedAt'] as String),
+    activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     userId: json['userId'] as String?,
     description: json['description'] as String?,
     routes: (json['routes'] as List<dynamic>)
@@ -45,5 +51,6 @@ Map<String, dynamic> _$ExpeditionFullToJson(ExpeditionFull instance) =>
       'coordinate': instance.coordinate,
       'startDateTime': instance.startDateTime.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'activityTypeIds': instance.activityTypeIds,
       'routes': instance.routes,
     };

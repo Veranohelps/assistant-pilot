@@ -12,6 +12,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class PlausibleApi extends ApiMap {
+  @override
   Future<Dio> getClient() async {
     var dio = Dio(await options);
     if (hasLoger) {
@@ -42,6 +43,7 @@ class PlausibleApi extends ApiMap {
     return dio;
   }
 
+  @override
   Future<BaseOptions> get options async {
     var userAgent = getIt<DeviceInfoService>().deviceInfoString();
 

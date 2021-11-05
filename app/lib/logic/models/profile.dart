@@ -31,12 +31,16 @@ class IncompleteProfile extends Profile {
     required this.updatedAt,
   });
 
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String id;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String auth0Id;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String email;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final DateTime updatedAt;
 
@@ -72,14 +76,19 @@ class FilledProfile extends Profile {
 
   final bool isSubscribedToNewsletter;
 
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String id;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String auth0Id;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final String email;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final bool isRegistrationFinished;
+  @override
   @JsonKey(toJson: Serialization.readOnly, includeIfNull: true)
   final DateTime updatedAt;
 
@@ -118,16 +127,16 @@ class FilledProfile extends Profile {
 
   FilledProfile deleteAvatar() {
     return FilledProfile(
-      firstName: this.firstName,
-      lastName: this.lastName,
-      isSubscribedToNewsletter: this.isSubscribedToNewsletter,
-      id: this.id,
-      auth0Id: this.auth0Id,
-      email: this.email,
-      isRegistrationFinished: this.isRegistrationFinished,
+      firstName: firstName,
+      lastName: lastName,
+      isSubscribedToNewsletter: isSubscribedToNewsletter,
+      id: id,
+      auth0Id: auth0Id,
+      email: email,
+      isRegistrationFinished: isRegistrationFinished,
       avatar: null,
-      updatedAt: this.updatedAt,
-      currentLevels: this.currentLevels,
+      updatedAt: updatedAt,
+      currentLevels: currentLevels,
     );
   }
 

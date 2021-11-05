@@ -17,12 +17,14 @@ abstract class ProfileReady extends ProfileState {
 class ProfileDersuRegistrationNotFinished extends ProfileReady {
   ProfileDersuRegistrationNotFinished(this.profile);
 
+  @override
   final IncompleteProfile profile;
 }
 
 class ProfileDersuRegistrationFinished extends ProfileReady {
   ProfileDersuRegistrationFinished(this.profile);
 
+  @override
   final FilledProfile profile;
 
   @override

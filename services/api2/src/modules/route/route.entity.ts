@@ -11,6 +11,7 @@ export const routeEntity: IEntity<IRoute> = {
     globalId: { type: 'string', select: false, defaults: { insert: () => generateId() } },
     originId: { type: 'string' },
     activityTypeIds: { type: 'array' },
+    levelIds: { type: 'array' },
     userId: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },
@@ -53,6 +54,7 @@ export const routeOriginEntity: IEntity<IRouteOrigin> = {
 export const activityTypeEntity: IEntity<IActivityType> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
+    skillId: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },
   },

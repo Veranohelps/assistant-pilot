@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/ui/components/brand_system_overlay/brand_system_overlay.dart';
@@ -34,7 +36,7 @@ class More extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                  children: const [
                     _NavItem(
                       title: 'Acerca de',
                       goTo: About(),

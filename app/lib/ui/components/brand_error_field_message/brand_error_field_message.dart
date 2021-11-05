@@ -14,7 +14,7 @@ class BrandErrorFieldMessage extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    if (hasError && error != null)
+    if (hasError && error != null) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -22,6 +22,7 @@ class BrandErrorFieldMessage extends StatelessWidget {
           style: ThemeTypo.p0.copyWith(color: BrandColors.errors),
         ),
       );
+    }
 
     return Container();
   }

@@ -12,7 +12,7 @@ class NotAuthenticated extends AuthenticationState {}
 class AuthenticationLoading extends AuthenticationState {}
 
 class Authenticated extends AuthenticationState {
-  Authenticated({
+  const Authenticated({
     required this.token,
   });
 

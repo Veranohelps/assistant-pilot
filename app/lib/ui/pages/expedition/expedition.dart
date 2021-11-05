@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
+import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/expedition.dart';
 import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
@@ -32,10 +37,22 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
 
   @override
   Widget build(BuildContext context) {
+    var dict = context.read<DictionariesCubit>().state;
+    if (dict is! DictionariesLoaded) {
+      return BrandLoader();
+    }
     return BlocProvider<ExpeditionCubit>(
       create: (_) => ExpeditionCubit()..getExpedition(widget.expedition.url),
       child: Builder(builder: (context) {
         var fullExpedition = context.watch<ExpeditionCubit>().state;
+
+        late List<ActivityType> actitvityTypes = [];
+
+        if (fullExpedition != null) {
+          actitvityTypes.addAll(fullExpedition.activityTypeIds
+              .map((id) => dict.findActiveTypeById(id)));
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Text(widget.expedition.name),
@@ -53,10 +70,10 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
                           context: context,
                           builder: (context) => AlertDialog(
                             key: Key("location-warning-dialogue"),
-                            title: new Text(
-                                LocaleKeys.expedition_warning_title.tr()),
-                            content: new Text(
-                                LocaleKeys.expedition_warning_text.tr()),
+                            title:
+                                Text(LocaleKeys.expedition_warning_title.tr()),
+                            content:
+                                Text(LocaleKeys.expedition_warning_text.tr()),
                             actions: <Widget>[
                               TextButton(
                                   onPressed: () =>
@@ -101,6 +118,24 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
                 if (widget.expedition.description != null) ...[
                   Text(widget.expedition.description!),
                 ],
+                Text('Activity types'),
+                if (actitvityTypes.isEmpty) Text('emtpy'),
+                if (actitvityTypes.isNotEmpty)
+                  ...actitvityTypes
+                      .map((a) => Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_box,
+                                  color: BrandColors.mGrey,
+                                ),
+                                SizedBox(width: 10),
+                                Text(a.name),
+                              ],
+                            ),
+                          ))
+                      .toList()
               ],
             ),
           ),

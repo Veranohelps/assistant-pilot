@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:app/config/brand_theme.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';

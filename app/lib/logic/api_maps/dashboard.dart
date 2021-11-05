@@ -3,7 +3,7 @@ import 'package:app/logic/models/expedition.dart';
 import 'package:app/utils/extensions/iterable.dart';
 import 'package:either_option/either_option.dart';
 
-final dashboardUrl = '/dashboard';
+const dashboardUrl = '/dashboard';
 
 class DashboardApi extends PrivateDersuApi {
   Future<Option<List<ExpeditionShort>>> fetch() async {

@@ -1,6 +1,6 @@
 import { ICreateSkillLevelDTO } from './skill-level.type';
 
-export interface ISkill extends ICreateSkill {
+export interface ISkill {
   id: string;
   name: string;
   description: string;

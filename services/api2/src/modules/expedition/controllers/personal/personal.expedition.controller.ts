@@ -5,10 +5,11 @@ import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
+import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
 import { createExpeditionValidationSchema } from '../../expedition.validation';
 import { ExpeditionService } from '../../services/expedition.service';
-import { ICreateExpeditionDTO } from '../../types/expedition.type';
+import { ICreateExpeditionDTO, IExpedition } from '../../types/expedition.type';
 
 @Controller('personal/expedition')
 @JwtProtected()
@@ -19,6 +20,8 @@ export class PersonalExpeditionController {
   @HttpCode(HttpStatus.OK)
   async getAllExpeditions(@UserData() user: IUser) {
     const expeditions = await this.expeditionService.getExpeditionsFull(user.id);
+
+    withUrl(expeditions, (e: IExpedition) => appUrls.personal.expedition.id(e.id));
 
     return successResponse('fetch personal expeditions', { expeditions });
   }

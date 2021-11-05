@@ -1,6 +1,7 @@
 import 'package:app/utils/extensions/lat_lng_bounds.dart';
 import 'package:flutter_map/flutter_map.dart';
 
+// ignore: prefer_void_to_null
 Null readonly(_) => null;
 
 class Serialization {

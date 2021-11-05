@@ -1,3 +1,4 @@
+import 'knex';
 import { KnexPostgis } from 'knex-postgis';
 import { TransactionManager } from '../modules/common/utilities/transaction-manager';
 import { IWithColumnsOptions } from '../modules/database/knex/extensions.knex';
@@ -8,6 +9,8 @@ declare module 'knex' {
   interface Knex {
     postgis: KnexPostgis;
   }
+
+  namespace DeferredKeySelection {}
   namespace Knex {
     // eslint-disable-next-line @typescript-eslint/ban-types
     interface QueryBuilder<TRecord extends {} = any, TResult = any> {
@@ -34,8 +37,10 @@ declare module 'knex' {
 
       sTest<T extends keyof ResolveTableType<TRecord>>(col: T, override: IEntityColumn<TRecord>);
 
-      cReturning(): QueryBuilder<TRecord, DeferredKeySelection<TRecord, never>[]>;
+      cReturning(): QueryBuilder<TRecord, TRecord[]>;
     }
+
+    // eslint-disable-next-line @typescript-eslint/ban-types
   }
 }
 

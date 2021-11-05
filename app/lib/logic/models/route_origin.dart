@@ -9,7 +9,7 @@ class RouteOrigin extends Equatable {
   final String name;
   final String description;
 
-  RouteOrigin({
+  const RouteOrigin({
     required this.id,
     required this.name,
     required this.description,

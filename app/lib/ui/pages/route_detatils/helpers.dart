@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 part of 'route_details.dart';
 
 void setTimeFilterDate(BuildContext context) async {
   var today = DateTime.now();
   var tommorow = today.add(Duration(days: 1));
 
-  var prevDate = context.read<TimeFilterCubit>().state;
+  var prevDate = context.read<SelectTimeCubit>().state;
 
   final initalDate = prevDate ?? tommorow;
   final initalTime = prevDate != null
@@ -27,7 +29,7 @@ void setTimeFilterDate(BuildContext context) async {
     if (time != null) {
       final dayTime =
           DateTime(day.year, day.month, day.day, time.hour, time.minute);
-      context.read<TimeFilterCubit>().setNewTime(dayTime);
+      context.read<SelectTimeCubit>().setNewTime(dayTime);
     }
   }
 }

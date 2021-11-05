@@ -43,7 +43,7 @@ dependencies:
   flutter_map: 0.14.0
   animations: 2.0.1
   geolocator: 7.7.0
-  cached_network_image: 3.1.0
+  cached_network_image: 3.1.0+1
   linked_scroll_controller: 0.2.0
   image_picker: 0.8.4+3
   permission_handler: 8.2.5
@@ -53,6 +53,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: 1.0.0
   build_runner: 2.1.2
   hive_generator: 1.1.0
   json_serializable: 4.1.3

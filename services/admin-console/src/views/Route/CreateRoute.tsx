@@ -9,8 +9,12 @@ import { FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import appRoutes from '../../config/appRoutes';
 import { getActivityTypesService } from '../../services/activityTypeService';
+import { getSkillDictionary } from '../../services/dictionaryService';
 import {
-  createRouteService, deleteRouteService, editRouteService, getRouteByIdService
+  createRouteService,
+  deleteRouteService,
+  editRouteService,
+  getRouteByIdService,
 } from '../../services/routeService';
 import { ICreateRoutePayload } from '../../types/route';
 import { className } from '../../utils/style';
@@ -84,12 +88,14 @@ interface IForm {
   name: string;
   description: string;
   activityTypes: string[];
+  levels: string[];
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
   activityTypes: [],
+  levels: [],
 };
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
@@ -159,6 +165,10 @@ const CreateRoute = (props: IProps) => {
     select: (res) => res.data.activityTypes,
     staleTime: Infinity,
   });
+  const skillDictQuery = useQuery(['dictionary', 'skill'], getSkillDictionary, {
+    select: (res) => res.data.skills.map((s) => s.skills).flat(),
+    staleTime: Infinity,
+  });
 
   useEffect(() => {
     if (props.isEditing && routeQuery.data) {
@@ -166,6 +176,7 @@ const CreateRoute = (props: IProps) => {
         name: routeQuery.data.name,
         description: routeQuery.data.description ?? '',
         activityTypes: routeQuery.data.activityTypeIds,
+        levels: routeQuery.data.levelIds,
       });
     }
   }, [routeQuery.data, props.isEditing]);
@@ -209,6 +220,7 @@ const CreateRoute = (props: IProps) => {
               description: values.description || null,
               gpx: file ?? undefined,
               activityTypes: values.activityTypes,
+              levels: values.levels,
             });
           } else {
             if (!file) {
@@ -220,6 +232,7 @@ const CreateRoute = (props: IProps) => {
               description: values.description || null,
               gpx: file,
               activityTypes: values.activityTypes,
+              levels: values.levels,
             });
           }
 
@@ -250,6 +263,27 @@ const CreateRoute = (props: IProps) => {
                     setFile(gpx);
                   }}
                 />
+              </InputContainer>
+              <InputContainer>
+                <FormLabel>Levels</FormLabel>
+                <div className={cls.set('activityTypes')}>
+                  {skillDictQuery.data?.map((skill) => {
+                    return (
+                      <div>
+                        <FormLabel>{skill.name}</FormLabel>
+                        {skill.levels.map((level) => {
+                          return (
+                            <FormLabel>
+                              <Field type="checkbox" name="levels" value={level.id} />
+                              {level.name}
+                            </FormLabel>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+                <ErrorMsg name="type" />
               </InputContainer>
               <InputContainer>
                 <FormLabel>Activity type</FormLabel>

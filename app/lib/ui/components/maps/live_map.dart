@@ -1,26 +1,31 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:app/config/get_it_config.dart';
-import 'package:app/config/map_config.dart';
-import 'package:app/generated/locale_keys.g.dart';
-import 'package:app/logic/cubits/live/live_cubit.dart';
-import 'package:app/logic/get_it/background_geolocation.dart';
-import 'package:app/logic/models/route.dart';
-import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
-import 'package:app/utils/geo_utils.dart';
-import 'package:app/utils/route_transitions/basic.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
 
+import 'package:app/config/get_it_config.dart';
+import 'package:app/config/map_config.dart';
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/cubits/live/live_cubit.dart';
+import 'package:app/logic/get_it/background_geolocation.dart';
+import 'package:app/logic/models/route.dart';
+import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
+import 'package:app/utils/geo_utils.dart';
+import 'package:app/utils/route_transitions/basic.dart';
+
 class LiveMap extends StatefulWidget {
-  LiveMap({required this.route, required this.startTime});
+  const LiveMap({
+    Key? key,
+    required this.route,
+    required this.startTime,
+  }) : super(key: key);
 
   final DersuRouteFull route;
   final DateTime startTime;
@@ -73,7 +78,7 @@ class _LiveMapState extends State<LiveMap> {
     } else {
       delay?.cancel();
       delay = Timer(
-        Duration(seconds: 5),
+        const Duration(seconds: 5),
         () => _hasLiveUpdatePause = false,
       );
     }

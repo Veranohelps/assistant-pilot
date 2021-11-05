@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 part 'console_message.g.dart';
 
-final formater = new DateFormat('hh:mm');
+final formater = DateFormat('hh:mm');
 final formater2 = DateFormat('MM-dd hh:mm');
 
 @HiveType(typeId: 1)

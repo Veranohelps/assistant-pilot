@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:app/logic/models/geo_json.dart';
 
 void main() {
-  final longitude = 1.0;
-  final latitude = 2.0;
-  final altitude = 3.0;
+  const longitude = 1.0;
+  const latitude = 2.0;
+  const altitude = 3.0;
   final pointData = [longitude, latitude, altitude];
   var point = PointCoordinates(
     longitude: longitude,

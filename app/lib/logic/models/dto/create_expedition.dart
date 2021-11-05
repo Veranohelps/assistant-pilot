@@ -5,9 +5,9 @@ part 'create_expedition.g.dart';
 
 @JsonSerializable(createFactory: false)
 class CreateExpeditionDto {
-  List<RouteWithStartTimeDto> routes;
-
-  String name;
+  final List<RouteWithStartTimeDto> routes;
+  final List<String> activityTypes;
+  final String name;
 
   @JsonKey(includeIfNull: false)
   String? description;
@@ -15,6 +15,7 @@ class CreateExpeditionDto {
   CreateExpeditionDto({
     required this.routes,
     required this.name,
+    required this.activityTypes,
     this.description,
   }) : assert(routes.isNotEmpty);
 
