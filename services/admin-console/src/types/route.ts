@@ -1,4 +1,4 @@
-import { ILineStringGeometry } from './geometry';
+import { ILineStringGeometry, IPolygonGeometry } from './geometry';
 import { IBaseResponse } from './request';
 import { IWaypoint } from './waypoint';
 
@@ -11,6 +11,7 @@ export interface IRoute {
   name: string;
   description: string | null;
   coordinate?: ILineStringGeometry;
+  boundingBox: IPolygonGeometry;
   updatedAt: string;
   url?: string;
 }

@@ -1,8 +1,9 @@
 import L from 'leaflet';
-import React, { MutableRefObject, useRef, useState } from 'react';
-import { Circle, MapContainer, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet';
+import React, { useRef, useState } from 'react';
+import { Circle, MapContainer, TileLayer, Tooltip, useMapEvents } from 'react-leaflet';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import GetMap from '../../components/GetMap';
 import { waypointsByBoundingBox } from '../../services/waypointService';
 import { IPolygonGeometry } from '../../types/geometry';
 import { IWaypoint } from '../../types/waypoint';
@@ -70,14 +71,6 @@ const WaypointLayers = (props: { onWaypointSelect: (waypoint: IWaypoint) => void
   );
 };
 
-const GetMap = (props: { mapRef: MutableRefObject<L.Map | null> }) => {
-  const map = useMap();
-
-  props.mapRef.current = map;
-
-  return null;
-};
-
 const Waypoint = () => {
   const [activeWaypoint, setActiveWaypoint] = useState<IWaypoint | null>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -86,7 +79,7 @@ const Waypoint = () => {
     <Container>
       <div className={cls.set('mapContainer')}>
         <MapContainer center={L.latLng(40.416775, -3.70379)} zoom={13} scrollWheelZoom>
-          <GetMap mapRef={mapRef} />
+          <GetMap ref={mapRef} />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

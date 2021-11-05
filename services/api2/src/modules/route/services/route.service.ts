@@ -196,17 +196,19 @@ export class RouteService {
   ): Promise<IRoute> {
     const geomString = geojson ? this.geoJsonToLineString(geojson) : null;
 
-    const [existingRoute, existingRouteByUser] = await Promise.all([
-      this.db
-        .read(tx, { overrides: { globalId: { select: true } } })
-        .where('coordinate', this.db.knex.raw(geomString))
-        .first(),
-      this.db
-        .read(tx)
-        .where('coordinate', this.db.knex.raw(geomString))
-        .where('userId', userId ?? null)
-        .first(),
-    ]);
+    const [existingRoute, existingRouteByUser] = geomString
+      ? await Promise.all([
+          this.db
+            .read(tx, { overrides: { globalId: { select: true } } })
+            .where('coordinate', this.db.knex.raw(geomString))
+            .first(),
+          this.db
+            .read(tx)
+            .where('coordinate', this.db.knex.raw(geomString))
+            .where('userId', userId ?? null)
+            .first(),
+        ])
+      : [null, null];
 
     if (existingRouteByUser) {
       throw new BadRequestError(
@@ -218,7 +220,7 @@ export class RouteService {
     const builder = this.db
       .write(tx)
       .update({
-        globalId: existingRoute?.globalId,
+        globalId: existingRoute?.globalId ?? undefined,
         name: payload.name,
         description: payload.description,
         activityTypeIds: payload.activityTypes ?? undefined,

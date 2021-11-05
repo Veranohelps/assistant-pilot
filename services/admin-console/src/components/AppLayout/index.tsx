@@ -22,6 +22,7 @@ const Container = styled.div`
     ${cls.get('contentWrapper')} {
       padding-top: 2rem;
       width: 95%;
+      height: 100%;
       margin: auto;
       padding-bottom: 3rem;
     }
