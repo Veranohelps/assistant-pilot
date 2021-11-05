@@ -6,7 +6,7 @@ import 'package:app/logic/models/waypoint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-
+import 'package:latlong2/latlong.dart';
 export 'package:provider/provider.dart';
 
 class BackgroundGeolocationService extends ChangeNotifier {
@@ -22,6 +22,11 @@ class BackgroundGeolocationService extends ChangeNotifier {
         break;
       }
     }
+  }
+
+  Future<LatLng> getCurrentPosition() async {
+    bg.Location location = await currentPosition;
+    return LatLng(location.coords.latitude, location.coords.longitude);
   }
 
   Future<void> init() async {
@@ -55,6 +60,11 @@ class BackgroundGeolocationService extends ChangeNotifier {
     );
   }
 
+  void addLocationListener(Function(bg.Location) success,
+      [Function(bg.LocationError)? failure]) {
+    bg.BackgroundGeolocation.onLocation(success, failure);
+  }
+
   Future<void> start(List<Waypoint> waypoints, int waypointPrecision) async {
     await getIt<NotificationService>().init();
     var geofences = waypoints.map((wp) {
@@ -69,10 +79,13 @@ class BackgroundGeolocationService extends ChangeNotifier {
         extras: {'waypointId': wp.id},
       );
     }).toList();
-    await bg.BackgroundGeolocation.addGeofences(geofences);
 
-    getIt<ConsoleService>().addMessage(
-        ConsoleMessage(text: '${waypoints.length} waypoints added'));
+    print(waypoints.length);
+    if (geofences.isNotEmpty) {
+      await bg.BackgroundGeolocation.addGeofences(geofences);
+      getIt<ConsoleService>().addMessage(
+          ConsoleMessage(text: '${waypoints.length} waypoints added'));
+    }
 
     this.waypoints.addAll(waypoints);
   }
@@ -104,5 +117,6 @@ class BackgroundGeolocationService extends ChangeNotifier {
 
     await bg.BackgroundGeolocation.destroyLocations();
     await bg.BackgroundGeolocation.removeGeofences();
+    await bg.BackgroundGeolocation.removeListeners();
   }
 }

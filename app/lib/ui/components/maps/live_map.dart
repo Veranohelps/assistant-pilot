@@ -1,24 +1,22 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/logic/models/route.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
 import 'package:app/utils/geo_utils.dart';
 import 'package:app/utils/route_transitions/basic.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:provider/provider.dart';
+import 'package:latlong2/latlong.dart';
 
 class LiveMap extends StatefulWidget {
   const LiveMap({
@@ -38,13 +36,12 @@ const zoom = MapConfig.liveInitZoom;
 
 class _LiveMapState extends State<LiveMap> {
   late MapController _controller;
-  StreamSubscription<Position>? _positionStream;
   bool _liveUpdate = false;
   bool _hasLiveUpdatePause = false;
   bool isFirstEventAfterCenter = true;
   BackgroundGeolocationService? geolocationService;
   Marker? userMarker;
-
+  StreamSubscription<MapEvent>? _mapStream;
   @override
   void initState() {
     super.initState();
@@ -54,19 +51,15 @@ class _LiveMapState extends State<LiveMap> {
   Timer? delay;
 
   void _afterLayout(_) async {
-    LatLng? position = await GeoUtils.getUserLocation();
-    if (position != null) {
+    await _geoFence();
+    if (geolocationService != null) {
+      LatLng position = await geolocationService!.getCurrentPosition();
       _controller.move(position, zoom);
       _liveUpdate = true;
-
-      _positionStream = Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.bestForNavigation,
-        intervalDuration: Duration(seconds: 5),
-      ).listen(_locationListener);
-
-      _controller.mapEventStream.listen(_mapListener);
+      _mapStream = _controller.mapEventStream.listen(_mapListener);
+      geolocationService!
+          .addLocationListener(_locationListener, _locationErrorListener);
     }
-    _geoFence();
   }
 
   Future<void> _mapListener(event) async {
@@ -78,14 +71,15 @@ class _LiveMapState extends State<LiveMap> {
     } else {
       delay?.cancel();
       delay = Timer(
-        const Duration(seconds: 5),
+        Duration(seconds: 5),
         () => _hasLiveUpdatePause = false,
       );
     }
 
     LatLng position = LatLng(event.center.latitude, event.center.longitude);
-    LatLng? userCurrentPosition = await GeoUtils.getUserLocation();
-    if (userCurrentPosition != null) {
+    if (geolocationService != null) {
+      LatLng userCurrentPosition =
+          await geolocationService!.getCurrentPosition();
       if (isFirstEventAfterCenter) {
         isFirstEventAfterCenter = false;
       } else {
@@ -100,16 +94,21 @@ class _LiveMapState extends State<LiveMap> {
     }
   }
 
-  void _locationListener(Position position) {
+  void _locationErrorListener(error) {
+    _liveUpdate = false;
+    print(error);
+  }
+
+  void _locationListener(position) {
     if (_liveUpdate && !_hasLiveUpdatePause) {
       _controller.move(
-        LatLng(position.latitude, position.longitude),
+        LatLng(position.coords.latitude, position.coords.longitude),
         _controller.zoom,
       );
     }
     setState(() {
       userMarker = Marker(
-        point: LatLng(position.latitude, position.longitude),
+        point: LatLng(position.coords.latitude, position.coords.longitude),
         height: 20,
         width: 20,
         builder: (BuildContext context) {
@@ -130,15 +129,17 @@ class _LiveMapState extends State<LiveMap> {
       _hasLiveUpdatePause = false;
       isFirstEventAfterCenter = true;
     });
-    LatLng? position = await GeoUtils.getUserLocation();
-    if (position != null) {
+    if (geolocationService != null) {
+      LatLng position = await geolocationService!.getCurrentPosition();
       _controller.move(position, _controller.zoom);
     }
   }
 
   @override
   void dispose() {
-    _positionStream?.cancel();
+    if (_mapStream != null) {
+      _mapStream!.cancel();
+    }
     geolocationService?.stop();
     super.dispose();
   }

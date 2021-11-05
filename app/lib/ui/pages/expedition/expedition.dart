@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/config/brand_colors.dart';
-import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/expedition.dart';
 import 'package:app/logic/get_it/background_geolocation.dart';
+import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
@@ -66,29 +66,9 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
                 onPressed: fullExpedition == null
                     ? null
                     : () async {
-                        var res = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            key: Key("location-warning-dialogue"),
-                            title:
-                                Text(LocaleKeys.expedition_warning_title.tr()),
-                            content:
-                                Text(LocaleKeys.expedition_warning_text.tr()),
-                            actions: <Widget>[
-                              TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                  child: Text(LocaleKeys.basis_cancel.tr())),
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pop(true),
-                                child: Text(LocaleKeys.basis_accept.tr()),
-                              )
-                            ],
-                          ),
-                        );
-
-                        if (res) {
+                        bool allowed =
+                            await DersuPermissionsHandler.requestPermission();
+                        if (allowed) {
                           await context.read<LiveCubit>().set(fullExpedition);
                           Navigator.of(context).push(
                             noAnimationRoute(

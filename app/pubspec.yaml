@@ -42,13 +42,14 @@ dependencies:
   device_info_plus: 3.0.1
   flutter_map: 0.14.0
   animations: 2.0.1
-  geolocator: 7.7.0
   cached_network_image: 3.1.0+1
   linked_scroll_controller: 0.2.0
   image_picker: 0.8.4+3
   permission_handler: 8.2.5
   image_cropper: 1.4.1
   overlay_support: 1.2.1
+  dersu_permissions:
+    path: dersu_permissions
 
 dev_dependencies:
   flutter_test:

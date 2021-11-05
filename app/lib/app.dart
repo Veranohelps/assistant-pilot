@@ -1,6 +1,7 @@
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
+import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/pages/authentication/authentication.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
@@ -28,11 +29,15 @@ class _AppState extends State<App> {
     var liveExpedition = context.read<LiveCubit>().state;
 
     if (liveExpedition is LiveStateOn) {
-      Navigator.of(context).push(
-        materialRoute(
-          const ExpeditionLive(),
-        ),
-      );
+      bool allowed =
+          await DersuPermissionsHandler.requestPermission(showDialog: false);
+      if (allowed) {
+        Navigator.of(context).push(
+          materialRoute(
+            ExpeditionLive(),
+          ),
+        );
+      }
     }
   }
 
