@@ -10,6 +10,7 @@ const RouteRoutes = () => {
         <Route path="" element={<RouteList />} />
         <Route path="create" element={<CreateRoute />} />
         <Route path=":routeId/edit" element={<CreateRoute isEditing />} />
+        <Route path=":routeId/clone" element={<CreateRoute isCloning />} />
       </Route>
     </Routes>
   );

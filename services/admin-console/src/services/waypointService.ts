@@ -31,13 +31,13 @@ export const createWaypointService = async (data: ICreateWaypointPayload) => {
   return response.data;
 };
 
-export const createWaypointBulkService = async (gpx: File) => {
+export const createWaypointBulkService = async (data: { gpx: File; ignoreDuplicates: boolean }) => {
   const form = new FormData();
 
-  form.append('gpx', gpx);
+  form.append('gpx', data.gpx);
 
   const response = await waypointHttp
-    .post('create-bulk', { body: form })
+    .post('create-bulk', { searchParams: { ignoreDuplicates: data.ignoreDuplicates }, body: form })
     .json<IBulkCreateWaypointResponse>();
 
   return response.data;

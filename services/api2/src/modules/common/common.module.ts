@@ -5,9 +5,9 @@ import { HttpExceptionFilter } from './filters/http.filter';
 import { JoiExceptionFilter } from './filters/joi-exception.filter';
 import { ErrorInterceptor } from './interceptors/error-handler.interceptor';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
+import { GcpService } from './services/gcp.service';
 import { LoaderService } from './services/loader.service';
 import { StrapiService } from './services/strapi.service';
-import { GcpService } from './services/gcp.service';
 
 @Global()
 @Module({

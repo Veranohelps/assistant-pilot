@@ -13,6 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
+import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
 import { successResponse } from '../../../common/utilities/success-response';
@@ -21,11 +22,13 @@ import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { ERouteOrigins } from '../../../route/types/route-origin.type';
 import { WaypointService } from '../../services/waypoint.service';
 import {
+  IBulkCreateWaypointUrlParameters,
   ICreateWaypointDTO,
   IFindWaypointByBoundingBoxUrlParameters,
   IWaypoint,
 } from '../../types/waypoint.type';
 import {
+  bulkCreateWaypointParamsValidationSchema,
   createWaypointValidationSchema,
   findWaypointByBoundingBoxValidationSchema,
   updateWaypointValidationSchema,
@@ -49,12 +52,18 @@ export class AdminWaypointController {
   @Post('create-bulk')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('gpx'))
-  async createBulk(@UploadedFile() file: Express.Multer.File, @Tx() tx: TransactionManager) {
+  async createBulk(
+    @UploadedFile() file: Express.Multer.File,
+    @Tx() tx: TransactionManager,
+    @ParsedUrlParameters(bulkCreateWaypointParamsValidationSchema)
+    params: Partial<IBulkCreateWaypointUrlParameters>,
+  ) {
     const result = await this.waypointService.fromGeoJson(
       tx,
       ERouteOrigins.DERSU,
       null,
       gpxToGeoJSON(file.buffer.toString('utf-8')),
+      params.ignoreDuplicates,
     );
 
     return successResponse('Waypoints created', result);

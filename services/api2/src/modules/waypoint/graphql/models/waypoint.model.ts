@@ -15,6 +15,9 @@ export class WaypointModel implements IWaypoint {
   originId!: string;
 
   @Field()
+  gFingerprint!: string;
+
+  @Field()
   name!: string;
 
   @Field(() => [String])

@@ -53,6 +53,15 @@ export const editRouteService = async (id: string, data: Partial<ICreateRoutePay
   return response;
 };
 
+export const cloneRouteService = async (
+  id: string,
+  data: Partial<Omit<ICreateRoutePayload, 'gpx'>>
+) => {
+  const response = await routeHttp.post(`${id}/clone`, { json: data }).json<IGetRouteResult>();
+
+  return response;
+};
+
 export const deleteRouteService = async (id: string) => {
   const response = await routeHttp.delete(id).json<IBaseResponse>();
 

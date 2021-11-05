@@ -36,3 +36,7 @@ export const updateWaypointValidationSchema = Joi.object({
 export const findWaypointByBoundingBoxValidationSchema = Joi.object({
   boundingBox: polygonGeometryValidationSchema.required(),
 });
+
+export const bulkCreateWaypointParamsValidationSchema = Joi.object({
+  ignoreDuplicates: Joi.boolean().default(false),
+});

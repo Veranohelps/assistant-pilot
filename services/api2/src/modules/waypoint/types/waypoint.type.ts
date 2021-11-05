@@ -5,6 +5,7 @@ import { ERouteOrigins } from '../../route/types/route-origin.type';
 
 export interface IWaypoint {
   id: string;
+  gFingerprint: string;
   userId: string | null;
   originId: string;
   typeIds: string[];
@@ -26,6 +27,7 @@ export interface ICreateWaypoint {
   description?: string;
   radiusInMeters: number;
   coordinate: Knex.Raw;
+  gFingerprint: Knex.Raw | string;
   meta?: IDefaultMeta;
 }
 
@@ -55,4 +57,8 @@ export interface IFindWaypointByBoundingBoxUrlParameters {
 export interface IWaypointFindOneOptions {
   userId?: string;
   originId?: ERouteOrigins;
+}
+
+export interface IBulkCreateWaypointUrlParameters {
+  ignoreDuplicates?: boolean;
 }

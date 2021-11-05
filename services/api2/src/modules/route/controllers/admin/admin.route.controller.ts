@@ -57,14 +57,26 @@ export class AdminRouteController {
     @Tx() tx: TransactionManager,
     @ParsedBody(createRouteValidationSchema) payload: ICreateRouteDTO,
   ) {
-    const result = await this.routeService.fromGeoJson(
+    const route = await this.routeService.fromGeoJson(
       tx,
       ERouteOrigins.DERSU,
       payload,
       gpxToGeoJSON(file.buffer.toString('utf-8')),
     );
 
-    return successResponse('Route created', result);
+    return successResponse('Route created', { route });
+  }
+
+  @Post(':routeId/clone')
+  @HttpCode(HttpStatus.CREATED)
+  async clone(
+    @Tx() tx: TransactionManager,
+    @ParsedBody(createRouteValidationSchema) payload: ICreateRouteDTO,
+    @Param('routeId') routeId: string,
+  ) {
+    const route = await this.routeService.cloneRoute(tx, routeId, payload);
+
+    return successResponse('Route cloned', { route });
   }
 
   @Patch(':routeId/update')

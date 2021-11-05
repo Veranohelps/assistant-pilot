@@ -3,7 +3,7 @@ import React, { MutableRefObject, useRef, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { Button } from '../../components/Button';
-import { FlexBox } from '../../components/Layout';
+import { GridBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import { createWaypointBulkService } from '../../services/waypointService';
 import { className } from '../../utils/style';
@@ -34,6 +34,7 @@ interface IProps {
 const WaypointBulkUpload = (props: IProps) => {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [ignoreDuplicates, setIgnoreDuplicates] = useState(false);
   const queryClient = useQueryClient();
 
   const bulkCreateWaypoint = useMutation(createWaypointBulkService, {
@@ -46,7 +47,7 @@ const WaypointBulkUpload = (props: IProps) => {
     },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (!file) {
       window.alert('Please select a GPX file to upload waypoints from');
 
@@ -54,10 +55,15 @@ const WaypointBulkUpload = (props: IProps) => {
     }
 
     if (window.confirm('You are attempting to upload multiple waypoints at once. Are you sure?')) {
-      await bulkCreateWaypoint.mutateAsync(file);
-
-      inputFileRef.current!.value = '';
-      setFile(null);
+      bulkCreateWaypoint.mutate(
+        { gpx: file, ignoreDuplicates },
+        {
+          onSuccess: () => {
+            inputFileRef.current!.value = '';
+            setFile(null);
+          },
+        }
+      );
     }
   };
 
@@ -66,7 +72,7 @@ const WaypointBulkUpload = (props: IProps) => {
       <div className={cls.set('header')}>
         <Typography textStyle="md24">Bulk Upload Waypoints</Typography>
       </div>
-      <FlexBox direction="column" justify="space-between">
+      <GridBox direction="row" gap={20}>
         <input
           ref={inputFileRef}
           type="file"
@@ -77,9 +83,29 @@ const WaypointBulkUpload = (props: IProps) => {
             setFile(gpx);
           }}
         />
-      </FlexBox>
-      <Button type="button" className="submitButton" onClick={onSubmit} box={{ mTop: 30 }}>
-        {bulkCreateWaypoint.isLoading ? 'Uploading' : 'Upload Waypoints'}
+        <Typography
+          className={cls.set('formLabel')}
+          as="label"
+          textStyle="sm14"
+          textColor="primary"
+        >
+          <input
+            type="checkbox"
+            name="type"
+            checked={ignoreDuplicates}
+            onChange={(e) => setIgnoreDuplicates(e.target.checked)}
+          />
+          {'  '} Ignore duplicates
+        </Typography>
+      </GridBox>
+      <Button
+        type="button"
+        className="submitButton"
+        onClick={onSubmit}
+        box={{ mTop: 30 }}
+        disabled={bulkCreateWaypoint.isLoading}
+      >
+        {bulkCreateWaypoint.isLoading ? 'Uploading...' : 'Upload Waypoints'}
       </Button>
     </Container>
   );

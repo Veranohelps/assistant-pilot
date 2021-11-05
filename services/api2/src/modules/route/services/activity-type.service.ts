@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import {
@@ -23,7 +24,7 @@ export class ActivityTypeService {
     return Object.values(this.cachedTypes);
   }
 
-  findByIds(ids: string[]): Record<string, IActivityType> {
+  findByIds(ids: string[]): SRecord<IActivityType> {
     const record = generateRecord(
       ids,
       (id) => id,

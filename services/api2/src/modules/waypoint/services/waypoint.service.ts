@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { isEmpty } from 'lodash';
 import { ErrorCodes } from '../../common/errors/error-codes';
-import { NotFoundError } from '../../common/errors/http.error';
-import { IGeoJSON, IPolygonGeometry } from '../../common/types/geojson.type';
+import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
+import { IGeoJSON, IPointGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
 import { AppQuery } from '../../common/utilities/app-query';
-import { generateGroupRecord } from '../../common/utilities/generate-record';
+import { generateGroupRecord, generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -30,18 +31,24 @@ export class WaypointService {
     originId: ERouteOrigins,
     userId: string | null,
     geojson: IGeoJSON,
+    ignoreDuplicates?: boolean,
   ): Promise<{ boundingBox?: IPolygonGeometry; waypoints: IWaypoint[] }> {
     const newPoints = geojson.features
       .filter((feature) => feature.geometry.type === 'Point')
       .map((point) => {
+        const geometry = point.geometry as IPointGeometry;
+
         return {
           name: point.properties?.name ?? '',
-          description: point.properties?.desc ?? '',
+          description: point.properties?.desc,
+          gFingerprint: `${geometry.coordinates[0]}_${geometry.coordinates[1]}_${
+            geometry.coordinates[2] ?? 0
+          }`,
           typeIds: [],
           radiusInMeters: 100,
           originId,
           userId,
-          coordinate: this.db.knex.raw('st_geomfromgeojson(?)', [JSON.stringify(point.geometry)]),
+          coordinate: this.db.knex.raw('st_geomfromgeojson(?)', [JSON.stringify(geometry)]),
         };
       });
 
@@ -49,7 +56,27 @@ export class WaypointService {
       return { waypoints: [] };
     }
 
-    const waypoints = await this.db.write(tx).insert(newPoints).cReturning();
+    const existingWaypoints = await this.db
+      .read(tx)
+      .whereIn(
+        'gFingerprint',
+        newPoints.map((p) => p.gFingerprint),
+      )
+      .where({ userId })
+      .then(generateRecord2((w) => w.gFingerprint));
+
+    if (!isEmpty(existingWaypoints) && !ignoreDuplicates) {
+      throw new BadRequestError(
+        ErrorCodes.DUPLICATE_WAYPOINT,
+        'You already have waypoints with coordinates same as some of the waypoints you are attempting to upload, if this is intentional, ignore duplicates',
+      );
+    }
+
+    // filter out duplicate waypoints
+    const inserts = newPoints.filter((p) => !existingWaypoints[p.gFingerprint]);
+    const insertBuilder = this.db.write(tx).insert(inserts).cReturning();
+
+    const waypoints = inserts.length ? await insertBuilder : [];
     const boundingBox = (
       await this.db.builder
         .transacting(tx.ktx)
@@ -57,8 +84,8 @@ export class WaypointService {
           extent: this.db.knex.raw('st_asgeojson(st_extent(coordinate::geometry)::geometry)::json'),
         })
         .whereIn(
-          'id',
-          waypoints.map((w) => w.id),
+          'gFingerprint',
+          newPoints.map((w) => w.gFingerprint),
         )
         .first()
     )?.extent as IPolygonGeometry;
@@ -89,6 +116,7 @@ export class WaypointService {
         description: payload.description,
         typeIds: this.validateWaypointType(payload.types),
         radiusInMeters: payload.radiusInMeters,
+        gFingerprint: `${payload.longitude}_${payload.latitude}_${payload.altitude}`,
         originId,
         userId,
         coordinate: this.db.knex.raw(
@@ -116,6 +144,9 @@ export class WaypointService {
         description: payload.description,
         typeIds: payload.types ? this.validateWaypointType(payload.types) : undefined,
         radiusInMeters: payload.radiusInMeters,
+        gFingerprint: `${payload.longitude ?? longitude}_${payload.latitude ?? latitude}_${
+          payload.altitude ?? altitude
+        }`,
         originId,
         coordinate: this.db.knex.raw(
           `st_geomfromtext('pointz(${payload.longitude ?? longitude} ${

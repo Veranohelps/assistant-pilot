@@ -11,10 +11,7 @@ import appRoutes from '../../config/appRoutes';
 import { getActivityTypesService } from '../../services/activityTypeService';
 import { getSkillDictionary } from '../../services/dictionaryService';
 import {
-  createRouteService,
-  deleteRouteService,
-  editRouteService,
-  getRouteByIdService,
+  cloneRouteService, createRouteService, deleteRouteService, editRouteService, getRouteByIdService
 } from '../../services/routeService';
 import { ICreateRoutePayload } from '../../types/route';
 import { className } from '../../utils/style';
@@ -123,6 +120,7 @@ const FormLabel = (props: { children: React.ReactNode }) => {
 
 interface IProps {
   isEditing?: boolean;
+  isCloning?: boolean;
 }
 
 const CreateRoute = (props: IProps) => {
@@ -146,6 +144,15 @@ const CreateRoute = (props: IProps) => {
       },
     }
   );
+  const cloneRoute = useMutation(
+    (data: Partial<ICreateRoutePayload>) => cloneRouteService(params.routeId as string, data),
+    {
+      onSuccess: () => {
+        invalidate();
+        navigate(appRoutes.route.dashboard);
+      },
+    }
+  );
   const deleteRoute = useMutation(deleteRouteService, {
     onSuccess: () => {
       invalidate();
@@ -159,6 +166,7 @@ const CreateRoute = (props: IProps) => {
       select: (res) => res.data.route,
       refetchOnMount: true,
       staleTime: Infinity,
+      enabled: !!params.routeId,
     }
   );
   const activityTypesQuery = useQuery(['activity-type'], getActivityTypesService, {
@@ -184,7 +192,13 @@ const CreateRoute = (props: IProps) => {
   return (
     <Container>
       <div className={cls.set('header')}>
-        <Typography textStyle="md24">{props.isEditing ? 'Edit Route' : 'New Route'}</Typography>{' '}
+        <Typography textStyle="md24">
+          {props.isEditing
+            ? 'Edit Route'
+            : props.isCloning
+            ? `Clone Route (${routeQuery.data?.name ?? ''})`
+            : 'New Route'}
+        </Typography>{' '}
         {props.isEditing && (
           <Button
             className={cls.set('deleteButton')}
@@ -204,6 +218,14 @@ const CreateRoute = (props: IProps) => {
         enableReinitialize
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
+          const data = {
+            name: values.name,
+            description: values.description || null,
+            gpx: file ?? undefined,
+            activityTypes: values.activityTypes,
+            levels: values.levels,
+          };
+
           if (props.isEditing) {
             if (file) {
               if (
@@ -215,25 +237,15 @@ const CreateRoute = (props: IProps) => {
               }
             }
 
-            await editRoute.mutateAsync({
-              name: values.name,
-              description: values.description || null,
-              gpx: file ?? undefined,
-              activityTypes: values.activityTypes,
-              levels: values.levels,
-            });
+            await editRoute.mutateAsync(data);
+          } else if (props.isCloning) {
+            await cloneRoute.mutateAsync(data);
           } else {
             if (!file) {
               return alert('Please upload a valid GPX file');
             }
 
-            await createRoute.mutateAsync({
-              name: values.name,
-              description: values.description || null,
-              gpx: file,
-              activityTypes: values.activityTypes,
-              levels: values.levels,
-            });
+            await createRoute.mutateAsync({ ...data, gpx: file });
           }
 
           resetForm();
@@ -252,18 +264,20 @@ const CreateRoute = (props: IProps) => {
                 <Field name="description" as="textarea" />
                 <ErrorMsg name="description" />
               </InputContainer>
-              <InputContainer>
-                <FormLabel>Upload GPX</FormLabel>
-                <input
-                  type="file"
-                  accept=".gpx"
-                  onChange={(e) => {
-                    const gpx = e.target.files?.[0] ?? null;
+              {!props.isCloning && (
+                <InputContainer>
+                  <FormLabel>Upload GPX</FormLabel>
+                  <input
+                    type="file"
+                    accept=".gpx"
+                    onChange={(e) => {
+                      const gpx = e.target.files?.[0] ?? null;
 
-                    setFile(gpx);
-                  }}
-                />
-              </InputContainer>
+                      setFile(gpx);
+                    }}
+                  />
+                </InputContainer>
+              )}
               <InputContainer>
                 <FormLabel>Levels</FormLabel>
                 <div className={cls.set('activityTypes')}>
@@ -305,6 +319,10 @@ const CreateRoute = (props: IProps) => {
                     ? isSubmitting
                       ? 'Saving changes...'
                       : 'Edit Route'
+                    : props.isCloning
+                    ? isSubmitting
+                      ? 'Cloning Route...'
+                      : 'Clone'
                     : isSubmitting
                     ? 'Creating Route...'
                     : 'Create Route'}

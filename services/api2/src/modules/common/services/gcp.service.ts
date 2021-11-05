@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
 import { Storage } from '@google-cloud/storage';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BadRequestError, ServerError } from '../errors/http.error';
-import { ErrorCodes } from '../errors/error-codes';
-import { v4 } from 'uuid';
 import sizeOf from 'image-size';
 import imageType from 'image-type';
+import { v4 } from 'uuid';
+import { ErrorCodes } from '../errors/error-codes';
+import { BadRequestError, ServerError } from '../errors/http.error';
 
 @Injectable()
 export class GcpService {

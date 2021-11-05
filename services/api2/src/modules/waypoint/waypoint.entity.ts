@@ -7,6 +7,7 @@ import { IWaypoint } from './types/waypoint.type';
 export const waypointEntity: IEntity<IWaypoint> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
+    gFingerprint: { type: 'string' },
     userId: { type: 'string' },
     originId: { type: 'string' },
     typeIds: { type: 'array' },

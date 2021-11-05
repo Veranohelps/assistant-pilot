@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../../components/Button';
-import { FlexBox } from '../../components/Layout';
+import { FlexBox, GridBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import appRoutes from '../../config/appRoutes';
 import { getRoutesService } from '../../services/routeService';
@@ -77,7 +77,11 @@ const RouteList = () => {
                 </Typography>
               </div>
               <FlexBox justify="flex-end">
-                <Link to={appRoutes.route.edit(route.id)}>Edit route</Link>
+                <GridBox direction="column" gap={10}>
+                  <Link to={appRoutes.route.edit(route.id)}>Edit route</Link>
+                  <Typography>|</Typography>
+                  <Link to={appRoutes.route.clone(route.id)}>Clone</Link>
+                </GridBox>
               </FlexBox>
             </div>
           );

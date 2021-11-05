@@ -128,7 +128,7 @@ export class RouteService {
     if (existingRouteByUser) {
       throw new BadRequestError(
         ErrorCodes.DUPLICATE_ROUTE,
-        'You have an existing route with the same track as the route you are attempting to upload, if this is intentional, consider cloning the existing route',
+        `You have an existing route "${existingRouteByUser.name}" with the same track as the route you are attempting to upload, if this is intentional, consider cloning it`,
       );
     }
 
@@ -195,9 +195,30 @@ export class RouteService {
     geojson?: IGeoJSON | null,
   ): Promise<IRoute> {
     const geomString = geojson ? this.geoJsonToLineString(geojson) : null;
+
+    const [existingRoute, existingRouteByUser] = await Promise.all([
+      this.db
+        .read(tx, { overrides: { globalId: { select: true } } })
+        .where('coordinate', this.db.knex.raw(geomString))
+        .first(),
+      this.db
+        .read(tx)
+        .where('coordinate', this.db.knex.raw(geomString))
+        .where('userId', userId ?? null)
+        .first(),
+    ]);
+
+    if (existingRouteByUser) {
+      throw new BadRequestError(
+        ErrorCodes.DUPLICATE_ROUTE,
+        `You have an existing route "${existingRouteByUser.name}" with the same track as the route you are attempting to edit, if this is intentional, consider cloning it`,
+      );
+    }
+
     const builder = this.db
       .write(tx)
       .update({
+        globalId: existingRoute?.globalId,
         name: payload.name,
         description: payload.description,
         activityTypeIds: payload.activityTypes ?? undefined,
@@ -219,10 +240,6 @@ export class RouteService {
     }
 
     await this.validateLevelsAndActivities(tx, route.levelIds ?? [], route.activityTypeIds);
-
-    if (geojson) {
-      await this.waypointService.fromGeoJson(tx, route.originId, route.userId, geojson);
-    }
 
     return route;
   }
