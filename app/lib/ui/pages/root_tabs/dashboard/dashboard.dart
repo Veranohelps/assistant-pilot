@@ -35,15 +35,16 @@ class Dashboard extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: Text(
-                  'Upcoming Expeditions',
-                  style: ThemeTypo.p0,
+                  LocaleKeys.dashboard_upcoming_expeditions.tr(),
+                  style: ThemeTypo.h2,
                 ),
               );
             }
             if (isEmpty) {
               return Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text('Empty'),
+                child:
+                    Text(LocaleKeys.dashboard_upcoming_expeditions_empty.tr()),
               );
             } else {
               var expedition = expeditions[index - 1];

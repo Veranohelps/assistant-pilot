@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
@@ -55,7 +57,7 @@ class RouteDetails extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('GUARDAR'),
+            title: Text(route.name),
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(50),
               child: Container(

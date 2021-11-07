@@ -24,7 +24,7 @@ class ErrorScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 100),
-                    Text('🤯 🤬 😵', style: TextStyle(fontSize: 50)),
+                    Text('🤯 😵', style: TextStyle(fontSize: 50)),
                     Text(LocaleKeys.errors_fatal.tr()).h1,
                     Text(error?.toString() ?? LocaleKeys.errors_fatal.tr()).p0,
                     if (stackTrace != null) ...[

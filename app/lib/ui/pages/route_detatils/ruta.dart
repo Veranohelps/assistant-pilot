@@ -22,7 +22,6 @@ class RutaTab extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.all(10),
       children: [
-        ...buildBlock('Name', route.name),
         SizedBox(
           height: 400,
           child: StaticMap(
@@ -35,14 +34,14 @@ class RutaTab extends StatelessWidget {
             onPressed: () => setTimeFilterDate(context),
             label: 'time change',
             text: selectedTime == null
-                ? 'no date'
+                ? LocaleKeys.planning_route_details_no_date.tr()
                 : dateFormat2.format(selectedTime),
           ),
         ),
         SizedBox(height: 15),
         if (availableSelectedTypesIds.isEmpty) ...[
           Text(
-            'Don\'t forget to select at least one activity type\non Terano tab',
+            LocaleKeys.planning_set_activity_reminder.tr(),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20)
@@ -59,19 +58,10 @@ class RutaTab extends StatelessWidget {
                         ),
                       ),
                     ),
-            text: 'Confirm expedition',
+            text: LocaleKeys.planning_confirm_expedition.tr(),
           ),
         ),
       ],
     );
-  }
-
-  List<Widget> buildBlock(String title, String value) {
-    return [
-      Text(title, style: ThemeTypo.p0),
-      SizedBox(height: 5),
-      Text(value, style: ThemeTypo.p0),
-      SizedBox(height: 10),
-    ];
   }
 }

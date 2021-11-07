@@ -35,7 +35,7 @@ class ProfileTab extends StatelessWidget {
             padding: EdgeInsets.only(right: 20),
             alignment: Alignment.centerRight,
             child: BrandButtons.primaryShort(
-              text: 'Editar perfil',
+              text: LocaleKeys.profile_edit_profile.tr(),
               onPressed: () {
                 Navigator.of(context).push(materialRoute(_EditProfile()));
               },

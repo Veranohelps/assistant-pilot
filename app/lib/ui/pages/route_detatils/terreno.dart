@@ -19,11 +19,12 @@ class TerrenoTab extends StatelessWidget {
       children: [
         SizedBox(height: 20),
         Text(
-          'Activity types',
+          LocaleKeys.planning_terrain_activities.tr(),
           style: ThemeTypo.h2,
         ),
         SizedBox(height: 20),
-        if (types.isEmpty) Text('Emtpy'),
+        if (types.isEmpty)
+          Text(LocaleKeys.planning_terrain_no_activities_for_route.tr()),
         ...types
             .map(
               (t) => CheckboxListTile(

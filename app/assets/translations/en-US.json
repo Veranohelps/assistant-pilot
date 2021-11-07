@@ -5,37 +5,56 @@
     "save": "Save",
     "close": "Close",
     "confirm": "Confirm expedition",
-    "ok": "Ok"
+    "ok": "OK"
   },
   "profile": {
     "name": "Profile",
+    "edit_profile": "Edit profile",
     "my_levels": {
       "name": "My levels",
       "not_set_up": "Not set up",
-      "save_and_close": "Save and close configurations"
+      "save_and_close": "Close and save configuration"
     },
     "logout": "Logout"
   },
   "planning": {
     "name": "Planning",
-    "routes": "Routes",
+    "set_activity_reminder": "Please don't forget to set an actity in the Terrain tab.",
+    "confirm_expedition": "Confirm expedition",
     "route_details": {
-      "name": "Route Details",
-      "route_name": "Name"
+      "no_date": "Set expedition's departure date and time"
+    },
+    "conditions": {
+      "date_time_departure": "Date and time departure",
+      "select": "Choose",
+      "select_explanation": "Set date and time in order to access weather and nivology reports."
+    },
+    "terrain": {
+      "activities": "Actividades",
+      "no_activities_for_route": "No activities defined for this route yet"
+    },
+    "confirm": {
+      "expedition_name": "Expedition name",
+      "expedition_description": "Description",
+      "save_expedition": "Save"
     }
   },
   "dashboard": {
-    "name": "Dersu home"
+    "name": "Home",
+    "upcoming_expeditions": "Upcoming expeditions",
+    "upcoming_expeditions_empty": "No expeditions planned"
   },
   "more": {
-    "name": "More"
+    "name": "More",
+    "about": "About",
+    "console": "Console"
   },
   "errors": {
     "fatal": "Fatal error!",
     "unknown": "Unknown error"
   },
   "gestures": {
-    "press_and_hold": "Press & Hold"
+    "press_and_hold": "Press & hold"
   },
   "registration": {
     "name": "Profile details",

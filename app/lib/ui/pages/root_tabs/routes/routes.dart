@@ -39,7 +39,6 @@ class _RoutesTabState extends State<RoutesTab> {
       body: ListView(
         padding: paddingH25V0.copyWith(top: 20),
         children: [
-          Text(LocaleKeys.planning_name.tr()),
           for (var route in routesState.list)
             GestureDetector(
               onTap: () {

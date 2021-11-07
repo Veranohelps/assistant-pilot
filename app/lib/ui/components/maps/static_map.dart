@@ -119,7 +119,7 @@ class StaticMap extends StatelessWidget {
           polylines: [
             MapConfig.route(
               route.coordinate.coordinates,
-              color: Colors.red,
+              color: Colors.cyanAccent,
               strokeWidth: 1,
             ),
           ],

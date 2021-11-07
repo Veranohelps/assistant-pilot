@@ -1,38 +1,56 @@
 {
   "basis": {
-    "accept": "Acceptar",
+    "accept": "Aceptar",
     "cancel": "Cancelar",
     "save": "Guardar",
     "close": "Cerrar",
     "confirm": "Confirmar",
-    "ok": "Ok"
+    "ok": "OK"
   },
   "profile": {
     "name": "Perfil",
+    "edit_profile": "Editar perfil",
     "my_levels": {
-      "name": "Mi nivel",
-      "not_set_up": "No instalado",
-      "save_and_close": "Guardar y cerrar configuración"
+      "name": "Mis niveles",
+      "not_set_up": "Sin definir",
+      "save_and_close": "Cerrar y guardar configuración"
     },
     "logout": "Cerrar sesión"
   },
   "planning": {
     "name": "Planificación",
-    "routes": "Routes",
+    "set_activity_reminder": "No te olvides de seleccionar por lo menos una actividad en la pestaña de Terreno.",
+    "confirm_expedition": "Confirmar expedición",    
     "route_details": {
-      "name": "Route Details",
-      "route_name": "Name"
+      "no_date": "Estableder fecha y hora de salida"
+    },
+    "conditions": {
+      "date_time_departure": "Fecha y hora de salida",
+      "select": "Seleccionar",
+      "select_explanation": "Seleccionar fecha y hora para acceder a las previsiones de meteo y nivo."
+    },
+    "terrain": {
+      "activities": "Actividades",
+      "no_activities_for_route": "No hay actividades definidas para esta ruta"
+    },
+    "confirm": {
+      "expedition_name": "Nombre de la expedición",
+      "expedition_description": "Descripción",
+      "save_expedition": "Guardar"
     }
   },
   "dashboard": {
-    "name": "Dersu home",
-    "confirm": "Confirmar expedición"
+    "name": "Home",
+    "upcoming_expeditions": "Próximas expediciones",
+    "upcoming_expeditions_empty": "No hay expediciones planificadas"
   },
   "more": {
-    "name": "Más"
+    "name": "Más",
+    "about": "Acerca de",
+    "console": "Consola"
   },
   "errors": {
-    "fatal": "Error fatal!!",
+    "fatal": "Error!",
     "unknown": "Error desconocido"
   },
   "gestures": {

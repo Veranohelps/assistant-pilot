@@ -11,7 +11,7 @@ class _EditProfile extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mi perfil'),
+        title: Text(LocaleKeys.profile_edit_profile.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),

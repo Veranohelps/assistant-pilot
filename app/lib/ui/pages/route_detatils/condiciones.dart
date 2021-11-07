@@ -35,7 +35,7 @@ class _CondicionesTabState extends State<CondicionesTab> {
                 isEmpty: selectedTime == null,
                 isDisabled: false,
                 isRequired: true,
-                text: 'Fecha',
+                text: LocaleKeys.planning_conditions_date_time_departure.tr(),
               ),
               Row(
                 children: [
@@ -43,7 +43,7 @@ class _CondicionesTabState extends State<CondicionesTab> {
                     child: BrandFakeInput(
                       hasError: false,
                       intputText: selectedTime == null
-                          ? 'no date'
+                          ? LocaleKeys.planning_conditions_select.tr()
                           : dateFormat2.format(selectedTime),
                       onPress: () => setTimeFilterDate(context),
                     ),
@@ -66,7 +66,10 @@ class _CondicionesTabState extends State<CondicionesTab> {
               builder: (context) {
                 if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
                     context.watch<SelectTimeCubit>().state == null) {
-                  return Center(child: Text('choose date and time'));
+                  return Center(
+                      child: Text(LocaleKeys
+                          .planning_conditions_select_explanation
+                          .tr()));
                 }
                 return _WeatherBlock();
               },

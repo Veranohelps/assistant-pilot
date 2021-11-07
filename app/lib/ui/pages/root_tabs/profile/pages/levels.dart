@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app/config/brand_colors.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
@@ -69,7 +68,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
               if (levelData is Category) {
                 return Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Text(levelData.name).p0,
+                  child: Text(levelData.name).h2,
                 );
               }
               levelData = levelData as Skill;
@@ -95,7 +94,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                               label: 'Level - Change',
                               text: currentLevel!.name,
                             )
-                          : BrandButtons.textButton(
+                          : BrandButtons.primaryShort(
                               label: 'Level - Not set up',
                               onPressed: () => onLevelChange(
                                 context,
@@ -104,7 +103,6 @@ class _LevelsSettingState extends State<LevelsSetting> {
                               ),
                               text:
                                   LocaleKeys.profile_my_levels_not_set_up.tr(),
-                              color: BrandColors.mGrey,
                             ),
                     ),
                   ),
@@ -143,9 +141,9 @@ class _LevelsSettingState extends State<LevelsSetting> {
         return BrandBottomSheet(
           child: Column(
             children: [
-              Text('Set: ${skill.name}').h1,
+              Text(skill.name).h1,
               SizedBox(height: 20),
-              Text(selectedLevel.name).p0,
+              Text(selectedLevel.name).h2,
               SizedBox(height: 20),
               SizedBox(
                 height: 100,
@@ -167,7 +165,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                   });
                 },
               ),
-              BrandButtons.textButton(
+              BrandButtons.primaryShort(
                   label: 'Change level config',
                   text: LocaleKeys.basis_close.tr(),
                   onPressed: () {

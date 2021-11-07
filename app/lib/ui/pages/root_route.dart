@@ -24,12 +24,12 @@ final tabsData = [
     Icons.filter_hdr_outlined,
   ],
   [
-    LocaleKeys.profile_name,
-    Icons.account_circle_outlined,
-  ],
-  [
     LocaleKeys.planning_name,
     Icons.map_outlined,
+  ],
+  [
+    LocaleKeys.profile_name,
+    Icons.account_circle_outlined,
   ],
   [
     LocaleKeys.more_name,
@@ -73,8 +73,8 @@ class _RootPageState extends State<RootPage>
           controller: tabController,
           children: const [
             Dashboard(),
-            ProfileTab(),
             RoutesTab(),
+            ProfileTab(),
             More(),
           ],
         ),
