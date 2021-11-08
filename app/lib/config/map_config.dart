@@ -1,3 +1,5 @@
+import 'package:app/config/get_it_config.dart';
+import 'package:app/logic/models/console_message.dart';
 import 'package:app/logic/models/geo_json.dart';
 import 'package:app/logic/models/waypoint.dart';
 import 'package:app/ui/components/tile_provider/tile_provider.dart';
@@ -20,6 +22,10 @@ class MapConfig {
     urlTemplate:
         "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}@2x.png?apikey=${FlutterConfig.get('THUNDER_FOREST_API')}",
     tileProvider: const BrandTileProvider(),
+    errorTileCallback: (Tile tile, error) {
+      var service = getIt<ConsoleService>();
+      service.addMessage(ConsoleMessage(text: 'Tile load error'));
+    },
   );
 
   static Marker startMarker(LatLng point) {
