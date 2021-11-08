@@ -29,6 +29,13 @@ class RutaTab extends StatelessWidget {
           ),
         ),
         SizedBox(height: 15),
+        SizedBox(
+          height: 150,
+          child: AltitudeChart(
+            route: route,
+          ),
+        ),
+        SizedBox(height: 15),
         Center(
           child: BrandButtons.primaryShort(
             onPressed: () => setTimeFilterDate(context),
@@ -46,6 +53,7 @@ class RutaTab extends StatelessWidget {
           ),
           SizedBox(height: 20)
         ],
+        SizedBox(height: 30),
         Center(
           child: BrandButtons.primaryShort(
             onPressed: selectedTime == null || availableSelectedTypesIds.isEmpty
@@ -61,6 +69,7 @@ class RutaTab extends StatelessWidget {
             text: LocaleKeys.planning_confirm_expedition.tr(),
           ),
         ),
+        SizedBox(height: 30),
       ],
     );
   }
