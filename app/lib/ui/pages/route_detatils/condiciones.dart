@@ -66,10 +66,11 @@ class _CondicionesTabState extends State<CondicionesTab> {
               builder: (context) {
                 if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
                     context.watch<SelectTimeCubit>().state == null) {
-                  return Center(
-                      child: Text(LocaleKeys
-                          .planning_conditions_select_explanation
-                          .tr()));
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                        LocaleKeys.planning_conditions_select_explanation.tr()),
+                  );
                 }
                 return _WeatherBlock();
               },

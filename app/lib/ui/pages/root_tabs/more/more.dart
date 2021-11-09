@@ -17,11 +17,15 @@ class More extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(LocaleKeys.more_name.tr())),
       body: SafeArea(
-        child: Column(
-          children: [
-            _NavItem(goTo: About(), title: LocaleKeys.more_about.tr()),
-            _NavItem(goTo: Console(), title: LocaleKeys.more_console.tr())
-          ],
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _NavItem(goTo: About(), title: LocaleKeys.more_about.tr()),
+              _NavItem(goTo: Console(), title: LocaleKeys.more_console.tr())
+            ],
+          ),
         ),
       ),
     );
