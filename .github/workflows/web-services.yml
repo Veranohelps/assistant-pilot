@@ -53,6 +53,9 @@ jobs:
             NODE_ENV=local
             REACT_APP_ENV=production
             REACT_APP_API_BASE_URL=https://${{ steps.currentbranch.outputs.branch }}-api.dersu.uz
+            REACT_APP_AUTH0_DOMAIN=dersu-develop-admin.eu.auth0.com
+            REACT_APP_AUTH0_CLIENT_ID=GDy8cMjtrvj3nbG0sSKd4GhNQa4K49wt
+            REACT_APP_AUTH0_AUDIENCE=https://develop-api.dersu.uz/admin
       - name: Terraform init
         working-directory: services/terraform
         run: terraform init -input=false

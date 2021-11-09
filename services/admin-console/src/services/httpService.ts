@@ -11,16 +11,18 @@ import {
 import { createUploadLink } from 'apollo-upload-client';
 import ky from 'ky';
 import { apiBaseUrl } from '../config/environment';
-import localStorage from '../utils/localStorage';
-
-let tokenStore = localStorage({ name: 'DersuTokenStore' });
+import { auth0Client } from './auth0Service';
 
 export const http = ky.extend({
   prefixUrl: apiBaseUrl,
   hooks: {
     beforeRequest: [
       async (req) => {
-        req.headers.set('x-dersu-api-admin-token', (await tokenStore.getItem('token')) ?? '');
+        const token = await auth0Client.getTokenSilently();
+
+        if (token) {
+          req.headers.set('Authorization', `Bearer ${token}`);
+        }
       },
     ],
   },

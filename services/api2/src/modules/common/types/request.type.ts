@@ -8,6 +8,10 @@ export interface IRequestUser {
   userData: IUser;
 }
 
+export interface IRequestAdminUser {
+  jwtPayload: IJWTPayload;
+}
+
 export interface IRCtx {
   tx?: TransactionManager;
   user?: IRequestUser;

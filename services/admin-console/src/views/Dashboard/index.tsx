@@ -1,6 +1,8 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Box, GridBox } from '../../components/Layout';
+import { Button } from '../../components/Button';
+import { Box, FlexBox, GridBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import appRoutes from '../../config/appRoutes';
 import { appEnv } from '../../config/environment';
@@ -16,10 +18,12 @@ const Container = styled.div`
 `;
 
 const Dashboard = () => {
+  const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+
   return (
     <Container>
       {appEnv !== 'production' && (
-        <Box mBottom ={25}>
+        <Box mBottom={25}>
           <Typography textStyle="md20" textAlign="center">
             This is a TESTING environment
           </Typography>
@@ -29,27 +33,35 @@ const Dashboard = () => {
           <Typography textStyle="sm16" textAlign="center">
             Also, don't be surprised if things go up or down, we're all testing here!
           </Typography>
-        </Box >
+        </Box>
       )}
       <Typography textStyle="lg36" textAlign="center">
         Welcome to Dersu's Admin Console
       </Typography>
-      <GridBox direction="column" gap={20} justify="center" box={{ mTop: '3rem' }}>
-        <div className={cls.set('item')}>
-          <Link to={appRoutes.route.dashboard}>
-            <Typography textStyle="sm18" textAlign="center">
-              Routes
-            </Typography>
-          </Link>
-        </div>
-        <div className={cls.set('item')}>
-          <Link to={appRoutes.waypoint.dashboard}>
-            <Typography textStyle="sm18" textAlign="center">
-              Waypoints
-            </Typography>
-          </Link>
-        </div>
-      </GridBox>
+      {isAuthenticated ? (
+        <GridBox direction="column" gap={20} justify="center" box={{ mTop: '3rem' }}>
+          <div className={cls.set('item')}>
+            <Link to={appRoutes.route.dashboard}>
+              <Typography textStyle="sm18" textAlign="center">
+                Routes
+              </Typography>
+            </Link>
+          </div>
+          <div className={cls.set('item')}>
+            <Link to={appRoutes.waypoint.dashboard}>
+              <Typography textStyle="sm18" textAlign="center">
+                Waypoints
+              </Typography>
+            </Link>
+          </div>
+        </GridBox>
+      ) : (
+        <FlexBox box={{ mTop: '3rem' }}>
+          <Button onClick={() => loginWithRedirect()}>
+            {isLoading ? 'Authenticating...' : 'Login to get started'}
+          </Button>
+        </FlexBox>
+      )}
     </Container>
   );
 };

@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
@@ -27,7 +27,7 @@ import { ERouteOrigins } from '../../types/route-origin.type';
 import { ICreateRouteDTO, IRouteSlim } from '../../types/route.type';
 
 @Controller('admin/route')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 export class AdminRouteController {
   constructor(private routeService: RouteService) {}
 

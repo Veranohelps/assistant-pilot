@@ -1,12 +1,12 @@
 import { Controller, Get, HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { successResponse } from '../../../common/utilities/success-response';
 import { DictionaryService } from '../../services/dictionary.service';
 import { IDictionary } from '../../types/dictionary.type';
 
 @Controller('/admin/dictionary')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 @Injectable()
 export class AdminDictionaryController {
   constructor(private configService: ConfigService, private dictionaryService: DictionaryService) {}

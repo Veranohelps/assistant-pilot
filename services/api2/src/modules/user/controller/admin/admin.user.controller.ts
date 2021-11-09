@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 
 @Controller('admin/user')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 export class AdminUserController {}

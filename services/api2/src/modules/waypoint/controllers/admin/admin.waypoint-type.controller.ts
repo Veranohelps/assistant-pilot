@@ -1,10 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { successResponse } from '../../../common/utilities/success-response';
 import { WaypointTypeService } from '../../services/waypoint-type.service';
 
 @Controller('admin/waypoint-type')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 export class AdminWaypointTypeController {
   constructor(private waypointTypeService: WaypointTypeService) {}
 

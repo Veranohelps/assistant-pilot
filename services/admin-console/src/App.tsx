@@ -1,20 +1,23 @@
 import { BrowserRouter } from 'react-router-dom';
 import ApolloClientProvider from './components/ApolloClientProvider';
 import AppThemeProvider from './components/AppThemeProvider';
+import AuthProvider from './components/AuthProvider';
 import ReactQueryProvider from './components/ReactQueryProvider';
 import AppRoutes from './routes';
 
 function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
       <ReactQueryProvider>
         <ApolloClientProvider>
           <AppThemeProvider>
-            <AppRoutes />
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
           </AppThemeProvider>
         </ApolloClientProvider>
       </ReactQueryProvider>
-    </BrowserRouter>
+    </AuthProvider>
   );
 }
 

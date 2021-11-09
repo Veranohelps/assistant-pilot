@@ -1,7 +1,11 @@
 import { HTTPError } from 'ky';
 import React from 'react';
 import {
-  DefaultOptions, MutationCache, QueryCache, QueryClient, QueryClientProvider
+  DefaultOptions,
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
 } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { IBaseResponse } from '../types/request';
@@ -17,6 +21,14 @@ interface IQueryClientConfig {
   defaultOptions?: DefaultOptions;
 }
 
+const showAlert = (message: string) => {
+  return new Promise<true>((res) => {
+    alert(message);
+
+    res(true);
+  });
+};
+
 export const queryClientConfig: IQueryClientConfig = {
   defaultOptions: {
     queries: {
@@ -30,20 +42,22 @@ export const queryClientConfig: IQueryClientConfig = {
       },
       onError: (err) => {
         if (err instanceof HTTPError) {
-          err.response
-            .json()
-            .then((res) =>
-              alert(
-                (res as IBaseResponse).message ??
-                  'Sorry we encountered an issue completing your request '
-              )
+          if (err.response.status === 401) return;
+
+          err.response.json().then((res) => {
+            showAlert(
+              (res as IBaseResponse).message ??
+                'Sorry we encountered an issue completing your request '
             );
+          });
         }
       },
     },
     mutations: {
       onError: (err) => {
         if (err instanceof HTTPError) {
+          if (err.response.status === 401) return;
+
           err.response
             .json()
             .then((res) =>

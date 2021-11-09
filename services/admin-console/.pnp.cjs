@@ -36,6 +36,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["@apollo/client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.4.15"],
+            ["@auth0/auth0-react", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.8.0"],
+            ["@auth0/auth0-spa-js", "npm:1.19.2"],
             ["@babel/plugin-proposal-nullish-coalescing-operator", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5"],
             ["@craco/craco", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0"],
             ["@fontsource/fira-sans", "npm:4.5.0"],
@@ -168,6 +170,49 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@ardatan-fetch-event-source-npm-2.0.2-fad84777d5-b8a786c240.zip/node_modules/@ardatan/fetch-event-source/",
           "packageDependencies": [
             ["@ardatan/fetch-event-source", "npm:2.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@auth0/auth0-react", [
+        ["npm:1.8.0", {
+          "packageLocation": "./.yarn/cache/@auth0-auth0-react-npm-1.8.0-27cbad4bf0-5741205748.zip/node_modules/@auth0/auth0-react/",
+          "packageDependencies": [
+            ["@auth0/auth0-react", "npm:1.8.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.8.0", {
+          "packageLocation": "./.yarn/__virtual__/@auth0-auth0-react-virtual-3dd90eea76/0/cache/@auth0-auth0-react-npm-1.8.0-27cbad4bf0-5741205748.zip/node_modules/@auth0/auth0-react/",
+          "packageDependencies": [
+            ["@auth0/auth0-react", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.8.0"],
+            ["@auth0/auth0-spa-js", "npm:1.19.2"],
+            ["@types/react", "npm:17.0.26"],
+            ["@types/react-dom", "npm:17.0.9"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@auth0/auth0-spa-js", [
+        ["npm:1.19.2", {
+          "packageLocation": "./.yarn/cache/@auth0-auth0-spa-js-npm-1.19.2-0915beff0a-a10e728161.zip/node_modules/@auth0/auth0-spa-js/",
+          "packageDependencies": [
+            ["@auth0/auth0-spa-js", "npm:1.19.2"],
+            ["abortcontroller-polyfill", "npm:1.7.3"],
+            ["browser-tabs-lock", "npm:1.2.15"],
+            ["core-js", "npm:3.19.1"],
+            ["es-cookie", "npm:1.3.2"],
+            ["fast-text-encoding", "npm:1.0.3"],
+            ["promise-polyfill", "npm:8.2.1"],
+            ["unfetch", "npm:4.2.0"]
           ],
           "linkType": "HARD",
         }]
@@ -7271,6 +7316,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["abortcontroller-polyfill", [
+        ["npm:1.7.3", {
+          "packageLocation": "./.yarn/cache/abortcontroller-polyfill-npm-1.7.3-3b01198b7a-55739d7f0c.zip/node_modules/abortcontroller-polyfill/",
+          "packageDependencies": [
+            ["abortcontroller-polyfill", "npm:1.7.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["accepts", [
         ["npm:1.3.7", {
           "packageLocation": "./.yarn/cache/accepts-npm-1.3.7-0dc9de65aa-27fc8060ff.zip/node_modules/accepts/",
@@ -7373,6 +7427,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["admin-console", "workspace:."],
             ["@apollo/client", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:3.4.15"],
+            ["@auth0/auth0-react", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:1.8.0"],
+            ["@auth0/auth0-spa-js", "npm:1.19.2"],
             ["@babel/plugin-proposal-nullish-coalescing-operator", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:7.14.5"],
             ["@craco/craco", "virtual:4f49f4f011347dd12c0c44b5067811e165604bff88b6392c09a868c0e5dd7db98a891c5fac403b486f5eaad8dbb14bc21af5be405a40a15ffe5c1f5eacc4be67#npm:6.3.0"],
             ["@fontsource/fira-sans", "npm:4.5.0"],
@@ -8831,6 +8887,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["browser-tabs-lock", [
+        ["npm:1.2.15", {
+          "packageLocation": "./.yarn/cache/browser-tabs-lock-npm-1.2.15-1833d8c9c7-79194361d5.zip/node_modules/browser-tabs-lock/",
+          "packageDependencies": [
+            ["browser-tabs-lock", "npm:1.2.15"],
+            ["lodash", "npm:4.17.21"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["browserify-aes", [
         ["npm:1.2.0", {
           "packageLocation": "./.yarn/cache/browserify-aes-npm-1.2.0-2ad4aeefbe-4a17c3eb55.zip/node_modules/browserify-aes/",
@@ -9938,6 +10004,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/core-js-npm-3.18.1-17afc1fe9c-89cac0fe65.zip/node_modules/core-js/",
           "packageDependencies": [
             ["core-js", "npm:3.18.1"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:3.19.1", {
+          "packageLocation": "./.yarn/cache/core-js-npm-3.19.1-772a85cbf5-2f66906178.zip/node_modules/core-js/",
+          "packageDependencies": [
+            ["core-js", "npm:3.19.1"]
           ],
           "linkType": "HARD",
         }]
@@ -11457,6 +11530,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["es-cookie", [
+        ["npm:1.3.2", {
+          "packageLocation": "./.yarn/cache/es-cookie-npm-1.3.2-626e96a30a-8509355a7d.zip/node_modules/es-cookie/",
+          "packageDependencies": [
+            ["es-cookie", "npm:1.3.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["es-to-primitive", [
         ["npm:1.2.1", {
           "packageLocation": "./.yarn/cache/es-to-primitive-npm-1.2.1-b7a7eac6c5-4ead6671a2.zip/node_modules/es-to-primitive/",
@@ -12424,6 +12506,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/fast-levenshtein-npm-2.0.6-fcd74b8df5-92cfec0a8d.zip/node_modules/fast-levenshtein/",
           "packageDependencies": [
             ["fast-levenshtein", "npm:2.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["fast-text-encoding", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/fast-text-encoding-npm-1.0.3-0f6dc8b4a3-3e51365896.zip/node_modules/fast-text-encoding/",
+          "packageDependencies": [
+            ["fast-text-encoding", "npm:1.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -19423,6 +19514,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["promise-polyfill", [
+        ["npm:8.2.1", {
+          "packageLocation": "./.yarn/cache/promise-polyfill-npm-8.2.1-1434f11a9b-bd2601d28c.zip/node_modules/promise-polyfill/",
+          "packageDependencies": [
+            ["promise-polyfill", "npm:8.2.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["promise-retry", [
         ["npm:2.0.1", {
           "packageLocation": "./.yarn/cache/promise-retry-npm-2.0.1-871f0b01b7-f96a3f6d90.zip/node_modules/promise-retry/",
@@ -22916,6 +23016,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/unc-path-regex-npm-0.1.2-53c3343ef3-a05fa2006b.zip/node_modules/unc-path-regex/",
           "packageDependencies": [
             ["unc-path-regex", "npm:0.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["unfetch", [
+        ["npm:4.2.0", {
+          "packageLocation": "./.yarn/cache/unfetch-npm-4.2.0-7c13351021-6a4b2557e1.zip/node_modules/unfetch/",
+          "packageDependencies": [
+            ["unfetch", "npm:4.2.0"]
           ],
           "linkType": "HARD",
         }]

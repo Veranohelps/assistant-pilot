@@ -1,10 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { successResponse } from '../../../common/utilities/success-response';
 import { ActivityTypeService } from '../../services/activity-type.service';
 
 @Controller('admin/activity-type')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 export class AdminActivityTypeController {
   constructor(private activityTypeService: ActivityTypeService) {}
 

@@ -11,7 +11,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import path from 'path';
 import { UserLevelService } from '../../../assessment/services/user-level.service';
-import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';

@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { IUser } from '../../../user/types/user.type';

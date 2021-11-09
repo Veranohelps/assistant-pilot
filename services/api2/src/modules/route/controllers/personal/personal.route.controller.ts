@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';

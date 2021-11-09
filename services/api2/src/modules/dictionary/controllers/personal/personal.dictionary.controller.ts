@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JwtProtected } from '../../../auth/decorators/jwt-protected.decorator';
+import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { DictionaryService } from '../../services/dictionary.service';
 import { IDictionary } from '../../types/dictionary.type';

@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 import styled, { css } from 'styled-components';
 import appTheme from '../config/appTheme';
 import { ITextTheme, ITheme } from '../types/theme';
+import { boxMixin, IBoxProps } from './Layout';
 
 const toEm = (...pxs: (number | string)[]) => {
   return pxs.map((px) => (typeof px === 'number' ? `${(px / 16).toFixed(2)}em` : px)).join(' ');
@@ -18,6 +19,8 @@ export interface ITypographyProps {
   ellipsis?: boolean;
   nowrap?: boolean;
   textTransform?: CSS.Properties['textTransform'];
+  decoration?: CSS.Properties['textDecoration'];
+  box?: IBoxProps;
 }
 
 export const typographyMixin = (props: ITypographyProps) => {
@@ -40,6 +43,8 @@ export const typographyMixin = (props: ITypographyProps) => {
     white-space: ${props.clip || props.ellipsis || props.nowrap ? 'pre' : 'pre-wrap'};
     width: ${props.clip || props.ellipsis ? '100%' : 'initial'};
     text-transform: ${props.textTransform ?? 'initial'};
+    text-decoration: ${props.decoration ?? 'initial'};
+    ${props.box ? boxMixin(props.box) : ''};
   `;
 };
 const validateProps = (prop: string) => {

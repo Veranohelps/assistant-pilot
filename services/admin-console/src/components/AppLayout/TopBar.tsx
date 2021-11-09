@@ -1,10 +1,10 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { logoPrimaryPng } from '../../assets/png';
 import appRoutes from '../../config/appRoutes';
-import usePersistedState from '../../hooks/usePersistedState';
 import { className } from '../../utils/style';
 import { Button } from '../Button';
 import { GridBox } from '../Layout';
@@ -35,38 +35,23 @@ const Container = styled.div`
   ${cls.get('appIcon')} {
     height: 2rem;
   }
+
+  ${cls.get('avatar')} {
+    height: 2.5rem;
+    border-radius: 50%;
+  }
 `;
 
 const TopBar = () => {
-  const [token, setToken] = usePersistedState<string | null>('DersuTokenStore', 'token', null);
-  const [date, setDate] = usePersistedState<number | null>('DersuTokenStore', 'date', null);
+  const { loginWithRedirect, logout, isAuthenticated, isLoading, user } = useAuth0();
   const queryClient = useQueryClient();
-
-  const requestToken = () => {
-    const tkn = window.prompt('Please enter your admin token', '');
-
-    setToken(tkn ?? token);
-
-    if (tkn) setDate(Date.now());
-  };
-
-  // token invalidator
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (date && Date.now() - date > 1000 * 60 * 60 * 60 * 5) {
-        setToken(null);
-        setDate(null);
-      }
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, [date, token, setDate, setToken]);
 
   useEffect(() => {
     queryClient.invalidateQueries({ predicate: () => true });
 
     // eslint-disable-next-line
-  }, [token]);
+  }, [isAuthenticated]);
+
 
   return (
     <Container>
@@ -82,8 +67,14 @@ const TopBar = () => {
       </Link>
 
       <GridBox direction="column" gap={10}>
-        <Typography textStyle="sm18">{token ? 'Authorized' : 'Unauthorized'}</Typography>
-        <Button onClick={requestToken}>Enter token</Button>
+        <Button
+          onClick={() => {
+            isAuthenticated ? logout({ returnTo: window.location.origin }) : loginWithRedirect();
+          }}
+        >
+          {isLoading ? 'Authenticating' : isAuthenticated ? 'Logout' : 'Login'}
+        </Button>
+        {user?.picture && <img className={cls.set('avatar')} src={user.picture} alt="avatar"  />}
       </GridBox>
     </Container>
   );

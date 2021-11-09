@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
@@ -35,7 +35,7 @@ import {
 } from '../../waypoint.validation-schema';
 
 @Controller('admin/waypoint')
-@ApiAdminTokenProtected()
+@AdminJwtProtected()
 export class AdminWaypointController {
   constructor(private waypointService: WaypointService) {}
 

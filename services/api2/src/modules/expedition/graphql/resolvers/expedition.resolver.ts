@@ -1,5 +1,5 @@
 import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { ApiAdminTokenProtected } from '../../../auth/decorators/api-admin-token-protected.decorator';
+import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard';
 import { IRoute } from '../../../route/types/route.type';
 import { ExpeditionRouteService } from '../../services/expedition-route.service';
 import { ExpeditionService } from '../../services/expedition.service';
@@ -14,7 +14,7 @@ export class ExpeditionResolver {
   ) {}
 
   @Query(() => [ExpeditionModel])
-  @ApiAdminTokenProtected()
+  @AdminJwtProtected()
   async expeditions(): Promise<IExpedition[]> {
     const response = await this.expeditionService.getExpeditions();
 
