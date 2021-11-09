@@ -6,18 +6,16 @@ part of 'waypoint.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Waypoint _$WaypointFromJson(Map<String, dynamic> json) {
-  return Waypoint(
-    id: json['id'] as String,
-    typeIds:
-        (json['typeIds'] as List<dynamic>).map((e) => e as String).toList(),
-    name: json['name'] as String,
-    radiusInMeters: json['radiusInMeters'] as num,
-    updatedAt: DateTime.parse(json['updatedAt'] as String),
-    coordinate:
-        PointGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
-  );
-}
+Waypoint _$WaypointFromJson(Map<String, dynamic> json) => Waypoint(
+      id: json['id'] as String,
+      typeIds:
+          (json['typeIds'] as List<dynamic>).map((e) => e as String).toList(),
+      name: json['name'] as String,
+      radiusInMeters: json['radiusInMeters'] as num,
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      coordinate:
+          PointGeometry.fromJson(json['coordinate'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$WaypointToJson(Waypoint instance) => <String, dynamic>{
       'id': instance.id,

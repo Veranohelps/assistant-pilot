@@ -6,9 +6,7 @@ part of 'meteogram.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Meteogram _$MeteogramFromJson(Map<String, dynamic> json) {
-  return Meteogram(
-    Serialization.rangeFromString(json['range'] as String),
-    json['meteogram'] as String,
-  );
-}
+Meteogram _$MeteogramFromJson(Map<String, dynamic> json) => Meteogram(
+      Serialization.rangeFromString(json['range'] as String),
+      json['meteogram'] as String,
+    );

@@ -6,10 +6,8 @@ part of 'route_origin.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RouteOrigin _$RouteOriginFromJson(Map<String, dynamic> json) {
-  return RouteOrigin(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    description: json['description'] as String,
-  );
-}
+RouteOrigin _$RouteOriginFromJson(Map<String, dynamic> json) => RouteOrigin(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String,
+    );

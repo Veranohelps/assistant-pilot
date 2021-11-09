@@ -6,29 +6,27 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-IncompleteProfile _$IncompleteProfileFromJson(Map<String, dynamic> json) {
-  return IncompleteProfile(
-    id: json['id'] as String,
-    auth0Id: json['auth0Id'] as String,
-    email: json['email'] as String,
-    updatedAt: DateTime.parse(json['updatedAt'] as String),
-  );
-}
+IncompleteProfile _$IncompleteProfileFromJson(Map<String, dynamic> json) =>
+    IncompleteProfile(
+      id: json['id'] as String,
+      auth0Id: json['auth0Id'] as String,
+      email: json['email'] as String,
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
 
-FilledProfile _$FilledProfileFromJson(Map<String, dynamic> json) {
-  return FilledProfile(
-    firstName: json['firstName'] as String,
-    lastName: json['lastName'] as String,
-    avatar: json['avatar'] as String?,
-    isSubscribedToNewsletter: json['isSubscribedToNewsletter'] as bool,
-    id: json['id'] as String,
-    auth0Id: json['auth0Id'] as String,
-    email: json['email'] as String,
-    currentLevels: Map<String, String>.from(json['currentLevels'] as Map),
-    isRegistrationFinished: json['isRegistrationFinished'] as bool,
-    updatedAt: DateTime.parse(json['updatedAt'] as String),
-  );
-}
+FilledProfile _$FilledProfileFromJson(Map<String, dynamic> json) =>
+    FilledProfile(
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      avatar: json['avatar'] as String?,
+      isSubscribedToNewsletter: json['isSubscribedToNewsletter'] as bool,
+      id: json['id'] as String,
+      auth0Id: json['auth0Id'] as String,
+      email: json['email'] as String,
+      currentLevels: Map<String, String>.from(json['currentLevels'] as Map),
+      isRegistrationFinished: json['isRegistrationFinished'] as bool,
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
 
 Map<String, dynamic> _$FilledProfileToJson(FilledProfile instance) =>
     <String, dynamic>{

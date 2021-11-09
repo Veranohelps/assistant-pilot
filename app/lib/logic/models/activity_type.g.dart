@@ -6,10 +6,8 @@ part of 'activity_type.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ActivityType _$ActivityTypeFromJson(Map<String, dynamic> json) {
-  return ActivityType(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    description: json['description'] as String?,
-  );
-}
+ActivityType _$ActivityTypeFromJson(Map<String, dynamic> json) => ActivityType(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String?,
+    );
