@@ -44,7 +44,7 @@ export class AdminRouteController {
   @Get(':routeId')
   @HttpCode(HttpStatus.OK)
   async getRoute(@Param('routeId') id: string) {
-    const route = await this.routeService.findOne(null, id);
+    const route = await this.routeService.findOneWithWaypoints(null, id);
 
     return successResponse('fetch route success', { route });
   }

@@ -1,5 +1,7 @@
+import { IActivityType } from './activity-type';
 import { ILineStringGeometry, IPolygonGeometry } from './geometry';
 import { IBaseResponse } from './request';
+import { ISkillLevel } from './skill';
 import { IWaypoint } from './waypoint';
 
 export interface IRoute {
@@ -14,6 +16,8 @@ export interface IRoute {
   boundingBox: IPolygonGeometry;
   updatedAt: string;
   url?: string;
+  activityTypes?: IActivityType[];
+  levels?: ISkillLevel[];
 }
 
 export interface IGetRoutesResult extends IBaseResponse {

@@ -5,14 +5,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { Button } from '../../components/Button';
-import { FlexBox } from '../../components/Layout';
+import { Box, FlexBox } from '../../components/Layout';
 import { Typography } from '../../components/Typography';
 import appRoutes from '../../config/appRoutes';
 import { getActivityTypesService } from '../../services/activityTypeService';
 import { getSkillDictionary } from '../../services/dictionaryService';
 import {
-  cloneRouteService, createRouteService, deleteRouteService, editRouteService, getRouteByIdService
+  cloneRouteService,
+  createRouteService,
+  deleteRouteService,
+  editRouteService,
+  getRouteByIdService
 } from '../../services/routeService';
+import { ISkillDictionary } from '../../types/dictionary';
 import { ICreateRoutePayload } from '../../types/route';
 import { className } from '../../utils/style';
 
@@ -46,7 +51,6 @@ const Container = styled.div`
     ${cls.get('activityTypes')} {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
 
       label {
         margin: 5px 10px 0;
@@ -57,6 +61,9 @@ const Container = styled.div`
           margin-right: 5px;
         }
       }
+    }
+
+    ${cls.get('levelsList')} {
     }
   }
 
@@ -85,14 +92,14 @@ interface IForm {
   name: string;
   description: string;
   activityTypes: string[];
-  levels: string[];
+  levels: Record<string, string>;
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
   activityTypes: [],
-  levels: [],
+  levels: {},
 };
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
@@ -127,6 +134,7 @@ const CreateRoute = (props: IProps) => {
   const params = useParams<'routeId'>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialFormData);
+  const [defaultLevels, setDefaultLevels] = useState({} as Record<string, string>);
   const [file, setFile] = useState<File | null>(null);
   const queryClient = useQueryClient();
   const invalidate = () => queryClient.invalidateQueries('route');
@@ -175,19 +183,37 @@ const CreateRoute = (props: IProps) => {
   });
   const skillDictQuery = useQuery(['dictionary', 'skill'], getSkillDictionary, {
     select: (res) => res.data.skills.map((s) => s.skills).flat(),
+    onSuccess: (res: ISkillDictionary['skills']) => {
+      const levels =
+        res.reduce((acc, curr) => {
+          acc[curr.id] = '';
+
+          return acc;
+        }, {} as Record<string, string>) ?? {};
+
+      setDefaultLevels(levels);
+      setFormData({ ...formData, levels: { ...levels, ...formData.levels } });
+    },
     staleTime: Infinity,
   });
 
   useEffect(() => {
     if (props.isEditing && routeQuery.data) {
+      const levels =
+        routeQuery.data.levels?.reduce((acc, curr) => {
+          acc[curr.skillId] = curr.id;
+
+          return acc;
+        }, {} as Record<string, string>) ?? {};
+
       setFormData({
         name: routeQuery.data.name,
         description: routeQuery.data.description ?? '',
         activityTypes: routeQuery.data.activityTypeIds,
-        levels: routeQuery.data.levelIds,
+        levels: { ...defaultLevels, ...levels },
       });
     }
-  }, [routeQuery.data, props.isEditing]);
+  }, [routeQuery.data, props.isEditing, defaultLevels]);
 
   return (
     <Container>
@@ -223,7 +249,7 @@ const CreateRoute = (props: IProps) => {
             description: values.description || null,
             gpx: file ?? undefined,
             activityTypes: values.activityTypes,
-            levels: values.levels,
+            levels: Object.values(values.levels).filter((l) => l !== ''),
           };
 
           if (props.isEditing) {
@@ -283,17 +309,28 @@ const CreateRoute = (props: IProps) => {
                 <div className={cls.set('activityTypes')}>
                   {skillDictQuery.data?.map((skill) => {
                     return (
-                      <div>
+                      <Box key={skill.id} mBottom={10}>
                         <FormLabel>{skill.name}</FormLabel>
-                        {skill.levels.map((level) => {
-                          return (
-                            <FormLabel>
-                              <Field type="checkbox" name="levels" value={level.id} />
-                              {level.name}
-                            </FormLabel>
-                          );
-                        })}
-                      </div>
+                        <>
+                          <FormLabel>
+                            <Field type="radio" name={`levels.${skill.id}`} value="" />
+                            None
+                          </FormLabel>
+                          {skill.levels.map((level) => {
+                            return (
+                              <FormLabel>
+                                <Field
+                                  key={level.id}
+                                  type="radio"
+                                  name={`levels.${skill.id}`}
+                                  value={level.id}
+                                />
+                                {level.name}
+                              </FormLabel>
+                            );
+                          })}
+                        </>
+                      </Box>
                     );
                   })}
                 </div>

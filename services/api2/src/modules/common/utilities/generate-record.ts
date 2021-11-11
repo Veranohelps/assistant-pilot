@@ -112,3 +112,7 @@ export function generateGroupRecord2<T, K extends string, R>(
     return generateGroupRecord(items, getKey);
   };
 }
+
+export const recordToArray = <T>(obj: Record<string, T>): T[] => {
+  return Object.values(obj);
+};

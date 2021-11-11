@@ -6,7 +6,7 @@ import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
-import { generateRecord2 } from '../../common/utilities/generate-record';
+import { generateRecord2, recordToArray } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -97,7 +97,7 @@ export class RouteService {
     if (!isActivitiesValid) {
       throw new BadRequestError(
         ErrorCodes.INVALID_ROUTE_ACTIVITY_TYPE_IDS,
-        'Some levels you chose for this route require that you provide choose certain activity types',
+        'Some levels you chose for this route require that you provide certain activity types',
       );
     }
 
@@ -357,8 +357,9 @@ export class RouteService {
           this.waypointService.getRouteWaypoints(tx, [r.id], options).then((w) => w[r.id] ?? []),
         )
         .add('activityTypes', () =>
-          Object.values(this.activityTypeService.findByIds(r.activityTypeIds)),
-        ),
+          recordToArray(this.activityTypeService.findByIds(r.activityTypeIds)),
+        )
+        .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray)),
     );
 
     return route;

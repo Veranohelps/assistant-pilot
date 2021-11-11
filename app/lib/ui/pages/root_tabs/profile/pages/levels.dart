@@ -128,7 +128,8 @@ class _LevelsSettingState extends State<LevelsSetting> {
 
   void onLevelChange(
       BuildContext context, Level? currentLevel, Skill skill) async {
-    int _currentSliderValue = currentLevel?.level ?? 0;
+    int _currentSliderValue = currentLevel?.level ?? 1;
+
     var res = await showBrandBottomSheet<Level>(
       context: context,
       builder: (context) => StatefulBuilder(builder: (
@@ -156,8 +157,8 @@ class _LevelsSettingState extends State<LevelsSetting> {
               ),
               Slider(
                 value: _currentSliderValue.toDouble(),
-                min: 0,
-                max: 4,
+                min: skill.children.first.level.toDouble(),
+                max: skill.children.last.level.toDouble(),
                 label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   setter(() {
