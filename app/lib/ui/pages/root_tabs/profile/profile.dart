@@ -5,8 +5,10 @@ import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/forms/profile_edit/profile_edit.dart';
 import 'package:app/ui/components/avatar_button/avatar_button.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:app/ui/components/brand_divider/brand_divider.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
+import 'package:app/ui/pages/delete_profile/delete_profile.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
@@ -48,14 +50,6 @@ class ProfileTab extends StatelessWidget {
             title: LocaleKeys.profile_my_levels_name.tr(),
             goTo: LevelsSetting(),
           ),
-          Spacer(),
-          Center(
-            child: BrandButtons.primaryShort(
-              text: LocaleKeys.profile_logout.tr(),
-              onPressed: context.read<AuthenticationCubit>().logout,
-            ),
-          ),
-          SizedBox(height: 20),
         ],
       ),
     );

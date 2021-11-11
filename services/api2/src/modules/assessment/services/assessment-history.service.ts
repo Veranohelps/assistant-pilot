@@ -45,4 +45,12 @@ export class AssessmentHistoryService {
 
     return history;
   }
+  async deleteUserAssessmentsHistory(
+    tx: TransactionManager | null,
+    userId: string,
+  ): Promise<IAssessmentHistory[]> {
+    const results = await this.db.read(tx).where({ userId: userId }).del().cReturning();
+
+    return results;
+  }
 }

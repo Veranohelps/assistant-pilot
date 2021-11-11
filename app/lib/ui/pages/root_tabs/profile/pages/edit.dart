@@ -48,7 +48,29 @@ class _EditProfile extends StatelessWidget {
                       onPressed:
                           form.state.isSubmitting || form.state.hasErrorToShow
                               ? null
-                              : () => form.trySubmit())
+                              : () => form.trySubmit()),
+                  SizedBox(height: 50),
+                  BrandDivider(
+                    height: 40,
+                  ),
+                  Center(
+                    child: BrandButtons.primaryBig(
+                      text: LocaleKeys.profile_logout.tr(),
+                      onPressed: context.read<AuthenticationCubit>().logout,
+                    ),
+                  ),
+                  BrandDivider(
+                    height: 40,
+                  ),
+                  Center(
+                    child: BrandButtons.primaryBig(
+                      color: BrandColors.red,
+                      text: LocaleKeys.profile_delete_profile.tr(),
+                      onPressed: () => Navigator.of(context)
+                          .push(materialRoute(DeleteProfilePAge())),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             );

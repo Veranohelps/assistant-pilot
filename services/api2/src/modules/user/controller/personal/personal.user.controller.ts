@@ -9,7 +9,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import path from 'path';
 import { UserLevelService } from '../../../assessment/services/user-level.service';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
@@ -18,8 +17,14 @@ import { UserData } from '../../../common/decorators/user-data.decorator';
 import { GcpService } from '../../../common/services/gcp.service';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
+import { UserAccountService } from '../../services/user-account.service';
 import { UserService } from '../../services/user.service';
-import { ICompleteUserRegistrationDTO, IEditedProfileDTO, IUser } from '../../types/user.type';
+import {
+  ICompleteUserRegistrationDTO,
+  IEditedProfileDTO,
+  ITextDTO,
+  IUser,
+} from '../../types/user.type';
 import {
   completeUserRegistrationValidationSchema,
   editedUserValidationSchema,
@@ -32,6 +37,7 @@ export class PersonalUserController {
     private userService: UserService,
     private userLevelService: UserLevelService,
     private gcpService: GcpService,
+    private userAccountService: UserAccountService,
   ) {}
 
   @Patch('complete-registration')
@@ -77,19 +83,7 @@ export class PersonalUserController {
   ) {
     const userDataBase = await this.userService.findOne(tx, user.id);
     const currentAvatarUrl = userDataBase.avatar;
-    const currentAvatarFileName = currentAvatarUrl ? path.basename(currentAvatarUrl) : null;
-
-    if (
-      currentAvatarUrl != null &&
-      currentAvatarFileName != null &&
-      this.gcpService.isGcpFile(currentAvatarUrl)
-    ) {
-      await this.gcpService.deleteFile(currentAvatarFileName);
-    } else {
-      console.info(
-        `Current avatar is empty or not GCP, ignoring deletion from storage: ${currentAvatarUrl}`,
-      );
-    }
+    this.gcpService.deleteAvatar(currentAvatarUrl);
 
     const avatarUrl = await this.gcpService.uploadFile(file);
     const updatedUser = await this.userService.updateAvatar(tx, user.id, avatarUrl);
@@ -102,21 +96,27 @@ export class PersonalUserController {
   async deleteAvatar(@Tx() tx: TransactionManager, @UserData() user: IUser) {
     const userDataBase = await this.userService.findOne(tx, user.id);
     const currentAvatarUrl = userDataBase.avatar;
-    const currentAvatarFileName = currentAvatarUrl ? path.basename(currentAvatarUrl) : null;
-
-    if (
-      currentAvatarUrl != null &&
-      currentAvatarFileName != null &&
-      this.gcpService.isGcpFile(currentAvatarUrl)
-    ) {
-      await this.gcpService.deleteFile(currentAvatarFileName);
-    } else {
-      console.info(
-        `Current avatar is empty or not GCP, ignoring deletion from storage: ${currentAvatarUrl}`,
-      );
-    }
+    await this.gcpService.deleteAvatar(currentAvatarUrl);
 
     const updatedUser = await this.userService.updateAvatar(tx, user.id, null);
     return successResponse('Avatar deleted success', { user: updatedUser });
+  }
+
+  @Delete('delete-account')
+  @HttpCode(HttpStatus.OK)
+  async deleteAccount(
+    @Tx() tx: TransactionManager,
+    @ParsedBody() payload: ITextDTO,
+    @UserData() user: IUser,
+  ) {
+    const userDataBase = await this.userService.findOne(tx, user.id);
+    await this.userAccountService.deleteAccount(
+      tx,
+      userDataBase.id,
+      userDataBase.avatar,
+      userDataBase.auth0Id,
+    );
+
+    return successResponse(`${user.id} account successfully deleted`);
   }
 }

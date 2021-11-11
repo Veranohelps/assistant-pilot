@@ -46,3 +46,7 @@ export interface IEditedProfileDTO {
 export interface IUserProfile {
   user: IUser;
 }
+
+export interface ITextDTO {
+  text: string;
+}

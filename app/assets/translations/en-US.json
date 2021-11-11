@@ -15,7 +15,11 @@
       "not_set_up": "Not set up",
       "save_and_close": "Close and save configuration"
     },
-    "logout": "Logout"
+    "logout": "Logout",
+    "delete_profile": "Delete profile",
+    "delete_profile_confirmation": "Yes, delete",
+    "delete_profile_text": "Deleting your Dersu profile is permanent and irreversible, please confirm.",
+    "delete_profile_text_hint": "Optional feedback"
   },
   "planning": {
     "name": "Planning",

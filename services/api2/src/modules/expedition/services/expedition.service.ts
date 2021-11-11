@@ -144,4 +144,16 @@ export class ExpeditionService {
 
     return expeditions;
   }
+  async getExpeditionsFromUser(userId: string): Promise<string[]> {
+    const expeditionsIds = (await this.db.read().where({ userId })).map((e) => e.id);
+
+    return expeditionsIds;
+  }
+  async deleteUserExpeditions(tx: TransactionManager, userId: string): Promise<IExpedition[]> {
+    const expeditionsIds = await this.getExpeditionsFromUser(userId);
+    await this.expeditionRouteService.deleteAllRoutesFromExpeditions(tx, expeditionsIds);
+    const deleted = await this.db.write(tx).where({ userId }).del().cReturning();
+
+    return deleted;
+  }
 }

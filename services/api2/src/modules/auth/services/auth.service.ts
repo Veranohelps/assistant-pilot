@@ -15,7 +15,7 @@ export class AuthService {
       domain: `${configService.get('AUTH0_TENANT')}.auth0.com`,
       clientId: configService.get('AUTH0_CLIENT_ID'),
       clientSecret: configService.get('AUTH0_CLIENT_SECRET'),
-      scope: 'read:users',
+      scope: 'read:users delete:users',
     });
   }
 
@@ -54,5 +54,10 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async deleteUser(tx: TransactionManager, id: string, auth0Id: string) {
+    await this.userService.deleteUser(tx, id);
+    await this.managementClient.deleteUser({ id: auth0Id });
   }
 }

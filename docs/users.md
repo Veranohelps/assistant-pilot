@@ -115,3 +115,35 @@ N/A
     }
 }
 ```
+
+### Delete account
+
+Delete user's account
+\
+\
+`DELETE /personal/user/delete-account`
+
+#### Body Parameters
+
+| field       | required  | description                                                                 |
+| ------      | --------  | --------------------------------------------------------------------------  |
+| text        | false     | Optional text with some feedback that the user wants to give us             |
+
+#### Sample response
+```
+{
+    "success": true,
+    "message": "{user.id} account successfully deleted",
+}
+```
+
+#### Notes:
+
+Delete user's information from:
+
+- gcloud bucket avatar
+- auth0 account
+- expeditions
+- levels
+- user profile
+- routes ¿? 

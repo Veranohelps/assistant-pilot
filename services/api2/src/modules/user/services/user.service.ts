@@ -105,4 +105,10 @@ export class UserService {
       .cReturning();
     return user;
   }
+
+  async deleteUser(tx: TransactionManager | null, userId: string): Promise<IUser[]> {
+    const results = await this.db.read(tx).where({ id: userId }).del().cReturning();
+
+    return results;
+  }
 }

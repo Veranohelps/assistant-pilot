@@ -67,6 +67,7 @@ class AvatarButtonWidget extends StatelessWidget {
   }
 
   DecorationImage? getImage(String? url) {
+    print(url);
     if (url == null) {
       return null;
     }

@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
-import { ICreateAssessmentDTO, ICreateAssessmentResult } from '../types/assessment.type';
+import {
+  IAssessment,
+  ICreateAssessmentDTO,
+  ICreateAssessmentResult,
+} from '../types/assessment.type';
 import { UserLevelService } from './user-level.service';
 
 @Injectable()
@@ -28,5 +32,13 @@ export class AssessmentService {
     );
 
     return { assessment, userLevels };
+  }
+  async deleteUserAssessments(
+    tx: TransactionManager | null,
+    userId: string,
+  ): Promise<IAssessment[]> {
+    const results = await this.db.read(tx).where({ userId: userId }).del().cReturning();
+
+    return results;
   }
 }

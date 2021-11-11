@@ -54,9 +54,8 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
 
   Future<void> deleteAvatar() async {
     await api.deleteAvatar();
-    var newUser = (state as ProfileDersuRegistrationFinished)
-        .profile
-        .copyWith(avatar: '');
+    var newUser =
+        (state as ProfileDersuRegistrationFinished).profile.deleteAvatar();
     emit(ProfileDersuRegistrationFinished(newUser));
   }
 
@@ -89,5 +88,11 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
           lastName: lastName,
         );
     emit(ProfileDersuRegistrationFinished(newUser));
+  }
+
+  Future<void> deleteProfile({required String message}) async {
+    await api.deleteProfile(message);
+
+    authenticationCubit.logout();
   }
 }

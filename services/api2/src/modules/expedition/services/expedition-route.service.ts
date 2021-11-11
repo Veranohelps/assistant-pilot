@@ -107,4 +107,17 @@ export class ExpeditionRouteService {
     },
     { cache: false },
   );
+
+  async deleteAllRoutesFromExpeditions(
+    tx: TransactionManager,
+    expeditionIds: string[],
+  ): Promise<IExpeditionRoute[]> {
+    const deleted = await this.db
+      .write(tx)
+      .whereIn('expeditionId', expeditionIds)
+      .del()
+      .cReturning();
+
+    return deleted;
+  }
 }

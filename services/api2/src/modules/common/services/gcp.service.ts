@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import sizeOf from 'image-size';
 import imageType from 'image-type';
+import path from 'path';
 import { v4 } from 'uuid';
 import { ErrorCodes } from '../errors/error-codes';
 import { BadRequestError, ServerError } from '../errors/http.error';
@@ -45,6 +46,17 @@ export class GcpService {
         console.error(err.message);
         throw new ServerError(ErrorCodes.SERVER_ERROR, 'Something went wrong');
       });
+  }
+  async deleteAvatar(avatarUrl: string | null) {
+    const currentAvatarFileName = avatarUrl ? path.basename(avatarUrl) : null;
+
+    if (avatarUrl != null && currentAvatarFileName != null && this.isGcpFile(avatarUrl)) {
+      await this.deleteFile(currentAvatarFileName);
+    } else {
+      console.info(
+        `Current avatar is empty or not GCP, ignoring deletion from storage: ${avatarUrl}`,
+      );
+    }
   }
 
   isGcpFile(fileUrl: string): boolean {

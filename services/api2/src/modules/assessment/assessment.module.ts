@@ -13,6 +13,6 @@ import { UserLevelService } from './services/user-level.service';
   ],
   controllers: [PersonalAssessmentController],
   providers: [AssessmentService, UserLevelService, AssessmentHistoryService],
-  exports: [UserLevelService],
+  exports: [UserLevelService, AssessmentService, AssessmentHistoryService],
 })
 export class AssessmentModule {}

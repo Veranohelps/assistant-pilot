@@ -9,6 +9,7 @@ const mockKey = 'UserMockKey';
 
 const profileUrl = '/user/profile';
 const updateProfileUrl = '/user/edit-profile';
+const deleteProfileUrl = '/user/delete-account';
 
 const finishRegistrationUrl = '/user/complete-registration';
 const assessmentSubmitUrl = '/assessment/submit';
@@ -83,6 +84,16 @@ class UserApi extends PrivateDersuApi {
       'firstName': firstName,
       'lastName': lastName,
     });
+
+    client.close();
+  }
+
+  Future<void> deleteProfile(String text) async {
+    var client = await getClient();
+
+    text.isEmpty
+        ? await client.delete(deleteProfileUrl)
+        : await client.delete(deleteProfileUrl, data: {'text': text});
 
     client.close();
   }

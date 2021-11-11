@@ -66,11 +66,13 @@ class BrandButtons {
       );
 
   static Widget primaryBig({
+    Color? color,
     required String text,
     String? label,
     required VoidCallback? onPressed,
   }) =>
       _PrimaryBig(
+        color: color,
         text: text,
         onPressed: analiticsOnPressWrapper(onPressed, text, label),
       );
@@ -95,24 +97,28 @@ class BrandButtons {
 class _PrimaryBig extends StatelessWidget {
   const _PrimaryBig({
     Key? key,
+    required this.color,
     required this.text,
     required this.onPressed,
   }) : super(key: key);
 
   final String text;
   final VoidCallback? onPressed;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 100,
+        width: 150,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 9, 10, 11),
         decoration: BoxDecoration(
-          color: onPressed == null ? BrandColors.mGrey : BrandColors.primary,
+          color: onPressed == null
+              ? BrandColors.mGrey
+              : color ?? BrandColors.primary,
           borderRadius: BorderRadius.circular(2),
         ),
         child: Text(

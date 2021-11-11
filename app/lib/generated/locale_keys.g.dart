@@ -15,6 +15,10 @@ abstract class  LocaleKeys {
   static const profile_my_levels_save_and_close = 'profile.my_levels.save_and_close';
   static const profile_my_levels = 'profile.my_levels';
   static const profile_logout = 'profile.logout';
+  static const profile_delete_profile = 'profile.delete_profile';
+  static const profile_delete_profile_confirmation = 'profile.delete_profile_confirmation';
+  static const profile_delete_profile_text = 'profile.delete_profile_text';
+  static const profile_delete_profile_text_hint = 'profile.delete_profile_text_hint';
   static const profile = 'profile';
   static const planning_name = 'planning.name';
   static const planning_set_activity_reminder = 'planning.set_activity_reminder';
