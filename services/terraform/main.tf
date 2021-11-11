@@ -38,8 +38,8 @@ resource "google_cloud_run_service" "api" {
     }
     metadata {
       annotations = {
-        "autoscaling.knative.dev/minScale"      = "1"
-        "autoscaling.knative.dev/maxScale"      = "1000"
+        "autoscaling.knative.dev/minScale"      = "2"
+        "autoscaling.knative.dev/maxScale"      = "10"
         "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.instance.connection_name
         "run.googleapis.com/client-name"        = "terraform"
       }
@@ -136,8 +136,8 @@ resource "google_cloud_run_service" "admin-console" {
     }
     metadata {
       annotations = {
-        "autoscaling.knative.dev/minScale"      = "1"
-        "autoscaling.knative.dev/maxScale"      = "1000"
+        "autoscaling.knative.dev/minScale"      = "2"
+        "autoscaling.knative.dev/maxScale"      = "10"
       }
     }
   }
