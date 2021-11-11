@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:ant_icons/ant_icons.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/logic/models/route.dart';
+import 'package:app/ui/components/maps/helper.dart';
+import 'package:app/ui/components/maps/round_button.dart';
+import 'package:app/ui/components/maps/timer.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
 import 'package:app/utils/geo_utils.dart';
 import 'package:app/utils/route_transitions/basic.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -17,6 +22,8 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
 import 'package:latlong2/latlong.dart';
+
+import 'live_meteogram.dart';
 
 class LiveMap extends StatefulWidget {
   const LiveMap({
@@ -35,7 +42,7 @@ class LiveMap extends StatefulWidget {
 const zoom = MapConfig.liveInitZoom;
 
 class _LiveMapState extends State<LiveMap> {
-  late MapController _controller;
+  late MapController controller;
   bool _liveUpdate = false;
   bool _hasLiveUpdatePause = false;
   bool isFirstEventAfterCenter = true;
@@ -54,11 +61,13 @@ class _LiveMapState extends State<LiveMap> {
     await _geoFence();
     if (geolocationService != null) {
       LatLng position = await geolocationService!.getCurrentPosition();
-      _controller.move(position, zoom);
+      controller.move(position, zoom);
       _liveUpdate = true;
-      _mapStream = _controller.mapEventStream.listen(_mapListener);
+      _mapStream = controller.mapEventStream.listen(_mapListener);
+
       geolocationService!
           .addLocationListener(_locationListener, _locationErrorListener);
+      _locationListener(await geolocationService!.currentPosition);
     }
   }
 
@@ -101,9 +110,9 @@ class _LiveMapState extends State<LiveMap> {
 
   void _locationListener(position) {
     if (_liveUpdate && !_hasLiveUpdatePause) {
-      _controller.move(
+      controller.move(
         LatLng(position.coords.latitude, position.coords.longitude),
-        _controller.zoom,
+        controller.zoom,
       );
     }
     setState(() {
@@ -131,7 +140,7 @@ class _LiveMapState extends State<LiveMap> {
     });
     if (geolocationService != null) {
       LatLng position = await geolocationService!.getCurrentPosition();
-      _controller.move(position, _controller.zoom);
+      controller.move(position, controller.zoom);
     }
   }
 
@@ -153,50 +162,96 @@ class _LiveMapState extends State<LiveMap> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: [
         getMap(),
         Positioned(
-          right: 5,
-          bottom: max(5, MediaQuery.of(context).padding.bottom),
-          child: BrandButtons.miniIconButton(
-            label: 'find my location',
-            icon: Ionicons.location_outline,
-            onPressed: _findMe,
-            backgroundColor: _liveUpdate ? Colors.blue : Colors.grey,
+          right: 16,
+          top: 20 + MediaQuery.of(context).padding.top,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              BrandButtons.primaryElevatedButton(
+                label: 'Exit expedition',
+                onPressed: () {
+                  context.read<LiveCubit>().clean();
+                  Navigator.of(context).pushReplacement(
+                    materialRoute(
+                      ExpeditionSummary(
+                        duration: DateTime.now().difference(widget.startTime),
+                      ),
+                    ),
+                  );
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(width: 5),
+                    Text(
+                      LocaleKeys.expedition_live_finish.tr(),
+                      style: TextStyle(height: 1),
+                    ),
+                    SizedBox(width: 5),
+                    Icon(
+                      Ionicons.log_out_outline,
+                      size: 16,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 40),
+              RoundButton(
+                icon: AntIcons.compass,
+                onPress: () {
+                  controller.rotate(0);
+                },
+              ),
+              SizedBox(height: 16),
+              RoundButton(
+                icon: CarbonIcons.location_current,
+                onPress: () {
+                  _findMe();
+                },
+              ),
+              SizedBox(height: 16),
+              RoundButton(
+                icon: CarbonIcons.map_boundary,
+                onPress: () {
+                  controller
+                    ..rotate(0)
+                    ..fitBounds(widget.route.boundaries);
+                },
+              ),
+              SizedBox(height: 16),
+              RoundButton(
+                icon: CarbonIcons.temperature,
+                onPress: () {
+                  Navigator.push(
+                    context,
+                    materialRoute(
+                      LiveMetiogram(routeId: widget.route.id),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
         Positioned(
-          right: 5,
-          top: max(5, MediaQuery.of(context).padding.bottom),
-          child: BrandButtons.primaryElevatedButton(
-            label: 'Exit expedition',
-            onPressed: () {
-              context.read<LiveCubit>().clean();
-              Navigator.of(context).pushReplacement(
-                materialRoute(
-                  ExpeditionSummary(
-                    duration: DateTime.now().difference(widget.startTime),
-                  ),
-                ),
-              );
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(width: 5),
-                Text(
-                  LocaleKeys.expedition_live_finish.tr(),
-                  style: TextStyle(height: 1),
-                ),
-                SizedBox(width: 5),
-                Icon(
-                  Ionicons.log_out_outline,
-                  size: 16,
-                ),
-              ],
+          bottom: MediaQuery.of(context).padding.bottom + 16,
+          child: Container(
+            height: 48,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(
+                12,
+              ),
             ),
+            child: ExpedtitionTimer(startTime: widget.startTime),
           ),
-        ),
+        )
       ],
     );
   }
@@ -212,43 +267,11 @@ class _LiveMapState extends State<LiveMap> {
         zoom: zoom,
         maxZoom: MapConfig.maxZoom,
         minZoom: MapConfig.minZoom,
-        onMapCreated: (c) => _controller = c,
+        onMapCreated: (c) => controller = c,
       ),
       layers: [
-        MapConfig.tilesLayourOptions,
-        CircleLayerOptions(
-          circles: [
-            ...MapConfig.dots(
-              widget.route.coordinate.coordinates
-                  .map((p) => LatLng(p.latitude, p.longitude))
-                  .toList(),
-            ),
-            ...MapConfig.waypoints(widget.route.waypoints),
-          ],
-        ),
-        PolylineLayerOptions(
-          polylines: [
-            MapConfig.route(
-              widget.route.coordinate.coordinates,
-              color: Colors.blue.withOpacity(0.5),
-              strokeWidth: 4,
-            ),
-            MapConfig.route(
-              widget.route.coordinate.coordinates,
-              color: Colors.red,
-              strokeWidth: 1,
-            ),
-          ],
-        ),
-        MarkerLayerOptions(
-          markers: [
-            MapConfig.startMarker(LatLng(
-              widget.route.coordinate.coordinates[0].latitude,
-              widget.route.coordinate.coordinates[0].longitude,
-            )),
-            if (userMarker != null) userMarker!,
-          ],
-        ),
+        ...getLayoutOptions(widget.route),
+        if (userMarker != null) MarkerLayerOptions(markers: [userMarker!]),
       ],
     );
   }

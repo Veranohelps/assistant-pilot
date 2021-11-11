@@ -3,13 +3,14 @@ import {
   IMeteograms,
   IRangeHourly,
   ISunCalendar,
-} from '../route/types/wheather-prediction.type';
+} from './types/wheather-prediction.type';
 
-export function parseResponseHourly(
-  resTrendPro: string[],
-  resSunMoon: string,
+export function parseResponse(
   ranges: string[],
   meteogramUrl: string,
+  resTrendPro: string[],
+  resSunMoon: string,
+  dailyMode: boolean,
 ) {
   const meteoblueResponseTrendPro: any[] = [];
   const meteograms: IMeteograms[] = [];
@@ -20,6 +21,27 @@ export function parseResponseHourly(
       meteogram: meteogramUrl, //Check this, we need an array of meteogramsUrls!!!
     });
   });
+  const forecastHourly = parseResponseTrendPro(ranges, meteoblueResponseTrendPro, dailyMode);
+  const meteoblueResponseSunMoon = JSON.parse(resSunMoon);
+  const sunCalendar = parseResponseSunMoon(meteoblueResponseSunMoon, dailyMode);
+
+  return {
+    metadata: {
+      provider: 'Meteoblue',
+      timezone: meteoblueResponseSunMoon.metadata.timezone_abbrevation,
+      timezoneUTCOffsetInMinutes: meteoblueResponseSunMoon.metadata.utc_timeoffset * 60,
+      dailyMode: dailyMode,
+    },
+    meteograms: meteograms,
+    sunCalendar: sunCalendar,
+    forecastHourly: forecastHourly,
+  };
+}
+function parseResponseTrendPro(
+  ranges: string[],
+  meteoblueResponseTrendPro: any,
+  dailyMode: boolean,
+): IForecastHourly[] {
   const time = meteoblueResponseTrendPro[0].trend_1h.time; //one point is guarantee
   const forecastHourly: IForecastHourly[] = [];
   time.forEach((_v: string, k: number) => {
@@ -65,8 +87,10 @@ export function parseResponseHourly(
       });
     });
   });
-
-  const meteoblueResponseSunMoon = JSON.parse(resSunMoon);
+  const limSup = dailyMode ? forecastHourly.length : 2 * 24;
+  return forecastHourly.slice(0, limSup);
+}
+function parseResponseSunMoon(meteoblueResponseSunMoon: any, dailyMode: boolean): ISunCalendar[] {
   const timeSunMoon = meteoblueResponseSunMoon.data_day.time;
   const sunriseTime = meteoblueResponseSunMoon.data_day.sunrise;
   const sunsetTime = meteoblueResponseSunMoon.data_day.sunset;
@@ -93,17 +117,11 @@ export function parseResponseHourly(
       moonPhaseName: moonPhaseName,
     });
   });
-
-  return {
-    metadata: {
-      provider: 'Meteoblue',
-      timezone: meteoblueResponseSunMoon.metadata.timezone_abbrevation,
-      timezoneUTCOffsetInMinutes: meteoblueResponseSunMoon.metadata.utc_timeoffset * 60,
-    },
-    meteograms: meteograms,
-    sunCalendar: sunCalendar,
-    forecastHourly: forecastHourly,
-  };
+  const firstDayOfPrediction = new Date(meteoblueResponseSunMoon.data_day.time[0]).getDate();
+  const today = new Date().getDate();
+  const limInf = today - firstDayOfPrediction;
+  const limSup = dailyMode ? sunCalendar.length : limInf + 2;
+  return sunCalendar.slice(limInf, limSup);
 }
 
 function formatTimeUTCOffset(offset: number) {

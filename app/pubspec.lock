@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  ant_icons:
+    dependency: "direct main"
+    description:
+      name: ant_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0-nullsafety.0"
   archive:
     dependency: transitive
     description:
@@ -141,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  carbon_icons:
+    dependency: "direct main"
+    description:
+      name: carbon_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+2"
   characters:
     dependency: transitive
     description:

@@ -5,7 +5,6 @@ import 'package:dersu_permissions/dersu_permissions.dart';
 class DersuPermissionsHandler {
   static Future<bool> requestPermission({bool showDialog = true}) async {
     DersuPermissionsStatus status = await DersuPermissions.requestPermissions();
-    print(status);
     if (status == DersuPermissionsStatus.always) {
       return true;
     }

@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { IPointGeometry } from '../../common/types/geojson.type';
+
 import got from 'got';
 import {
   IForecastHourly,
   ISunCalendar,
   IWeatherPredictionDaily,
-} from '../../route/types/wheather-prediction.type';
-import { IPointGeometry } from '../types/geojson.type';
+} from '../types/wheather-prediction.type';
 
 @Injectable()
 export class OpenWeatherService {
@@ -16,7 +17,10 @@ export class OpenWeatherService {
   API_BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall';
   OPEN_WEATHER_API_KEY = this.configService.get('OPEN_WEATHER_API_KEY');
 
-  async getForecast(pointsOfInterest: IPointGeometry[]): Promise<IWeatherPredictionDaily> {
+  async getForecast(
+    pointsOfInterest: IPointGeometry[],
+    dailyMode = true,
+  ): Promise<IWeatherPredictionDaily> {
     const startingPoint = pointsOfInterest[0];
     const startingPointAltitude = startingPoint.coordinates[2];
 
@@ -94,6 +98,7 @@ export class OpenWeatherService {
         provider: 'Open Weather',
         timezone: apiResponse.timezone,
         timezoneUTCOffsetInMinutes: utcOffsetSeconds / 60,
+        dailyMode: dailyMode,
       },
       meteograms: [],
       sunCalendar: sunCalendar,

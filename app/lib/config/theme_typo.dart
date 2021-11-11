@@ -51,6 +51,14 @@ class ThemeTypo {
     letterSpacing: 1.25,
   );
 
+  static final subtitle2 = TextStyle(
+    fontSize: 14,
+    fontWeight: NamedWeight.medium,
+    height: 24 / 14,
+    letterSpacing: 0.1,
+    color: BrandColors.darkGreen,
+  );
+
   static const temp = TextStyle(color: Colors.red);
 }
 

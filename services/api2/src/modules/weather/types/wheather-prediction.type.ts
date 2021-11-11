@@ -1,11 +1,3 @@
-import { IPointGeometry } from '../../common/types/geojson.type';
-
-export interface IGetRouteWeatherUrlParameters {}
-
-export interface IPredictionCoordinates {
-  coordinate: IPointGeometry;
-}
-
 export interface IRangeHourly {
   range: string;
   temperature: number;
@@ -44,6 +36,7 @@ export interface IWeatherPredictionDaily {
     provider: string;
     timezone: string;
     timezoneUTCOffsetInMinutes: number;
+    dailyMode: boolean;
   };
   meteograms: IMeteograms[];
   sunCalendar: ISunCalendar[];

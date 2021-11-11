@@ -8,12 +8,13 @@ import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
+import { WeatherService } from '../../../weather/services/weather.service';
 import {
   getRouteValidationSchema,
   getUserRoutesQueryValidationSchema,
 } from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
-import { WeatherService } from '../../services/weather.service';
+
 import {
   IGetRouteUrlParameters,
   IGetUserRoutesUrlParameters,
@@ -40,7 +41,7 @@ export class PersonalRouteController {
   }
 
   @Get(':routeId')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   async getRoute(
     @Tx() tx: TransactionManager,
     @Param('routeId') id: string,

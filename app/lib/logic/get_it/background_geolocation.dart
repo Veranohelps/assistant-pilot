@@ -80,7 +80,6 @@ class BackgroundGeolocationService extends ChangeNotifier {
       );
     }).toList();
 
-    print(waypoints.length);
     if (geofences.isNotEmpty) {
       await bg.BackgroundGeolocation.addGeofences(geofences);
       getIt<ConsoleService>().addMessage(

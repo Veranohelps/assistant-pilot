@@ -13,7 +13,7 @@ class WeatherCubit extends Cubit<WeatherState> {
   void fetchWeather(String routeId) async {
     emit(WeatherWaiting());
 
-    var weather = await api.weather(routeId);
+    var weather = await api.routeWeather(routeId);
     emit(WeatherLoaded(weather: weather));
   }
 }

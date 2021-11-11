@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import crypto from 'crypto';
 import got from 'got';
-import { IWeatherPredictionDaily } from '../../route/types/wheather-prediction.type';
-import { parseResponseHourly } from '../../weather/meteoblue.parser';
-import { ErrorCodes } from '../errors/error-codes';
-import { BadRequestError } from '../errors/http.error';
-import { IPointGeometry } from '../types/geojson.type';
+import { parseResponse } from '../meteoblue.parser';
+import { ErrorCodes } from '../../common/errors/error-codes';
+import { BadRequestError } from '../../common/errors/http.error';
+import { IPointGeometry } from '../../common/types/geojson.type';
+import { IWeatherPredictionDaily } from '../types/wheather-prediction.type';
 
 @Injectable()
 export class MeteoblueService {
@@ -17,8 +17,12 @@ export class MeteoblueService {
   METEOBLUE_API_SECRET = this.configService.get('METEOBLUE_API_SECRET');
   THREE_MONTHS_MILLISECONDS = 3 * 30 * 24 * 60 * 60 * 1000;
   METEOGRAM_QUERY_PATH = '/visimage/meteogram_web?';
+  PICTOPRINT_QUERY_PATH = '/visimage/pictoprint?';
 
-  async getForecast(pointsOfInterest: IPointGeometry[]): Promise<IWeatherPredictionDaily> {
+  async getForecast(
+    pointsOfInterest: IPointGeometry[],
+    dailyMode = true,
+  ): Promise<IWeatherPredictionDaily> {
     const startingPoint = pointsOfInterest[0];
     const longitude = startingPoint.coordinates[0];
     const latitude = startingPoint.coordinates[1];
@@ -31,6 +35,7 @@ export class MeteoblueService {
     // We only make ONE call to get sunmon information since we assume it's the same info
     // for all points in the route
     let apiResponseTrendPro, apiResponseSunMoon;
+
     try {
       apiResponseTrendPro = await this.callTrendPro(longitude, latitude, startingPointAltitude);
     } catch (error: any) {
@@ -62,16 +67,25 @@ export class MeteoblueService {
       false,
       false,
       5,
+      dailyMode,
+      2,
     );
-    const signature = this.getSignature(this.METEOGRAM_QUERY_PATH + queryParams);
+    const signature = this.getSignature(
+      (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) + queryParams,
+    );
     const meteogramUrl =
-      this.METEOBLUE_URL + this.METEOGRAM_QUERY_PATH + queryParams + '&sig=' + signature;
+      this.METEOBLUE_URL +
+      (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) +
+      queryParams +
+      '&sig=' +
+      signature;
 
-    const forecast = parseResponseHourly(
-      [apiResponseTrendPro],
-      apiResponseSunMoon,
+    const forecast = parseResponse(
       [startingPointRange],
       meteogramUrl,
+      [apiResponseTrendPro],
+      apiResponseSunMoon,
+      dailyMode,
     );
 
     return forecast;
@@ -90,6 +104,8 @@ export class MeteoblueService {
     timeFormat = true,
     json = true,
     forecastDays = 8,
+    dailyMode = true,
+    lookDays = 2,
   ): string {
     let params =
       `apikey=${this.METEOBLUE_API_KEY}&` +
@@ -108,6 +124,9 @@ export class MeteoblueService {
 
     if (timeFormat) {
       params = params + `&timeformat=iso8601`;
+    }
+    if (!dailyMode) {
+      params = params + `&look=${lookDays}days`;
     }
     return params;
   }
