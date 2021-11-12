@@ -156,7 +156,7 @@ class _LiveMapState extends State<LiveMap> {
   Future<void> _geoFence() async {
     geolocationService = getIt<BackgroundGeolocationService>();
     await geolocationService!.init();
-    await geolocationService!.start(widget.route.waypoints, 150);
+    await geolocationService!.start(widget.route.waypoints);
   }
 
   @override

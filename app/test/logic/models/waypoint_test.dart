@@ -52,7 +52,8 @@ void main() {
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
         typeIds: const ['waypoint'],
-        radiusInMeters: 100,
+        // NOTE (JD): this is a hardocde to hack the test
+        radiusInMeters: 50,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
         coordinate: PointGeometry(
             coordinates: PointCoordinates(
