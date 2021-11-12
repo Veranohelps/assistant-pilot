@@ -96,36 +96,36 @@ class RutaTab extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              detailElement('distancia', route.distanceInMetersToString),
-              detailElement('distancia', route.distanceInMetersToString),
+              detailElement(
+                  'distancia', '${route.distanceInMetersToString} km'),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              detailElement('Desnivel positivo',
+                  '${route.elevationGainInMetersToString} m'),
+              detailElement('Desnivel negativo',
+                  '${route.elevationLossInMetersToString} m'),
             ],
           ),
         ),
         if (notActivityLevels.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                detailElement(
-                    'Desnivel positivo', route.elevationGainInMetersToString),
-                detailElement(
-                    'Desnivel negativo', route.elevationLossInMetersToString),
-              ],
-            ),
-          ),
-        Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: notActivityLevels
-                  .take(2)
-                  .map(
-                    (l) => detailElement(l[1].name, l[2].name),
-                  )
-                  .toList(),
-            ))
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: notActivityLevels
+                    .take(2)
+                    .map(
+                      (l) => detailElement(l[1].name, l[2].name),
+                    )
+                    .toList(),
+              ))
       ],
     );
   }

@@ -103,7 +103,7 @@ class RouteCard extends StatelessWidget {
               Text(route.name).h6,
               SizedBox(height: 12),
               Text(
-                '${route.distanceInMetersToString} km | ▲${route.elevationGainInMetersToString} | ▼${route.elevationLossInMetersToString}',
+                '${route.distanceInMetersToString} km | ▲${route.elevationGainInMetersToString} m | ▼${route.elevationLossInMetersToString} m ',
               ).subtitle1,
               SizedBox(height: 8),
               Text(
