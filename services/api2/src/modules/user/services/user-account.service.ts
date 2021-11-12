@@ -24,7 +24,7 @@ export class UserAccountService {
     avatarUrl: string | null,
     auth0Id: string,
   ) {
-    const expeditionsDeleted = await this.expeditionService.deleteUserExpeditions(tx, id);
+    const expeditionsDeleted = await this.expeditionService.deleteUserExpeditions(tx, 'id');
     console.info(`${expeditionsDeleted.length} user expeditions deleted`);
 
     const assessmentHistoryDeleted =
@@ -37,8 +37,8 @@ export class UserAccountService {
     const assessmentDeleted = await this.assessmentService.deleteUserAssessments(tx, id);
     console.info(`${assessmentDeleted.length} assessment deleted`);
 
-    await this.gcpService.deleteAvatar(avatarUrl);
     await this.authService.deleteUser(tx, id, auth0Id);
+    await this.gcpService.deleteAvatar(avatarUrl);
     console.info(`${auth0Id} - Auth0 deletion complete`);
   }
 }
