@@ -1,10 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
-import { NotFoundError } from '../../../common/errors/http.error';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { ErrorCodes } from '../../../common/errors/error-codes';
+import { NotFoundError } from '../../../common/errors/http.error';
 import { ILineStringGeometry } from '../../../common/types/geojson.type';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';

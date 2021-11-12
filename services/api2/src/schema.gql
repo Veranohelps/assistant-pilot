@@ -22,6 +22,12 @@ type Route {
   name: String!
   description: String!
   coordinate: [LineStringGeometry!]!
+  distanceInMeters: Float!
+  elevationGainInMeters: Float!
+  elevationLossInMeters: Float!
+  highestPointInMeters: Float!
+  lowestPointInMeters: Float!
+  meteoPointsOfInterests: LineStringGeometry!
   updatedAt: DateTime!
 }
 
@@ -33,10 +39,12 @@ scalar DateTime
 type Expedition {
   id: String!
   activityTypeIds: [String!]!
+  routeIds: [String!]!
   userId: String!
   name: String!
   description: String
   coordinate: PointGeometry!
+  estimatedDurationInMinutes: Float!
   startDateTime: DateTime!
   updatedAt: DateTime!
   routes: [Route!]!

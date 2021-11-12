@@ -3,6 +3,10 @@ export interface IActivityType {
   skillId: string | null;
   name: string;
   description: string;
+  defaultPace: number;
+  uphillPace: number;
+  downhillPace: number;
+  unknownPercentage: number;
 }
 
 export interface ICreateActivityType {
@@ -10,4 +14,8 @@ export interface ICreateActivityType {
   skillId?: string;
   name: string;
   description?: string | null;
+  defaultPace: number;
+  uphillPace: number;
+  downhillPace: number;
+  unknownPercentage: number;
 }

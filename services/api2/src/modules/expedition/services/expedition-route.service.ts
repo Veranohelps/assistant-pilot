@@ -2,10 +2,15 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import DataLoader from 'dataloader';
 import { SRecord } from '../../../types/helpers.type';
 import AddFields from '../../common/utilities/add-fields';
-import { generateGroupRecord2 } from '../../common/utilities/generate-record';
+import {
+  generateGroupRecord2,
+  generateRecord,
+  generateRecord2,
+} from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
+import { RouteActivityTypeService } from '../../route/services/route-activity-type.service';
 import { RouteService } from '../../route/services/route.service';
 import { IRoute } from '../../route/types/route.type';
 import {
@@ -22,26 +27,60 @@ export class ExpeditionRouteService {
     private db: KnexClient<'ExpeditionRoute'>,
     @Inject(forwardRef(() => RouteService))
     private routeService: RouteService,
+    private routeActivityTypeService: RouteActivityTypeService,
   ) {}
 
   async addRoutes(
     tx: TransactionManager,
     expeditionId: string,
+    activityTypeIds: string[],
     payload: ICreateExpeditionRoutesDTO,
   ): Promise<IExpeditionRoute[]> {
-    const expeditionRoutes = await this.db
-      .write(tx)
-      .insert(
-        payload.routes.map(({ routeId, startDateTime, durationInHours }) => ({
-          expeditionId,
-          routeId,
-          startDateTime,
-          durationInHours,
-        })),
-      )
-      .cReturning();
+    const routeActivities = await this.routeActivityTypeService.getActivitiesByRouteIds(
+      tx,
+      payload.routes.map((r) => r.routeId),
+    );
+
+    const entries = payload.routes.map((route) => {
+      const routeActivity = generateRecord(
+        routeActivities[route.routeId],
+        (a) => a.activityTypeId,
+        () => true,
+      );
+
+      return {
+        expeditionId,
+        routeId: route.routeId,
+        startDateTime: route.startDateTime,
+        activityTypeIds: activityTypeIds.filter((id) => routeActivity[id]),
+      };
+    });
+
+    const expeditionRoutes = await this.db.write(tx).insert(entries).cReturning();
 
     return expeditionRoutes;
+  }
+
+  async onRouteUpdate(tx: TransactionManager, routeId: string) {
+    const routeActivities = await this.routeActivityTypeService
+      .getRouteActivities(tx, routeId)
+      .then(generateRecord2((a) => a.activityTypeId));
+    const expeditionRoutes = await this.db.read(tx).where({ routeId });
+
+    const entries = expeditionRoutes.map((er) => {
+      const typeIds = er.activityTypeIds.filter((id) => routeActivities[id]);
+
+      return { ...er, activityTypeIds: typeIds };
+    });
+
+    const updates = await this.db
+      .write(tx)
+      .insert(entries)
+      .onConflict(['expeditionId', 'routeId'])
+      .merge()
+      .cReturning();
+
+    return updates;
   }
 
   async getRoutesSlim(

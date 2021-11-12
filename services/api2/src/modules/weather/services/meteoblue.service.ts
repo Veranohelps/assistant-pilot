@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import crypto from 'crypto';
 import got from 'got';
-import { parseResponse } from '../meteoblue.parser';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError } from '../../common/errors/http.error';
 import { IPointGeometry } from '../../common/types/geojson.type';
+import { parseResponse } from '../meteoblue.parser';
 import { IWeatherPredictionDaily } from '../types/wheather-prediction.type';
 
 @Injectable()

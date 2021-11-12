@@ -21,6 +21,11 @@ export interface ILineStringGeometry {
   coordinates: [number, number, number | null][];
 }
 
+export interface IMultiPointGeometry {
+  type: 'MultiPoint';
+  coordinates: [number, number, number | null][];
+}
+
 type T2dPoint = [number, number];
 export interface IPolygonGeometry {
   type: 'Polygon';

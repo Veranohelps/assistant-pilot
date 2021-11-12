@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MeteoblueService } from './meteoblue.service';
 // import { OpenWeatherService } from '../../common/services/openweather.service';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
 import { IWeatherPredictionDaily } from '../types/wheather-prediction.type';
+import { MeteoblueService } from './meteoblue.service';
 
 @Injectable()
 export class WeatherService {

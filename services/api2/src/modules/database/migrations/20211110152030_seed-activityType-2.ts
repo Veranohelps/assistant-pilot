@@ -1,7 +1,6 @@
 import { Knex } from 'knex';
-import { ICreateActivityType } from '../../route/types/activity-type.type';
 
-const types: ICreateActivityType[] = [
+const types: any[] = [
   {
     id: 'act-ntc-sdr',
     name: 'Senderismo',

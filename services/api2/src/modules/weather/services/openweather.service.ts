@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IPointGeometry } from '../../common/types/geojson.type';
-
 import got from 'got';
+import { IPointGeometry } from '../../common/types/geojson.type';
 import {
   IForecastHourly,
   ISunCalendar,

@@ -21,7 +21,7 @@ class DictionariesCubit
     final activeTypes = await api.fetchActiveTypes();
     emit(
       DictionariesLoaded(
-        dictionaryLevels: dictionaryLevels,
+        levels: dictionaryLevels,
         routeOrigins: routeOrigins,
         activeTypes: activeTypes,
       ),

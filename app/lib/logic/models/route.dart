@@ -1,9 +1,10 @@
-import 'package:app/logic/models/serialization.dart';
-import 'package:app/logic/models/waypoint.dart';
 import 'package:equatable/equatable.dart';
-import 'package:app/logic/models/geo_json.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'package:app/logic/models/geo_json.dart';
+import 'package:app/logic/models/serialization.dart';
+import 'package:app/logic/models/waypoint.dart';
 
 part 'route.g.dart';
 
@@ -14,6 +15,14 @@ abstract class DersuRoute extends Equatable {
   final String id;
   final DateTime updatedAt;
   final List<String> activityTypeIds;
+  final List<String> levelIds;
+
+  // final List<MultyPointGeometry> meteoPointsOfInterests;
+  final double distanceInMeters;
+  final double elevationGainInMeters;
+  final double elevationLossInMeters;
+  final double highestPointInMeters;
+  final double lowestPointInMeters;
 
   const DersuRoute({
     required this.id,
@@ -22,6 +31,13 @@ abstract class DersuRoute extends Equatable {
     required this.userId,
     required this.updatedAt,
     required this.activityTypeIds,
+    // required this.meteoPointsOfInterests,
+    required this.distanceInMeters,
+    required this.elevationGainInMeters,
+    required this.elevationLossInMeters,
+    required this.highestPointInMeters,
+    required this.lowestPointInMeters,
+    required this.levelIds,
   });
 
   @override
@@ -31,6 +47,13 @@ abstract class DersuRoute extends Equatable {
 
   @override
   List<Object?> get props => [name, originId, userId, id, ...activityTypeIds];
+
+  String get distanceInMetersToString => _stringFix(distanceInMeters);
+  String get elevationGainInMetersToString => _stringFix(elevationGainInMeters);
+  String get elevationLossInMetersToString => _stringFix(elevationLossInMeters);
+
+  String _stringFix(double number) =>
+      number.round() == 0 ? '1' : number.round().toString();
 }
 
 @JsonSerializable()
@@ -50,8 +73,15 @@ class DersuRouteFull extends DersuRoute {
     required String originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
+    required List<String> levelIds,
     required this.coordinate,
     required this.boundaries,
+    // required List<MultyPointGeometry> meteoPointsOfInterests,
+    required double distanceInMeters,
+    required double elevationGainInMeters,
+    required double elevationLossInMeters,
+    required double highestPointInMeters,
+    required double lowestPointInMeters,
     this.waypoints = const [],
     String? userId,
   }) : super(
@@ -61,6 +91,13 @@ class DersuRouteFull extends DersuRoute {
           userId: userId,
           updatedAt: updatedAt,
           activityTypeIds: activityTypeIds,
+          // meteoPointsOfInterests: meteoPointsOfInterests,
+          distanceInMeters: distanceInMeters,
+          elevationGainInMeters: elevationGainInMeters,
+          elevationLossInMeters: elevationLossInMeters,
+          highestPointInMeters: highestPointInMeters,
+          lowestPointInMeters: lowestPointInMeters,
+          levelIds: levelIds,
         );
 
   List<PointCoordinates> get coordinates => coordinate.coordinates;
@@ -94,6 +131,13 @@ class DersuRouteShort extends DersuRoute {
     required String originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
+    required List<String> levelIds,
+    // required List<MultyPointGeometry> meteoPointsOfInterests,
+    required double distanceInMeters,
+    required double elevationGainInMeters,
+    required double elevationLossInMeters,
+    required double highestPointInMeters,
+    required double lowestPointInMeters,
     required this.url,
     String? userId,
   }) : super(
@@ -103,6 +147,13 @@ class DersuRouteShort extends DersuRoute {
           userId: userId,
           updatedAt: updatedAt,
           activityTypeIds: activityTypeIds,
+          // meteoPointsOfInterests: meteoPointsOfInterests,
+          distanceInMeters: distanceInMeters,
+          elevationGainInMeters: elevationGainInMeters,
+          elevationLossInMeters: elevationLossInMeters,
+          highestPointInMeters: highestPointInMeters,
+          lowestPointInMeters: lowestPointInMeters,
+          levelIds: levelIds,
         );
 
   @override

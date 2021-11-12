@@ -29,12 +29,14 @@ Skill _$SkillFromJson(Map<String, dynamic> json) => Skill(
       children: (json['levels'] as List<dynamic>)
           .map((e) => Level.fromJson(e as Map<String, dynamic>))
           .toList(),
+      categoryId: json['categoryId'] as String,
     );
 
 Map<String, dynamic> _$SkillToJson(Skill instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
+      'categoryId': instance.categoryId,
       'levels': instance.children,
     };
 
@@ -43,6 +45,7 @@ Level _$LevelFromJson(Map<String, dynamic> json) => Level(
       name: json['name'] as String,
       description: json['description'] as String,
       level: json['level'] as int,
+      skillId: json['skillId'] as String,
     );
 
 Map<String, dynamic> _$LevelToJson(Level instance) => <String, dynamic>{
@@ -50,4 +53,5 @@ Map<String, dynamic> _$LevelToJson(Level instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'level': instance.level,
+      'skillId': instance.skillId,
     };

@@ -1,7 +1,11 @@
+import 'package:app/config/brand_colors.dart';
 import 'package:app/config/brand_theme.dart';
+import 'package:app/config/theme_typo.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
-import 'package:app/ui/components/brand_card/brand_card.dart';
+import 'package:app/logic/models/route.dart';
+import 'package:app/ui/components/brand_icons/dersu_icons_icons.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/pages/route_detatils/route_details.dart';
 import 'package:app/utils/route_transitions/basic.dart';
@@ -49,12 +53,72 @@ class _RoutesTabState extends State<RoutesTab> {
                   ),
                 );
               },
-              child: BrandCard(
-                child: Text(route.name).p0,
-              ),
+              child: RouteCard(route: route),
             ),
         ],
       ),
+    );
+  }
+}
+
+class RouteCard extends StatelessWidget {
+  const RouteCard({
+    Key? key,
+    required this.route,
+  }) : super(key: key);
+
+  final DersuRouteShort route;
+  @override
+  Widget build(BuildContext context) {
+    var dict = (context.read<DictionariesCubit>().state as DictionariesLoaded);
+
+    var levels =
+        route.levelIds.map((id) => dict.levelTreeByLevelId(id)).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+            color: BrandColors.white,
+          ),
+          child: Icon(
+            DersuIcons.logo,
+            color: BrandColors.mintGreen,
+            size: 40,
+          ),
+          height: 145,
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 16),
+          padding: EdgeInsets.fromLTRB(16, 24, 8, 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+            color: BrandColors.white,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(route.name).h6,
+              SizedBox(height: 12),
+              Text(
+                '${route.distanceInMetersToString} km | ▲${route.elevationGainInMetersToString} | ▼${route.elevationLossInMetersToString}',
+              ).subtitle1,
+              SizedBox(height: 8),
+              Text(
+                levels
+                    .map(
+                      (tree) => '${tree[1].name}: ${tree[2].name}',
+                    )
+                    .toList()
+                    .join(', '),
+                style: ThemeTypo.subtitle1,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

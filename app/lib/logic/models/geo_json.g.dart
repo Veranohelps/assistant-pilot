@@ -28,3 +28,15 @@ Map<String, dynamic> _$PointGeometryToJson(PointGeometry instance) =>
     <String, dynamic>{
       'coordinates': instance.coordinates,
     };
+
+MultyPointGeometry _$MultyPointGeometryFromJson(Map<String, dynamic> json) =>
+    MultyPointGeometry(
+      coordinates: (json['coordinates'] as List<dynamic>)
+          .map((e) => PointCoordinates.fromJson(e as List<dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$MultyPointGeometryToJson(MultyPointGeometry instance) =>
+    <String, dynamic>{
+      'coordinates': instance.coordinates,
+    };

@@ -14,7 +14,6 @@ import {
   getUserRoutesQueryValidationSchema,
 } from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
-
 import {
   IGetRouteUrlParameters,
   IGetUserRoutesUrlParameters,

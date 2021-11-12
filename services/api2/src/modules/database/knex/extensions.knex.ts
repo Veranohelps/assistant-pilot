@@ -6,6 +6,7 @@ import { TEntityRecord } from '../types/database.type';
 import { IEntityColumn } from '../types/entity.type';
 import { IDatabaseTables } from '../types/tables.type';
 import { attachKnexListeners } from './helpers.knex';
+import { knexClient } from './init-knex';
 
 type TGetTableType<T extends keyof IDatabaseTables> =
   IDatabaseTables[T] extends Knex.CompositeTableType<infer U, any, any> ? U : never;
@@ -13,6 +14,7 @@ export interface IWithColumnsOptions<T extends keyof IDatabaseTables> {
   namespace?: string;
   with?: (keyof IDatabaseTables)[];
   paranoid?: boolean;
+  selectAll?: boolean;
   overrides?: { [k in keyof TGetTableType<T>]?: Partial<IEntityColumn<TGetTableType<T>>> };
 }
 
@@ -41,10 +43,17 @@ function withColumns<T extends keyof IDatabaseTables>(
   Object.keys(columns).forEach((col) => {
     const entityColumn = columns[col];
 
-    if (entityColumn.select === false) return;
+    if (!options?.selectAll && entityColumn.select === false) return;
+
+    const colName = `${tableName}.${entityColumn.name ?? col}`;
+    let select: any = colName;
+
+    if (entityColumn.type === 'geometry') {
+      select = knexClient.raw('ST_AsGeoJSON(??)::json', [colName]);
+    }
 
     this.select({
-      [`${ns}${col}`]: `${tableName}.${entityColumn.name ?? col}`,
+      [`${ns}${col}`]: select,
     });
   });
 

@@ -11,8 +11,10 @@ export interface IExpedition {
   name: string;
   description: string | null;
   activityTypeIds: string[];
+  routeIds: string[];
   coordinate: IPointGeometry;
   startDateTime: Date;
+  estimatedDurationInMinutes: number;
   meta?: IDefaultMeta;
   createdAt?: Date;
   updatedAt: Date;
@@ -21,11 +23,13 @@ export interface IExpedition {
 
 export interface ICreateExpedition {
   activityTypeIds: string[];
+  routeIds: string[];
   name: string;
-  userId?: string;
+  userId?: string | null;
   description?: string | null;
   startDateTime: Date;
   coordinate: Knex.Raw;
+  estimatedDurationInMinutes: number;
   meta?: IDefaultMeta;
 }
 

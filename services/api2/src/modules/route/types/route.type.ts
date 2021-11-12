@@ -1,5 +1,9 @@
 import { Knex } from 'knex';
-import { ILineStringGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
+import {
+  ILineStringGeometry,
+  IMultiPointGeometry,
+  IPolygonGeometry,
+} from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
 import { IWaypoint } from '../../waypoint/types/waypoint.type';
 import { IActivityType } from './activity-type.type';
@@ -16,6 +20,12 @@ export interface IRoute {
   description: string | null;
   coordinate?: ILineStringGeometry;
   boundingBox?: IPolygonGeometry;
+  highestPointInMeters: number;
+  lowestPointInMeters: number;
+  elevationGainInMeters: number;
+  elevationLossInMeters: number;
+  meteoPointsOfInterests?: IMultiPointGeometry;
+  distanceInMeters: number;
   meta?: IDefaultMeta;
   createdAt?: Date;
   updatedAt: Date;
@@ -32,6 +42,12 @@ export interface ICreateRoute {
   userId?: string;
   coordinate: Knex.Raw;
   boundingBox: Knex.Raw;
+  highestPointInMeters: number;
+  lowestPointInMeters: number;
+  elevationGainInMeters: number;
+  elevationLossInMeters: number;
+  meteoPointsOfInterests: Knex.Raw;
+  distanceInMeters: Knex.Raw | number;
   meta?: IDefaultMeta;
 }
 

@@ -12,7 +12,7 @@ export enum EEntityNames {
 }
 
 export interface IEntityColumn<T> {
-  type: 'string' | 'number' | 'boolean' | 'array' | 'json' | 'date';
+  type: 'string' | 'number' | 'boolean' | 'array' | 'json' | 'date' | 'geometry';
   name?: string;
   select?: boolean;
   defaults?: {

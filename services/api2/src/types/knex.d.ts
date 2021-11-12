@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import 'knex';
 import { KnexPostgis } from 'knex-postgis';
 import { TransactionManager } from '../modules/common/utilities/transaction-manager';
@@ -10,14 +11,40 @@ declare module 'knex' {
     postgis: KnexPostgis;
   }
 
-  namespace DeferredKeySelection {}
+  // this is copied from knex because it wasn't exported
+  // and is quite important for maintaining type safety
+  // while extending knex
+  type DeferredKeySelection<
+    TBase,
+    TKeys extends string,
+    THasSelect extends true | false = false,
+    TAliasMapping extends {} = {},
+    TSingle extends boolean = false,
+    TIntersectProps extends {} = {},
+    TUnionProps = never,
+  > = {
+    _base: TBase;
+    _hasSelection: THasSelect;
+    _keys: TKeys;
+    _aliases: TAliasMapping;
+    _single: TSingle;
+    _intersectProps: TIntersectProps;
+    _unionProps: TUnionProps;
+  };
   namespace Knex {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     interface QueryBuilder<TRecord extends {} = any, TResult = any> {
-      withColumns(
-        tableName: keyof IDatabaseTables,
-        options?: IWithColumnsOptions,
-      ): QueryBuilder<TRecord, TResult>;
+      // withColumns(
+      //   tableName: keyof IDatabaseTables,
+      //   options?: IWithColumnsOptions,
+      // ): QueryBuilder<TRecord, TResult>;
+
+      withColumns<TTable extends Knex.TableNames>(
+        tableName: TTable,
+        options?: IWithColumnsOptions<TTable>,
+      ): Knex.QueryBuilder<
+        Knex.TableType<TTable>,
+        DeferredKeySelection<Knex.ResolveTableType<Knex.TableType<TTable>>, never>[]
+      >;
 
       tx(tx?: TransactionManager | null): QueryBuilder<TRecord, TResult>;
 

@@ -1,8 +1,7 @@
 import { Knex } from 'knex';
 import { generateId } from '../../common/utilities/generate-id';
-import { ICreateActivityType } from '../../route/types/activity-type.type';
 
-const types: ICreateActivityType[] = [
+const types: any[] = [
   {
     id: generateId(),
     name: 'Montañismo',

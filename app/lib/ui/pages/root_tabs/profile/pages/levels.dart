@@ -51,7 +51,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
 
     var items = <LevelsCatalogData>[];
 
-    for (final category in dictionariesState.dictionaryLevels) {
+    for (final category in dictionariesState.levels) {
       items.add(category);
       items.addAll(category.children);
     }

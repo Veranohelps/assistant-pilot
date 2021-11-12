@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MeteoblueService } from '../weather/services/meteoblue.service';
 import { DatabaseModule } from '../database/database.module';
 import { RouteModule } from '../route/route.module';
 import { WaypointModule } from '../waypoint/waypoint.module';
+import { MeteoblueService } from '../weather/services/meteoblue.service';
 import { WeatherService } from '../weather/services/weather.service';
 import { AdminExpeditionController } from './controllers/admin/admin.expedition.controller';
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';

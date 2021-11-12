@@ -25,7 +25,10 @@ enum GeometryTypes {
   lineString,
 
   @JsonValue('Point')
-  point
+  point,
+
+  @JsonValue('MulitPoint')
+  mulitPoint
 }
 
 GeometryTypes geometryTypesFromString(String string) =>
@@ -78,6 +81,27 @@ class PointGeometry extends Geometry {
 
   @override
   List<Object?> get props => coordinates.props;
+}
+
+@JsonSerializable()
+class MultyPointGeometry extends Geometry {
+  MultyPointGeometry({required this.coordinates});
+
+  @override
+  @JsonKey(ignore: true)
+  final GeometryTypes type = GeometryTypes.mulitPoint;
+
+  @override
+  final List<PointCoordinates> coordinates;
+
+  static MultyPointGeometry fromJson(Map<String, dynamic> json) =>
+      _$MultyPointGeometryFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      {'type': 'MulitPoint'}..addAll(_$MultyPointGeometryToJson(this));
+
+  @override
+  List<Object?> get props => coordinates;
 }
 
 @immutable

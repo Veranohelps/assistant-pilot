@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { IRoute } from 'express';
 import { PointGeometryModel } from '../../../common/graphql/geojson.model';
 import { IPointGeometry } from '../../../common/types/geojson.type';
@@ -13,6 +13,9 @@ export class ExpeditionModel implements IExpedition {
   @Field(() => [String])
   activityTypeIds!: string[];
 
+  @Field(() => [String])
+  routeIds!: string[];
+
   @Field()
   userId!: string;
 
@@ -24,6 +27,9 @@ export class ExpeditionModel implements IExpedition {
 
   @Field(() => PointGeometryModel)
   coordinate!: IPointGeometry;
+
+  @Field(() => Float)
+  estimatedDurationInMinutes!: number;
 
   @Field()
   startDateTime!: Date;

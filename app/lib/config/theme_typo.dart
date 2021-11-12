@@ -26,6 +26,13 @@ class ThemeTypo {
     letterSpacing: -20 / 100 * 2,
   );
 
+  static final h6 = defaultText.copyWith(
+    fontSize: 20,
+    fontWeight: NamedWeight.medium,
+    height: 1.2,
+    letterSpacing: 0.15,
+  );
+
   static final p0 = defaultText.copyWith(
     fontSize: 13,
     height: 1.2,
@@ -51,12 +58,40 @@ class ThemeTypo {
     letterSpacing: 1.25,
   );
 
+  static final martaActivityTitle = defaultText.copyWith(
+    fontSize: 16,
+    height: 24 / 16,
+    fontWeight: NamedWeight.bold,
+    letterSpacing: 0.15,
+  );
+
+  static final martaLevelValue = defaultText.copyWith(
+    fontSize: 16,
+    height: 24 / 16,
+    letterSpacing: 0.15,
+    decoration: TextDecoration.underline,
+  );
+
+  static final subtitle1 = TextStyle(
+    fontSize: 16,
+    fontWeight: NamedWeight.medium,
+    height: 24 / 16,
+    letterSpacing: 0.15,
+    color: Colors.black87,
+  );
+
   static final subtitle2 = TextStyle(
     fontSize: 14,
     fontWeight: NamedWeight.medium,
     height: 24 / 14,
     letterSpacing: 0.1,
     color: BrandColors.darkGreen,
+  );
+
+  static const h5 = TextStyle(
+    fontSize: 24,
+    height: 30 / 24,
+    letterSpacing: 0.18,
   );
 
   static const temp = TextStyle(color: Colors.red);

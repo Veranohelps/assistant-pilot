@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { round } from 'lodash';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
+import { generateRecord } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { ActivityTypeService } from '../../route/services/activity-type.service';
+import { RouteActivityTypeService } from '../../route/services/route-activity-type.service';
 import { RouteService } from '../../route/services/route.service';
 import { ICreateExpeditionDTO, IExpedition, IExpeditionFull } from '../types/expedition.type';
 import { ExpeditionRouteService } from './expedition-route.service';
@@ -19,6 +22,7 @@ export class ExpeditionService {
     private routeService: RouteService,
     private expeditionRouteService: ExpeditionRouteService,
     private activityTypeService: ActivityTypeService,
+    private routeActivityTypeService: RouteActivityTypeService,
   ) {}
 
   async validateExpeditionActivityTypes(tx: TransactionManager | null, expedition: IExpedition) {
@@ -36,6 +40,31 @@ export class ExpeditionService {
     }
   }
 
+  async calculateDuration(
+    tx: TransactionManager | null,
+    routeIds: string[],
+    activityTypeIds: string[],
+  ) {
+    const routeActivities = await this.routeActivityTypeService.getActivitiesByRouteIds(
+      tx,
+      routeIds,
+    );
+    let duration = 0;
+
+    routeIds.forEach((routeId) => {
+      const routeActivity = generateRecord(routeActivities[routeId], (a) => a.activityTypeId);
+      const activityDurations = activityTypeIds.map(
+        (id) => routeActivity[id]?.estimatedDurationInMinutes ?? 0,
+      );
+
+      if (activityDurations.length > 0) {
+        duration += Math.max(...activityDurations);
+      }
+    });
+
+    return round(duration, 2);
+  }
+
   async create(
     tx: TransactionManager,
     userId: string,
@@ -46,20 +75,27 @@ export class ExpeditionService {
     const {
       coordinates: [[longitude, latitude, altitude]],
     } = (await this.routeService.findOne(tx, routeId)).coordinate as ILineStringGeometry;
+    // for backward compatablity, for now, attach t
     const [{ id }] = await this.db
       .write(tx)
       .insert({
         name: payload.name,
         description: payload.description,
         activityTypeIds: payload.activityTypes,
+        routeIds: payload.routes.map((r) => r.routeId),
         startDateTime: startDateTime,
         userId,
         coordinate: this.db.knex.raw(
           `ST_GeogFromText('POINTZ(${longitude} ${latitude} ${altitude ?? 0})')`,
         ),
+        estimatedDurationInMinutes: await this.calculateDuration(
+          tx,
+          payload.routes.map((r) => r.routeId),
+          payload.activityTypes,
+        ),
       })
       .cReturning();
-    await this.expeditionRouteService.addRoutes(tx, id, {
+    await this.expeditionRouteService.addRoutes(tx, id, payload.activityTypes, {
       routes: payload.routes,
     });
 
@@ -83,15 +119,13 @@ export class ExpeditionService {
       throw new NotFoundError(ErrorCodes.EXPEDITION_NOT_FOUND, 'Expedition not found');
     }
 
+    const expeditionRoutes = await this.expeditionRouteService.getWithRoutes(tx, [id]);
     const result = await AddFields.target(expedition)
-      .add('routes', () =>
-        this.expeditionRouteService
-          .getWithRoutes(tx, [id])
-          .then((eRs) => eRs[expedition.id].map((eR) => eR.route)),
-      )
+      .add('routes', () => expeditionRoutes[expedition.id].map((eR) => eR.route))
       .add('activityTypes', () =>
         Object.values(this.activityTypeService.findByIds(expedition.activityTypeIds)),
-      );
+      )
+      .add('expeditionRoutes', () => expeditionRoutes[expedition.id]);
 
     return result;
   }
@@ -101,23 +135,29 @@ export class ExpeditionService {
 
     if (userId) builder.where({ userId });
 
-    const expeditions = await builder.then((res) =>
-      AddFields.target(res)
+    const expeditions = await builder.then(async (res) => {
+      const expeditionRoutes = await this.expeditionRouteService.getRoutesSlim(
+        null,
+        res.map((e) => e.id),
+      );
+
+      return AddFields.target(res)
         .add(
           'routes',
-          () =>
-            this.expeditionRouteService.getRoutesSlim(
-              null,
-              res.map((e) => e.id),
-            ),
+          () => expeditionRoutes,
           (exp, record) => record[exp.id].map((er) => er.route),
         )
         .add('activityTypes', () =>
           Object.values(
             this.activityTypeService.findByIds(res.map((e) => e.activityTypeIds).flat()),
           ),
-        ),
-    );
+        )
+        .add(
+          'expeditionRoutes',
+          () => expeditionRoutes,
+          (exp, record) => record[exp.id],
+        );
+    });
 
     return expeditions;
   }

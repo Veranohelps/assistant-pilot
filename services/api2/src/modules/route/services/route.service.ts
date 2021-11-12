@@ -21,7 +21,9 @@ import {
   IRoute,
   IRouteSlim,
 } from '../types/route.type';
+import { analyseRoute } from '../utilities/analyse-route';
 import { ActivityTypeService } from './activity-type.service';
+import { RouteActivityTypeService } from './route-activity-type.service';
 
 @Injectable()
 export class RouteService {
@@ -33,27 +35,30 @@ export class RouteService {
     private expeditionRouteService: ExpeditionRouteService,
     private activityTypeService: ActivityTypeService,
     private skillLevelService: SkillLevelService,
+    private routeActivityTypeService: RouteActivityTypeService,
   ) {}
 
-  geoJsonToLineString(geojson: IGeoJSON) {
+  private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
+
+  geoJsonToLineStringGeometry(geojson: IGeoJSON): ILineStringGeometry {
     const coordinates = geojson.features
       .filter((feature) => feature.geometry.type === 'LineString')
       .map((feat) =>
         (feat.geometry as ILineStringGeometry).coordinates.map(
           ([longitude, latitude, altitude]) => {
-            return {
-              latitude,
-              longitude,
-              altitude,
-            };
+            return [longitude, latitude, altitude];
           },
         ),
       )
       .flat()
-      .filter((location) => location.altitude !== null && location.longitude !== null);
+      .filter((point) => point[2] !== null && point[1] !== null);
 
-    return `ST_GeogFromText('LINESTRINGZ(${coordinates
-      .map((c) => `${c.longitude} ${c.latitude} ${c.altitude ?? 0}`)
+    return { type: 'LineString', coordinates: coordinates as ILineStringGeometry['coordinates'] };
+  }
+
+  lineStringGeomToString(geom: ILineStringGeometry): string {
+    return `ST_GeogFromText('LINESTRINGZ(${geom.coordinates
+      .map((c) => `${c[0]} ${c[1]} ${c[2] ?? 0}`)
       .join(',')})')`;
   }
 
@@ -111,7 +116,9 @@ export class RouteService {
     geojson: IGeoJSON,
     userId?: string,
   ): Promise<IRoute> {
-    const geomString = this.geoJsonToLineString(geojson);
+    const lineStringGeom = this.geoJsonToLineStringGeometry(geojson);
+    const geomString = this.lineStringGeomToString(lineStringGeom);
+    const routeParams = analyseRoute(lineStringGeom);
 
     const [existingRoute, existingRouteByUser] = await Promise.all([
       this.db
@@ -146,9 +153,21 @@ export class RouteService {
         originId,
         coordinate: this.db.knex.raw(geomString),
         boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+        distanceInMeters: this.db.knex.raw(
+          `st_lengthspheroid(${geomString}::geometry, '${this._4326Spheroid}')`,
+        ),
+        elevationGainInMeters: routeParams.elevationGainInMeters,
+        elevationLossInMeters: routeParams.elevationLossInMeters,
+        highestPointInMeters: routeParams.highestPointInMeters,
+        lowestPointInMeters: routeParams.lowestPointInMeters,
+        meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+          JSON.stringify(routeParams.meteoPointsOfInterests),
+        ]),
       })
       .where('createdAt')
       .cReturning();
+
+    await this.routeActivityTypeService.addActivities(tx, route);
 
     return route;
   }
@@ -161,9 +180,7 @@ export class RouteService {
   ): Promise<IRoute> {
     const sourceRoute = await this.findOne(tx, routeId);
 
-    const geomString = this.geoJsonToLineString({
-      features: [{ type: 'Feature', geometry: sourceRoute.coordinate as ILineStringGeometry }],
-    });
+    const geomString = this.lineStringGeomToString(sourceRoute.coordinate as ILineStringGeometry);
 
     await this.validateLevelsAndActivities(tx, payload.levels ?? [], payload.activityTypes);
 
@@ -179,9 +196,19 @@ export class RouteService {
         originId: sourceRoute.originId,
         coordinate: this.db.knex.raw(geomString),
         boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+        distanceInMeters: sourceRoute.distanceInMeters,
+        elevationGainInMeters: sourceRoute.elevationGainInMeters,
+        elevationLossInMeters: sourceRoute.elevationLossInMeters,
+        highestPointInMeters: sourceRoute.highestPointInMeters,
+        lowestPointInMeters: sourceRoute.lowestPointInMeters,
+        meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+          JSON.stringify(sourceRoute.meteoPointsOfInterests),
+        ]),
       })
       .where('createdAt')
       .cReturning();
+
+    await this.routeActivityTypeService.addActivities(tx, route);
 
     return route;
   }
@@ -194,7 +221,9 @@ export class RouteService {
     userId?: string | null,
     geojson?: IGeoJSON | null,
   ): Promise<IRoute> {
-    const geomString = geojson ? this.geoJsonToLineString(geojson) : null;
+    const lineStringGeom = geojson ? this.geoJsonToLineStringGeometry(geojson) : null;
+    const geomString = lineStringGeom ? this.lineStringGeomToString(lineStringGeom) : null;
+    const routeParams = lineStringGeom ? analyseRoute(lineStringGeom) : null;
 
     const [existingRoute, existingRouteByUser] = geomString
       ? await Promise.all([
@@ -225,10 +254,21 @@ export class RouteService {
         description: payload.description,
         activityTypeIds: payload.activityTypes ?? undefined,
         levelIds: payload.levels ?? undefined,
-        ...(geomString && {
-          coordinate: this.db.knex.raw(geomString),
-          boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
-        }),
+        ...(geomString &&
+          routeParams && {
+            coordinate: this.db.knex.raw(geomString),
+            boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+            distanceInMeters: this.db.knex.raw(
+              `st_lengthspheroid(${geomString}::geometry, '${this._4326Spheroid}')`,
+            ),
+            elevationGainInMeters: routeParams.elevationGainInMeters,
+            elevationLossInMeters: routeParams.elevationLossInMeters,
+            highestPointInMeters: routeParams.highestPointInMeters,
+            lowestPointInMeters: routeParams.lowestPointInMeters,
+            meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+              JSON.stringify(routeParams.meteoPointsOfInterests),
+            ]),
+          }),
       })
       .where({ id, originId, userId })
       .cReturning();
@@ -242,6 +282,7 @@ export class RouteService {
     }
 
     await this.validateLevelsAndActivities(tx, route.levelIds ?? [], route.activityTypeIds);
+    await this.routeActivityTypeService.updateActivities(tx, route);
 
     return route;
   }
@@ -358,6 +399,11 @@ export class RouteService {
         )
         .add('activityTypes', () =>
           recordToArray(this.activityTypeService.findByIds(r.activityTypeIds)),
+        )
+        .add('activities', () =>
+          this.routeActivityTypeService
+            .getRouteActivities(null, r.id)
+            .then(generateRecord2((a) => a.activityTypeId)),
         )
         .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray)),
     );
