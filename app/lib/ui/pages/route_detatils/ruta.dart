@@ -156,7 +156,7 @@ class RutaTab extends StatelessWidget {
                   style: ThemeTypo.martaActivityTitle,
                 ),
                 Text(
-                  'Niverl ${currentLevelTree[2].name}',
+                  'Nivel ${currentLevelTree[2].name}',
                   style: ThemeTypo.martaLevelValue,
                 ),
               ],
