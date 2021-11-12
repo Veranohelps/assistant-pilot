@@ -29,7 +29,7 @@ export async function up(knex: Knex): Promise<void> {
 
   const expeditionRouteUpdates: any[] = [];
   const updates = expeditions.map((expedition) => {
-    const eRs = expeditionRoutes[expedition.id];
+    const eRs = expeditionRoutes[expedition.id] ?? [];
     let duration = 0;
 
     eRs.forEach((er) => {
@@ -61,6 +61,9 @@ export async function up(knex: Knex): Promise<void> {
       .insert(updates)
       .onConflict(['id'])
       .merge(['estimatedDurationInMinutes', 'routeIds'] as any[]);
+  }
+
+  if (expeditionRouteUpdates.length) {
     await knex('ExpeditionRoute')
       .insert(expeditionRouteUpdates)
       .onConflict(['expeditionId', 'routeId'])

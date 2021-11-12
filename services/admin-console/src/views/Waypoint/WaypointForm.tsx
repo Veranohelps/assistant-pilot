@@ -80,20 +80,20 @@ const InputContainer = styled.div`
 interface IForm {
   name: string;
   description: string;
-  longitude: number | null;
-  latitude: number | null;
-  altitude: number | null;
-  radiusInMeters: number | null;
+  longitude: number | string;
+  latitude: number | string;
+  altitude: number | string;
+  radiusInMeters: number | string;
   type: string[];
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
-  longitude: null,
-  latitude: null,
-  altitude: null,
-  radiusInMeters: null,
+  longitude: '',
+  latitude: '',
+  altitude: '',
+  radiusInMeters: '',
   type: [],
 };
 const validationSchema = yup.object().shape({
@@ -178,7 +178,7 @@ const WaypointForm = (props: IProps) => {
         description: selectedWaypoint.description ?? '',
         longitude: selectedWaypoint.coordinate!.coordinates[0],
         latitude: selectedWaypoint.coordinate!.coordinates[1],
-        altitude: selectedWaypoint.coordinate!.coordinates[2],
+        altitude: selectedWaypoint.coordinate!.coordinates[2] ?? '',
         radiusInMeters: selectedWaypoint.radiusInMeters,
         type: selectedWaypoint.typeIds,
       });
@@ -216,10 +216,10 @@ const WaypointForm = (props: IProps) => {
             types: values.type,
             name: values.name,
             description: values.description || undefined,
-            radiusInMeters: values.radiusInMeters!,
-            longitude: values.longitude!,
-            latitude: values.latitude!,
-            altitude: values.altitude!,
+            radiusInMeters: values.radiusInMeters! as number,
+            longitude: values.longitude! as number,
+            latitude: values.latitude! as number,
+            altitude: values.altitude!  as number,
           };
 
           if (selectedWaypoint) {
@@ -269,7 +269,7 @@ const WaypointForm = (props: IProps) => {
                 <div className={cls.set('waypointTypes')}>
                   {waypointTypesQuery.data?.map((type) => {
                     return (
-                      <FormLabel>
+                      <FormLabel key={type.id}>
                         <Field type="checkbox" name="type" value={type.id} />
                         {type.name}
                       </FormLabel>

@@ -318,9 +318,8 @@ const CreateRoute = (props: IProps) => {
                           </FormLabel>
                           {skill.levels.map((level) => {
                             return (
-                              <FormLabel>
+                              <FormLabel key={level.id}>
                                 <Field
-                                  key={level.id}
                                   type="radio"
                                   name={`levels.${skill.id}`}
                                   value={level.id}
@@ -341,7 +340,7 @@ const CreateRoute = (props: IProps) => {
                 <div className={cls.set('activityTypes')}>
                   {activityTypesQuery.data?.map((type) => {
                     return (
-                      <FormLabel>
+                      <FormLabel key={type.id}>
                         <Field type="checkbox" name="activityTypes" value={type.id} />
                         {type.name}
                       </FormLabel>
