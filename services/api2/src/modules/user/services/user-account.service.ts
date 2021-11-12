@@ -24,7 +24,7 @@ export class UserAccountService {
     avatarUrl: string | null,
     auth0Id: string,
   ) {
-    const expeditionsDeleted = await this.expeditionService.deleteUserExpeditions(tx, 'id');
+    const expeditionsDeleted = await this.expeditionService.deleteUserExpeditions(tx, id);
     console.info(`${expeditionsDeleted.length} user expeditions deleted`);
 
     const assessmentHistoryDeleted =
