@@ -99,13 +99,18 @@ interface IGetEstimatedTimeOptions {
 export const getEstimatedTime = (options: IGetEstimatedTimeOptions): number => {
   const uphillEstimate = options.eGain / options.uphillPace;
   const downhillEstimate = options.eLoss / options.downhillPace;
-  const estimate = options.distance / options.defaultPace;
+  const estimateByDistance = options.distance / 2 / options.defaultPace;
 
   const estimateToSummit =
-    Math.max(uphillEstimate, estimate) + Math.min(uphillEstimate, estimate) / 2;
+    Math.max(uphillEstimate, estimateByDistance) + Math.min(uphillEstimate, estimateByDistance) / 2;
   const estimateToStart =
-    Math.max(downhillEstimate, estimate) + Math.min(downhillEstimate, estimate) / 2;
-  const totalTimeInMinutes = (estimateToSummit + estimateToStart) * 60 * (options.unknown / 100);
+    Math.max(downhillEstimate, estimateByDistance) +
+    Math.min(downhillEstimate, estimateByDistance) / 2;
+  const totalTimeInMinutes =
+    (estimateToSummit +
+      estimateToStart +
+      (estimateToSummit + estimateToStart) * (options.unknown / 100)) *
+    60;
 
   return round(totalTimeInMinutes, 2);
 };
