@@ -97,7 +97,9 @@ class RutaTab extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               detailElement(
-                  'distancia', '${route.distanceInMetersToString} km'),
+                LocaleKeys.planning_route_details_distance.tr(),
+                '${route.distanceInMetersToString} km',
+              ),
             ],
           ),
         ),
@@ -106,10 +108,14 @@ class RutaTab extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              detailElement('Desnivel positivo',
-                  '${route.elevationGainInMetersToString} m'),
-              detailElement('Desnivel negativo',
-                  '${route.elevationLossInMetersToString} m'),
+              detailElement(
+                LocaleKeys.planning_route_details_elevation_gain.tr(),
+                '${route.elevationGainInMetersToString} m',
+              ),
+              detailElement(
+                LocaleKeys.planning_route_details_elevation_loss.tr(),
+                '${route.elevationLossInMetersToString} m',
+              ),
             ],
           ),
         ),

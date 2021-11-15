@@ -24,6 +24,10 @@ abstract class  LocaleKeys {
   static const planning_set_activity_reminder = 'planning.set_activity_reminder';
   static const planning_confirm_expedition = 'planning.confirm_expedition';
   static const planning_route_details_no_date = 'planning.route_details.no_date';
+  static const planning_route_details_distance = 'planning.route_details.distance';
+  static const planning_route_details_elevation_gain = 'planning.route_details.elevation_gain';
+  static const planning_route_details_elevation_loss = 'planning.route_details.elevation_loss';
+  static const planning_route_details_activities = 'planning.route_details.activities';
   static const planning_route_details = 'planning.route_details';
   static const planning_conditions_date_time_departure = 'planning.conditions.date_time_departure';
   static const planning_conditions_select = 'planning.conditions.select';

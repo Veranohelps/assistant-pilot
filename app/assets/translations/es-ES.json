@@ -26,7 +26,11 @@
     "set_activity_reminder": "No te olvides de seleccionar por lo menos una actividad en la pestaña de Terreno.",
     "confirm_expedition": "Confirmar expedición",    
     "route_details": {
-      "no_date": "Estableder fecha y hora de salida"
+      "no_date": "Estableder fecha y hora de salida",
+      "distance": "distancia",
+      "elevation_gain": "Desnivel positivo",
+      "elevation_loss": "Desnivel negativo",
+      "activities": "Actividades"
     },
     "conditions": {
       "date_time_departure": "Fecha y hora de salida",

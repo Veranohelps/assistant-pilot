@@ -26,8 +26,13 @@
     "set_activity_reminder": "Please don't forget to set an actity in the Terrain tab.",
     "confirm_expedition": "Confirm expedition",
     "route_details": {
-      "no_date": "Set expedition's departure date and time"
+      "no_date": "Set expedition's departure date and time",
+      "distance": "Distance",
+      "elevation_gain": "Elevation gain",
+      "elevation_loss": "Elevation loss",
+      "activities": "Activities"
     },
+    
     "conditions": {
       "date_time_departure": "Date and time departure",
       "select": "Choose",

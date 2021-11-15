@@ -48,7 +48,11 @@ abstract class DersuRoute extends Equatable {
   @override
   List<Object?> get props => [name, originId, userId, id, ...activityTypeIds];
 
-  String get distanceInMetersToString => _stringFix(distanceInMeters);
+  String get distanceInMetersToString {
+    var inKm = distanceInMeters / 1000;
+    return inKm.toStringAsFixed(2).replaceAll('.', ',');
+  }
+
   String get elevationGainInMetersToString => _stringFix(elevationGainInMeters);
   String get elevationLossInMetersToString => _stringFix(elevationLossInMeters);
 
