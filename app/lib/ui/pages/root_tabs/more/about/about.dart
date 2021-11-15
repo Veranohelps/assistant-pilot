@@ -7,7 +7,7 @@ import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:app/ui/pages/error/error.dart';
+import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/ui/pages/loader/generic_loader.dart';
 
 class About extends StatelessWidget {
@@ -26,7 +26,7 @@ class About extends StatelessWidget {
           if (snapshot.hasError) {
             print("Error while fetching application info 👇");
             print(snapshot.error);
-            return ErrorScreen(error: snapshot.error);
+            return BasicErrorScreen(error: snapshot.error);
           }
         }
 

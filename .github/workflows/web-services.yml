@@ -22,8 +22,6 @@ jobs:
       - name: Set Docker image tag
         id: dockerimage
         run: echo "::set-output name=tag::${{ steps.currentbranch.outputs.branch }}-${{ steps.shortcommit.outputs.sha7 }}"
-      - name: Echo Docker image tag
-        run: echo ${{ steps.dockerimage.outputs.tag }}
       - name: Check out
         uses: actions/checkout@v2
       - name: Set up Cloud SDK
@@ -33,6 +31,12 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           service_account_email: ${{ secrets.GCP_EMAIL }}
           export_default_credentials: true
+      - name: Set Auth0 Admin Console Client ID
+        id: auth0-admin-console-client-id
+        run: echo "::set-output name=id::$(gcloud secrets versions access $SECRET_VERSION --secret=$SECRET_NAME)"
+        env:
+          SECRET_VERSION: 1
+          SECRET_NAME: ${{ steps.currentbranch.outputs.branch }}-auth0-admin-console-client-id
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Configure Docker for gcloud
@@ -53,9 +57,9 @@ jobs:
             NODE_ENV=local
             REACT_APP_ENV=production
             REACT_APP_API_BASE_URL=https://${{ steps.currentbranch.outputs.branch }}-api.dersu.uz
-            REACT_APP_AUTH0_DOMAIN=dersu-develop-admin.eu.auth0.com
-            REACT_APP_AUTH0_CLIENT_ID=GDy8cMjtrvj3nbG0sSKd4GhNQa4K49wt
-            REACT_APP_AUTH0_AUDIENCE=https://develop-api.dersu.uz/admin
+            REACT_APP_AUTH0_DOMAIN=${{ steps.currentbranch.outputs.branch }}-login-admin.dersu.uz
+            REACT_APP_AUTH0_CLIENT_ID=${{ steps.auth0-admin-console-client-id.outputs.id }}
+            REACT_APP_AUTH0_AUDIENCE=https://${{ steps.currentbranch.outputs.branch }}-api.dersu.uz/admin
       - name: Terraform init
         working-directory: services/terraform
         run: terraform init -input=false

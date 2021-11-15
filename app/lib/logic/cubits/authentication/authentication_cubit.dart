@@ -53,7 +53,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(newState);
   }
 
-  void logout() async {
+  Future<void> logout() async {
     getIt<AuthTokenService>().tokenResponse = null;
     await repository.logout();
     getIt<Analitics>().sendCubitEvent(action: 'Cubit: Logout');

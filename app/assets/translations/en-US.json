@@ -60,7 +60,8 @@
   },
   "errors": {
     "fatal": "Fatal error!",
-    "unknown": "Unknown error"
+    "unknown": "Unknown error",
+    "token": "There is an issue with your credentials, please try again."
   },
   "gestures": {
     "press_and_hold": "Press & hold"

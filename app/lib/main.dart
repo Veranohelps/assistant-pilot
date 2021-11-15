@@ -2,7 +2,7 @@ import 'package:app/app.dart';
 import 'package:app/config/brand_theme.dart';
 import 'package:app/config/localization.dart';
 import 'package:app/config/device_info_wrapper.dart';
-import 'package:app/ui/pages/error/error.dart';
+import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/utils/debug.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -69,7 +69,7 @@ class _MainState extends State<_Main> {
             builder: (BuildContext context, Widget? widget) {
               if (Application.isInReleaseMode) {
                 ErrorWidget.builder =
-                    (FlutterErrorDetails errorDetails) => ErrorScreen(
+                    (FlutterErrorDetails errorDetails) => BasicErrorScreen(
                           error: Exception('...rendering error'),
                         );
               }

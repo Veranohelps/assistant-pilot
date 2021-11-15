@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:app/utils/extensions/text_extension.dart';
 import 'package:app/utils/extensions/extensions.dart';
 
-class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({Key? key, this.error, this.stackTrace}) : super(key: key);
+class BasicErrorScreen extends StatelessWidget {
+  const BasicErrorScreen({Key? key, this.error, this.stackTrace}) : super(key: key);
 
   final Object? error;
   final StackTrace? stackTrace;
@@ -21,17 +21,20 @@ class ErrorScreen extends StatelessWidget {
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    SizedBox(height: 100),
-                    Text('🤯 😵', style: TextStyle(fontSize: 50)),
-                    Text(LocaleKeys.errors_fatal.tr()).h1,
-                    Text(error?.toString() ?? LocaleKeys.errors_fatal.tr()).p0,
-                    if (stackTrace != null) ...[
-                      Text('Stack trace: ').p0,
-                      Text(stackTrace.toString()).p0,
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 100),
+                      Text('🤯 😵', style: TextStyle(fontSize: 50)),
+                      Text(LocaleKeys.errors_fatal.tr()).h1,
+                      Text(error?.toString() ?? LocaleKeys.errors_fatal.tr())
+                          .p0,
+                      if (stackTrace != null) ...[
+                        Text('Stack trace: ').p0,
+                        Text(stackTrace.toString()).p0,
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

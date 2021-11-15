@@ -59,7 +59,8 @@
   },
   "errors": {
     "fatal": "Error!",
-    "unknown": "Error desconocido"
+    "unknown": "Error desconocido",
+    "token": "Hay algún problema con sus credenciales, por favor inténtelo de nuevo."
   },
   "gestures": {
     "press_and_hold": "Mantén presionado"

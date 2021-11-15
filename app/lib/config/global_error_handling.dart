@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'dart:ui';
 
-import 'package:app/ui/pages/error/error.dart';
+import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/utils/debug.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/widgets.dart';
@@ -22,7 +22,7 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) async {
               value: errorDetails.stack.toString());
 
           getIt<NavigationService>().navigator.push(
-                materialRoute(ErrorScreen(
+                materialRoute(BasicErrorScreen(
                   error: errorDetails.exception,
                   stackTrace: errorDetails.stack,
                 )),
@@ -36,7 +36,7 @@ void globalErrorHandling(VoidFutureOrCallback init, VoidCallback runApp) async {
           value: stack.toString(),
         );
         getIt<NavigationService>().navigator.push(
-              materialRoute(ErrorScreen(
+              materialRoute(BasicErrorScreen(
                 error: error,
                 stackTrace: stack,
               )),

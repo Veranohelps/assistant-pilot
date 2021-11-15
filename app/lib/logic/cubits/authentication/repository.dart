@@ -1,4 +1,6 @@
+import 'package:app/config/get_it_config.dart';
 import 'package:app/config/hive_config.dart';
+import 'package:app/logic/get_it/auth_token.dart';
 import 'package:either_option/either_option.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -57,5 +59,21 @@ class AuthenticationRepository {
     ));
 
     return Option.of(result);
+  }
+
+  Future<TokenResponse> refreshToken() async {
+    String? storedRefreshToken = await box.get(HiveContants.refreshToken.txt);
+    final result = await appAuth.token(TokenRequest(
+      auth0clientId,
+      auth0redirectUrl,
+      issuer: auth0issuer,
+      additionalParameters: {'audience': auth0audience},
+      refreshToken: storedRefreshToken,
+      scopes: ['offline_access'],
+    ));
+
+    getIt<AuthTokenService>().tokenResponse = result;
+
+    return result!;
   }
 }

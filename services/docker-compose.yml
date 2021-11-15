@@ -34,7 +34,7 @@ services:
         NODE_ENV: local
         REACT_APP_ENV: local
         REACT_APP_API_BASE_URL: http://localhost:3033
-        REACT_APP_AUTH0_DOMAIN: dersu-develop-admin.eu.auth0.com
+        REACT_APP_AUTH0_DOMAIN: develop-login-admin.dersu.uz
         REACT_APP_AUTH0_CLIENT_ID: GDy8cMjtrvj3nbG0sSKd4GhNQa4K49wt
         REACT_APP_AUTH0_AUDIENCE: https://develop-api.dersu.uz/admin
     ports:
@@ -43,7 +43,7 @@ services:
       NODE_ENV: local
       REACT_APP_ENV: local
       REACT_APP_API_BASE_URL: http://localhost:3033
-      REACT_APP_AUTH0_DOMAIN: dersu-develop-admin.eu.auth0.com
+      REACT_APP_AUTH0_DOMAIN: develop-login-admin.dersu.uz
       REACT_APP_AUTH0_CLIENT_ID: GDy8cMjtrvj3nbG0sSKd4GhNQa4K49wt
       REACT_APP_AUTH0_AUDIENCE: https://develop-api.dersu.uz/admin
     volumes:

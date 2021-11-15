@@ -220,25 +220,6 @@ resource "google_secret_manager_secret_version" "db-password" {
   secret_data = random_password.database-password.result
 }
 
-resource "random_password" "api-admin-token" {
-  length           = 25
-  special          = true
-}
-
-resource "google_secret_manager_secret" "api-admin-token-secret" {
-  project = var.project_id
-  secret_id = "${terraform.workspace}-api-admin-token"
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "api-admin-token" {
-  secret = google_secret_manager_secret.api-admin-token-secret.name
-  secret_data = random_password.api-admin-token.result
-}
-
 resource "google_secret_manager_secret" "api-configuration-secret" {
   project = var.project_id
   secret_id = "${terraform.workspace}-api-configuration"
@@ -258,15 +239,14 @@ DB_HOST="/cloudsql/${google_sql_database_instance.instance.connection_name}"
 DB_USER="${google_sql_user.user.name}"
 DB_PASSWORD="${random_password.database-password.result}"
 DB_DATABASE="${google_sql_database.database.name}"
-AUTH0_ISSUER_URL="https://dersu-develop.eu.auth0.com/"
-AUTH0_AUDIENCE="dersu-develop"
-AUTH0_TENANT="dersu-develop.eu"
-AUTH0_CLIENT_ID="lRSRyxGj1gKcYRKq7tC3IltEWz6CSdUD"
+AUTH0_ISSUER_URL="https://${terraform.workspace}-login.dersu.uz/"
+AUTH0_AUDIENCE="dersu-${terraform.workspace}"
+AUTH0_TENANT="dersu-${terraform.workspace}.eu"
+AUTH0_CLIENT_ID="${data.google_secret_manager_secret_version.auth0-client-id-version.secret_data}"
 AUTH0_CLIENT_SECRET="${data.google_secret_manager_secret_version.auth0-client-secret-version.secret_data}"
-AUTH0_ADMIN_TENANT="dersu-develop-admin.eu"
-AUTH0_ADMIN_ISSUER_URL="https://dersu-develop-admin.eu.auth0.com/"
-AUTH0_ADMIN_AUDIENCE="https://develop-api.dersu.uz/admin"
-API_ADMIN_TOKEN="${random_password.api-admin-token.result}"
+AUTH0_ADMIN_TENANT="dersu-${terraform.workspace}-admin.eu"
+AUTH0_ADMIN_ISSUER_URL="https://${terraform.workspace}-login-admin.dersu.uz/"
+AUTH0_ADMIN_AUDIENCE="https://${terraform.workspace}-api.dersu.uz/admin"
 METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-api-key-version.secret_data}"
 METEOBLUE_API_SECRET="${data.google_secret_manager_secret_version.meteoblue-api-secret-version.secret_data}"
 PROFILE_IMAGES_BUCKET_NAME="${google_storage_bucket.profile-images-bucket.name}"
@@ -283,6 +263,12 @@ data "google_secret_manager_secret_version" "api-configuration-version" {
 
 data "google_secret_manager_secret_version" "auth0-client-secret-version" {
   secret = "${terraform.workspace}-auth0-client-secret"
+  project = var.project_id
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "auth0-client-id-version" {
+  secret = "${terraform.workspace}-auth0-client-id"
   project = var.project_id
   version = 1
 }

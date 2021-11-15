@@ -1,4 +1,4 @@
-import 'package:app/ui/pages/error/error.dart';
+import 'package:app/ui/pages/errors/basic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,7 +11,7 @@ void main() {
   testWidgets('GenericErrorWidget', (WidgetTester tester) async {
     final Exception expectedError = Exception("This is some error");
     await tester.pumpWidget(createWidgetForTesting(
-        child: ErrorScreen(
+        child: BasicErrorScreen(
       error: expectedError,
     )));
 

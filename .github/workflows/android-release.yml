@@ -4,6 +4,9 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Set current branch name
+        id: currentbranch
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
       - name: Check out
         uses: actions/checkout@v2
       - name: Set up Java
@@ -14,6 +17,15 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: "2.5.0"
+      - name: Get Flutter dependencies
+        working-directory: app
+        run: flutter pub get
+      - name: Test
+        working-directory: app
+        run: flutter test
+      - name: Lint
+        working-directory: app
+        run: flutter analyze
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -22,17 +34,17 @@ jobs:
           service_account_email: ${{ secrets.GCP_EMAIL }}
           export_default_credentials: true
       - name: Get application configuration
-        run: gcloud secrets versions access 4 --secret="develop-app-configuration" > app/.env
+        run: gcloud secrets versions access $SECRET_VERSION --secret="$SECRET_NAME" > app/.env
+        env:
+          SECRET_VERSION: ${{ steps.currentbranch.outputs.branch == 'develop' && 5 || 1 }}
+          SECRET_NAME: ${{ steps.currentbranch.outputs.branch }}-app-configuration
       - name: Get JKS file for Android signing
         run: |
-          gcloud secrets versions access 2 --secret="develop-app-android-jks" > key.b64
+          gcloud secrets versions access $SECRET_VERSION --secret="$SECRET_NAME" > key.b64
           base64 -d key.b64 > app/android/app/sign/android-key.jks
-      - name: Get Flutter dependencies
-        working-directory: app
-        run: flutter pub get
-      - name: Test
-        working-directory: app
-        run: flutter test
+        env:
+          SECRET_VERSION: ${{ steps.currentbranch.outputs.branch == 'develop' && 2 || 1 }}
+          SECRET_NAME: ${{ steps.currentbranch.outputs.branch }}-app-android-jks
       - name: Generate What Is New Files
         run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
       - name: Build app bundle
