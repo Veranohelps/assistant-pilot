@@ -1,6 +1,5 @@
 Actualizaciones:
 
-- Actividades para rutas y expediciones
-- Mejora en el manejo de peticiones de permisos
-- Perfil de ruta!
-- Mejoras de maquetación y traducción
+- Soluciona error de unidades en el listado de rutas
+- Integración con dominios propios en Auth0
+- Mejora en la muestra de errores de autenticación
