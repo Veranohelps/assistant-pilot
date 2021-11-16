@@ -3,12 +3,10 @@ import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
-
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
 import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
 import 'package:app/logic/cubits/select_time/select_time.dart';
-import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

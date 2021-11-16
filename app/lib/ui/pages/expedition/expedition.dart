@@ -6,7 +6,6 @@ import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
 import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/expedition.dart';
-import 'package:app/logic/get_it/background_geolocation.dart';
 import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/maps/static_map.dart';

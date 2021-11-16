@@ -6,24 +6,30 @@ import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';
-import 'package:app/logic/get_it/background_geolocation.dart';
+import 'package:app/logic/get_it/geofence.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/maps/helper.dart';
 import 'package:app/ui/components/maps/round_button.dart';
 import 'package:app/ui/components/maps/timer.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live_summary.dart';
+import 'package:app/utils/extensions/locations.dart';
 import 'package:app/utils/geo_utils.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 
 import 'live_meteogram.dart';
+
+const debouncer = 'MapListenerDebouncer';
 
 class LiveMap extends StatefulWidget {
   const LiveMap({
@@ -39,85 +45,79 @@ class LiveMap extends StatefulWidget {
   State<LiveMap> createState() => _LiveMapState();
 }
 
-const zoom = MapConfig.liveInitZoom;
+const initZoom = MapConfig.liveInitZoom;
 
 class _LiveMapState extends State<LiveMap> {
-  late MapController controller;
-  bool _liveUpdate = false;
-  bool _hasLiveUpdatePause = false;
-  bool isFirstEventAfterCenter = true;
-  BackgroundGeolocationService? geolocationService;
-  Marker? userMarker;
-  StreamSubscription<MapEvent>? _mapStream;
+  late MapController _controller;
+  late bg.Location _userLocation;
+  late GeofenceService _geofenceService;
+  late StreamSubscription<MapEvent> _mapStream;
+  bool isMapFixedToLocation = true;
+  bool isMapFixedToLocationOnPause = false;
+
+  Marker? _userMarker;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(_afterLayout);
   }
 
-  Timer? delay;
-
   void _afterLayout(_) async {
-    await _geoFence();
-    if (geolocationService != null) {
-      LatLng position = await geolocationService!.getCurrentPosition();
-      controller.move(position, zoom);
-      _liveUpdate = true;
-      _mapStream = controller.mapEventStream.listen(_mapListener);
-
-      geolocationService!
-          .addLocationListener(_locationListener, _locationErrorListener);
-      _locationListener(await geolocationService!.currentPosition);
-    }
+    await geoFenceStart();
+    _userLocation = await bg.BackgroundGeolocation.getCurrentPosition();
+    _controller.moveToLocation(_userLocation, initZoom);
+    _mapStream = _controller.mapEventStream.listen(
+      (event) {
+        if (event is MapEventMoveStart ||
+            event is MapEventFlingAnimationStart ||
+            event is MapEventDoubleTapZoomStart ||
+            event is MapEventRotateStart) {
+          isMapFixedToLocationOnPause = true;
+        } else {
+          EasyDebounce.debounce(
+            debouncer,
+            Duration(seconds: 2),
+            () => _mapListener(event),
+          );
+        }
+      },
+    );
+    bg.BackgroundGeolocation.onLocation(
+      _locationListener,
+      _locationErrorListener,
+    );
+    _locationListener(_userLocation);
   }
 
-  Future<void> _mapListener(event) async {
-    if (event is MapEventMoveStart ||
-        event is MapEventFlingAnimationStart ||
-        event is MapEventDoubleTapZoomStart ||
-        event is MapEventRotateStart) {
-      _hasLiveUpdatePause = true;
-    } else {
-      delay?.cancel();
-      delay = Timer(
-        Duration(seconds: 5),
-        () => _hasLiveUpdatePause = false,
-      );
-    }
+  Future<void> _mapListener(MapEvent event) async {
+    isMapFixedToLocationOnPause = false;
 
-    LatLng position = LatLng(event.center.latitude, event.center.longitude);
-    if (geolocationService != null) {
-      LatLng userCurrentPosition =
-          await geolocationService!.getCurrentPosition();
-      if (isFirstEventAfterCenter) {
-        isFirstEventAfterCenter = false;
-      } else {
-        var distance = GeoUtils.getDistance(userCurrentPosition, position);
-        var kZoom = pow(2, zoom - event.zoom) * pow(2, zoom - event.zoom);
-        if (distance.abs() > kZoom * 300) {
-          setState(() {
-            _liveUpdate = false;
-          });
-        }
-      }
+    var distance =
+        GeoUtils.getDistance(_userLocation.toLatLong(), event.center);
+    var kZoom = pow(2, initZoom - event.zoom) * pow(2, initZoom - event.zoom);
+
+    if (distance.abs() > kZoom * 300) {
+      isMapFixedToLocation = false;
     }
   }
 
   void _locationErrorListener(error) {
-    _liveUpdate = false;
-    print(error);
+    isMapFixedToLocation = false;
+    getIt<Analitics>().sendErrorEvent(action: 'location error');
   }
 
-  void _locationListener(position) {
-    if (_liveUpdate && !_hasLiveUpdatePause) {
-      controller.move(
-        LatLng(position.coords.latitude, position.coords.longitude),
-        controller.zoom,
+  void _locationListener(bg.Location location, [double? zoom]) {
+    if (isMapFixedToLocation && !isMapFixedToLocationOnPause) {
+      _controller.moveToLocation(
+        location,
+        zoom ?? _controller.zoom,
       );
     }
+    _userLocation = location;
     setState(() {
-      userMarker = Marker(
-        point: LatLng(position.coords.latitude, position.coords.longitude),
+      _userMarker = Marker(
+        point: location.toLatLong(),
         height: 20,
         width: 20,
         builder: (BuildContext context) {
@@ -133,30 +133,24 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   void _findMe() async {
-    setState(() {
-      _liveUpdate = true;
-      _hasLiveUpdatePause = false;
-      isFirstEventAfterCenter = true;
-    });
-    if (geolocationService != null) {
-      LatLng position = await geolocationService!.getCurrentPosition();
-      controller.move(position, controller.zoom);
-    }
+    isMapFixedToLocation = true;
+    isMapFixedToLocationOnPause = false;
+    _locationListener(_userLocation, initZoom);
   }
 
   @override
   void dispose() {
-    if (_mapStream != null) {
-      _mapStream!.cancel();
-    }
-    geolocationService?.stop();
+    _mapStream.cancel();
+    bg.BackgroundGeolocation.removeListener(_locationListener);
+    _geofenceService.stop();
+    EasyDebounce.cancel(debouncer);
     super.dispose();
   }
 
-  Future<void> _geoFence() async {
-    geolocationService = getIt<BackgroundGeolocationService>();
-    await geolocationService!.init();
-    await geolocationService!.start(widget.route.waypoints);
+  Future<void> geoFenceStart() async {
+    _geofenceService = getIt<GeofenceService>();
+    await _geofenceService.init();
+    await _geofenceService.start(widget.route.waypoints);
   }
 
   @override
@@ -203,21 +197,20 @@ class _LiveMapState extends State<LiveMap> {
               RoundButton(
                 icon: AntIcons.compass,
                 onPress: () {
-                  controller.rotate(0);
+                  _controller.rotate(0);
                 },
               ),
               SizedBox(height: 16),
               RoundButton(
                 icon: CarbonIcons.location_current,
-                onPress: () {
-                  _findMe();
-                },
+                onPress: _findMe,
               ),
               SizedBox(height: 16),
               RoundButton(
                 icon: CarbonIcons.map_boundary,
-                onPress: () {
-                  controller
+                onPress: () async {
+                  isMapFixedToLocation = false;
+                  _controller
                     ..rotate(0)
                     ..fitBounds(widget.route.boundaries);
                 },
@@ -258,20 +251,21 @@ class _LiveMapState extends State<LiveMap> {
 
   Widget getMap() {
     return FlutterMap(
+      key: ValueKey('Map'),
       options: MapOptions(
         allowPanning: false,
         center: LatLng(
           widget.route.coordinate.coordinates[0].latitude,
           widget.route.coordinate.coordinates[0].longitude,
         ),
-        zoom: zoom,
+        zoom: initZoom,
         maxZoom: MapConfig.maxZoom,
         minZoom: MapConfig.minZoom,
-        onMapCreated: (c) => controller = c,
+        onMapCreated: (c) => _controller = c,
       ),
       layers: [
         ...getLayoutOptions(widget.route),
-        if (userMarker != null) MarkerLayerOptions(markers: [userMarker!]),
+        if (_userMarker != null) MarkerLayerOptions(markers: [_userMarker!]),
       ],
     );
   }

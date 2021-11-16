@@ -148,7 +148,7 @@ class RutaTab extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Actividades').h5,
+        Text(LocaleKeys.planning_route_details_activities.tr()).h5,
         BrandDivider(height: 23),
         ...activityTypes.map(
           (type) {

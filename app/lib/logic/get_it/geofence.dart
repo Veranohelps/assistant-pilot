@@ -6,28 +6,11 @@ import 'package:app/logic/models/waypoint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'package:latlong2/latlong.dart';
+
 export 'package:provider/provider.dart';
 
-class BackgroundGeolocationService extends ChangeNotifier {
+class GeofenceService extends ChangeNotifier {
   final List<Waypoint> waypoints = [];
-  Future<bg.Location> get currentPosition =>
-      bg.BackgroundGeolocation.getCurrentPosition();
-
-  Future<void> requestPermissionTillAlways() async {
-    while (true) {
-      var status = await bg.BackgroundGeolocation.requestPermission();
-
-      if (status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_ALWAYS) {
-        break;
-      }
-    }
-  }
-
-  Future<LatLng> getCurrentPosition() async {
-    bg.Location location = await currentPosition;
-    return LatLng(location.coords.latitude, location.coords.longitude);
-  }
 
   Future<void> init() async {
     await bg.BackgroundGeolocation.destroyLocations();
@@ -58,11 +41,6 @@ class BackgroundGeolocationService extends ChangeNotifier {
     getIt<ConsoleService>().addMessage(
       ConsoleMessage(text: 'geofence init'),
     );
-  }
-
-  void addLocationListener(Function(bg.Location) success,
-      [Function(bg.LocationError)? failure]) {
-    bg.BackgroundGeolocation.onLocation(success, failure);
   }
 
   Future<void> start(List<Waypoint> waypoints) async {
@@ -113,7 +91,6 @@ class BackgroundGeolocationService extends ChangeNotifier {
     getIt<ConsoleService>().addMessage(ConsoleMessage(
         text: 'BackgroundGeolocation stopped, Geofences cleared'));
     await bg.BackgroundGeolocation.stop();
-
     await bg.BackgroundGeolocation.destroyLocations();
     await bg.BackgroundGeolocation.removeGeofences();
     await bg.BackgroundGeolocation.removeListeners();

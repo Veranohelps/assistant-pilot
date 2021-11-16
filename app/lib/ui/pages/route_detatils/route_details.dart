@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'dart:async' show StreamSubscription;
 import 'package:async/async.dart' show StreamGroup;
+import 'package:time_picker_widget/time_picker_widget.dart';
 
 part 'ruta.dart';
 part 'condiciones.dart';
