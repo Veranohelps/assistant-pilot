@@ -1,11 +1,8 @@
 Actualizaciones:
-  - Soluciona error de unidades en el listado de rutas.
-  - Integración con dominios propios en Auth0.
-  - Mejora en la muestra de errores de autenticación.
-  - Información meteo de una ruta para todos sus puntos de interés, incluyendo meteogramas para cada punto. También vista en horizontal para mejor visualización.
-  - Habilitada la planificación de una ruta para el mismo día (aunque por defecto se sigue seleccionado el día siguiente).
-  - Primera versión de la vista de materiales por tipo de actividad durante la planificación.
-  - Durante la expedición ya se puede consultar la meteo, que además pasa al formato horario.
-  - Varias utilidades durante expedición para centrar la ruta en el mapa y reorientar el mapa al Norte.
-  - Mejoras para reducir el número de errores fatales cuando no hay acceso a datos (pero aún no hay soporte official a modo offline).
-  - Primera comparación de niveles de la ruta contra el perfil de usario.
+  - Información meteo de una ruta para todos sus puntos de interés. También vista en horizontal para mejor visualización.
+  - Habilitada planificación para el mismo día.
+  - Vista de materiales por tipo de actividad durante la planificación.
+  - Consultas de meteo durante la expedición.
+  - Centrar ruta y reorientar mapa al Norte durante la expedición.
+  - Reducción de errores cuando no hay acceso a datos.
+  - Comparación de niveles de la ruta contra el perfil de usario.
