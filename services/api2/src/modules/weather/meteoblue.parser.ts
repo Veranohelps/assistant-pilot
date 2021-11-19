@@ -7,7 +7,7 @@ import {
 
 export function parseResponse(
   ranges: string[],
-  meteogramUrl: string,
+  meteogramUrl: string[],
   resTrendPro: string[],
   resSunMoon: string,
   dailyMode: boolean,
@@ -18,7 +18,7 @@ export function parseResponse(
     meteoblueResponseTrendPro.push(JSON.parse(resTrendPro[i]));
     meteograms.push({
       range: v,
-      meteogram: meteogramUrl, //Check this, we need an array of meteogramsUrls!!!
+      meteogram: meteogramUrl[i],
     });
   });
   const forecastHourly = parseResponseTrendPro(ranges, meteoblueResponseTrendPro, dailyMode);
@@ -44,10 +44,9 @@ function parseResponseTrendPro(
 ): IForecastHourly[] {
   const time = meteoblueResponseTrendPro[0].trend_1h.time; //one point is guarantee
   const forecastHourly: IForecastHourly[] = [];
-  time.forEach((_v: string, k: number) => {
+  time.forEach((t: string, k: number) => {
     const hourlyRanges: IRangeHourly[] = [];
     ranges.forEach((v: string, i: number) => {
-      const time = meteoblueResponseTrendPro[i].trend_1h.time;
       const temperature = meteoblueResponseTrendPro[i].trend_1h.temperature;
       const feltTemperature = meteoblueResponseTrendPro[i].data_1h.felttemperature; //feltTemperature in basic-1h api package!!!!
       const precipitation = meteoblueResponseTrendPro[i].trend_1h.precipitation;
@@ -81,10 +80,10 @@ function parseResponseTrendPro(
         pictoCode: pictoCode[k],
       };
       hourlyRanges.push(range);
-      forecastHourly.push({
-        dateTime: time[k],
-        ranges: hourlyRanges,
-      });
+    });
+    forecastHourly.push({
+      dateTime: t,
+      ranges: hourlyRanges,
     });
   });
   const limSup = dailyMode ? forecastHourly.length : 2 * 24;

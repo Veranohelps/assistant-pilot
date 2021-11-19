@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:ant_icons/ant_icons.dart';
+import 'package:app/config/brand_colors.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -23,7 +25,6 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:provider/provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
@@ -35,11 +36,13 @@ class LiveMap extends StatefulWidget {
   const LiveMap({
     Key? key,
     required this.route,
+    required this.expeditionId,
     required this.startTime,
   }) : super(key: key);
 
   final DersuRouteFull route;
   final DateTime startTime;
+  final String expeditionId;
 
   @override
   State<LiveMap> createState() => _LiveMapState();
@@ -49,7 +52,7 @@ const initZoom = MapConfig.liveInitZoom;
 
 class _LiveMapState extends State<LiveMap> {
   late MapController _controller;
-  late bg.Location _userLocation;
+  bg.Location? _userLocation;
   late GeofenceService _geofenceService;
   late StreamSubscription<MapEvent> _mapStream;
   bool isMapFixedToLocation = true;
@@ -66,7 +69,7 @@ class _LiveMapState extends State<LiveMap> {
   void _afterLayout(_) async {
     await geoFenceStart();
     _userLocation = await bg.BackgroundGeolocation.getCurrentPosition();
-    _controller.moveToLocation(_userLocation, initZoom);
+    _controller.moveToLocation(_userLocation!, initZoom);
     _mapStream = _controller.mapEventStream.listen(
       (event) {
         if (event is MapEventMoveStart ||
@@ -87,14 +90,14 @@ class _LiveMapState extends State<LiveMap> {
       _locationListener,
       _locationErrorListener,
     );
-    _locationListener(_userLocation);
+    _locationListener(_userLocation!);
   }
 
   Future<void> _mapListener(MapEvent event) async {
     isMapFixedToLocationOnPause = false;
 
     var distance =
-        GeoUtils.getDistance(_userLocation.toLatLong(), event.center);
+        GeoUtils.getDistance(_userLocation!.toLatLong(), event.center);
     var kZoom = pow(2, initZoom - event.zoom) * pow(2, initZoom - event.zoom);
 
     if (distance.abs() > kZoom * 300) {
@@ -135,7 +138,7 @@ class _LiveMapState extends State<LiveMap> {
   void _findMe() async {
     isMapFixedToLocation = true;
     isMapFixedToLocationOnPause = false;
-    _locationListener(_userLocation, initZoom);
+    _locationListener(_userLocation!, initZoom);
   }
 
   @override
@@ -159,6 +162,58 @@ class _LiveMapState extends State<LiveMap> {
       alignment: Alignment.center,
       children: [
         getMap(),
+        Positioned(
+          left: 16,
+          top: 30 + MediaQuery.of(context).padding.top,
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: BrandColors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 16,
+                  offset: Offset(0, 16),
+                  color: BrandColors.marta3F464C.withOpacity(0.25),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    Text('lat:'),
+                    Text('long:'),
+                    Text('alt:'),
+                  ],
+                ),
+                SizedBox(width: 10),
+                if (_userLocation != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        _userLocation!.coords.longitude.toStringAsFixed(5),
+                        style: TextStyle(
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                      Text(
+                        _userLocation!.coords.latitude.toStringAsFixed(5),
+                      ),
+                      Text(
+                        _userLocation!.coords.altitude.toStringAsFixed(5),
+                        style: TextStyle(
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        ),
         Positioned(
           right: 16,
           top: 20 + MediaQuery.of(context).padding.top,
@@ -222,7 +277,7 @@ class _LiveMapState extends State<LiveMap> {
                   Navigator.push(
                     context,
                     materialRoute(
-                      LiveMetiogram(routeId: widget.route.id),
+                      LiveMetiogram(expeditionId: widget.expeditionId),
                     ),
                   );
                 },

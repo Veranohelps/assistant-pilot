@@ -8,7 +8,6 @@ import 'package:app/ui/pages/expedition_live/expedition_live.dart';
 import 'package:app/ui/pages/root_route.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'ui/pages/registration/registration.dart';
 
 class App extends StatefulWidget {

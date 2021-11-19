@@ -3,7 +3,7 @@ import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.de
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
-import { ILineStringGeometry } from '../../../common/types/geojson.type';
+import { IMultiPointGeometry } from '../../../common/types/geojson.type';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
@@ -57,7 +57,7 @@ export class PersonalRouteController {
   async getRouteWeather(@Tx() tx: TransactionManager, @Param('routeId') id: string) {
     const route = await this.routeService.findOne(tx, id);
     const apiResponse = await this.weatherService.getForecast(
-      route.coordinate as ILineStringGeometry,
+      route.meteoPointsOfInterests as IMultiPointGeometry,
     );
 
     return apiResponse;

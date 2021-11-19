@@ -20,6 +20,7 @@ class ExpeditionLive extends StatelessWidget {
         bottom: false,
         child: LiveMap(
           route: state.expedition.routes[0],
+          expeditionId: state.expedition.id,
           startTime: state.startTime,
         ),
       ),

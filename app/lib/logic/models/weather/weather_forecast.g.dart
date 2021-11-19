@@ -17,4 +17,6 @@ WeatherForecast _$WeatherForecastFromJson(Map<String, dynamic> json) =>
       meteograms: (json['meteograms'] as List<dynamic>)
           .map((e) => Meteogram.fromJson(e as Map<String, dynamic>))
           .toList(),
+      metadata:
+          WeatherMetadata.fromJson(json['metadata'] as Map<String, dynamic>),
     );

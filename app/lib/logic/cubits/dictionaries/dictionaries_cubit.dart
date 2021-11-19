@@ -1,5 +1,4 @@
 import 'package:app/logic/api_maps/dictionaries.dart';
-import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
 import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/levels.dart';

@@ -18,7 +18,7 @@ class WeatherApi extends PrivateDersuApi {
       final client = await getClient();
       Response res;
       res = await client.get(
-        '/route/$id/weather',
+        '/expedition/$id/weather',
       );
       client.close();
       return WeatherForecast.fromJson(res.data);

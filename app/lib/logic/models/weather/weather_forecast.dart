@@ -2,6 +2,7 @@ import 'package:app/logic/models/time_with_timezone.dart';
 import 'package:app/logic/models/weather/daily_forecast.dart';
 import 'package:app/logic/models/weather/hourly_forecast.dart';
 import 'package:app/logic/models/weather/meteogram.dart';
+import 'package:app/logic/models/weather/weather_metadata.dart';
 
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,11 +15,13 @@ class WeatherForecast {
   final List<SunCalendarItem> sunCalendar;
   final List<HourlyForecast> forecastHourly;
   final List<Meteogram> meteograms;
+  final WeatherMetadata metadata;
 
   const WeatherForecast({
     required this.sunCalendar,
     required this.forecastHourly,
     required this.meteograms,
+    required this.metadata,
   });
 
   static WeatherForecast fromJson(Map<String, dynamic> json) =>

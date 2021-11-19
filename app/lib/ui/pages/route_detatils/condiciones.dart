@@ -125,14 +125,25 @@ class _WeatherBlockState extends State<_WeatherBlock> {
         final weather = (weatherState as WeatherLoaded).weather;
 
         final selectedDay = weather.days[selectedDayTabIndex];
-        final weatherInSelectedDay =
-            weather.currentDayHorlyForecast(selectedDay);
         final planningDay = context.read<SelectTimeCubit>().state!;
 
-        final weatherInStartingHour = weatherInSelectedDay
-            .firstWhere((el) => el.dateTime.hour == planningDay.hour);
+        final amountOfRanges = weather.forecastHourly.first.ranges.length;
+        final List<HourlyForecast> hourlyForecastList = [];
+        final startingTimeWithTimeZone = TimeWithTimeZone(
+          Duration(minutes: weather.metadata.timezoneUTCOffsetInMinutes),
+          selectedDay.year,
+          selectedDay.month,
+          selectedDay.day,
+          planningDay.hour,
+        );
+        for (var i = 0; i < amountOfRanges; i++) {
+          var forecast = weather.forecastHourly.firstWhere((f) =>
+              f.dateTime ==
+              startingTimeWithTimeZone.add(Duration(hours: 4 * i)));
+          hourlyForecastList.add(forecast);
+        }
 
-        return Column(
+        return ListView(
           children: [
             SizedBox(
               height: 52,
@@ -185,36 +196,30 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               margin: EdgeInsets.only(left: 16),
               height: 20,
             ),
-            Row(
-              children: [
-                SizedBox(width: 16),
-                Text(
-                  'Metereología',
-                  style: MType.h5,
-                ),
-                Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(materialRoute(ImageViewer(
-                      title: 'ver completa',
-                      url: weather.meteograms[0].url,
-                    )));
-                  },
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                    child: Text('ver completa'.toUpperCase()),
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ),
+              child: Text(
+                'Metereología',
+                style: MType.h5,
+              ),
             ),
             BrandDivider(
               margin: EdgeInsets.only(left: 16),
             ),
-            WeatherCard(
-              rangeForecast: weatherInStartingHour.ranges[0],
-              dateTime: weatherInStartingHour.dateTime,
-            ),
+            ...hourlyForecastList
+                .asMap()
+                .map((k, f) => MapEntry(
+                      k,
+                      WeatherCard(
+                          rangeForecast: f.ranges[k],
+                          dateTime: f.dateTime,
+                          meteogram: weather.meteograms[k]),
+                    ))
+                .values
+                .toList(),
           ],
         );
       },
@@ -260,10 +265,12 @@ class WeatherCard extends StatelessWidget {
     Key? key,
     required this.rangeForecast,
     required this.dateTime,
+    required this.meteogram,
   }) : super(key: key);
 
   final RangeForecast rangeForecast;
   final TimeWithTimeZone dateTime;
+  final Meteogram meteogram;
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +295,21 @@ class WeatherCard extends StatelessWidget {
                 Text(
                   hhMMFormat.format(dateTime).toString(),
                   style: MType.subtitle1,
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(materialRoute(ImageViewer(
+                      title: 'Meteogram',
+                      url: meteogram.url,
+                    )));
+                  },
+                  child: Text(
+                    'meteogram',
+                    style: MType.subtitle1.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ],
             ),

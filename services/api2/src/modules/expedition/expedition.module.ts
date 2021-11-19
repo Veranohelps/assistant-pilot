@@ -3,6 +3,7 @@ import { DatabaseModule } from '../database/database.module';
 import { RouteModule } from '../route/route.module';
 import { WaypointModule } from '../waypoint/waypoint.module';
 import { MeteoblueService } from '../weather/services/meteoblue.service';
+import { OpenWeatherService } from '../weather/services/openweather.service';
 import { WeatherService } from '../weather/services/weather.service';
 import { AdminExpeditionController } from './controllers/admin/admin.expedition.controller';
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';
@@ -23,6 +24,7 @@ import { ExpeditionService } from './services/expedition.service';
     ExpeditionResolver,
     WeatherService,
     MeteoblueService,
+    OpenWeatherService,
   ],
   exports: [ExpeditionService, ExpeditionRouteService, WeatherService, MeteoblueService],
 })

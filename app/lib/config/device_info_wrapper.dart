@@ -1,5 +1,4 @@
 import 'package:app/config/get_it_config.dart';
-import 'package:app/logic/get_it/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 

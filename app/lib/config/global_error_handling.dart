@@ -1,7 +1,4 @@
 import 'dart:async';
-
-import 'dart:ui';
-
 import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/utils/debug.dart';
 import 'package:app/utils/route_transitions/basic.dart';

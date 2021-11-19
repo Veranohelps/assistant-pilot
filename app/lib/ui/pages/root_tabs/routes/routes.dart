@@ -10,7 +10,6 @@ import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/pages/route_detatils/route_details.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
-import 'package:app/utils/extensions/text_extension.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class RoutesTab extends StatefulWidget {

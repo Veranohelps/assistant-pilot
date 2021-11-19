@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app/logic/api_maps/user_api.dart';
-import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:app/logic/cubits/authentication_dependend/authentication_dependend_cubit.dart';
 import 'package:app/logic/models/profile.dart';
 

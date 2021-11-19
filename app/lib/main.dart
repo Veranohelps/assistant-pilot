@@ -7,6 +7,7 @@ import 'package:app/utils/debug.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'config/bloc_config.dart';
@@ -28,6 +29,8 @@ Future<void> main() async {
       await FlutterConfig.loadEnvVariables();
       await HiveConfig.init();
       await preRenderGetItSetup();
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
     },
     () => runApp(Localization(child: _Main())),
   );

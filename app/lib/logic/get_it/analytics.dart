@@ -1,6 +1,5 @@
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/api_maps/plausible.dart';
-import 'package:app/logic/get_it/console.dart';
 import 'package:app/logic/models/console_message.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';

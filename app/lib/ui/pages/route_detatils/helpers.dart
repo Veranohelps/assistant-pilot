@@ -12,7 +12,7 @@ void setTimeFilterDate(BuildContext context) async {
     context: context,
     initialDate: initalDate,
     firstDate: today.hour < 23 ? today : tommorow,
-    lastDate: today.add(Duration(days: 14)),
+    lastDate: today.add(Duration(days: 13)),
   );
 
   if (day != null) {

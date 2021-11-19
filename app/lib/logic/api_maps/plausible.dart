@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/api_maps/api.dart';
-import 'package:app/logic/get_it/analytics.dart';
 import 'package:app/logic/models/console_message.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';

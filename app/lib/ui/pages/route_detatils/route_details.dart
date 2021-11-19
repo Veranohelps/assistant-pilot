@@ -2,8 +2,9 @@
 
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/models/activity_type.dart';
+import 'package:app/logic/models/weather/hourly_forecast.dart';
+import 'package:app/logic/models/weather/meteogram.dart';
 import 'package:app/ui/components/altitude_chart/altitude_chart.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:app/config/brand_colors.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
@@ -28,7 +29,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:provider/provider.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'dart:async' show StreamSubscription;
 import 'package:async/async.dart' show StreamGroup;

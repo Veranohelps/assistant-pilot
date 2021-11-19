@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-// import { OpenWeatherService } from '../../common/services/openweather.service';
-import { ILineStringGeometry } from '../../common/types/geojson.type';
+import { IMultiPointGeometry, IPointGeometry } from '../../common/types/geojson.type';
 import { IWeatherPredictionDaily } from '../types/wheather-prediction.type';
 import { MeteoblueService } from './meteoblue.service';
+//import { OpenWeatherService } from './openweather.service';
 
 @Injectable()
 export class WeatherService {
@@ -12,27 +12,24 @@ export class WeatherService {
   constructor(private configService: ConfigService, private weatherProvider: MeteoblueService) {}
 
   async getForecast(
-    coordinate: ILineStringGeometry,
+    coordinate: IMultiPointGeometry,
     dailyMode = true,
   ): Promise<IWeatherPredictionDaily> {
-    // First approach: only one meteo point of interest, the starting point of the route
-    const longitude = coordinate.coordinates[0][0];
-    const latitude = coordinate.coordinates[0][1];
     const altitude = coordinate.coordinates[0][2];
-
     if (altitude == null) {
       console.warn("No altitude available for route's starting point");
     }
-
-    return this.weatherProvider.getForecast(
-      [
-        {
-          type: 'Point',
-          coordinates: [longitude, latitude, altitude],
-        },
-      ],
-      dailyMode,
-    );
+    const points: IPointGeometry[] = [];
+    coordinate.coordinates.forEach((c) => {
+      const coordinateLon = c[0];
+      const coordinateLat = c[1];
+      const coordinateAlt = c[2];
+      points.push({
+        type: 'Point',
+        coordinates: [coordinateLon, coordinateLat, coordinateAlt],
+      });
+    });
+    return this.weatherProvider.getForecast(points, dailyMode);
   }
   calculateDailyMode(dateTime: Date): boolean {
     const now = new Date();

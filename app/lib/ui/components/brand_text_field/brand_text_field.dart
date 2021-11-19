@@ -3,10 +3,7 @@ import 'package:app/config/theme_typo.dart';
 import 'package:app/ui/components/brand_hint_text/brand_hint_text.dart';
 import 'package:app/ui/components/brand_label/brand_label.dart';
 import 'package:cubit_form/cubit_form.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class BrandTextField extends StatelessWidget {
   const BrandTextField({

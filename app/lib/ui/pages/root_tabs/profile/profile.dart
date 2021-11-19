@@ -13,8 +13,6 @@ import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/utils/extensions/extensions.dart';
 
 part 'pages/edit.dart';

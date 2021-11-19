@@ -24,66 +24,78 @@ export class MeteoblueService {
     dailyMode = true,
   ): Promise<IWeatherPredictionDaily> {
     const startingPoint = pointsOfInterest[0];
-    const longitude = startingPoint.coordinates[0];
-    const latitude = startingPoint.coordinates[1];
+    const startingPointLongitude = startingPoint.coordinates[0];
+    const startingPointLatitude = startingPoint.coordinates[1];
     const startingPointAltitude = startingPoint.coordinates[2];
 
-    if (startingPointAltitude == null) {
-      throw new Error('Missing altitude for starting point');
-    }
+    const ranges: string[] = [];
+    const meteograms: string[] = [];
+    pointsOfInterest.forEach((p) => {
+      let limInf, limSup;
+      const longitude = p.coordinates[0];
+      const latitude = p.coordinates[1];
+      const altitude = p.coordinates[2];
+
+      if (altitude == null) {
+        throw new Error(`Missing altitude for meteopoint lon:${longitude}, lat:${latitude}`);
+      }
+      if (altitude <= 0) {
+        limInf = -999;
+        limSup = 0;
+      } else {
+        limInf = Math.floor(altitude / 1000) * 1000;
+        limSup = Math.ceil(altitude / 1000) * 1000 - 1;
+      }
+      const pointRange = `${limInf}-${limSup}`;
+      const queryParams = this.getQueryParams(
+        longitude,
+        latitude,
+        altitude,
+        false,
+        false,
+        5,
+        dailyMode,
+        2,
+      );
+      const signature = this.getSignature(
+        (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) + queryParams,
+      );
+      meteograms.push(
+        this.METEOBLUE_URL +
+          (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) +
+          queryParams +
+          '&sig=' +
+          signature,
+      );
+
+      ranges.push(pointRange);
+    });
+    const requests = pointsOfInterest.map(async (p) => {
+      return await this.callTrendPro(p.coordinates[0], p.coordinates[1], p.coordinates[2]);
+    });
+    const apiResponseTrendPro = await Promise.all(requests).catch((error: any) => {
+      const errorMessage = JSON.parse(error.response.body).error_message;
+      throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
+    });
 
     // We only make ONE call to get sunmon information since we assume it's the same info
     // for all points in the route
-    let apiResponseTrendPro, apiResponseSunMoon;
-
+    let apiResponseSunMoon;
     try {
-      apiResponseTrendPro = await this.callTrendPro(longitude, latitude, startingPointAltitude);
+      apiResponseSunMoon = await this.callSunMoon(
+        startingPointLongitude,
+        startingPointLatitude,
+        startingPointAltitude,
+      );
     } catch (error: any) {
       const errorMessage = JSON.parse(error.response.body).error_message;
       throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
     }
-
-    try {
-      apiResponseSunMoon = await this.callSunMoon(longitude, latitude, startingPointAltitude);
-    } catch (error: any) {
-      const errorMessage = JSON.parse(error.response.body).error_message;
-      throw new BadRequestError(ErrorCodes.METEOBLUE_API_ERROR, errorMessage);
-    }
-
-    let limInf, limSup;
-    if (startingPointAltitude <= 0) {
-      limInf = -999;
-      limSup = 0;
-    } else {
-      limInf = Math.floor(startingPointAltitude / 1000) * 1000;
-      limSup = Math.ceil(startingPointAltitude / 1000) * 1000 - 1;
-    }
-    const startingPointRange = `${limInf}-${limSup}`;
-
-    const queryParams = this.getQueryParams(
-      longitude,
-      latitude,
-      startingPointAltitude,
-      false,
-      false,
-      5,
-      dailyMode,
-      2,
-    );
-    const signature = this.getSignature(
-      (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) + queryParams,
-    );
-    const meteogramUrl =
-      this.METEOBLUE_URL +
-      (dailyMode ? this.METEOGRAM_QUERY_PATH : this.PICTOPRINT_QUERY_PATH) +
-      queryParams +
-      '&sig=' +
-      signature;
 
     const forecast = parseResponse(
-      [startingPointRange],
-      meteogramUrl,
-      [apiResponseTrendPro],
+      ranges,
+      meteograms,
+      apiResponseTrendPro,
       apiResponseSunMoon,
       dailyMode,
     );

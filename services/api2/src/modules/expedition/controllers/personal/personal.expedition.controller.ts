@@ -5,7 +5,7 @@ import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { ErrorCodes } from '../../../common/errors/error-codes';
 import { NotFoundError } from '../../../common/errors/http.error';
-import { ILineStringGeometry } from '../../../common/types/geojson.type';
+import { IMultiPointGeometry } from '../../../common/types/geojson.type';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
@@ -66,7 +66,7 @@ export class PersonalExpeditionController {
     const expeditionRoute = expeditionRoutes[id][0];
     const dailyMode = this.weatherService.calculateDailyMode(expeditionRoute.startDateTime);
     const apiResponse = await this.weatherService.getForecast(
-      expeditionRoute.route.coordinate as ILineStringGeometry,
+      expeditionRoute.route.meteoPointsOfInterests as IMultiPointGeometry,
       dailyMode,
     );
 

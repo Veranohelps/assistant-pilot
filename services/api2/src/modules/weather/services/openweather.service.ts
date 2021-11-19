@@ -4,6 +4,7 @@ import got from 'got';
 import { IPointGeometry } from '../../common/types/geojson.type';
 import {
   IForecastHourly,
+  IRangeHourly,
   ISunCalendar,
   IWeatherPredictionDaily,
 } from '../types/wheather-prediction.type';
@@ -26,58 +27,13 @@ export class OpenWeatherService {
     if (startingPointAltitude == null) {
       throw new Error('Missing altitude for starting point');
     }
-
-    let limInf, limSup;
-    if (startingPointAltitude <= 0) {
-      limInf = -999;
-      limSup = 0;
-    } else {
-      limInf = Math.floor(startingPointAltitude / 1000) * 1000;
-      limSup = Math.ceil(startingPointAltitude / 1000) * 1000 - 1;
-    }
-    const startingPointRange = `${limInf}-${limSup}`;
-
-    const apiResponseBody = await this.getData(
-      startingPoint.coordinates[0],
-      startingPoint.coordinates[1],
-    );
-
-    const apiResponse = JSON.parse(apiResponseBody);
-    const utcOffsetSeconds = apiResponse.timezone_offset;
-
-    const forecastHourly: IForecastHourly[] = [];
-    apiResponse.hourly.forEach((hourlyData: OpenWeatherHourlyData) => {
-      let oneHourPrecipitation = null;
-      const rainInfo = hourlyData.rain;
-      if (rainInfo != null && rainInfo != undefined) {
-        oneHourPrecipitation = Number(rainInfo['1h']);
-      }
-      forecastHourly.push({
-        dateTime: this.getFormattedTime(hourlyData.dt, utcOffsetSeconds),
-        ranges: [
-          {
-            range: startingPointRange,
-            temperature: hourlyData.temp,
-            feltTemperature: hourlyData.feels_like,
-            precipitation: oneHourPrecipitation,
-            precipitationProbability: hourlyData.pop,
-            visibility: hourlyData.visibility,
-            lowClouds: hourlyData.clouds,
-            midClouds: hourlyData.clouds,
-            hiClouds: hourlyData.clouds,
-            totalCloudCover: null,
-            sunshineTime: null,
-            windSpeed: hourlyData.wind_speed,
-            windGust: hourlyData.wind_gust,
-            isDay: null,
-            // this is inconsistent with their docs, weather should be an object
-            // List of weather IDs and icons:
-            // https://openweathermap.org/weather-conditions
-            pictoCode: hourlyData.weather[0].icon,
-          },
-        ],
-      });
+    const requests = pointsOfInterest.map(async (p) => {
+      return await this.getData(p.coordinates[0], p.coordinates[1]);
     });
+    const responses = await Promise.all(requests);
+    // For sunmoon info, we assume it's the same info for all points in the route
+    const apiResponse = JSON.parse(responses[0]);
+    const utcOffsetSeconds = apiResponse.timezone_offset;
 
     const sunCalendar: ISunCalendar[] = [];
 
@@ -91,7 +47,67 @@ export class OpenWeatherService {
         moonPhaseName: `${dailyData.moon_phase}`,
       });
     });
+    const forecastHourly: IForecastHourly[] = [];
+    const ranges: string[] = [];
+    const jsonResponses: any[] = [];
+    pointsOfInterest.forEach((p, i) => {
+      const longitude = p.coordinates[0];
+      const latitude = p.coordinates[1];
+      const altitude = p.coordinates[2];
 
+      if (altitude == null) {
+        throw new Error(`Missing altitude for meteopoint lon:${longitude}, lat:${latitude}`);
+      }
+
+      let limInf, limSup;
+      if (altitude <= 0) {
+        limInf = -999;
+        limSup = 0;
+      } else {
+        limInf = Math.floor(altitude / 1000) * 1000;
+        limSup = Math.ceil(altitude / 1000) * 1000 - 1;
+      }
+      const range = `${limInf}-${limSup}`;
+      ranges.push(range);
+      jsonResponses.push(JSON.parse(responses[i]));
+    });
+
+    apiResponse.hourly.forEach((startPointHourlyData: OpenWeatherHourlyData, k: number) => {
+      const hourlyRanges: IRangeHourly[] = [];
+      ranges.forEach((v: string, i: number) => {
+        let oneHourPrecipitation = null;
+        const jsonResponse = jsonResponses[i];
+        const hourlyData: OpenWeatherHourlyData = jsonResponse.hourly[k];
+        const rainInfo = hourlyData.rain;
+        if (rainInfo != null && rainInfo != undefined) {
+          oneHourPrecipitation = Number(rainInfo['1h']);
+        }
+        hourlyRanges.push({
+          range: v,
+          temperature: hourlyData.temp,
+          feltTemperature: hourlyData.feels_like,
+          precipitation: oneHourPrecipitation,
+          precipitationProbability: hourlyData.pop,
+          visibility: hourlyData.visibility,
+          lowClouds: hourlyData.clouds,
+          midClouds: hourlyData.clouds,
+          hiClouds: hourlyData.clouds,
+          totalCloudCover: null,
+          sunshineTime: null,
+          windSpeed: hourlyData.wind_speed,
+          windGust: hourlyData.wind_gust,
+          isDay: null,
+          // this is inconsistent with their docs, weather should be an object
+          // List of weather IDs and icons:
+          // https://openweathermap.org/weather-conditions
+          pictoCode: hourlyData.weather[0].icon,
+        });
+      });
+      forecastHourly.push({
+        dateTime: this.getFormattedTime(startPointHourlyData.dt, utcOffsetSeconds),
+        ranges: hourlyRanges,
+      });
+    });
     const forecast = {
       metadata: {
         provider: 'Open Weather',

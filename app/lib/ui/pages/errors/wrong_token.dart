@@ -1,7 +1,6 @@
 import 'package:app/config/brand_colors.dart';
 import 'package:app/logic/cubits/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:app/utils/extensions/text_extension.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'package:app/generated/locale_keys.g.dart';
 
