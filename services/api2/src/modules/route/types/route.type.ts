@@ -31,6 +31,9 @@ export interface IRoute {
   updatedAt: Date;
   deletedAt?: Date | null;
 }
+export interface IRouteWithTimezone extends IRoute {
+  timezone: ITimeZone;
+}
 
 export interface ICreateRoute {
   name: string;
@@ -87,3 +90,10 @@ export interface IGetRouteUrlParameters {
 }
 
 // export interface IGetRouteWithWaypointsOptions extends IGetRouteWaypointOptions {}
+
+export interface ITimeZone {
+  dstOffset?: number;
+  rawOffset?: number;
+  timeZoneId?: string;
+  timeZoneName?: string;
+}

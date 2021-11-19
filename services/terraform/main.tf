@@ -250,6 +250,8 @@ AUTH0_ADMIN_AUDIENCE="https://${terraform.workspace}-api.dersu.uz/admin"
 METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-api-key-version.secret_data}"
 METEOBLUE_API_SECRET="${data.google_secret_manager_secret_version.meteoblue-api-secret-version.secret_data}"
 PROFILE_IMAGES_BUCKET_NAME="${google_storage_bucket.profile-images-bucket.name}"
+GOOGLE_TIMEZONE_API_KEY="${data.google_secret_manager_secret_version.google-timezone-api-key-version.secret_data}"
+GOOGLE_ELEVATION_API_KEY="${data.google_secret_manager_secret_version.google-elevation-api-key-version.secret_data}"
 EOT
 }
 
@@ -281,6 +283,18 @@ data "google_secret_manager_secret_version" "meteoblue-api-key-version" {
 
 data "google_secret_manager_secret_version" "meteoblue-api-secret-version" {
   secret = "${terraform.workspace}-meteoblue-api-secret"
+  project = var.project_id
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "google-timezone-api-key-version" {
+  secret = "google-timezone-api-key"
+  project = var.project_id
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "google-elevation-api-key-version" {
+  secret = "google-elevation-api-key"
   project = var.project_id
   version = 1
 }

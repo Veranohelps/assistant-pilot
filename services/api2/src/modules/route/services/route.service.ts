@@ -2,7 +2,9 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { uniq } from 'lodash';
 import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
-import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
+import { BadRequestError, NotFoundError, ServerError } from '../../common/errors/http.error';
+import { ElevationService, ElevationStatus } from '../../common/services/elevation.service';
+import { TimezoneService } from '../../common/services/timezone.service';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
@@ -36,6 +38,8 @@ export class RouteService {
     private activityTypeService: ActivityTypeService,
     private skillLevelService: SkillLevelService,
     private routeActivityTypeService: RouteActivityTypeService,
+    private elevationService: ElevationService,
+    private timezoneService: TimezoneService,
   ) {}
 
   private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
@@ -117,9 +121,37 @@ export class RouteService {
     userId?: string,
   ): Promise<IRoute> {
     const lineStringGeom = this.geoJsonToLineStringGeometry(geojson);
+    const startingPointAltitude = lineStringGeom.coordinates[0][2];
+    if (startingPointAltitude == null) {
+      const startingPointLongitude = lineStringGeom.coordinates[0][0];
+      const startingPointLatitude = lineStringGeom.coordinates[0][1];
+      try {
+        const elevationResponse = await this.elevationService.getElevation({
+          type: 'Point',
+          coordinates: [startingPointLongitude, startingPointLatitude, startingPointAltitude],
+        });
+        if (elevationResponse.status == ElevationStatus.OK) {
+          lineStringGeom.coordinates[0][2] = elevationResponse.results[0].elevation;
+        } else {
+          console.error(
+            `No altitude available for route's starting point ${elevationResponse.error_message}`,
+          );
+          throw new ServerError(
+            ErrorCodes.SERVER_ERROR,
+            `No altitude available for route's starting point ${elevationResponse.error_message}`,
+          );
+        }
+      } catch (err) {
+        console.error("No altitude available for route's starting point");
+        throw new ServerError(
+          ErrorCodes.SERVER_ERROR,
+          "No altitude available for route's starting point",
+        );
+      }
+    }
+
     const geomString = this.lineStringGeomToString(lineStringGeom);
     const routeParams = analyseRoute(lineStringGeom);
-
     const [existingRoute, existingRouteByUser] = await Promise.all([
       this.db
         .read(tx, { overrides: { globalId: { select: true } } })
@@ -392,7 +424,7 @@ export class RouteService {
     id: string,
     options?: IGetRouteWaypointOptions,
   ) {
-    const route = await this.findOne(tx, id).then((r) =>
+    const route: any = await this.findOne(tx, id).then(async (r) =>
       AddFields.target(r)
         .add('waypoints', () =>
           this.waypointService.getRouteWaypoints(tx, [r.id], options).then((w) => w[r.id] ?? []),
@@ -407,6 +439,10 @@ export class RouteService {
         )
         .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray)),
     );
+    const timezone = await this.timezoneService.getTimezone(
+      route.coordinate as ILineStringGeometry,
+    );
+    route.timezone = timezone;
 
     return route;
   }

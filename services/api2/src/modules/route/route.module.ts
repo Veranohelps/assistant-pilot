@@ -1,4 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { ElevationService } from '../common/services/elevation.service';
+import { TimezoneService } from '../common/services/timezone.service';
 import { DatabaseModule } from '../database/database.module';
 import { ExpeditionModule } from '../expedition/expedition.module';
 import { SkillModule } from '../skill/skill.module';
@@ -29,6 +31,8 @@ import { RouteService } from './services/route.service';
     OpenWeatherService,
     ActivityTypeService,
     RouteActivityTypeService,
+    TimezoneService,
+    ElevationService,
   ],
   exports: [RouteService, RouteOriginService, ActivityTypeService, RouteActivityTypeService],
   controllers: [AdminRouteController, PersonalRouteController, AdminActivityTypeController],
