@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/models/activity_type.dart';
 import 'package:app/ui/components/altitude_chart/altitude_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:app/config/brand_colors.dart';
@@ -24,6 +25,7 @@ import 'package:app/ui/pages/image_viewer/image_viewer.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,7 @@ import 'package:app/utils/extensions/extensions.dart';
 import 'dart:async' show StreamSubscription;
 import 'package:async/async.dart' show StreamGroup;
 import 'package:time_picker_widget/time_picker_widget.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 part 'ruta.dart';
 part 'condiciones.dart';
