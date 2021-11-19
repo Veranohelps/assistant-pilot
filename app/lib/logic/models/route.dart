@@ -16,6 +16,7 @@ abstract class DersuRoute extends Equatable {
   final DateTime updatedAt;
   final List<String> activityTypeIds;
   final List<String> levelIds;
+  final String? description;
 
   // final List<MultyPointGeometry> meteoPointsOfInterests;
   final double distanceInMeters;
@@ -27,6 +28,7 @@ abstract class DersuRoute extends Equatable {
   const DersuRoute({
     required this.id,
     required this.name,
+    required this.description,
     required this.originId,
     required this.userId,
     required this.updatedAt,
@@ -74,6 +76,7 @@ class DersuRouteFull extends DersuRoute {
   const DersuRouteFull({
     required String id,
     required String name,
+    required String? description,
     required String originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
@@ -95,6 +98,7 @@ class DersuRouteFull extends DersuRoute {
           userId: userId,
           updatedAt: updatedAt,
           activityTypeIds: activityTypeIds,
+          description: description,
           // meteoPointsOfInterests: meteoPointsOfInterests,
           distanceInMeters: distanceInMeters,
           elevationGainInMeters: elevationGainInMeters,
@@ -108,15 +112,10 @@ class DersuRouteFull extends DersuRoute {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        originId,
-        userId,
-        updatedAt,
-        ...activityTypeIds,
-        coordinate,
-        boundaries,
+        ...super.props,
+        ...coordinates,
         ...waypoints,
+        boundaries,
       ];
 
   factory DersuRouteFull.fromJson(Map<String, dynamic> json) =>
@@ -132,6 +131,7 @@ class DersuRouteShort extends DersuRoute {
   const DersuRouteShort({
     required String id,
     required String name,
+    required String? description,
     required String originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
@@ -147,6 +147,7 @@ class DersuRouteShort extends DersuRoute {
   }) : super(
           id: id,
           name: name,
+          description: description,
           originId: originId,
           userId: userId,
           updatedAt: updatedAt,
@@ -162,12 +163,7 @@ class DersuRouteShort extends DersuRoute {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        originId,
-        userId,
-        updatedAt,
-        ...activityTypeIds,
+        ...super.props,
         url,
       ];
 

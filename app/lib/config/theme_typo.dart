@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'brand_colors.dart';
 export 'package:app/utils/extensions/text_extension.dart';
 
+const arimo = 'Arimo';
+
 class ThemeTypo {
   static const defaultText = TextStyle(
     fontSize: 14,
@@ -95,6 +97,32 @@ class ThemeTypo {
   );
 
   static const temp = TextStyle(color: Colors.red);
+
+  //// Marta wireframes
+  ///
+  static const arimo14Semibold = TextStyle(
+    fontSize: 14,
+    height: 20 / 14,
+    fontWeight: NamedWeight.semiBold,
+    fontFamily: arimo,
+  );
+  static const arimo14regular = TextStyle(
+    fontSize: 14,
+    height: 20 / 14,
+    fontFamily: arimo,
+  );
+  static const arimo18regular = TextStyle(
+    fontSize: 18,
+    height: 24 / 20,
+    fontFamily: arimo,
+  );
+
+  static const arimo18Semibold = TextStyle(
+    fontSize: 18,
+    height: 24 / 20,
+    fontFamily: arimo,
+    fontWeight: NamedWeight.semiBold,
+  );
 }
 
 class MType {

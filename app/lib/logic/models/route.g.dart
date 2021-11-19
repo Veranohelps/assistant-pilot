@@ -10,6 +10,7 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) =>
     DersuRouteFull(
       id: json['id'] as String,
       name: json['name'] as String,
+      description: json['description'] as String?,
       originId: json['originId'] as String,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
@@ -42,6 +43,7 @@ Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
       'updatedAt': instance.updatedAt.toIso8601String(),
       'activityTypeIds': instance.activityTypeIds,
       'levelIds': instance.levelIds,
+      'description': instance.description,
       'distanceInMeters': instance.distanceInMeters,
       'elevationGainInMeters': instance.elevationGainInMeters,
       'elevationLossInMeters': instance.elevationLossInMeters,
@@ -56,6 +58,7 @@ DersuRouteShort _$DersuRouteShortFromJson(Map<String, dynamic> json) =>
     DersuRouteShort(
       id: json['id'] as String,
       name: json['name'] as String,
+      description: json['description'] as String?,
       originId: json['originId'] as String,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       activityTypeIds: (json['activityTypeIds'] as List<dynamic>)

@@ -30,7 +30,8 @@
       "distance": "Distance",
       "elevation_gain": "Elevation gain",
       "elevation_loss": "Elevation loss",
-      "activities": "Activities"
+      "activities": "Activities",
+      "elevation_profile": "Elevation profile"
     },
     
     "conditions": {

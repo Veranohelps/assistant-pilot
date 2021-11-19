@@ -26,6 +26,11 @@ class StaticMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
       transitionType: ContainerTransitionType.fade,
       transitionDuration: const Duration(milliseconds: 500),
       closedColor: Colors.transparent,
@@ -37,18 +42,21 @@ class StaticMap extends StatelessWidget {
       closedBuilder: (BuildContext _, VoidCallback open) {
         return Stack(
           children: [
-            FlutterMap(
-              options: MapOptions(
-                bounds: route.boundaries,
-                boundsOptions:
-                    const FitBoundsOptions(padding: EdgeInsets.all(10)),
-                allowPanning: false,
-                zoom: MapConfig.staticInitZoom,
-                maxZoom: MapConfig.maxZoom,
-                minZoom: MapConfig.minZoom,
-                // interactiveFlags: InteractiveFlag.none,
+            AbsorbPointer(
+              child: FlutterMap(
+                options: MapOptions(
+                  interactiveFlags: InteractiveFlag.none,
+                  bounds: route.boundaries,
+                  boundsOptions:
+                      const FitBoundsOptions(padding: EdgeInsets.all(10)),
+                  allowPanning: false,
+                  zoom: MapConfig.staticInitZoom,
+                  maxZoom: MapConfig.maxZoom,
+                  minZoom: MapConfig.minZoom,
+                  // interactiveFlags: InteractiveFlag.none,
+                ),
+                layers: getLayoutOptions(route),
               ),
-              layers: getLayoutOptions(route),
             ),
             Positioned(
               right: 5,
@@ -107,7 +115,6 @@ class _OpenMapState extends State<_OpenMap> {
                 zoom: MapConfig.staticInitZoom,
                 maxZoom: MapConfig.maxZoom,
                 minZoom: MapConfig.minZoom,
-                // interactiveFlags: InteractiveFlag.none,
               ),
               layers: getLayoutOptions(widget.route),
             ),

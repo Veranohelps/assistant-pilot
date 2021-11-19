@@ -93,3 +93,6 @@ flutter:
     - family: DersuIcons
       fonts:
         - asset: assets/fonts/DersuIcons.ttf
+    - family: Armio
+      fonts:
+        - asset: assets/fonts/Arimo-VariableFont_wght.ttf

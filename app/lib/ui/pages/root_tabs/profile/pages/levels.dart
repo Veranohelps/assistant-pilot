@@ -113,8 +113,10 @@ class _LevelsSettingState extends State<LevelsSetting> {
             Center(
               child: BrandButtons.primaryShort(
                 text: LocaleKeys.profile_my_levels_save_and_close.tr(),
-                onPressed: () {
-                  context.read<ProfileCubit>().setNewAssessments(assessments);
+                onPressed: () async {
+                  await context
+                      .read<ProfileCubit>()
+                      .setNewAssessments(assessments);
                   Navigator.of(context).pop();
                 },
               ),

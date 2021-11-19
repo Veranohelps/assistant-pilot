@@ -30,7 +30,8 @@
       "distance": "distancia",
       "elevation_gain": "Desnivel positivo",
       "elevation_loss": "Desnivel negativo",
-      "activities": "Actividades"
+      "activities": "Actividades",
+      "elevation_profile": "Perfil de elevación"
     },
     "conditions": {
       "date_time_departure": "Fecha y hora de salida",

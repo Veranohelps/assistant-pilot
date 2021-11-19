@@ -35,8 +35,12 @@ class BrandColors {
   static const Color pink = Color(0xFFE2B0C2);
   static const Color umber = Color(0xFF2F212B);
   static const Color softNavy = Color(0xFF656D98);
-  static const Color marta3F464C = Color(0xFF3F464C);
 
+  static const Color marta3F464C = Color(0xFF3F464C);
+  static const Color martaBF961A = Color(0xFFBF961A);
+  static const Color marta2BA333 = Color(0xFF2BA333);
   static Color martaDis = Colors.black.withOpacity(0.38);
   static Color marta87 = Colors.black87;
+
+  static Color survaceOverlay = Color(0xff212121).withOpacity(0.08);
 }
