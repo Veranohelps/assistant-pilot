@@ -10,6 +10,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+// https://plausible.io/docs/events-api
+// https://plausible.io/docs/custom-event-goals#using-custom-props
+
 class PlausibleApi extends ApiMap {
   @override
   Future<Dio> getClient() async {
@@ -50,8 +53,9 @@ class PlausibleApi extends ApiMap {
       responseType: ResponseType.plain,
       baseUrl: 'https://plausible.io/',
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'text/json',
         'User-Agent': userAgent,
+        'X-Forwarded-For': '127.0.0.1',
       },
     );
   }
@@ -65,17 +69,26 @@ class PlausibleApi extends ApiMap {
     var client = await getClient();
 
     try {
+      var eventName = type == CustomEvents.page
+          ? "pageview"
+          : type.toString().split('.')[1];
+      var url = "app://localhost/" + (label ?? "");
+      var props =
+          "{\"action\": \"$action\", \"label\": \"$label\", \"value\": \"$value\"}";
+      var referrer = (type == CustomEvents.page) ? "" : url;
+
       await client.post(
         'api/event',
         data: jsonEncode({
-          "n": type.toString().split('.')[1],
-          "u": "http://${FlutterConfig.get('PLAUSIBLE_URL')}/",
-          "d": "${FlutterConfig.get('PLAUSIBLE_URL')}",
-          "p":
-              "{\"action\": \"$action\", \"label\": \"$label\", \"value\": \"$value\"}",
-          "r": null,
-          "w": getIt<DeviceInfoService>().device?.screenWidth.toInt() ?? 0,
-          "h": getIt<DeviceInfoService>().device?.screenHeight.toInt() ?? 0,
+          "name": eventName,
+          "url": url,
+          "domain": "${FlutterConfig.get('PLAUSIBLE_URL')}",
+          "props": props,
+          "referrer": referrer,
+          "screen_width":
+              getIt<DeviceInfoService>().device?.screenWidth.toInt() ?? 0,
+          "screen_height":
+              getIt<DeviceInfoService>().device?.screenHeight.toInt() ?? 0,
         }),
       );
     } catch (e) {
