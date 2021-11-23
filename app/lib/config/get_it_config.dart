@@ -1,7 +1,7 @@
 import 'package:app/logic/get_it/analytics.dart';
 import 'package:app/logic/get_it/auth_token.dart';
 import 'package:app/logic/get_it/connectivity.dart';
-import 'package:app/logic/get_it/device_info.dart';
+import 'package:app/logic/get_it/device_info/device_info.dart';
 import 'package:app/logic/get_it/geofence.dart';
 import 'package:get_it/get_it.dart';
 import 'package:app/logic/get_it/navigation.dart';
@@ -12,7 +12,7 @@ export 'package:app/logic/get_it/analytics.dart';
 export 'package:app/logic/get_it/navigation.dart';
 export 'package:app/logic/get_it/local_notifcation.dart';
 export 'package:app/logic/get_it/console.dart';
-export 'package:app/logic/get_it/device_info.dart';
+export 'package:app/logic/get_it/device_info/device_info.dart';
 
 final getIt = GetIt.instance;
 

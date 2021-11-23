@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:ant_icons/ant_icons.dart';
 import 'package:app/ui/components/brand_system_overlay/brand_system_overlay.dart';
-import 'package:app/ui/components/maps/round_button.dart';
+import 'package:app/ui/components/round_button/round_button.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -13,7 +13,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
-import 'package:app/ui/components/maps/helper.dart';
+import 'package:app/ui/helpers/map_layouts.dart';
 
 class StaticMap extends StatelessWidget {
   const StaticMap({

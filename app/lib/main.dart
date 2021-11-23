@@ -4,14 +4,12 @@ import 'package:app/config/localization.dart';
 import 'package:app/config/device_info_wrapper.dart';
 import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/utils/debug.dart';
-import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'config/bloc_config.dart';
-import 'config/bloc_observer.dart';
 import 'config/get_it_config.dart';
 import 'config/global_error_handling.dart';
 import 'config/hive_config.dart';
@@ -23,7 +21,6 @@ final hhMMFormat = DateFormat.jm();
 Future<void> main() async {
   globalErrorHandling(
     () async {
-      Bloc.observer = SimpleBlocObserver();
       WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await FlutterConfig.loadEnvVariables();

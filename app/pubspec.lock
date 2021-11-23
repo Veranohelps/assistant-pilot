@@ -63,7 +63,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.2.1"
+    version: "8.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -266,7 +266,7 @@ packages:
       name: cubit_form
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.19-nullsafety.0"
+    version: "2.0.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -446,7 +446,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.3"
+    version: "8.0.0"
   flutter_blurhash:
     dependency: transitive
     description:

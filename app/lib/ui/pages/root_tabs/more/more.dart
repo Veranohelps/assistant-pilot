@@ -2,8 +2,8 @@
 
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
+import 'package:app/ui/pages/root_tabs/more/console/console.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:app/ui/pages/console/console.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 

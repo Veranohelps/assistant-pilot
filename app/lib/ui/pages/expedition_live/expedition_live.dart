@@ -2,7 +2,7 @@ import 'package:app/config/brand_colors.dart';
 import 'package:provider/provider.dart';
 
 import 'package:app/logic/cubits/live/live_cubit.dart';
-import 'package:app/ui/components/maps/live_map.dart';
+import 'package:app/ui/pages/expedition_live/live_map.dart';
 import 'package:flutter/material.dart';
 
 class ExpeditionLive extends StatelessWidget {

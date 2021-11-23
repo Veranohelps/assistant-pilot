@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/logic/api_maps/dersu_api.dart';
-import 'package:app/logic/models/dto/create_expedition.dart';
+import 'package:app/logic/forms/create_expedition/dto/create_expedition.dart';
 import 'package:app/logic/models/expedition.dart';
 
 import 'helpers.dart';

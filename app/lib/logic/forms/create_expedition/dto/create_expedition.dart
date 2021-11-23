@@ -1,5 +1,6 @@
-import 'package:app/logic/models/dto/route_time.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'route_time.dart';
 
 part 'create_expedition.g.dart';
 

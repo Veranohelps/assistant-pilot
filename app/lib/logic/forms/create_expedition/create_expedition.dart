@@ -6,8 +6,9 @@ import 'package:app/logic/cubits/select_activity_types/select_activity_types_cub
 import 'package:app/logic/cubits/select_time/select_time.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:cubit_form/cubit_form.dart';
-import 'package:app/logic/models/dto/create_expedition.dart';
-import 'package:app/logic/models/dto/route_time.dart';
+
+import 'dto/create_expedition.dart';
+import 'dto/route_time.dart';
 
 class CreateExpeditionFormCubit extends FormCubit {
   CreateExpeditionFormCubit({

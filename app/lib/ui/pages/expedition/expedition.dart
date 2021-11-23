@@ -8,7 +8,7 @@ import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/expedition.dart';
 import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
-import 'package:app/ui/components/maps/static_map.dart';
+import 'package:app/ui/components/static_map/static_map.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';

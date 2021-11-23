@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/logic/models/device.dart';
+import 'package:app/logic/get_it/device_info/device.dart';
 import 'package:app/utils/time.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
