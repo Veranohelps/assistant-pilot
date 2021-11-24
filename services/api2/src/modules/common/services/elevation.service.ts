@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IPointGeometry } from '../types/geojson.type';
 import got from 'got';
+import { IPointGeometry } from '../types/geojson.type';
 
 @Injectable()
 export class ElevationService {

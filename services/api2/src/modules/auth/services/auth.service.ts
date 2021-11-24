@@ -56,8 +56,7 @@ export class AuthService {
     return user;
   }
 
-  async deleteUser(tx: TransactionManager, id: string, auth0Id: string) {
-    await this.userService.deleteUser(tx, id);
+  async deleteUser(auth0Id: string) {
     await this.managementClient.deleteUser({ id: auth0Id });
   }
 }

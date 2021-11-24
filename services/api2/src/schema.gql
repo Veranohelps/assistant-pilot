@@ -28,6 +28,7 @@ type Route {
   highestPointInMeters: Float!
   lowestPointInMeters: Float!
   meteoPointsOfInterests: LineStringGeometry!
+  expeditionCount: Int!
   updatedAt: DateTime!
 }
 

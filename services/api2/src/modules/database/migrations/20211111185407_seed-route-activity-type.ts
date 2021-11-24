@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import { generateRecord2 } from '../../common/utilities/generate-record';
-import { getEstimatedTime } from '../../route/utilities/analyse-route';
+import { getEstimatedTime } from '../../route/utils/analyse-route';
 
 export async function up(knex: Knex): Promise<void> {
   const routes = await knex('Route');
@@ -31,7 +31,7 @@ export async function up(knex: Knex): Promise<void> {
     .flat();
 
   if (routes.length) {
-    await knex('RouteActivityType').insert(routeActivityTypes);
+    await knex('RouteActivityType').insert(routeActivityTypes as any);
   }
 }
 

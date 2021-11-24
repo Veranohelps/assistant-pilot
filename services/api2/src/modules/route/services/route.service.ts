@@ -1,29 +1,41 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { uniq } from 'lodash';
+import { Injectable } from '@nestjs/common';
+import _, { uniq } from 'lodash';
 import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError, NotFoundError, ServerError } from '../../common/errors/http.error';
 import { ElevationService, ElevationStatus } from '../../common/services/elevation.service';
+import { EventService } from '../../common/services/event.service';
 import { TimezoneService } from '../../common/services/timezone.service';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
-import { generateRecord2, recordToArray } from '../../common/utilities/generate-record';
+import { createKnexStream } from '../../common/utilities/create-knex-stream';
+import {
+  generateGroupRecord,
+  generateRecord,
+  generateRecord2,
+  recordToArray,
+} from '../../common/utilities/generate-record';
+import {
+  lineStringGeometryPlaceholder,
+  polygonGeometryPlaceholder,
+} from '../../common/utilities/gpx-to-geojson';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
-import { ExpeditionRouteService } from '../../expedition/services/expedition-route.service';
 import { SkillLevelService } from '../../skill/services/skill-level.service';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
+import { ERouteEvents } from '../events/event-types/route.event-type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
   ICreateRouteDTO,
   IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
+  TMPIRoutePartial,
 } from '../types/route.type';
-import { analyseRoute } from '../utilities/analyse-route';
+import { analyseRoute, IRouteAnalysis, IRoutePartial } from '../utils/analyse-route';
 import { ActivityTypeService } from './activity-type.service';
 import { RouteActivityTypeService } from './route-activity-type.service';
 
@@ -33,13 +45,12 @@ export class RouteService {
     @InjectKnexClient('Route')
     private db: KnexClient<'Route'>,
     private waypointService: WaypointService,
-    @Inject(forwardRef(() => ExpeditionRouteService))
-    private expeditionRouteService: ExpeditionRouteService,
     private activityTypeService: ActivityTypeService,
     private skillLevelService: SkillLevelService,
     private routeActivityTypeService: RouteActivityTypeService,
     private elevationService: ElevationService,
     private timezoneService: TimezoneService,
+    private eventService: EventService,
   ) {}
 
   private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
@@ -113,6 +124,65 @@ export class RouteService {
     return;
   }
 
+  async getDistanceFromPointsOfInterest2(
+    partialsRecord: SRecord<IRouteAnalysis['routePartials']>,
+  ): Promise<SRecord<TMPIRoutePartial[]>> {
+    const table: { id: string; altitude: number; coordinate: ILineStringGeometry }[] = [];
+
+    _.forEach(partialsRecord, (partials, id) => {
+      partials.forEach((p, key) => {
+        table.push({
+          id,
+          altitude: key,
+          coordinate: p.coordinate,
+        });
+      });
+    });
+
+    if (!table.length) return {};
+
+    const builder = this.db.knex
+      .queryBuilder()
+      .select('id', 'altitude')
+      .select({
+        distanceInMeters: this.db.knex.raw(
+          `st_lengthspheroid(ST_GeomFromGeoJSON(coordinate), '${this._4326Spheroid}')`,
+        ),
+      })
+      .from(
+        this.db.knex.raw('json_to_recordset(?) as (id varchar, altitude int, coordinate json)', [
+          JSON.stringify(table),
+        ]),
+      );
+
+    const distances: { id: string; altitude: number; distanceInMeters: number }[] = await builder;
+
+    const distanceRecord = generateGroupRecord(distances, (d) => d.id);
+
+    const result = _.mapValues(distanceRecord, (record, id) => {
+      return record.map((d) => {
+        const {
+          coordinate: { coordinates },
+          highestPointInMeters,
+          lowestPointInMeters,
+          elevationGainInMeters,
+          elevationLossInMeters,
+        } = partialsRecord[id].get(Number(d.altitude)) as IRoutePartial;
+
+        return {
+          coordinate: coordinates[coordinates.length - 1],
+          distanceInMeters: d.distanceInMeters,
+          highestPointInMeters,
+          lowestPointInMeters,
+          elevationGainInMeters,
+          elevationLossInMeters,
+        };
+      });
+    });
+
+    return result;
+  }
+
   async fromGeoJson(
     tx: TransactionManager,
     originId: ERouteOrigins,
@@ -152,6 +222,9 @@ export class RouteService {
 
     const geomString = this.lineStringGeomToString(lineStringGeom);
     const routeParams = analyseRoute(lineStringGeom);
+    const meteoPointsOfInterestsRoutePartials = await this.getDistanceFromPointsOfInterest2({
+      partials: routeParams.routePartials,
+    }).then((res) => res.partials);
     const [existingRoute, existingRouteByUser] = await Promise.all([
       this.db
         .read(tx, { overrides: { globalId: { select: true } } })
@@ -195,6 +268,7 @@ export class RouteService {
         meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
           JSON.stringify(routeParams.meteoPointsOfInterests),
         ]),
+        meteoPointsOfInterestsRoutePartials,
       })
       .where('createdAt')
       .cReturning();
@@ -236,6 +310,7 @@ export class RouteService {
         meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
           JSON.stringify(sourceRoute.meteoPointsOfInterests),
         ]),
+        meteoPointsOfInterestsRoutePartials: sourceRoute.meteoPointsOfInterestsRoutePartials,
       })
       .where('createdAt')
       .cReturning();
@@ -300,6 +375,9 @@ export class RouteService {
             meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
               JSON.stringify(routeParams.meteoPointsOfInterests),
             ]),
+            meteoPointsOfInterestsRoutePartials: await this.getDistanceFromPointsOfInterest2({
+              [id]: routeParams.routePartials,
+            }).then((res) => res[id]),
           }),
       })
       .where({ id, originId, userId })
@@ -325,15 +403,138 @@ export class RouteService {
     originId: ERouteOrigins,
     userId: string | null = null,
   ): Promise<IRoute> {
-    await this.expeditionRouteService.deleteRouteFromExpeditions(tx, id);
-
-    const [route] = await this.db.write(tx).where({ id, originId, userId }).del().cReturning();
+    const route = await this.db.write(tx).where({ id, originId, userId }).first();
 
     if (!route) {
       throw new NotFoundError(ErrorCodes.ROUTE_NOT_FOUND, 'Route not found');
     }
 
+    await this.eventService.emitAsync(ERouteEvents.DELETE_ROUTES, { tx, routes: [route], userId });
+
+    await this.db.write(tx).where({ id: route.id }).del();
+
     return route;
+  }
+
+  async deleteUserRoutes(tx: TransactionManager, userId: string): Promise<IRoute[]> {
+    const routes = await this.db.write(tx).where({ userId });
+
+    if (!routes.length) {
+      return [];
+    }
+
+    await this.eventService.emitAsync(ERouteEvents.DELETE_ROUTES, { tx, routes, userId });
+
+    await this.db.write(tx).where({ userId }).del();
+
+    return routes;
+  }
+
+  async updateExpeditionCount(
+    tx: TransactionManager,
+    routeIds: string[],
+    delta: number,
+  ): Promise<IRoute[]> {
+    if (!routeIds.length) return [];
+
+    const routes = await this.db
+      .write(tx)
+      .whereIn('id', routeIds)
+      .increment('expeditionCount', delta)
+      .returning('*');
+
+    return routes;
+  }
+
+  async refreshRoute(tx: TransactionManager, routeId: string): Promise<IRoute> {
+    const route = await this.findOne(tx, routeId);
+
+    const routeParams = analyseRoute(route.coordinate as ILineStringGeometry);
+    const meteoPointsOfInterestsRoutePartials = await this.getDistanceFromPointsOfInterest2({
+      [routeId]: routeParams.routePartials,
+    }).then((res) => res[routeId]);
+
+    const [update] = await this.db
+      .write(tx)
+      .update({
+        elevationGainInMeters: routeParams.elevationGainInMeters,
+        elevationLossInMeters: routeParams.elevationLossInMeters,
+        highestPointInMeters: routeParams.highestPointInMeters,
+        lowestPointInMeters: routeParams.lowestPointInMeters,
+        meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+          JSON.stringify(routeParams.meteoPointsOfInterests),
+        ]),
+        meteoPointsOfInterestsRoutePartials,
+      })
+      .where({ id: routeId })
+      .cReturning();
+
+    await this.routeActivityTypeService.updateEstimations(tx, [update]);
+    await this.eventService.emitAsync(ERouteEvents.UPDATE_ROUTES, { tx, routes: [update] });
+
+    return update;
+  }
+
+  async refreshAllRoutes(tx: TransactionManager): Promise<void> {
+    await createKnexStream(this.db.read(tx, { selectAll: true }), async (routes) => {
+      const globalIds = routes.map((r) => r.globalId as string);
+      const globalIdRecord = generateRecord(routes, (r) => r.globalId as string);
+
+      const routeParamsRecord = await tx.cache.getMany('routeParams', globalIds, (keys) => {
+        const record: SRecord<IRouteAnalysis> = {};
+
+        keys.forEach((key) => {
+          record[key] = analyseRoute(globalIdRecord[key].coordinate as ILineStringGeometry);
+        });
+
+        return Promise.resolve(record);
+      });
+      const MPIRoutePartialsRecord = await tx.cache.getMany('routeMPIParams', globalIds, (keys) =>
+        this.getDistanceFromPointsOfInterest2(
+          generateRecord(
+            keys,
+            (key) => key,
+            (key) => routeParamsRecord[key].routePartials,
+          ),
+        ),
+      );
+
+      const updates = routes.map((route) => {
+        const routeParams = routeParamsRecord[route.globalId as string];
+
+        return {
+          ...route,
+          coordinate: lineStringGeometryPlaceholder,
+          boundingBox: polygonGeometryPlaceholder,
+          elevationGainInMeters: routeParams.elevationGainInMeters,
+          elevationLossInMeters: routeParams.elevationLossInMeters,
+          highestPointInMeters: routeParams.highestPointInMeters,
+          lowestPointInMeters: routeParams.lowestPointInMeters,
+          meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+            JSON.stringify(routeParams.meteoPointsOfInterests),
+          ]),
+          meteoPointsOfInterestsRoutePartials:
+            MPIRoutePartialsRecord[route.globalId as string] ?? [],
+        };
+      });
+
+      const updatedRoutes = await this.db
+        .write(tx)
+        .insert(updates)
+        .onConflict('id')
+        .merge([
+          'elevationGainInMeters',
+          'elevationLossInMeters',
+          'highestPointInMeters',
+          'lowestPointInMeters',
+          'meteoPointsOfInterests',
+          'meteoPointsOfInterestsRoutePartials',
+        ] as any[])
+        .cReturning();
+
+      await this.routeActivityTypeService.updateEstimations(tx, updatedRoutes);
+      await this.eventService.emitAsync(ERouteEvents.UPDATE_ROUTES, { tx, routes: updatedRoutes });
+    });
   }
 
   async findOne(tx: TransactionManager | null, id: string): Promise<IRoute> {

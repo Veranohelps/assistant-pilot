@@ -14,17 +14,10 @@ import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.de
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
-import { GcpService } from '../../../common/services/gcp.service';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
-import { UserAccountService } from '../../services/user-account.service';
 import { UserService } from '../../services/user.service';
-import {
-  ICompleteUserRegistrationDTO,
-  IEditedProfileDTO,
-  ITextDTO,
-  IUser,
-} from '../../types/user.type';
+import { ICompleteUserRegistrationDTO, IEditedProfileDTO, IUser } from '../../types/user.type';
 import {
   completeUserRegistrationValidationSchema,
   editedUserValidationSchema,
@@ -33,12 +26,7 @@ import {
 @Controller('personal/user')
 @JwtProtected()
 export class PersonalUserController {
-  constructor(
-    private userService: UserService,
-    private userLevelService: UserLevelService,
-    private gcpService: GcpService,
-    private userAccountService: UserAccountService,
-  ) {}
+  constructor(private userService: UserService, private userLevelService: UserLevelService) {}
 
   @Patch('complete-registration')
   @HttpCode(HttpStatus.CREATED)
@@ -81,12 +69,7 @@ export class PersonalUserController {
     @UserData() user: IUser,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const userDataBase = await this.userService.findOne(tx, user.id);
-    const currentAvatarUrl = userDataBase.avatar;
-    this.gcpService.deleteAvatar(currentAvatarUrl);
-
-    const avatarUrl = await this.gcpService.uploadFile(file);
-    const updatedUser = await this.userService.updateAvatar(tx, user.id, avatarUrl);
+    const updatedUser = await this.userService.updateAvatar(tx, user.id, file);
 
     return successResponse('Avatar updated success', { user: updatedUser });
   }
@@ -94,29 +77,16 @@ export class PersonalUserController {
   @Delete('delete-avatar')
   @HttpCode(HttpStatus.OK)
   async deleteAvatar(@Tx() tx: TransactionManager, @UserData() user: IUser) {
-    const userDataBase = await this.userService.findOne(tx, user.id);
-    const currentAvatarUrl = userDataBase.avatar;
-    await this.gcpService.deleteAvatar(currentAvatarUrl);
-
     const updatedUser = await this.userService.updateAvatar(tx, user.id, null);
+
     return successResponse('Avatar deleted success', { user: updatedUser });
   }
 
   @Delete('delete-account')
   @HttpCode(HttpStatus.OK)
-  async deleteAccount(
-    @Tx() tx: TransactionManager,
-    @ParsedBody() payload: ITextDTO,
-    @UserData() user: IUser,
-  ) {
-    const userDataBase = await this.userService.findOne(tx, user.id);
-    await this.userAccountService.deleteAccount(
-      tx,
-      userDataBase.id,
-      userDataBase.avatar,
-      userDataBase.auth0Id,
-    );
+  async deleteAccount(@Tx() tx: TransactionManager, @UserData() user: IUser) {
+    const deletedUser = await this.userService.deleteUser(tx, user.id);
 
-    return successResponse(`${user.id} account successfully deleted`);
+    return successResponse(`${deletedUser.id} account successfully deleted`);
   }
 }

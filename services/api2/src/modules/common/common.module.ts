@@ -1,16 +1,19 @@
 import { Global, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { DatabaseExceptionFilter } from './filters/database.filter';
 import { HttpExceptionFilter } from './filters/http.filter';
 import { JoiExceptionFilter } from './filters/joi-exception.filter';
 import { ErrorInterceptor } from './interceptors/error-handler.interceptor';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
+import { EventService } from './services/event.service';
 import { GcpService } from './services/gcp.service';
 import { LoaderService } from './services/loader.service';
 import { StrapiService } from './services/strapi.service';
 
 @Global()
 @Module({
+  imports: [EventEmitterModule.forRoot()],
   providers: [
     {
       provide: APP_FILTER,
@@ -35,7 +38,8 @@ import { StrapiService } from './services/strapi.service';
     LoaderService,
     StrapiService,
     GcpService,
+    EventService,
   ],
-  exports: [LoaderService, StrapiService, GcpService],
+  exports: [LoaderService, StrapiService, GcpService, EventService],
 })
 export class CommonModule {}

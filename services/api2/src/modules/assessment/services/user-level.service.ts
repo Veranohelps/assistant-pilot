@@ -71,7 +71,7 @@ export class UserLevelService {
     return results;
   }
 
-  async deleteUserLevels(tx: TransactionManager | null, userId: string): Promise<IUserLevel[]> {
+  async deleteUserLevels(tx: TransactionManager, userId: string): Promise<IUserLevel[]> {
     const results = await this.db.read(tx).where({ userId: userId }).del().cReturning();
 
     return results;

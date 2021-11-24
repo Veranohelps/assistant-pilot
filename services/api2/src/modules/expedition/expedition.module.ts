@@ -7,6 +7,7 @@ import { OpenWeatherService } from '../weather/services/openweather.service';
 import { WeatherService } from '../weather/services/weather.service';
 import { AdminExpeditionController } from './controllers/admin/admin.expedition.controller';
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';
+import { ExpeditionEventHandler } from './events/event-handlers/expedition.event-handler';
 import { ExpeditionResolver } from './graphql/resolvers/expedition.resolver';
 import { ExpeditionRouteService } from './services/expedition-route.service';
 import { ExpeditionService } from './services/expedition.service';
@@ -25,6 +26,9 @@ import { ExpeditionService } from './services/expedition.service';
     WeatherService,
     MeteoblueService,
     OpenWeatherService,
+
+    // event handlers
+    ExpeditionEventHandler,
   ],
   exports: [ExpeditionService, ExpeditionRouteService, WeatherService, MeteoblueService],
 })

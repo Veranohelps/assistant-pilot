@@ -1,11 +1,11 @@
-import { Field, Float, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, Float, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { LineStringGeometryModel } from '../../../common/graphql/geojson.model';
 import { ILineStringGeometry, IMultiPointGeometry } from '../../../common/types/geojson.type';
 import { ERouteOrigins } from '../../types/route-origin.type';
-import { ICreateRouteDTO, IRoute } from '../../types/route.type';
+import { ICreateRouteDTO } from '../../types/route.type';
 
 @ObjectType('Route')
-export class RouteModel implements IRoute {
+export class RouteModel {
   @Field()
   id!: string;
 
@@ -50,6 +50,9 @@ export class RouteModel implements IRoute {
 
   @Field(() => LineStringGeometryModel)
   meteoPointsOfInterests!: IMultiPointGeometry;
+
+  @Field(() => Int)
+  expeditionCount!: number;
 
   @Field()
   updatedAt!: Date;

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { IMultiPointGeometry, IPointGeometry } from '../../common/types/geojson.type';
 import { IWeatherPredictionDaily } from '../types/wheather-prediction.type';
 import { MeteoblueService } from './meteoblue.service';
+
 //import { OpenWeatherService } from './openweather.service';
 
 @Injectable()

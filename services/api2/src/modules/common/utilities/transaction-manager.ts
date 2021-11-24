@@ -1,11 +1,13 @@
 import { Knex } from 'knex';
 import { knexClient } from '../../database/knex/init-knex';
+import { CacheManager } from './cache-manager';
 
 export class TransactionManager {
   private rollbacks: (() => Promise<any>)[];
   private commits: VoidFunction[];
   private _ktx?: Knex.Transaction;
   private hasCommitted: boolean;
+  private _cache: CacheManager | null = null;
 
   constructor() {
     this.rollbacks = [];
@@ -40,6 +42,7 @@ export class TransactionManager {
 
       return res;
     } catch (error) {
+      console.log(error);
       await this.rollback();
 
       throw error;
@@ -91,7 +94,6 @@ export class TransactionManager {
   }
 
   async commit() {
-    // will be used until "tx.run" is fully deprecated
     if (this.hasCommitted) return;
 
     this.hasCommitted = true;
@@ -109,7 +111,7 @@ export class TransactionManager {
     return true;
   }
 
-  addCommit(cb: VoidFunction) {
+  onCommit(cb: VoidFunction) {
     this.commits.push(cb);
   }
 
@@ -119,5 +121,13 @@ export class TransactionManager {
     await tx.init();
 
     return tx;
+  }
+
+  get cache(): CacheManager {
+    if (this._cache) return this._cache;
+
+    this._cache = new CacheManager({ max: 10000 });
+
+    return this._cache;
   }
 }

@@ -28,6 +28,7 @@ export const routeEntity: IEntity<IRoute> = {
         'boundingBox',
       ]),
     },
+    expeditionCount: { type: 'number' },
     distanceInMeters: { type: 'number' },
     elevationGainInMeters: { type: 'number' },
     elevationLossInMeters: { type: 'number' },
@@ -40,6 +41,7 @@ export const routeEntity: IEntity<IRoute> = {
         'meteoPointsOfInterests',
       ]),
     },
+    meteoPointsOfInterestsRoutePartials: { type: 'json' },
     meta: { type: 'json', select: false },
     createdAt: { type: 'date', select: false },
     updatedAt: { type: 'date' },
@@ -73,5 +75,6 @@ export const routeActivityTypeEntity: IEntity<IRouteActivityType> = {
     routeId: { type: 'string' },
     activityTypeId: { type: 'string' },
     estimatedDurationInMinutes: { type: 'number' },
+    estimatedDurationToMeteoPointsOfInterestsInMinutes: { type: 'json' },
   },
 };

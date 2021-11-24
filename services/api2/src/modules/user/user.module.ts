@@ -5,13 +5,12 @@ import { DatabaseModule } from '../database/database.module';
 import { ExpeditionModule } from '../expedition/expedition.module';
 import { AdminUserController } from './controller/admin/admin.user.controller';
 import { PersonalUserController } from './controller/personal/personal.user.controller';
-import { UserAccountService } from './services/user-account.service';
 import { UserService } from './services/user.service';
 
 @Module({
   imports: [DatabaseModule.forFeature(['User']), AssessmentModule, ExpeditionModule],
   controllers: [PersonalUserController, AdminUserController],
-  providers: [UserService, AuthService, UserAccountService],
+  providers: [UserService, AuthService],
   exports: [UserService],
 })
 export class UserModule {}

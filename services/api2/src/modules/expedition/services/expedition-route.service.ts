@@ -1,21 +1,24 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import DataLoader from 'dataloader';
+import { mapValues, uniq } from 'lodash';
 import { SRecord } from '../../../types/helpers.type';
 import AddFields from '../../common/utilities/add-fields';
-import {
-  generateGroupRecord2,
-  generateRecord,
-  generateRecord2,
-} from '../../common/utilities/generate-record';
+import { generateGroupRecord2, generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { RouteActivityTypeService } from '../../route/services/route-activity-type.service';
 import { RouteService } from '../../route/services/route.service';
+import {
+  IRouteActivityType,
+  TEstimatedTimeToMPI,
+} from '../../route/types/route-activity-type.type';
 import { IRoute } from '../../route/types/route.type';
 import {
+  ICreateExpeditionRoute,
   ICreateExpeditionRoutesDTO,
   IExpeditionRoute,
+  IExpeditionRouteParameters,
   IExpeditionRouteWithRoute,
   IExpeditionRouteWithRouteSlim,
 } from '../types/expedition-route.type';
@@ -30,29 +33,56 @@ export class ExpeditionRouteService {
     private routeActivityTypeService: RouteActivityTypeService,
   ) {}
 
+  getTimeEstimates(routeActivities: IRouteActivityType[]) {
+    const estimatedDurationInMinutes = Math.max(
+      ...routeActivities.map((a) => a.estimatedDurationInMinutes),
+      0,
+    );
+    const estimateDurationToMPIMap = new Map<number, TEstimatedTimeToMPI>();
+
+    routeActivities.forEach((rA) => {
+      rA.estimatedDurationToMeteoPointsOfInterestsInMinutes.forEach((estimate) => {
+        const key = estimate.coordinate[2] as number;
+        const durationToMPI = estimateDurationToMPIMap.get(key);
+
+        if (!durationToMPI || durationToMPI.estimatedTime < estimate.estimatedTime) {
+          estimateDurationToMPIMap.set(key, {
+            coordinate: estimate.coordinate,
+            estimatedTime: estimate.estimatedTime,
+          });
+        }
+      });
+    });
+
+    return {
+      estimatedDurationInMinutes,
+      estimatedDurationToMeteoPointsOfInterestsInMinutes: Array.from(
+        estimateDurationToMPIMap.values(),
+      ),
+    };
+  }
+
   async addRoutes(
     tx: TransactionManager,
     expeditionId: string,
     activityTypeIds: string[],
     payload: ICreateExpeditionRoutesDTO,
   ): Promise<IExpeditionRoute[]> {
-    const routeActivities = await this.routeActivityTypeService.getActivitiesByRouteIds(
+    const activities = await this.routeActivityTypeService.getActivitiesByRouteIds(
       tx,
       payload.routes.map((r) => r.routeId),
     );
-
-    const entries = payload.routes.map((route) => {
-      const routeActivity = generateRecord(
-        routeActivities[route.routeId],
-        (a) => a.activityTypeId,
-        () => true,
+    const entries = payload.routes.map((route): ICreateExpeditionRoute => {
+      const expeditionRouteActivities = activities[route.routeId].filter((rA) =>
+        activityTypeIds.includes(rA.activityTypeId),
       );
 
       return {
         expeditionId,
         routeId: route.routeId,
         startDateTime: route.startDateTime,
-        activityTypeIds: activityTypeIds.filter((id) => routeActivity[id]),
+        activityTypeIds: expeditionRouteActivities.map((rA) => rA.activityTypeId),
+        ...this.getTimeEstimates(expeditionRouteActivities),
       };
     });
 
@@ -61,16 +91,37 @@ export class ExpeditionRouteService {
     return expeditionRoutes;
   }
 
-  async onRouteUpdate(tx: TransactionManager, routeId: string) {
+  async updateExpeditionRouteParams(
+    tx: TransactionManager,
+    expeditionRoutes: IExpeditionRoute[],
+  ): Promise<IExpeditionRoute[]> {
+    /**
+     * transform the route activity dictionary from
+     *  { [routeId]: {routeActivity} } to { [routeId]: { [activityTypeId]: {routeActivity} } }
+     */
     const routeActivities = await this.routeActivityTypeService
-      .getRouteActivities(tx, routeId)
-      .then(generateRecord2((a) => a.activityTypeId));
-    const expeditionRoutes = await this.db.read(tx).where({ routeId });
+      .getActivitiesByRouteIds(
+        tx,
+        expeditionRoutes.map((er) => er.routeId),
+      )
+      .then((res) =>
+        mapValues(
+          res,
+          generateRecord2((a) => a.activityTypeId),
+        ),
+      );
+    const entries = expeditionRoutes.map((er): ICreateExpeditionRoute => {
+      const expeditionRouteActivities = er.activityTypeIds
+        .map((id) => routeActivities[er.routeId][id])
+        .filter((rA) => !!rA);
 
-    const entries = expeditionRoutes.map((er) => {
-      const typeIds = er.activityTypeIds.filter((id) => routeActivities[id]);
-
-      return { ...er, activityTypeIds: typeIds };
+      return {
+        expeditionId: er.expeditionId,
+        routeId: er.routeId,
+        startDateTime: er.startDateTime,
+        activityTypeIds: expeditionRouteActivities.map((rA) => rA.activityTypeId),
+        ...this.getTimeEstimates(expeditionRouteActivities),
+      };
     });
 
     const updates = await this.db
@@ -81,6 +132,75 @@ export class ExpeditionRouteService {
       .cReturning();
 
     return updates;
+  }
+
+  async onRouteUpdate(tx: TransactionManager, routeIds: string[]): Promise<IExpeditionRoute[]> {
+    const expeditionRoutes = await this.db.read(tx).whereIn('routeId', routeIds);
+
+    if (!expeditionRoutes.length) return [];
+
+    const updates = await this.updateExpeditionRouteParams(tx, expeditionRoutes);
+
+    return updates;
+  }
+
+  async deleteByRoutes(tx: TransactionManager, routeIds: string[]): Promise<IExpeditionRoute[]> {
+    const deleted = await this.db.write(tx).whereIn('routeId', routeIds).del().cReturning();
+
+    return deleted;
+  }
+
+  async deleteByExpeditions(
+    tx: TransactionManager,
+    expeditionIds: string[],
+  ): Promise<IExpeditionRoute[]> {
+    const deleted = await this.db
+      .write(tx)
+      .whereIn('expeditionId', expeditionIds)
+      .del()
+      .cReturning();
+
+    return deleted;
+  }
+
+  async getExpeditionRoutesByExpedition(
+    tx: TransactionManager | null,
+    expeditionIds: string[],
+  ): Promise<SRecord<IExpeditionRoute[]>> {
+    const expeditionRoutes = await this.db
+      .read(tx)
+      .whereIn('expeditionId', expeditionIds)
+      .then(generateGroupRecord2((er) => er.expeditionId));
+
+    return expeditionRoutes;
+  }
+
+  async getExpeditionParameters(
+    tx: TransactionManager | null,
+    expeditionIds: string[],
+  ): Promise<SRecord<IExpeditionRouteParameters>> {
+    if (!expeditionIds.length) return {};
+
+    const params = await this.db
+      .knex('ExpeditionRoute')
+      .tx(tx)
+      .whereIn('expeditionId', expeditionIds)
+      .select('expeditionId')
+      .max('estimatedDurationInMinutes', { as: 'durationInMinutes' })
+      .select({ activityTypeIds: this.db.knex.raw(`array_agg("activityTypeIds")`) })
+      .groupBy('expeditionId')
+      .then(
+        generateRecord2(
+          (agg) => agg.expeditionId,
+          (agg): IExpeditionRouteParameters => ({
+            durationInMinutes: agg.durationInMinutes as number,
+            expeditionId: agg.expeditionId,
+            activityTypeIds: uniq(agg.activityTypeIds.flat()),
+          }),
+        ),
+      );
+
+    return params;
   }
 
   async getRoutesSlim(
@@ -129,15 +249,6 @@ export class ExpeditionRouteService {
     return expeditionRoutes;
   }
 
-  async deleteRouteFromExpeditions(
-    tx: TransactionManager,
-    routeId: string,
-  ): Promise<IExpeditionRoute[]> {
-    const deleted = await this.db.write(tx).where({ routeId }).del().cReturning();
-
-    return deleted;
-  }
-
   getRoutesLoader: DataLoader<string, IRoute[]> = new DataLoader(
     async (ids) => {
       const record = await this.getWithRoutes(null, ids as string[]);
@@ -146,17 +257,4 @@ export class ExpeditionRouteService {
     },
     { cache: false },
   );
-
-  async deleteAllRoutesFromExpeditions(
-    tx: TransactionManager,
-    expeditionIds: string[],
-  ): Promise<IExpeditionRoute[]> {
-    const deleted = await this.db
-      .write(tx)
-      .whereIn('expeditionId', expeditionIds)
-      .del()
-      .cReturning();
-
-    return deleted;
-  }
 }

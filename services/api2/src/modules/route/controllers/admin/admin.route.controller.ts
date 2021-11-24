@@ -112,4 +112,20 @@ export class AdminRouteController {
 
     return successResponse('Route deleted');
   }
+
+  @Patch(':routeId/refresh')
+  @HttpCode(HttpStatus.OK)
+  async refreshRoute(@Tx() tx: TransactionManager, @Param('routeId') routeId: string) {
+    const route = await this.routeService.refreshRoute(tx, routeId);
+
+    return successResponse('Route refreshed', { route });
+  }
+
+  @Patch('refresh/all')
+  @HttpCode(HttpStatus.OK)
+  async refreshAllRoute(@Tx() tx: TransactionManager) {
+    await this.routeService.refreshAllRoutes(tx);
+
+    return successResponse('All routes refreshed successfully');
+  }
 }

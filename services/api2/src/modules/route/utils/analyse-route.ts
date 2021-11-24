@@ -7,6 +7,15 @@ export interface IRouteAnalysis {
   elevationGainInMeters: number;
   elevationLossInMeters: number;
   meteoPointsOfInterests: IMultiPointGeometry;
+  routePartials: Map<number, IRoutePartial>;
+}
+
+export interface IRoutePartial {
+  coordinate: ILineStringGeometry;
+  highestPointInMeters: number;
+  lowestPointInMeters: number;
+  elevationGainInMeters: number;
+  elevationLossInMeters: number;
 }
 
 type TCoordinate = [number, number, number];
@@ -14,10 +23,11 @@ type TCoordinate = [number, number, number];
 export const analyseRoute = (track: ILineStringGeometry): IRouteAnalysis => {
   let highestPointInMeters = 0;
   let lowestPointInMeters = 0;
-  let inclinationGainInMeters = 0;
-  let inclinationLossInMeters = 0;
-  const meteoPointsOfInterests: Map<number, [number, number, number]> = new Map();
+  let elevationGainInMeters = 0;
+  let elevationLossInMeters = 0;
   let startMeteoPointRange = 0;
+  const meteoPointsOfInterests: Map<number, [number, number, number]> = new Map();
+  const routePartials: Map<number, IRoutePartial> = new Map();
 
   track.coordinates.forEach((coordinate, index) => {
     const [, , alt] = coordinate;
@@ -55,6 +65,13 @@ export const analyseRoute = (track: ILineStringGeometry): IRouteAnalysis => {
           (!currentInterestPoint || currentInterestPoint[2] < alt)
         ) {
           meteoPointsOfInterests.set(meteoPointRange, coordinate as TCoordinate);
+          routePartials.set(meteoPointRange, {
+            coordinate: { type: 'LineString', coordinates: track.coordinates.slice(0, index + 1) },
+            highestPointInMeters,
+            lowestPointInMeters,
+            elevationGainInMeters,
+            elevationLossInMeters,
+          });
         }
       }
 
@@ -66,9 +83,9 @@ export const analyseRoute = (track: ILineStringGeometry): IRouteAnalysis => {
         const diff = alt - prevAlt;
 
         if (diff > 0) {
-          inclinationGainInMeters += diff;
+          elevationGainInMeters += diff;
         } else {
-          inclinationLossInMeters += Math.abs(diff);
+          elevationLossInMeters += Math.abs(diff);
         }
       }
     }
@@ -77,12 +94,13 @@ export const analyseRoute = (track: ILineStringGeometry): IRouteAnalysis => {
   return {
     highestPointInMeters,
     lowestPointInMeters,
-    elevationGainInMeters: inclinationGainInMeters,
-    elevationLossInMeters: inclinationLossInMeters,
+    elevationGainInMeters,
+    elevationLossInMeters,
     meteoPointsOfInterests: {
       type: 'MultiPoint',
       coordinates: Array.from(meteoPointsOfInterests.values()),
     },
+    routePartials,
   };
 };
 

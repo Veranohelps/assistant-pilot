@@ -19,11 +19,22 @@ const nest = (data: any) => {
 const beforeUpdate = (builder: any) => {
   if (builder._method !== 'update') return;
 
-  const entity = entityMap[builder._single.table as keyof IDatabaseTables];
+  const columns = entityMap[builder._single.table as keyof IDatabaseTables]?.columns ?? {};
+  const rows = [].concat(builder._single.update);
 
-  if (entity?.columns?.updatedAt) {
+  if (columns?.updatedAt) {
     builder.update({ updatedAt: new Date() });
   }
+
+  rows.forEach((row: Record<string, any>) => {
+    Object.keys(columns).forEach((col) => {
+      row[col] = row[col];
+
+      if (columns[col].type === 'json') {
+        row[col] = JSON.stringify(row[col]);
+      }
+    });
+  });
 };
 
 const beforeInsert = (builder: any) => {
@@ -76,6 +87,7 @@ export const attachKnexListeners = (client: Knex.QueryBuilder) => {
       return response;
     })
     .on('query-error', (error: any) => {
+      console.log(error);
       const { insert, update } = (builder as any)._single;
       const data = insert ?? update;
 

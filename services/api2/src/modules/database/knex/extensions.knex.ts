@@ -146,6 +146,44 @@ function cReturning(this: Knex.QueryBuilder) {
   return this;
 }
 
+// async function bulkUpdate(
+//   client: Knex,
+//   table: keyof IDatabaseTables,
+//   updates: Record<string, any>[],
+
+//   keys: string[],
+// ) {
+//   if (!updates.length) {
+//     throw new Error('updates cannot be empty');
+//   }
+
+//   const update: Record<string, Knex.Raw> = {};
+//   const fields = Object.keys(updates[0]);
+
+//   const cols = await client(table).columnInfo();
+
+//   console.log(cols)
+
+//   fields.forEach((key) => {
+//     update[key] = client.raw('??', [`updates.${key}`]);
+//   });
+
+//   const updateString = `${client(table).update(update)}`.replace(';', '');
+
+//   const rawQuery = client.raw(
+//     `${updateString} FROM (SELECT * FROM json_to_recordset(?) as (${fields
+//       .map((f) => `"${f}" text`)
+//       .join(',')})) as updates WHERE ${keys
+//       .map((k) => `"${table}"."${k}" = updates."${k}"`)
+//       .join(' AND ')};`,
+//     [JSON.stringify(updates)],
+//   );
+
+//   const data = await rawQuery;
+
+//   return data;
+// }
+
 let extended = false;
 
 export function extendKnex() {

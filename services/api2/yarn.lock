@@ -1144,6 +1144,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/event-emitter@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@nestjs/event-emitter@npm:1.0.0"
+  dependencies:
+    eventemitter2: 6.4.4
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0
+    "@nestjs/core": ^7.0.0 || ^8.0.0
+    reflect-metadata: ^0.1.12
+  checksum: 4a066e5caa1172d83383064d303ae721978dd4a0bbef8c0e4f28f9d349f63e3864fe96ffe8e06695243428472c14803de37e38ca0e0cc52e286a9911d42c9282
+  languageName: node
+  linkType: hard
+
 "@nestjs/graphql@npm:^9.0.5":
   version: 9.0.5
   resolution: "@nestjs/graphql@npm:9.0.5"
@@ -1903,6 +1916,13 @@ __metadata:
   version: 4.0.1
   resolution: "@types/long@npm:4.0.1"
   checksum: ff9653c33f5000d0f131fd98a950a0343e2e33107dd067a97ac4a3b9678e1a2e39ea44772ad920f54ef6e8f107f76bc92c2584ba905a0dc4253282a4101166d0
+  languageName: node
+  linkType: hard
+
+"@types/lru-cache@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@types/lru-cache@npm:5.1.1"
+  checksum: e1d6c0085f61b16ec5b3073ec76ad1be4844ea036561c3f145fc19f71f084b58a6eb600b14128aa95809d057d28f1d147c910186ae51219f58366ffd2ff2e118
   languageName: node
   linkType: hard
 
@@ -2691,6 +2711,7 @@ __metadata:
     "@nestjs/common": ^8.0.8
     "@nestjs/config": ^1.0.1
     "@nestjs/core": ^8.0.8
+    "@nestjs/event-emitter": ^1.0.0
     "@nestjs/graphql": ^9.0.5
     "@nestjs/passport": ^8.0.1
     "@nestjs/platform-express": ^8.0.8
@@ -2706,6 +2727,7 @@ __metadata:
     "@types/jsonwebtoken": ^8
     "@types/knex-postgis": ^0.10.0
     "@types/lodash": ^4.14.175
+    "@types/lru-cache": ^5.1.1
     "@types/morgan": ^1.9.3
     "@types/multer": ^1.4.7
     "@types/node": ^14.17.6
@@ -2727,6 +2749,7 @@ __metadata:
     eslint: ^7.32.0
     eslint-config-prettier: 8.3.0
     eslint-plugin-prettier: ^4.0.0
+    eventemitter2: ^6.4.5
     express: ^4.17.1
     got: ^11.8.2
     graphql: ^15.6.0
@@ -2739,15 +2762,17 @@ __metadata:
     joi: ^17.4.2
     jsonwebtoken: ^8.5.1
     jwks-rsa: ^2.0.4
-    knex: ^0.95.11
+    knex: ^0.95.14
     knex-postgis: ^0.14.1
     lodash: ^4.17.21
+    lru-cache: ^6.0.0
     morgan: ^1.10.0
     multer: ^1.4.3
     nanoid: ^3.1.28
     passport: ^0.4.1
     passport-jwt: ^4.0.0
     pg: ^8.7.1
+    pg-query-stream: ^4.2.1
     prettier: ^2.4.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
@@ -3656,10 +3681,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorette@npm:1.2.1":
-  version: 1.2.1
-  resolution: "colorette@npm:1.2.1"
-  checksum: 06e2fcdb9e2a2c527ac84509a56eadf481cde1768933eb612808f3bb3a9d9872c06b4a9f95e4d0f7befeef8b38307f79b88242d9ea52470d1125520b8116de08
+"colorette@npm:2.0.16":
+  version: 2.0.16
+  resolution: "colorette@npm:2.0.16"
+  checksum: cd55596a3a2d1071c1a28eee7fd8a5387593ff1bd10a3e8d0a6221499311fe34a9f2b9272d77c391e0e003dcdc8934fb2f8d106e7ef1f7516f8060c901d41a27
   languageName: node
   linkType: hard
 
@@ -4599,6 +4624,20 @@ __metadata:
   version: 5.0.1
   resolution: "event-target-shim@npm:5.0.1"
   checksum: 1ffe3bb22a6d51bdeb6bf6f7cf97d2ff4a74b017ad12284cc9e6a279e727dc30a5de6bb613e5596ff4dc3e517841339ad09a7eec44266eccb1aa201a30448166
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:6.4.4":
+  version: 6.4.4
+  resolution: "eventemitter2@npm:6.4.4"
+  checksum: b5e707039973d5a770bc4c64255604df66df3a1f63389dccb7118af163b9f790ca7596463d7868426339301ad9de5ef1c3f4a9c7ac3b93874c5ca792916dede1
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:^6.4.5":
+  version: 6.4.5
+  resolution: "eventemitter2@npm:6.4.5"
+  checksum: 84504f9cf0cc30205cdd46783fe9df3733435e5097f13070b678023110b5ef07847651808ae280cd94c42cd5976880211c7a40321a8ff8fa56f7c5f9c5c11960
   languageName: node
   linkType: hard
 
@@ -6802,11 +6841,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:^0.95.11":
-  version: 0.95.11
-  resolution: "knex@npm:0.95.11"
+"knex@npm:^0.95.14":
+  version: 0.95.14
+  resolution: "knex@npm:0.95.14"
   dependencies:
-    colorette: 1.2.1
+    colorette: 2.0.16
     commander: ^7.1.0
     debug: 4.3.2
     escalade: ^3.1.1
@@ -6826,13 +6865,15 @@ __metadata:
       optional: true
     pg:
       optional: true
+    pg-native:
+      optional: true
     sqlite3:
       optional: true
     tedious:
       optional: true
   bin:
     knex: bin/cli.js
-  checksum: a0a4451dad286e1bdec17380514e402d4b27130edb19775f4a41d5789e14811b4aaa52c0a359655cb7710aa456daa035df764d1086440e1756c2a2c4e71186b3
+  checksum: f33f7a9a720e2758b86dd9b361f54a06c7914a5d69a4aae4606a76048b402031d251d6dcac8eb54d28817604b39f8a91ebe671b1cd965288faab67a8d472a284
   languageName: node
   linkType: hard
 
@@ -8069,6 +8110,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-cursor@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "pg-cursor@npm:2.7.1"
+  peerDependencies:
+    pg: ^8
+  checksum: 8e1c5d20f64f7afd74947e5c1ee4edd6eef45d85d42952fc86e80dfe763deb2c9aba5050638398ca6f8e8eda0e4dff22f8fea6ed40a4eedae471f0150b4b67ca
+  languageName: node
+  linkType: hard
+
 "pg-int8@npm:1.0.1":
   version: 1.0.1
   resolution: "pg-int8@npm:1.0.1"
@@ -8089,6 +8139,15 @@ __metadata:
   version: 1.5.0
   resolution: "pg-protocol@npm:1.5.0"
   checksum: b839d12cafe942ef9cbc5b13c174eb2356804fb4fe8ead8279f46a36be90722d19a91409955beb8a3d5301639c44854e49749de4aef02dc361fee3e2a61fb1e4
+  languageName: node
+  linkType: hard
+
+"pg-query-stream@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "pg-query-stream@npm:4.2.1"
+  dependencies:
+    pg-cursor: ^2.7.1
+  checksum: 699b3b78ce8e5c080a49913aa50a00c264421ce839cce362920072c615dc3d3b4105896f0953d1b4acd95554a46e8b752eba3038ff5262da97654d234f8cdbb7
   languageName: node
   linkType: hard
 

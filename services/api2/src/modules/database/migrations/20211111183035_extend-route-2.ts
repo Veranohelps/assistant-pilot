@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
-import { analyseRoute } from '../../route/utilities/analyse-route';
+import { pointGeometryPlaceholder } from '../../common/utilities/gpx-to-geojson';
+import { analyseRoute } from '../../route/utils/analyse-route';
 import { extendKnex } from '../knex/extensions.knex';
 
 extendKnex();
@@ -15,7 +16,9 @@ export async function up(knex: Knex): Promise<void> {
     table.specificType('meteoPointsOfInterests', 'GEOGRAPHY(MULTIPOINTZ)').nullable();
   });
 
-  const routes = await knex('Route').withColumns('Route', { selectAll: true });
+  const routes = await knex('Route')
+    .select('*')
+    .select({ coordinate: knex.raw('st_asgeojson(coordinate)') });
 
   const updatedRoutes = routes.map((route) => {
     const params = analyseRoute(route.coordinate as ILineStringGeometry);
@@ -29,8 +32,8 @@ export async function up(knex: Knex): Promise<void> {
       meteoPointsOfInterests: knex.raw(`ST_GeomFromGeoJSON(?)`, [
         JSON.stringify(params.meteoPointsOfInterests),
       ]),
-      coordinate: knex.raw(`ST_GeomFromGeoJSON(?)`, [JSON.stringify(route.coordinate)]),
-      boundingBox: knex.raw(`ST_GeomFromGeoJSON(?)`, [JSON.stringify(route.boundingBox)]),
+      coordinate: pointGeometryPlaceholder,
+      boundingBox: pointGeometryPlaceholder,
     };
   });
 
