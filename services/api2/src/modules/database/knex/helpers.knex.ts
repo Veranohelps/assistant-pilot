@@ -87,7 +87,6 @@ export const attachKnexListeners = (client: Knex.QueryBuilder) => {
       return response;
     })
     .on('query-error', (error: any) => {
-      console.log(error);
       const { insert, update } = (builder as any)._single;
       const data = insert ?? update;
 

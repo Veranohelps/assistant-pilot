@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { UserLevelService } from '../../assessment/services/user-level.service';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
 import { EventService } from '../../common/services/event.service';
 import { GcpService } from '../../common/services/gcp.service';
+import AddFields from '../../common/utilities/add-fields';
+import { AppQuery } from '../../common/utilities/app-query';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -11,8 +14,10 @@ import {
   ICompleteUserRegistrationDTO,
   ICreateUserDTO,
   IEditedProfileDTO,
+  ISearchUsersOptions,
   IUser,
   IUserProfile,
+  IUserSlim,
 } from '../types/user.type';
 
 @Injectable()
@@ -22,6 +27,7 @@ export class UserService {
     private db: KnexClient<'User'>,
     private eventService: EventService,
     private gcpService: GcpService,
+    private userLevelService: UserLevelService,
   ) {}
 
   async signupUser(tx: TransactionManager, payload: ICreateUserDTO): Promise<IUser> {
@@ -58,31 +64,6 @@ export class UserService {
     return user;
   }
 
-  async findOne(tx: TransactionManager | null, id: string): Promise<IUser> {
-    const user = await this.db.read(tx).where({ id }).first();
-
-    if (!user) {
-      throw new NotFoundError(ErrorCodes.USER_NOT_FOUND, 'User not found');
-    }
-
-    return user;
-  }
-
-  async findByAuth0Id(tx: TransactionManager | null, auth0Id: string): Promise<IUser> {
-    const user = await this.db.read(tx).where({ auth0Id }).first();
-
-    if (!user) {
-      throw new NotFoundError(ErrorCodes.USER_NOT_FOUND, 'User not found');
-    }
-
-    return user;
-  }
-
-  async getProfile(tx: TransactionManager | null, id: string): Promise<IUserProfile> {
-    const user = await this.findOne(tx, id);
-
-    return { user };
-  }
   async editedProfile(
     tx: TransactionManager,
     id: string,
@@ -128,5 +109,71 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async findOne(tx: TransactionManager | null, id: string): Promise<IUser> {
+    const user = await this.db.read(tx).where({ id }).first();
+
+    if (!user) {
+      throw new NotFoundError(ErrorCodes.USER_NOT_FOUND, 'User not found');
+    }
+
+    return user;
+  }
+
+  async findByAuth0Id(tx: TransactionManager | null, auth0Id: string): Promise<IUser> {
+    const user = await this.db.read(tx).where({ auth0Id }).first();
+
+    if (!user) {
+      throw new NotFoundError(ErrorCodes.USER_NOT_FOUND, 'User not found');
+    }
+
+    return user;
+  }
+
+  async getProfile(tx: TransactionManager | null, id: string): Promise<IUserProfile> {
+    const user = await this.findOne(tx, id);
+
+    return { user };
+  }
+
+  async searchUsers(options: ISearchUsersOptions): Promise<IUserSlim[]> {
+    const opts = AppQuery.withOptions(options);
+    const builder = this.db
+      .read(null, {
+        overrides: {
+          auth0Id: { select: false },
+          email: { select: false },
+          isRegistrationFinished: { select: false },
+          isSubscribedToNewsletter: { select: false },
+          updatedAt: { select: false },
+        },
+      })
+      .orderBy('createdAt', 'desc')
+      .limit(50);
+
+    opts.withField('name', (val) => {
+      builder.where(
+        this.db.knex.raw(`lower(?? || ??) ilike ?`, [
+          'firstName',
+          'lastName',
+          `%${val?.toLocaleLowerCase().replace(/\s/g, '')}%`,
+        ]),
+      );
+    });
+
+    const users = await builder.then((res) =>
+      AddFields.target(res).add(
+        'currentLevels',
+        () =>
+          this.userLevelService.getLevelsByUserIds(
+            null,
+            res.map((u) => u.id),
+          ),
+        (user, record) => record[user.id] ?? {},
+      ),
+    );
+
+    return users;
   }
 }

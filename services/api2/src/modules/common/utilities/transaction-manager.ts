@@ -42,7 +42,6 @@ export class TransactionManager {
 
       return res;
     } catch (error) {
-      console.log(error);
       await this.rollback();
 
       throw error;

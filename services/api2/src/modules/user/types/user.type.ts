@@ -1,3 +1,5 @@
+import { SRecord } from '../../../types/helpers.type';
+
 export interface IUser {
   id: string;
   auth0Id: string;
@@ -11,6 +13,15 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
+}
+
+export interface IUserSlim {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  otherName: string | null;
+  avatar: string | null;
+  levels?: SRecord<string>;
 }
 
 export interface ICreateUser {
@@ -49,4 +60,8 @@ export interface IUserProfile {
 
 export interface ITextDTO {
   text: string;
+}
+
+export interface ISearchUsersOptions {
+  name?: string;
 }

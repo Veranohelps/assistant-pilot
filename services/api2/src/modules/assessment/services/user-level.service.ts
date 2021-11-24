@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import _ from 'lodash';
+import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
-import { generateRecord2 } from '../../common/utilities/generate-record';
+import { generateGroupRecord2, generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -57,6 +59,18 @@ export class UserLevelService {
     return results;
   }
 
+  async getAssessmentsByUserIds(
+    tx: TransactionManager | null,
+    userIds: string[],
+  ): Promise<SRecord<IUserLevel[]>> {
+    const results = await this.db
+      .read(tx)
+      .whereIn('userId', userIds)
+      .then(generateGroupRecord2((a) => a.userId));
+
+    return results;
+  }
+
   async getCurrentUserLevels(
     tx: TransactionManager | null,
     userId: string,
@@ -71,7 +85,24 @@ export class UserLevelService {
     return results;
   }
 
-  async deleteUserLevels(tx: TransactionManager, userId: string): Promise<IUserLevel[]> {
+  async getLevelsByUserIds(
+    tx: TransactionManager | null,
+    userIds: string[],
+  ): Promise<SRecord<SRecord<string>>> {
+    const assessmentRecord = await this.getAssessmentsByUserIds(tx, userIds);
+
+    const levels = _.mapValues(
+      assessmentRecord,
+      generateRecord2(
+        (a) => a.skillId,
+        (a) => a.levelId,
+      ),
+    );
+
+    return levels;
+  }
+
+  async deleteUserLevels(tx: TransactionManager | null, userId: string): Promise<IUserLevel[]> {
     const results = await this.db.read(tx).where({ userId: userId }).del().cReturning();
 
     return results;

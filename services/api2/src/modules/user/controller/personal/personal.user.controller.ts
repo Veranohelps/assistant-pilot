@@ -12,12 +12,18 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserLevelService } from '../../../assessment/services/user-level.service';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
+import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { UserService } from '../../services/user.service';
-import { ICompleteUserRegistrationDTO, IEditedProfileDTO, IUser } from '../../types/user.type';
+import {
+  ICompleteUserRegistrationDTO,
+  IEditedProfileDTO,
+  ISearchUsersOptions,
+  IUser,
+} from '../../types/user.type';
 import {
   completeUserRegistrationValidationSchema,
   editedUserValidationSchema,
@@ -46,7 +52,7 @@ export class PersonalUserController {
     const currentLevels = await this.userLevelService.getCurrentUserLevels(null, user.id);
     const profile = { user, currentLevels };
 
-    return successResponse('User signup success', { profile });
+    return successResponse('User profile', { profile });
   }
 
   @Patch('edit-profile')
@@ -88,5 +94,13 @@ export class PersonalUserController {
     const deletedUser = await this.userService.deleteUser(tx, user.id);
 
     return successResponse(`${deletedUser.id} account successfully deleted`);
+  }
+
+  @Get('search')
+  @HttpCode(HttpStatus.OK)
+  async searchUsers(@ParsedUrlParameters() params: ISearchUsersOptions) {
+    const users = await this.userService.searchUsers(params);
+
+    return successResponse('Users retrieved', { users });
   }
 }
