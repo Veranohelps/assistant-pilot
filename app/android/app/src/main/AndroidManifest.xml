@@ -14,7 +14,7 @@
     </intent>
   </queries>
   <application
-    android:label="Dersu Assistant"
+        android:label="Dersu"
     android:icon="@mipmap/launcher_icon"
     tools:replace="android:label">
     <activity

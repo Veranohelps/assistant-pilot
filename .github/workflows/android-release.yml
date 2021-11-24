@@ -7,6 +7,11 @@ jobs:
       - name: Set current branch name
         id: currentbranch
         run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+      - name: Set bundle ID
+        id: bundleid
+        run: echo "::set-output name=bundleid::$BUNDLE_ID"
+        env:
+          BUNDLE_ID: ${{ steps.currentbranch.outputs.branch != 'production' && 'uz.dersu.assistant.pilot' || 'uz.dersu' }}
       - name: Check out
         uses: actions/checkout@v2
       - name: Set up Java
@@ -36,7 +41,7 @@ jobs:
       - name: Get application configuration
         run: gcloud secrets versions access $SECRET_VERSION --secret="$SECRET_NAME" > app/.env
         env:
-          SECRET_VERSION: ${{ steps.currentbranch.outputs.branch == 'develop' && 5 || 1 }}
+          SECRET_VERSION: ${{ steps.currentbranch.outputs.branch == 'develop' && 5 || 2 }}
           SECRET_NAME: ${{ steps.currentbranch.outputs.branch }}-app-configuration
       - name: Get JKS file for Android signing
         run: |
@@ -47,6 +52,12 @@ jobs:
           SECRET_NAME: ${{ steps.currentbranch.outputs.branch }}-app-android-jks
       - name: Generate What Is New Files
         run: echo $GITHUB_SHA >> app/distribution/whatsnew/whatsnew-es-ES && cat app/distribution/whatsnew/whatsnew-es-ES
+      - name: Set DEVELOP bundle ID
+        if: ${{ steps.currentbranch.outputs.branch != 'production' }}
+        working-directory: app
+        run: |
+          flutter pub global activate rename
+          pub global run rename --bundleId ${{ steps.bundleid.outputs.bundleid }}
       - name: Build app bundle
         working-directory: app
         run: flutter build appbundle
@@ -58,7 +69,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJson: ./sa-key.json
-          packageName: uz.dersu.assistant.pilot
+          packageName: ${{ steps.bundleid.outputs.bundleid }}
           releaseFiles: ${{ github.workspace }}/app/build/app/outputs/bundle/release/*.aab
           track: alpha
           inAppUpdatePriority: 0

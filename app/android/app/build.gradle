@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "uz.dersu.assistant.pilot"
+        applicationId "uz.dersu"
         minSdkVersion 29
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
