@@ -29,7 +29,7 @@ class Waypoint extends Equatable {
 
   factory Waypoint.fromJson(Map<String, dynamic> json) {
     // HARDCODES radius for testing
-    json['radiusInMeters'] = 50;
+    json['radiusInMeters'] = 25;
     return _$WaypointFromJson(json);
   }
 
