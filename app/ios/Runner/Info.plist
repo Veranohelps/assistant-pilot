@@ -52,17 +52,17 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Dersu usa su cámara para permitirle tomar una foto para su perfil.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.</string>
 	<key>NSMotionUsageDescription</key>
-	<string></string>
+	<string>Dersu utiliza la detección de movimiento para minimizar el consumo de batería durante las expediciones.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Dersu accede a la biblioteca de fotos para permitirle utilizar una imagen para su perfil.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
