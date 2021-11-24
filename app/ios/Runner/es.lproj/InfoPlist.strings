@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by kherel kechil on 24/11/21.
+  
+*/
+
+NSLocationAlwaysAndWhenInUseUsageDescription = "Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.";
+NSLocationAlwaysUsageDescription = "Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.";
+NSLocationWhenInUseUsageDescription = "Durante las expediciones, y por motivos de seguridad, usamos su ubicación para advertirle sobre puntos críticos en la ruta, cambios metereológicos relevantes y potenciales peligros.";
+NSCameraUsageDescription = "Dersu usa su cámara para permitirle tomar una foto para su perfil.";
+NSMotionUsageDescription = "Dersu utiliza la detección de movimiento para minimizar el consumo de batería durante las expediciones.";
+NSPhotoLibraryUsageDescription = "Dersu accede a la biblioteca de fotos para permitirle utilizar una imagen para su perfil.";

@@ -7,6 +7,7 @@ abstract class  LocaleKeys {
   static const basis_close = 'basis.close';
   static const basis_confirm = 'basis.confirm';
   static const basis_ok = 'basis.ok';
+  static const basis_open_settings = 'basis.open_settings';
   static const basis = 'basis';
   static const profile_name = 'profile.name';
   static const profile_edit_profile = 'profile.edit_profile';

@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Dersu Assistant</string>
+	<string>Dersu</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -52,17 +52,17 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Dersu uses access to the camera.</string>
+	<string></string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Dersu uses location in order to warn you about upcoming key waypoints.</string>
+	<string></string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Dersu uses location in order to warn you about upcoming key waypoints.</string>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Dersu uses location in order to warn you about upcoming key waypoints.</string>
+	<string></string>
 	<key>NSMotionUsageDescription</key>
-	<string>Dersu uses motion detection in order to maximise battery life during expeditions.</string>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Dersu uses access to the photo library.</string>
+	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

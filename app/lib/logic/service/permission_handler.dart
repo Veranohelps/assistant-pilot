@@ -1,3 +1,5 @@
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:flutter/material.dart';
 import 'package:dersu_permissions/dersu_permissions.dart';
@@ -10,12 +12,12 @@ class DersuPermissionsHandler {
     }
 
     if (status == DersuPermissionsStatus.denied && showDialog) {
-      showPopupDialog('Open settings',
-          'Dersu app needs location permission to be always denied status');
+      showPopupDialog(LocaleKeys.expedition_warning_title.tr(),
+          LocaleKeys.expedition_warning_text.tr());
     } else if (status == DersuPermissionsStatus.authorizedWhenInUse &&
         showDialog) {
-      showPopupDialog('Open settings',
-          'Dersu app needs location permission to be always authorized_when_in_use status');
+      showPopupDialog(LocaleKeys.expedition_warning_title.tr(),
+          LocaleKeys.expedition_warning_text.tr());
     }
     return false;
   }
@@ -31,12 +33,12 @@ class DersuPermissionsHandler {
                 DersuPermissions.openSettings();
                 getIt<NavigationService>().navigator.pop();
               },
-              child: Text('Open')),
+              child: Text(LocaleKeys.basis_open_settings.tr())),
           ElevatedButton(
               onPressed: () {
                 getIt<NavigationService>().navigator.pop();
               },
-              child: Text('Cancel')),
+              child: Text(LocaleKeys.basis_cancel.tr())),
         ],
       ),
     );

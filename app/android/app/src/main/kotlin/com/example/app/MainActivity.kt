@@ -1,4 +1,4 @@
-package uz.dersu.assistant.pilot
+package uz.dersu
 
 import io.flutter.embedding.android.FlutterActivity
 

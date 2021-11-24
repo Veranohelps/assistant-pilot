@@ -5,7 +5,8 @@
     "save": "Guardar",
     "close": "Cerrar",
     "confirm": "Confirmar",
-    "ok": "OK"
+    "ok": "OK",
+    "open_settings": "Abrir Ajustes"
   },
   "profile": {
     "name": "Perfil",
@@ -54,7 +55,7 @@
     "upcoming_expeditions_empty": "No hay expediciones planificadas"
   },
   "more": {
-    "name": "Más",
+    "name": "Ajustes",
     "about": "Acerca de",
     "console": "Consola"
   },
@@ -74,8 +75,8 @@
   },
   "expedition": {
     "warning": {
-      "title" : "Localización",
-      "text": "Dersu utiliza su localización durante las expediciones, incluso con la aplicación cerrada, para así poder avisarle de potenciales peligros, cambios meteorológicos relevantes y puntos de interés. Si lo desea puede consultar la política de privacidad de Dersu  en la sección 'Acerca de' de la aplicación o en https://dersu.uz/en/privacy. Gracias."
+      "title" : "Abrir Ajustes de Localización",
+      "text": "Dersu utiliza su localización durante las expediciones, incluso con la aplicación cerrada, para así poder avisarle de potenciales peligros, cambios meteorológicos relevantes y puntos de interés. Si lo desea puede consultar la política de privacidad de Dersu en la sección 'Ajustes' de la aplicación o en https://dersu.uz/en/privacy. Gracias."
     },
     "live": {
       "finish" : "Terminar la expedición"

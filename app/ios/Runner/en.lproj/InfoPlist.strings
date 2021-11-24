@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by kherel kechil on 24/11/21.
+  
+*/
+
+NSLocationAlwaysAndWhenInUseUsageDescription = "During expeditions and for security purposes we use your location in order to warn you about upcoming waypoints in your route, weather changes and potential hazards.";
+NSLocationAlwaysUsageDescription = "During expeditions and for security purposes we use your location in order to warn you about upcoming waypoints in your route, weather changes and potential hazards.";
+NSLocationWhenInUseUsageDescription = "During expeditions and for security purposes we use your location in order to warn you about upcoming waypoints in your route, weather changes and potential hazards.";
+NSCameraUsageDescription = "Dersu uses your camera in order to allow you to take a picture for your profile.";
+NSMotionUsageDescription = "Dersu uses motion detection in order to minimise battery consumption during expeditions.";
+NSPhotoLibraryUsageDescription = "Dersu acccess the photo library in order to allow you to upload a picture for your profile.";

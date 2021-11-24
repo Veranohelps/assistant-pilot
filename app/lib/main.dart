@@ -63,7 +63,7 @@ class _MainState extends State<_Main> {
             navigatorKey: getIt.get<NavigationService>().navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: brandTheme,
-            title: 'Dersu Assistant App',
+            title: 'Dersu',
             home: App(),
             navigatorObservers: [getIt.get<Analitics>().navigatorObserver],
             builder: (BuildContext context, Widget? widget) {

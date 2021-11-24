@@ -5,7 +5,8 @@
     "save": "Save",
     "close": "Close",
     "confirm": "Confirm expedition",
-    "ok": "OK"
+    "ok": "OK",
+    "open_settings": "Open Settings"
   },
   "profile": {
     "name": "Profile",
@@ -55,7 +56,7 @@
     "upcoming_expeditions_empty": "No expeditions planned"
   },
   "more": {
-    "name": "More",
+    "name": "Settings",
     "about": "About",
     "console": "Console"
   },
@@ -75,8 +76,8 @@
   },
   "expedition": {
     "warning": {
-      "title" : "Location",
-      "text": "Dersu uses your location during expeditions, even with the application closed, in order to alert you to potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'About' section of the application or at https://dersu.uz/en/privacy. Thanks."
+      "title" : "Open Location Settings",
+      "text": "Dersu uses your location during expeditions, even with the application closed, in order to alert you to potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'Settings' section of the application or at https://dersu.uz/en/privacy. Thanks."
     },
     "live": {
       "finish" : "Finish the expedition"
