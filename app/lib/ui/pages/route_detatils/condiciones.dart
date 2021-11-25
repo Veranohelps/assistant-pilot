@@ -327,7 +327,7 @@ class WeatherCard extends StatelessWidget {
                 ),
                 getColumnBlock(
                   'precipitaciones'.toUpperCase(),
-                  '${rangeForecast.precipitation} %',
+                  '${rangeForecast.precipitationProbability} %',
                 )
               ],
             )
