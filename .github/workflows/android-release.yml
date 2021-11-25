@@ -6,7 +6,8 @@ jobs:
     steps:
       - name: Set current branch name
         id: currentbranch
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        # run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        run: echo "::set-output name=branch::develop"
       - name: Set bundle ID
         id: bundleid
         run: echo "::set-output name=bundleid::$BUNDLE_ID"

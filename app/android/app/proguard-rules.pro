@@ -1,1 +1,1 @@
--keep class uz.dersu.BuildConfig { *; }
+-keep class uz.dersu.assistant.pilot.BuildConfig { *; }
