@@ -14,6 +14,7 @@ import { RouteModule } from './route/route.module';
 import { SkillModule } from './skill/skill.module';
 import { UserModule } from './user/user.module';
 import { WaypointModule } from './waypoint/waypoint.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { WaypointModule } from './waypoint/waypoint.module';
     CourseModule,
     AssessmentModule,
     DashboardModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
