@@ -50,6 +50,8 @@ abstract class  LocaleKeys {
   static const more_name = 'more.name';
   static const more_about = 'more.about';
   static const more_console = 'more.console';
+  static const more_privacy_policy = 'more.privacy_policy';
+  static const more_app_version = 'more.app_version';
   static const more = 'more';
   static const errors_fatal = 'errors.fatal';
   static const errors_unknown = 'errors.unknown';
@@ -65,8 +67,12 @@ abstract class  LocaleKeys {
   static const expedition_warning_title = 'expedition.warning.title';
   static const expedition_warning_text = 'expedition.warning.text';
   static const expedition_warning = 'expedition.warning';
+  static const expedition_live_on_route = 'expedition.live.on_route';
   static const expedition_live_finish = 'expedition.live.finish';
   static const expedition_live = 'expedition.live';
+  static const expedition_summary_finished = 'expedition.summary.finished';
+  static const expedition_summary_duration = 'expedition.summary.duration';
+  static const expedition_summary = 'expedition.summary';
   static const expedition = 'expedition';
 
 }

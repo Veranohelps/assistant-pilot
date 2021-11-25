@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:ant_icons/ant_icons.dart';
-import 'package:app/config/brand_colors.dart';
 import 'package:app/config/get_it_config.dart';
 import 'package:app/config/map_config.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -162,58 +160,6 @@ class _LiveMapState extends State<LiveMap> {
       alignment: Alignment.center,
       children: [
         getMap(),
-        Positioned(
-          left: 16,
-          top: 30 + MediaQuery.of(context).padding.top,
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: BrandColors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 16,
-                  offset: Offset(0, 16),
-                  color: BrandColors.marta3F464C.withOpacity(0.25),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    Text('lat:'),
-                    Text('long:'),
-                    Text('alt:'),
-                  ],
-                ),
-                SizedBox(width: 10),
-                if (_userLocation != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        _userLocation!.coords.longitude.toStringAsFixed(5),
-                        style: TextStyle(
-                          fontFeatures: const [FontFeature.tabularFigures()],
-                        ),
-                      ),
-                      Text(
-                        _userLocation!.coords.latitude.toStringAsFixed(5),
-                      ),
-                      Text(
-                        _userLocation!.coords.altitude.toStringAsFixed(5),
-                        style: TextStyle(
-                          fontFeatures: const [FontFeature.tabularFigures()],
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
-        ),
         Positioned(
           right: 16,
           top: 20 + MediaQuery.of(context).padding.top,

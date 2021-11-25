@@ -22,8 +22,10 @@ class ExpeditionSummary extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('You finished your expedition'),
-            Text('Durations ${duration.toDayHourMinuteSecondFormat()}'),
+            Text(LocaleKeys.expedition_summary_finished.tr()),
+            Text(LocaleKeys.expedition_summary_duration.tr() +
+                ': ' +
+                duration.toDayHourMinuteSecondFormat()),
             SizedBox(height: 10),
             BrandButtons.primaryBig(
               onPressed: () async {

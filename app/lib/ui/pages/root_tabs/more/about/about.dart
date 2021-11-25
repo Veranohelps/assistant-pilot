@@ -9,6 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/ui/pages/loader/generic_loader.dart';
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
@@ -63,16 +65,20 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Acerca de")),
+      appBar: AppBar(title: Text(LocaleKeys.more_about.tr())),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         children: [
-          ListTile(title: Text("Versión: " + packageInfo.version)),
-          ListTile(title: Text("Build: " + packageInfo.buildNumber)),
+          ListTile(
+              title: Text(LocaleKeys.more_app_version.tr() +
+                  ': ' +
+                  packageInfo.version +
+                  ' - ' +
+                  packageInfo.buildNumber)),
           ListTile(title: Text(whatsNew)),
           BrandButtons.primaryBig(
             onPressed: _launchPrivacyPolicy,
-            text: "Política de privacidad",
+            text: LocaleKeys.more_privacy_policy.tr(),
           )
         ],
       ),

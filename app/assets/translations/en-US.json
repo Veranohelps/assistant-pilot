@@ -58,7 +58,9 @@
   "more": {
     "name": "Settings",
     "about": "About",
-    "console": "Console"
+    "console": "Console",
+    "privacy_policy": "Privacy Policy",
+    "app_version": "Version"
   },
   "errors": {
     "fatal": "Fatal error!",
@@ -80,7 +82,12 @@
       "text": "Dersu uses your location during expeditions, even with the application closed, in order to alert you to potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'Settings' section of the application or at https://dersu.uz/en/privacy. Thanks."
     },
     "live": {
+      "on_route": "On route",
       "finish" : "Finish the expedition"
+    },
+    "summary": {
+      "finished": "Expedition finished",
+      "duration": "Duration"
     }
   }
 }

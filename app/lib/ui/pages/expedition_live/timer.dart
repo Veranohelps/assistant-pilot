@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app/config/theme_typo.dart';
 import 'package:app/utils/extensions/duration.dart';
+import 'package:app/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ExpedtitionTimer extends StatefulWidget {
   const ExpedtitionTimer({
@@ -34,7 +36,9 @@ class _ExpedtitionTimerState extends State<ExpedtitionTimer> {
   Widget build(BuildContext context) {
     var duration = DateTime.now().difference(widget.startTime);
     return Text(
-      'En ruta ${duration.toDayHourMinuteSecondFormat()}',
+      LocaleKeys.expedition_live_on_route.tr() +
+          ': ' +
+          duration.toDayHourMinuteSecondFormat(),
       style: ThemeTypo.subtitle2.copyWith(height: 1.2),
     );
   }
