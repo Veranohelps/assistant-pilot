@@ -244,8 +244,11 @@ export class RouteService {
       );
     }
 
-    await this.validateLevelsAndActivities(tx, payload.levels ?? [], payload.activityTypes);
-
+    await this.validateLevelsAndActivities(tx, payload.levels ?? [], payload.activityTypes ?? []);
+    let activityTypes = payload.activityTypes;
+    if (!activityTypes) {
+      activityTypes = this.activityTypeService.all().map((at) => at.id);
+    }
     const [route] = await this.db
       .write(tx)
       .insert({
@@ -253,7 +256,7 @@ export class RouteService {
         name: payload.name,
         description: payload.description,
         levelIds: payload.levels,
-        activityTypeIds: payload.activityTypes,
+        activityTypeIds: activityTypes,
         userId,
         originId,
         coordinate: this.db.knex.raw(geomString),

@@ -1,20 +1,35 @@
-import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
+import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import { IMultiPointGeometry } from '../../../common/types/geojson.type';
+import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
 import { WeatherService } from '../../../weather/services/weather.service';
 import {
+  createNoDersuRouteValidationSchema,
   getRouteValidationSchema,
   getUserRoutesQueryValidationSchema,
 } from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
+import { ERouteOrigins } from '../../types/route-origin.type';
 import {
+  ICreateRouteDTO,
   IGetRouteUrlParameters,
   IGetUserRoutesUrlParameters,
   IRouteSlim,
@@ -61,5 +76,24 @@ export class PersonalRouteController {
     );
 
     return apiResponse;
+  }
+  @Post('create')
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('gpx'))
+  async create(
+    @UserData() user: IUser,
+    @UploadedFile() file: Express.Multer.File,
+    @Tx() tx: TransactionManager,
+    @ParsedBody(createNoDersuRouteValidationSchema) payload: ICreateRouteDTO,
+  ) {
+    const route = await this.routeService.fromGeoJson(
+      tx,
+      ERouteOrigins.MANUAL,
+      payload,
+      gpxToGeoJSON(file.buffer.toString('utf-8')),
+      user.id,
+    );
+
+    return successResponse('Route created', { route });
   }
 }
