@@ -9,7 +9,6 @@ import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { EventService } from './services/event.service';
 import { GcpService } from './services/gcp.service';
 import { LoaderService } from './services/loader.service';
-import { StrapiService } from './services/strapi.service';
 
 @Global()
 @Module({
@@ -36,10 +35,9 @@ import { StrapiService } from './services/strapi.service';
       useClass: ErrorInterceptor,
     },
     LoaderService,
-    StrapiService,
     GcpService,
     EventService,
   ],
-  exports: [LoaderService, StrapiService, GcpService, EventService],
+  exports: [LoaderService, GcpService, EventService],
 })
 export class CommonModule {}

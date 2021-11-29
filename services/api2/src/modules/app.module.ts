@@ -5,7 +5,6 @@ import { join } from 'path';
 import { AssessmentModule } from './assessment/assessment.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { CourseModule } from './course/course.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DatabaseModule } from './database/database.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
@@ -36,7 +35,6 @@ import { HealthModule } from './health/health.module';
     DictionaryModule,
     SkillModule,
     UserModule,
-    CourseModule,
     AssessmentModule,
     DashboardModule,
     HealthModule,
