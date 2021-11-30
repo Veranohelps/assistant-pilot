@@ -27,16 +27,19 @@ class UserApi extends PrivateDersuApi {
     return Profile.fromJson(json);
   }
 
-  Future<FilledProfile> signUp({
-    required String firstName,
-    required String lastName,
-    required bool isSubscribedToNewsletter,
-  }) async {
+  Future<FilledProfile> signUp(
+      {required String firstName,
+      required String lastName,
+      required bool isSubscribedToNewsletter,
+      required bool hasReadPrivacyPolicy,
+      required bool hasAcceptedTermsAndConditions}) async {
     var client = await getClient();
     await client.patch(finishRegistrationUrl, data: {
       'firstName': firstName,
       'lastName': lastName,
       'isSubscribedToNewsletter': isSubscribedToNewsletter,
+      'hasReadPrivacyPolicy': hasReadPrivacyPolicy,
+      'hasAcceptedTermsAndConditions': hasAcceptedTermsAndConditions
     });
     client.close();
 

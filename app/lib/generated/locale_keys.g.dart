@@ -8,6 +8,8 @@ abstract class  LocaleKeys {
   static const basis_confirm = 'basis.confirm';
   static const basis_ok = 'basis.ok';
   static const basis_open_settings = 'basis.open_settings';
+  static const basis_required = 'basis.required';
+  static const basis_continue = 'basis.continue';
   static const basis = 'basis';
   static const profile_name = 'profile.name';
   static const profile_edit_profile = 'profile.edit_profile';
@@ -51,6 +53,7 @@ abstract class  LocaleKeys {
   static const more_about = 'more.about';
   static const more_console = 'more.console';
   static const more_privacy_policy = 'more.privacy_policy';
+  static const more_terms_and_conditions = 'more.terms_and_conditions';
   static const more_app_version = 'more.app_version';
   static const more = 'more';
   static const errors_fatal = 'errors.fatal';
@@ -63,6 +66,12 @@ abstract class  LocaleKeys {
   static const registration_firstName = 'registration.firstName';
   static const registration_lastName = 'registration.lastName';
   static const registration_subscribe_text = 'registration.subscribe_text';
+  static const registration_read_privacy_policy_intro = 'registration.read_privacy_policy_intro';
+  static const registration_read_privacy_policy_link = 'registration.read_privacy_policy_link';
+  static const registration_accept_terms_and_conditions_intro = 'registration.accept_terms_and_conditions_intro';
+  static const registration_accept_terms_and_conditions_link = 'registration.accept_terms_and_conditions_link';
+  static const registration_read_privacy_policy_error = 'registration.read_privacy_policy_error';
+  static const registration_accept_terms_and_conditions_error = 'registration.accept_terms_and_conditions_error';
   static const registration = 'registration';
   static const expedition_warning_title = 'expedition.warning.title';
   static const expedition_warning_text = 'expedition.warning.text';

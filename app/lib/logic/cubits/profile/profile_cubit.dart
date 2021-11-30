@@ -25,29 +25,33 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
     emit(state);
   }
 
-  Future<void> finishRegistration({
-    required String firstName,
-    required bool isSubscribedToNewsletter,
-    required String lastName,
-  }) async {
+  Future<void> finishRegistration(
+      {required String firstName,
+      required bool isSubscribedToNewsletter,
+      required String lastName,
+      required bool hasReadPrivacyPolicy,
+      required bool hasAcceptedTermsAndConditions}) async {
     var updatedProfile = await api.signUp(
-      firstName: firstName,
-      lastName: lastName,
-      isSubscribedToNewsletter: isSubscribedToNewsletter,
-    );
+        firstName: firstName,
+        lastName: lastName,
+        isSubscribedToNewsletter: isSubscribedToNewsletter,
+        hasReadPrivacyPolicy: hasReadPrivacyPolicy,
+        hasAcceptedTermsAndConditions: hasAcceptedTermsAndConditions);
     emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 
-  Future<void> setProfile({
-    required String firstName,
-    required bool isSubscribedToNewsletter,
-    required String lastName,
-  }) async {
+  Future<void> setProfile(
+      {required String firstName,
+      required bool isSubscribedToNewsletter,
+      required String lastName,
+      required bool hasReadPrivacyPolicy,
+      required bool hasAcceptedTermsAndConditions}) async {
     var updatedProfile = await api.signUp(
-      firstName: firstName,
-      lastName: lastName,
-      isSubscribedToNewsletter: isSubscribedToNewsletter,
-    );
+        firstName: firstName,
+        lastName: lastName,
+        isSubscribedToNewsletter: isSubscribedToNewsletter,
+        hasReadPrivacyPolicy: hasReadPrivacyPolicy,
+        hasAcceptedTermsAndConditions: hasAcceptedTermsAndConditions);
     emit(ProfileDersuRegistrationFinished(updatedProfile));
   }
 

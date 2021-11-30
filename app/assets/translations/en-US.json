@@ -6,7 +6,9 @@
     "close": "Close",
     "confirm": "Confirm expedition",
     "ok": "OK",
-    "open_settings": "Open Settings"
+    "open_settings": "Open Settings",
+    "required": "Required",
+    "continue": "Continue"
   },
   "profile": {
     "name": "Profile",
@@ -60,6 +62,7 @@
     "about": "About",
     "console": "Console",
     "privacy_policy": "Privacy Policy",
+    "terms_and_conditions": "Terms and Conditions",
     "app_version": "Version"
   },
   "errors": {
@@ -74,7 +77,13 @@
     "name": "Profile details",
     "firstName": "First name",
     "lastName": "Last name",
-    "subscribe_text": "Subsciption to our newsletter"
+    "subscribe_text": "Subscribe me to Dersu's newsletter",
+    "read_privacy_policy_intro": "I have read the ",
+    "read_privacy_policy_link": "Privacy Policy",
+    "accept_terms_and_conditions_intro": "I accept the ",
+    "accept_terms_and_conditions_link": "Terms and Conditions",
+    "read_privacy_policy_error": "You have to confirm that you have read the Privacy Policy",
+    "accept_terms_and_conditions_error": "You have to accept Dersu's Terms and Conditions"
   },
   "expedition": {
     "warning": {

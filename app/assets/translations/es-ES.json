@@ -6,7 +6,9 @@
     "close": "Cerrar",
     "confirm": "Confirmar",
     "ok": "OK",
-    "open_settings": "Abrir Ajustes"
+    "open_settings": "Abrir Ajustes",
+    "required": "Obligatorio",
+    "continue": "Continuar"
   },
   "profile": {
     "name": "Perfil",
@@ -59,6 +61,7 @@
     "about": "Acerca de",
     "console": "Consola",
     "privacy_policy": "Política de Privacidad",
+    "terms_and_conditions": "Condiciones de Uso",
     "app_version": "Versión"
   },
   "errors": {
@@ -73,7 +76,13 @@
     "name": "Datos perfil",
     "firstName": "Nombre",
     "lastName": "Apellido",
-    "subscribe_text": "Suscribirme al newsletter"
+    "subscribe_text": "Suscribirme al newsletter de Dersu",
+    "read_privacy_policy_intro": "He leído la ",
+    "read_privacy_policy_link": "Política de Privacidad",
+    "accept_terms_and_conditions_intro": "Acepto las ",
+    "accept_terms_and_conditions_link": "Condiciones de Uso",
+    "read_privacy_policy_error": "Tiene que confirmar que ha leído la Política de Privacidad",
+    "accept_terms_and_conditions_error": "Tiene que aceptar las Condiciones de Uso"
   },
   "expedition": {
     "warning": {

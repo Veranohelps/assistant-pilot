@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/config/brand_theme.dart';
+import 'package:app/config/theme_typo.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/forms/registration/registration_form.dart';
+import 'package:app/logic/service/external_urls.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
 import 'package:app/ui/components/brand_switcher/brand_switcher.dart';
@@ -66,10 +68,88 @@ class Registration extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: 14),
+                      BlocBuilder<FieldCubit, FieldCubitState>(
+                        bloc: form.hasReadPrivacyPolicy,
+                        builder: (_, state) {
+                          return Row(
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => form.hasReadPrivacyPolicy
+                                    .setValue(!state.value),
+                                child: BrandSwitcher(
+                                  isAcitve: state.value,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () => ExternalUrls.launchPrivacyPolicy(
+                                      context.locale),
+                                  child: RichText(
+                                    text: TextSpan(
+                                        style: ThemeTypo.defaultText,
+                                        text: LocaleKeys
+                                            .registration_read_privacy_policy_intro
+                                            .tr(),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: LocaleKeys
+                                                  .registration_read_privacy_policy_link
+                                                  .tr(),
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline))
+                                        ]),
+                                  ))
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(height: 14),
+                      BlocBuilder<FieldCubit, FieldCubitState>(
+                        bloc: form.hasAcceptedTermsAndConditions,
+                        builder: (_, state) {
+                          return Row(
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => form.hasAcceptedTermsAndConditions
+                                    .setValue(!state.value),
+                                child: BrandSwitcher(
+                                  isAcitve: state.value,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () =>
+                                      ExternalUrls.launchTermsAndConditions(
+                                          context.locale),
+                                  child: RichText(
+                                      text: TextSpan(
+                                          style: ThemeTypo.defaultText,
+                                          text: LocaleKeys
+                                              .registration_accept_terms_and_conditions_intro
+                                              .tr(),
+                                          children: <TextSpan>[
+                                        TextSpan(
+                                            text: LocaleKeys
+                                                .registration_accept_terms_and_conditions_link
+                                                .tr(),
+                                            style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline))
+                                      ]))),
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(height: 14),
                       BrandButtons.primaryBig(
-                          text: LocaleKeys.basis_accept.tr(),
+                          text: LocaleKeys.basis_continue.tr(),
                           onPressed: form.state.isSubmitting ||
-                                  form.state.hasErrorToShow
+                                  !form.state.isFormDataValid
                               ? null
                               : () => form.trySubmit())
                     ],

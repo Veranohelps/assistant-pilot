@@ -2,14 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_config/flutter_config.dart';
 import 'package:package_info/package_info.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/pages/errors/basic.dart';
 import 'package:app/ui/pages/loader/generic_loader.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/logic/service/external_urls.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class About extends StatelessWidget {
@@ -77,21 +76,16 @@ class AboutScreen extends StatelessWidget {
                   packageInfo.buildNumber)),
           ListTile(title: Text(whatsNew)),
           BrandButtons.primaryBig(
-            onPressed: _launchPrivacyPolicy,
+            onPressed: () => ExternalUrls.launchPrivacyPolicy(context.locale),
             text: LocaleKeys.more_privacy_policy.tr(),
+          ),
+          BrandButtons.primaryBig(
+            onPressed: () =>
+                ExternalUrls.launchTermsAndConditions(context.locale),
+            text: LocaleKeys.more_terms_and_conditions.tr(),
           )
         ],
       ),
     );
-  }
-
-  void _launchPrivacyPolicy() async {
-    final baseUrl = FlutterConfig.get('DERSU_SITE_BASE_URL');
-    final url = '$baseUrl/en/privacy/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }
