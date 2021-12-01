@@ -1,11 +1,12 @@
-part of 'route_details.dart';
+part of 'expedition_form.dart';
 
-void setTimeFilterDate(BuildContext context) async {
+void setTimeFilterDate(
+    BuildContext context, ExpeditionFormCubit formCubit) async {
   var today = DateTime.now();
   var tommorow = today.add(Duration(days: 1));
 
-  var prevDate = context.read<SelectTimeCubit>().state;
-
+  var expeditionFormCubit = formCubit.date;
+  var prevDate = expeditionFormCubit.state.value;
   final initalDate = prevDate ?? tommorow;
 
   var day = await showDatePicker(
@@ -44,7 +45,7 @@ void setTimeFilterDate(BuildContext context) async {
     if (time != null) {
       final dayTime =
           DateTime(day.year, day.month, day.day, time.hour, time.minute);
-      context.read<SelectTimeCubit>().setNewTime(dayTime);
+      expeditionFormCubit.setValue(dayTime);
     }
   }
 }

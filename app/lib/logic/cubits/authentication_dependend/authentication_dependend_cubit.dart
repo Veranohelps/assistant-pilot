@@ -29,7 +29,7 @@ abstract class AuthenticationDependendCubit<
   late StreamSubscription authCubitSubscription;
   final AuthenticationCubit authenticationCubit;
 
-  void load(TokenResponse user);
+  void load(TokenResponse token);
   void clear();
 
   @override

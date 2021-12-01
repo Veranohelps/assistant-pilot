@@ -1,20 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app/config/brand_colors.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/expedition/expedition_cubit.dart';
-import 'package:app/logic/cubits/live/live_cubit.dart';
-import 'package:app/logic/models/activity_type.dart';
+import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
+import 'package:app/logic/forms/expedition_form/expedition_form.dart';
 import 'package:app/logic/models/expedition.dart';
-import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
-import 'package:app/ui/components/static_map/static_map.dart';
-import 'package:app/ui/pages/expedition_live/expedition_live.dart';
-import 'package:app/utils/route_transitions/basic.dart';
+import 'package:app/ui/components/expedition_form/expedition_form.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 var format = DateFormat.MMMMd().add_Hm();
@@ -22,18 +17,17 @@ var format = DateFormat.MMMMd().add_Hm();
 class ExpeditionPage extends StatefulWidget {
   const ExpeditionPage({
     required this.expedition,
+    required this.mode,
     Key? key,
   }) : super(key: key);
 
   final ExpeditionShort expedition;
-
+  final ExpeditionFormMode mode;
   @override
   State<ExpeditionPage> createState() => _ExpeditionPageState();
 }
 
 class _ExpeditionPageState extends State<ExpeditionPage> {
-  bool isMapExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     var dict = context.read<DictionariesCubit>().state;
@@ -44,79 +38,26 @@ class _ExpeditionPageState extends State<ExpeditionPage> {
       create: (_) => ExpeditionCubit()..getExpedition(widget.expedition.url),
       child: Builder(builder: (context) {
         var fullExpedition = context.watch<ExpeditionCubit>().state;
+        var dictionaries = context.watch<DictionariesCubit>().state;
 
-        late List<ActivityType> actitvityTypes = [];
-
-        if (fullExpedition != null) {
-          actitvityTypes.addAll(fullExpedition.activityTypeIds
-              .map((id) => dict.findActiveTypeById(id)));
+        if (fullExpedition == null || dictionaries is! DictionariesLoaded) {
+          return BrandLoader();
         }
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.expedition.name),
+        return BlocProvider<ExpeditionFormCubit>(
+          create: (_) => ExpeditionFormCubit(
+            initType: widget.mode,
+            fullExpedition: fullExpedition,
+            expeditionsCubit: context.read<ExpeditionsCubit>(),
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: 60,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: BrandButtons.primaryBig(
-                text: 'GO',
-                onPressed: fullExpedition == null
-                    ? null
-                    : () async {
-                        bool allowed =
-                            await DersuPermissionsHandler.requestPermission();
-                        if (allowed) {
-                          await context.read<LiveCubit>().set(fullExpedition);
-                          Navigator.of(context).push(
-                            noAnimationRoute(
-                              ExpeditionLive(),
-                            ),
-                          );
-                        }
-                      },
-              ),
-            ),
-          ),
-          body: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: fullExpedition == null
-                      ? BrandLoader()
-                      : StaticMap(route: fullExpedition.routes.first),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Start date and time: ${format.format(widget.expedition.startDateTime)}',
-                ),
-                if (widget.expedition.description != null) ...[
-                  Text(widget.expedition.description!),
-                ],
-                Text('Activity types'),
-                if (actitvityTypes.isEmpty) Text('emtpy'),
-                if (actitvityTypes.isNotEmpty)
-                  ...actitvityTypes
-                      .map((a) => Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.check_box,
-                                  color: BrandColors.mGrey,
-                                ),
-                                SizedBox(width: 10),
-                                Text(a.name),
-                              ],
-                            ),
-                          ))
-                      .toList()
-              ],
-            ),
+          child: Builder(
+            builder: (context) {
+              var formCubit = context.read<ExpeditionFormCubit>();
+              return ExpeditionForm(
+                route: fullExpedition.routes.first,
+                formCubit: formCubit,
+              );
+            },
           ),
         );
       }),

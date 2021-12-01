@@ -1,15 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
-part of 'route_details.dart';
+part of 'expedition_form.dart';
 
 class CondicionesTab extends StatefulWidget {
   const CondicionesTab({
     Key? key,
     required this.routeId,
+    required this.formCubit,
+    required this.isEditable,
   }) : super(key: key);
 
   final String routeId;
-
+  final ExpeditionFormCubit formCubit;
+  final bool isEditable;
   @override
   State<CondicionesTab> createState() => _CondicionesTabState();
 }
@@ -20,61 +23,35 @@ class _CondicionesTabState extends State<CondicionesTab> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedTime = context.watch<SelectTimeCubit>().state;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BrandRawLabel(
-                isEmpty: selectedTime == null,
-                isDisabled: false,
-                isRequired: true,
-                text: LocaleKeys.planning_conditions_date_time_departure.tr(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: BrandFakeInput(
-                      hasError: false,
-                      intputText: selectedTime == null
-                          ? LocaleKeys.planning_conditions_select.tr()
-                          : dateFormat2.format(selectedTime),
-                      onPress: () => setTimeFilterDate(context),
-                    ),
-                  ),
-                  SizedBox(width: 5),
-                  IconButton(
-                    onPressed: () => setTimeFilterDate(context),
-                    icon: Icon(Icons.edit),
-                  )
-                ],
-              ),
-            ],
-          ),
+          child: widget.isEditable
+              ? _SimpleDatePicker(
+                  date: widget.formCubit.date,
+                  formCubit: widget.formCubit,
+                )
+              : Text(dateFormat2.format(widget.formCubit.date.state.value!)),
         ),
-        Divider(height: 20),
+        if (widget.isEditable) Divider(height: 20),
         Expanded(
-          child: BlocProvider(
-            create: (_) => WeatherCubit()..fetchWeather(widget.routeId),
-            child: Builder(
-              builder: (context) {
-                if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
-                    context.watch<SelectTimeCubit>().state == null) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                        LocaleKeys.planning_conditions_select_explanation.tr()),
-                  );
-                }
-                return _WeatherBlock();
-              },
-            ),
+          child: BlocBuilder<FieldCubit<DateTime?>, FieldCubitState<DateTime?>>(
+            bloc: widget.formCubit.date,
+            builder: (context, date) {
+              if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
+                  date.value == null) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                      LocaleKeys.planning_conditions_select_explanation.tr()),
+                );
+              }
+              return _WeatherBlock(
+                  formCubit: widget.formCubit, isEditable: widget.isEditable);
+            },
           ),
         ),
       ],
@@ -83,8 +60,13 @@ class _CondicionesTabState extends State<CondicionesTab> {
 }
 
 class _WeatherBlock extends StatefulWidget {
-  const _WeatherBlock({Key? key}) : super(key: key);
-
+  const _WeatherBlock({
+    Key? key,
+    required this.formCubit,
+    required this.isEditable,
+  }) : super(key: key);
+  final ExpeditionFormCubit formCubit;
+  final bool isEditable;
   @override
   State<_WeatherBlock> createState() => _WeatherBlockState();
 }
@@ -102,12 +84,14 @@ class _WeatherBlockState extends State<_WeatherBlock> {
   }
 
   void _afterLayout(_) {
-    var a = context.read<SelectTimeCubit>();
+    var a = widget.formCubit.date;
     var b = context.read<WeatherCubit>();
-    _checkTabs(a.state!, (b.state as WeatherLoaded).weather.days);
+
+    _checkTabs(a.state.value!, (b.state as WeatherLoaded).weather.days);
 
     subscirption = StreamGroup.merge([a.stream, b.stream]).listen(
-      (_) => _checkTabs(a.state!, (b.state as WeatherLoaded).weather.days),
+      (_) =>
+          _checkTabs(a.state.value!, (b.state as WeatherLoaded).weather.days),
     );
   }
 
@@ -125,7 +109,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
         final weather = (weatherState as WeatherLoaded).weather;
 
         final selectedDay = weather.days[selectedDayTabIndex];
-        final planningDay = context.read<SelectTimeCubit>().state!;
+        final planningDay = widget.formCubit.date.state.value!;
 
         final amountOfRanges = weather.forecastHourly.first.ranges.length;
         final List<HourlyForecast> hourlyForecastList = [];
@@ -145,53 +129,54 @@ class _WeatherBlockState extends State<_WeatherBlock> {
 
         return ListView(
           children: [
-            SizedBox(
-              height: 52,
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                controller: controller,
-                children: [
-                  ...weather.days
-                      .asMap()
-                      .map((k, day) => MapEntry(
-                          k,
-                          GestureDetector(
-                            onTap: () =>
-                                setState(() => selectedDayTabIndex = k),
-                            child: Container(
-                              width: 120,
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: k == selectedDayTabIndex
-                                        ? BrandColors.earthBlack
-                                        : Colors.transparent,
-                                    width: 2,
+            if (widget.isEditable)
+              SizedBox(
+                height: 52,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  controller: controller,
+                  children: [
+                    ...weather.days
+                        .asMap()
+                        .map((k, day) => MapEntry(
+                            k,
+                            GestureDetector(
+                              onTap: () =>
+                                  setState(() => selectedDayTabIndex = k),
+                              child: Container(
+                                width: 120,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: k == selectedDayTabIndex
+                                          ? BrandColors.earthBlack
+                                          : Colors.transparent,
+                                      width: 2,
+                                    ),
                                   ),
                                 ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      weekDay.format(day).toUpperCase(),
+                                      style: ThemeTypo.martaTab,
+                                    ),
+                                    Text(
+                                      dataFormat1.format(day),
+                                      style: ThemeTypo.martaTab,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    weekDay.format(day).toUpperCase(),
-                                    style: ThemeTypo.martaTab,
-                                  ),
-                                  Text(
-                                    dataFormat1.format(day),
-                                    style: ThemeTypo.martaTab,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )))
-                      .values
-                      .toList()
-                ],
+                            )))
+                        .values
+                        .toList()
+                  ],
+                ),
               ),
-            ),
             BrandDivider(
               margin: EdgeInsets.only(left: 16),
               height: 20,
@@ -227,34 +212,32 @@ class _WeatherBlockState extends State<_WeatherBlock> {
   }
 
   void _checkTabs(DateTime time, List<TimeWithTimeZone> days) {
-    var hasThisDate = days.any(
-      (el) => el.isSameDate(
-        TimeWithTimeZone(
-          el.timeZoneOffset,
-          time.year,
-          time.month,
-          time.day,
-        ),
-      ),
-    );
-    if (hasThisDate) {
-      var index = days.indexOf(
-        TimeWithTimeZone(
-          days[0].timeZoneOffset,
-          time.year,
-          time.month,
-          time.day,
+    if (widget.isEditable) {
+      var hasThisDate = days.any(
+        (el) => el.isSameDate(
+          TimeWithTimeZone(
+            el.timeZoneOffset,
+            time.year,
+            time.month,
+            time.day,
+          ),
         ),
       );
-      if (selectedDayTabIndex != index) {
-        setState(() {
-          selectedDayTabIndex = index;
-          controller.animateTo(
-            index * 120,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.linear,
-          );
-        });
+      if (hasThisDate) {
+        var index = days.indexOf(
+          TimeWithTimeZone(
+            days[0].timeZoneOffset,
+            time.year,
+            time.month,
+            time.day,
+          ),
+        );
+        if (selectedDayTabIndex != index) {
+          setState(() {
+            selectedDayTabIndex = index;
+            controller.jumpTo(index * 120);
+          });
+        }
       }
     }
   }

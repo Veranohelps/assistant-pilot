@@ -3,7 +3,11 @@ import DataLoader from 'dataloader';
 import { mapValues, uniq } from 'lodash';
 import { SRecord } from '../../../types/helpers.type';
 import AddFields from '../../common/utilities/add-fields';
-import { generateGroupRecord2, generateRecord2 } from '../../common/utilities/generate-record';
+import {
+  generateGroupRecord2,
+  generateRecord,
+  generateRecord2,
+} from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -89,6 +93,44 @@ export class ExpeditionRouteService {
     const expeditionRoutes = await this.db.write(tx).insert(entries).cReturning();
 
     return expeditionRoutes;
+  }
+
+  async updateRoutes(
+    tx: TransactionManager,
+    expeditionId: string,
+    activityTypeIds: string[],
+    payload: ICreateExpeditionRoutesDTO,
+  ): Promise<IExpeditionRoute[]> {
+    const updateRecord = generateRecord(payload.routes, (r) => r.routeId);
+    const expeditionRoutes = await this.db.read(tx).where({ expeditionId });
+    const activities = await this.routeActivityTypeService.getActivitiesByRouteIds(
+      tx,
+      expeditionRoutes.map((er) => er.routeId),
+    );
+
+    const entries = expeditionRoutes.map((er): ICreateExpeditionRoute => {
+      const { startDateTime } = updateRecord[er.routeId];
+      const expeditionRouteActivities = activities[er.routeId].filter((rA) =>
+        activityTypeIds.includes(rA.activityTypeId),
+      );
+
+      return {
+        expeditionId,
+        routeId: er.routeId,
+        startDateTime: startDateTime ?? er.startDateTime,
+        activityTypeIds: expeditionRouteActivities.map((rA) => rA.activityTypeId),
+        ...this.getTimeEstimates(expeditionRouteActivities),
+      };
+    });
+
+    const updatedExpeditionRoutes = await this.db
+      .write(tx)
+      .insert(entries)
+      .onConflict(['routeId', 'expeditionId'])
+      .merge()
+      .cReturning();
+
+    return updatedExpeditionRoutes;
   }
 
   async updateExpeditionRouteParams(

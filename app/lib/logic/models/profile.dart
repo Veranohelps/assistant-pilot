@@ -22,6 +22,14 @@ abstract class Profile extends Equatable {
   }
 }
 
+abstract class UserWithMetaData {
+  abstract final String id;
+  abstract final String firstName;
+  abstract final String lastName;
+  abstract final String? avatar;
+  abstract final Map<String, String> currentLevels;
+}
+
 @JsonSerializable(createToJson: false)
 class IncompleteProfile extends Profile {
   const IncompleteProfile({
@@ -55,7 +63,7 @@ class IncompleteProfile extends Profile {
 }
 
 @JsonSerializable()
-class FilledProfile extends Profile {
+class FilledProfile extends Profile implements UserWithMetaData {
   const FilledProfile({
     required this.firstName,
     required this.lastName,
@@ -69,9 +77,13 @@ class FilledProfile extends Profile {
     required this.updatedAt,
   });
 
+  @override
   final String firstName;
+  @override
   final String lastName;
+  @override
   final String? avatar;
+  @override
   final Map<String, String> currentLevels;
 
   final bool isSubscribedToNewsletter;
@@ -158,4 +170,89 @@ class FilledProfile extends Profile {
         isRegistrationFinished,
         updatedAt,
       ];
+}
+
+@JsonSerializable()
+class User extends Equatable implements UserWithMetaData {
+  const User({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.avatar,
+    required this.currentLevels,
+  });
+
+  @override
+  final String id;
+  @override
+  final String firstName;
+  @override
+  final String lastName;
+  @override
+  final String? avatar;
+  @override
+  final Map<String, String> currentLevels;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstName,
+        lastName,
+        avatar,
+        currentLevels,
+      ];
+}
+
+@JsonSerializable()
+class GroupUser extends User {
+  final bool isOwner;
+  final InviteStatus inviteStatus;
+
+  const GroupUser({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String? avatar,
+    required Map<String, String> currentLevels,
+    required this.isOwner,
+    required this.inviteStatus,
+  }) : super(
+          id: id,
+          firstName: firstName,
+          lastName: lastName,
+          avatar: avatar,
+          currentLevels: currentLevels,
+        );
+
+  @override
+  List<Object?> get props => [
+        ...super.props,
+      ];
+
+  factory GroupUser.fromJson(Map<String, dynamic> json) =>
+      _$GroupUserFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$GroupUserToJson(this);
+}
+
+enum InviteStatus {
+  @JsonValue('PENDING')
+  pending,
+  @JsonValue('ACCEPTED')
+  accepted,
+  @JsonValue('REJECTED')
+  rejected,
+  @JsonValue('LEFT')
+  left,
+}
+
+extension InviteStatusExt on InviteStatus {
+  String get txt {
+    return toString().split('.')[1];
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
@@ -11,10 +11,17 @@ import { TransactionManager } from '../../../common/utilities/transaction-manage
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
 import { WeatherService } from '../../../weather/services/weather.service';
-import { createExpeditionValidationSchema } from '../../expedition.validation';
+import {
+  createExpeditionValidationSchema,
+  updateExpeditionVSchema,
+} from '../../expedition.validation';
 import { ExpeditionRouteService } from '../../services/expedition-route.service';
 import { ExpeditionService } from '../../services/expedition.service';
-import { ICreateExpeditionDTO, IExpedition } from '../../types/expedition.type';
+import {
+  ICreateExpeditionDTO,
+  IExpedition,
+  IUpdateExpeditionDTO,
+} from '../../types/expedition.type';
 
 @Controller('personal/expedition')
 @JwtProtected()
@@ -45,6 +52,24 @@ export class PersonalExpeditionController {
     const expedition = await this.expeditionService.create(tx, user.id, payload);
 
     return successResponse('create expedition success', { expedition });
+  }
+
+  @Patch(':expeditionId/update')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Tx() tx: TransactionManager,
+    @UserData() user: IUser,
+    @Param('expeditionId') expeditionId: string,
+    @ParsedBody(updateExpeditionVSchema) payload: IUpdateExpeditionDTO,
+  ) {
+    const expedition = await this.expeditionService.updateExpedition(
+      tx,
+      expeditionId,
+      user.id,
+      payload,
+    );
+
+    return successResponse('Update expedition success', { expedition });
   }
 
   @Get(':expeditionId')

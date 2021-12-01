@@ -9,6 +9,10 @@ import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
 } from '../../expedition/types/expedition-route.type';
+import {
+  ICreateExpeditionUser,
+  IExpeditionUser,
+} from '../../expedition/types/expedition-user.type';
 import { ICreateExpedition, IExpedition } from '../../expedition/types/expedition.type';
 import { IActivityType, ICreateActivityType } from '../../route/types/activity-type.type';
 import {
@@ -79,5 +83,10 @@ export interface IDatabaseTables {
     IRouteActivityType,
     ICreateRouteActivityType,
     Partial<Omit<IRouteActivityType, 'id'>>
+  >;
+  ExpeditionUser: Knex.CompositeTableType<
+    IExpeditionUser,
+    ICreateExpeditionUser,
+    Partial<Omit<IExpeditionUser, 'id'>>
   >;
 }

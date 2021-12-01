@@ -9,7 +9,6 @@ export const userEntity: IEntity<IUser> = {
     email: { type: 'string' },
     firstName: { type: 'string' },
     lastName: { type: 'string' },
-    otherName: { type: 'string' },
     isRegistrationFinished: { type: 'boolean' },
     isSubscribedToNewsletter: { type: 'boolean' },
     avatar: { type: 'string' },

@@ -9,7 +9,7 @@ import 'helpers.dart';
 const createUrl = '/expedition/create';
 
 class ExpeditionsApi extends PrivateDersuApi {
-  Future<void> create(CreateExpeditionDto expeditionData) async {
+  Future<void> create(ExpeditionDto expeditionData) async {
     final client = await getClient();
     await client.post(createUrl, data: jsonEncode(expeditionData));
     client.close();
@@ -20,10 +20,47 @@ class ExpeditionsApi extends PrivateDersuApi {
     var res = await client.get(url);
     client.close();
 
-    var expedition = res.data['data']['expedition'];
-    expedition['routes'] = expedition['routes']
-        .map((route) => formatRoutesResponse(route))
-        .toList();
-    return ExpeditionFull.fromJson(expedition);
+    return ExpeditionFull.fromJson(_optimizeJson(res.data));
   }
+
+  Future<void> reject(String id) async {
+    final client = await getClient();
+    await client.patch('/expedition/$id/user/reject');
+    client.close();
+  }
+
+  Future<void> accept(String id) async {
+    final client = await getClient();
+    await client.patch('/expedition/$id/user/accept');
+    client.close();
+  }
+
+  Future<void> leave(String id) async {
+    final client = await getClient();
+    await client.patch('/expedition/$id/user/exit');
+    client.close();
+  }
+
+  Future<void> update(String id, ExpeditionDto expeditionData) async {
+    final client = await getClient();
+    await client.patch('/expedition/$id/update', data: expeditionData);
+    client.close();
+  }
+}
+
+// remove reduntant json layers...
+Map<String, dynamic> _optimizeJson(Map<String, dynamic> json) {
+  var expedition = json['data']['expedition'];
+  expedition['routes'] =
+      expedition['routes'].map((route) => formatRoutesResponse(route)).toList();
+
+  var users = expedition["users"]
+      .map((json) => json['user']
+        ..["isOwner"] = json["isOwner"]
+        ..["inviteStatus"] = json["inviteStatus"])
+      .toList();
+  expedition.removeWhere((key, value) => key == "invites");
+  expedition['users'] = users;
+
+  return expedition;
 }

@@ -9,7 +9,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UserLevelService } from '../../../assessment/services/user-level.service';
 import { JwtProtected } from '../../../auth/decorators/personal-jwt-protected.decorator';
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
@@ -32,7 +31,7 @@ import {
 @Controller('personal/user')
 @JwtProtected()
 export class PersonalUserController {
-  constructor(private userService: UserService, private userLevelService: UserLevelService) {}
+  constructor(private userService: UserService) {}
 
   @Patch('complete-registration')
   @HttpCode(HttpStatus.CREATED)
@@ -48,9 +47,10 @@ export class PersonalUserController {
 
   @Get('profile')
   @HttpCode(HttpStatus.OK)
-  async getProfile(@UserData() user: IUser) {
-    const currentLevels = await this.userLevelService.getCurrentUserLevels(null, user.id);
-    const profile = { user, currentLevels };
+  async getProfile(@UserData() { id }: IUser) {
+    const user = await this.userService.findOne(null, id, { includeLevels: true });
+
+    const profile = { user };
 
     return successResponse('User profile', { profile });
   }
@@ -98,8 +98,8 @@ export class PersonalUserController {
 
   @Get('search')
   @HttpCode(HttpStatus.OK)
-  async searchUsers(@ParsedUrlParameters() params: ISearchUsersOptions) {
-    const users = await this.userService.searchUsers(params);
+  async searchUsers(@UserData() user: IUser, @ParsedUrlParameters() params: ISearchUsersOptions) {
+    const users = await this.userService.searchUsers(user.id, params);
 
     return successResponse('Users retrieved', { users });
   }

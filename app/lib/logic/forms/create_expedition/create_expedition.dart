@@ -1,10 +1,6 @@
 import 'dart:async';
-
-import 'package:app/logic/api_maps/expeditions.dart';
-import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
-import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
-import 'package:app/logic/cubits/select_time/select_time.dart';
-import 'package:app/logic/models/route.dart';
+import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
+import 'package:app/logic/forms/expedition_form/expedition_form.dart';
 import 'package:cubit_form/cubit_form.dart';
 
 import 'dto/create_expedition.dart';
@@ -12,11 +8,8 @@ import 'dto/route_time.dart';
 
 class CreateExpeditionFormCubit extends FormCubit {
   CreateExpeditionFormCubit({
-    required this.startTime,
-    required this.route,
-    required this.dashboardCubit,
-    required this.selectTimeCubit,
-    required this.selectActivityTypesCubit,
+    required this.expeditionFormCubit,
+    required this.expeditionsCubit,
   }) {
     name = FieldCubit(
       initalValue: '',
@@ -32,37 +25,39 @@ class CreateExpeditionFormCubit extends FormCubit {
     addFields([name, descrption]);
   }
 
-  final api = ExpeditionsApi();
-  final DateTime startTime;
-  final DersuRouteFull route;
-  final DashboardCubit dashboardCubit;
-  final SelectTimeCubit selectTimeCubit;
-  final SelectActivityTypesCubit selectActivityTypesCubit;
+  final ExpeditionFormCubit expeditionFormCubit;
+  final ExpeditionsCubit expeditionsCubit;
 
   late FieldCubit<String> name;
   late FieldCubit<String> descrption;
 
   @override
   FutureOr<void> onSubmit() async {
-    var types = selectActivityTypesCubit.state
+    var formActivityTypeIds = expeditionFormCubit.activityTypeIds.state.value;
+    var route = expeditionFormCubit.route.state.value!;
+    var startTime = expeditionFormCubit.date.state.value!;
+    var invites =
+        expeditionFormCubit.users.state.value.map((u) => u.id).toList();
+
+    var types = formActivityTypeIds
         .where((element) => route.activityTypeIds.contains(element))
         .toList();
 
-    var expeditionData = CreateExpeditionDto(
-        name: name.state.value,
-        description:
-            descrption.state.value.isNotEmpty ? descrption.state.value : null,
-        activityTypes: types,
-        routes: [
-          RouteWithStartTimeDto(
-            routeId: route.id,
-            startDateTime: startTime,
-          ),
-        ]);
+    var expeditionData = ExpeditionDto(
+      name: name.state.value,
+      description:
+          descrption.state.value.isNotEmpty ? descrption.state.value : null,
+      activityTypes: types,
+      routes: [
+        RouteWithStartTimeDto(
+          routeId: route.id,
+          startDateTime: startTime,
+        ),
+      ],
+      invites: invites,
+    );
 
-    await api.create(expeditionData);
-    await dashboardCubit.fetch();
-    selectTimeCubit.resetTime();
-    selectActivityTypesCubit.resetTypes();
+    expeditionsCubit.create(expeditionData);
+    expeditionFormCubit.reset();
   }
 }

@@ -3,18 +3,22 @@ import 'package:app/config/brand_theme.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
+import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
 import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
+import 'package:app/logic/forms/expedition_form/expedition_form.dart';
 import 'package:app/logic/models/route.dart';
 import 'package:app/ui/components/brand_icons/dersu_icons_icons.dart';
 import 'package:app/ui/components/brand_loading/brand_loading.dart';
-import 'package:app/ui/pages/route_detatils/route_details.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app/ui/pages/route_detatils/route_details.dart';
 
 class RoutesTab extends StatefulWidget {
-  const RoutesTab({Key? key}) : super(key: key);
-
+  const RoutesTab({
+    Key? key,
+  }) : super(key: key);
   @override
   State<RoutesTab> createState() => _RoutesTabState();
 }
@@ -37,25 +41,37 @@ class _RoutesTabState extends State<RoutesTab> {
     if (routesState is! RoutesLoaded) {
       return BrandLoader();
     }
-    return Scaffold(
-      appBar: AppBar(title: Text(LocaleKeys.planning_name.tr())),
-      body: ListView(
-        padding: paddingH25V0.copyWith(top: 20),
-        children: [
-          for (var route in routesState.list)
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  noAnimationRoute(
-                    RouteDetails(route: route),
-                    route.name,
-                  ),
-                );
-              },
-              child: RouteCard(route: route),
-            ),
-        ],
+
+    return BlocProvider(
+      create: (_) => ExpeditionFormCubit(
+        initType: ExpeditionFormMode.ownerPlanning,
+        expeditionsCubit: context.read<ExpeditionsCubit>()
       ),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(title: Text(LocaleKeys.planning_name.tr())),
+          body: ListView(
+            padding: paddingH25V0.copyWith(top: 20),
+            children: [
+              for (var route in routesState.list)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      noAnimationRoute(
+                        RouteDetails(
+                          route: route,
+                          formCubit: context.read<ExpeditionFormCubit>(),
+                        ),
+                        route.name,
+                      ),
+                    );
+                  },
+                  child: RouteCard(route: route),
+                ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

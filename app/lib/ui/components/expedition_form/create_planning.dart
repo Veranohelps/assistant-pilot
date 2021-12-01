@@ -1,10 +1,8 @@
 import 'package:app/config/brand_theme.dart';
 import 'package:app/generated/locale_keys.g.dart';
-import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
-import 'package:app/logic/cubits/select_activity_types/select_activity_types_cubit.dart';
-import 'package:app/logic/cubits/select_time/select_time.dart';
+import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
 import 'package:app/logic/forms/create_expedition/create_expedition.dart';
-import 'package:app/logic/models/route.dart';
+import 'package:app/logic/forms/expedition_form/expedition_form.dart';
 import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +12,10 @@ import 'package:easy_localization/easy_localization.dart';
 class CreatePlanning extends StatelessWidget {
   const CreatePlanning({
     Key? key,
-    required this.route,
-    required this.startTime,
+    required this.formCubit,
   }) : super(key: key);
 
-  final DersuRouteFull route;
-  final DateTime startTime;
+  final ExpeditionFormCubit formCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +25,8 @@ class CreatePlanning extends StatelessWidget {
         padding: paddingH25V0.copyWith(top: 20),
         child: BlocProvider(
           create: (context) => CreateExpeditionFormCubit(
-            startTime: startTime,
-            route: route,
-            dashboardCubit: context.read<DashboardCubit>(),
-            selectTimeCubit: context.read<SelectTimeCubit>(),
-            selectActivityTypesCubit: context.read<SelectActivityTypesCubit>(),
+            expeditionsCubit: context.read<ExpeditionsCubit>(),
+            expeditionFormCubit: formCubit,
           ),
           child: Builder(builder: (context) {
             final form = context.watch<CreateExpeditionFormCubit>();

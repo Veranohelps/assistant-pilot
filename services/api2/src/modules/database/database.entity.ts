@@ -3,7 +3,11 @@ import {
   assessmentHistoryEntity,
   userLevelEntity,
 } from '../assessment/assessment.entity';
-import { expeditionEntity, expeditionRouteEntity } from '../expedition/expedition.entity';
+import {
+  expeditionEntity,
+  expeditionRouteEntity,
+  expeditionUserEntity,
+} from '../expedition/expedition.entity';
 import {
   activityTypeEntity,
   routeActivityTypeEntity,
@@ -32,4 +36,5 @@ export const entityMap: Record<keyof IDatabaseTables, IEntity> = {
   WaypointType: waypointTypeEntity,
   ActivityType: activityTypeEntity,
   RouteActivityType: routeActivityTypeEntity,
+  ExpeditionUser: expeditionUserEntity,
 };

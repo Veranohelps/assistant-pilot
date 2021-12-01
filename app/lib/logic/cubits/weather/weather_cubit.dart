@@ -14,6 +14,8 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(WeatherWaiting());
 
     var weather = await api.routeWeather(routeId);
-    emit(WeatherLoaded(weather: weather));
+    if (!isClosed) {
+      emit(WeatherLoaded(weather: weather));
+    }
   }
 }

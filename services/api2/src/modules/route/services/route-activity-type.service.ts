@@ -113,6 +113,15 @@ export class RouteActivityTypeService {
     return routeActivityTypes;
   }
 
+  async deleteRoutesActivities(
+    tx: TransactionManager,
+    routeIds: string[],
+  ): Promise<IRouteActivityType[]> {
+    const deleted = await this.db.write(tx).whereIn('routeId', routeIds).del().cReturning();
+
+    return deleted;
+  }
+
   async getRouteActivities(
     tx: TransactionManager | null,
     routeId: string,

@@ -40,6 +40,22 @@ class AddFields<T> implements Pick<Promise<T>, 'then' | 'catch' | 'finally'> {
     return this as unknown as AddFields<TUnion<T, { [k in K]: RResult }>>;
   }
 
+  addWhen<K extends string, CResult, RResult = CResult>(
+    predicate: boolean | (() => boolean),
+    key: K,
+    getFn: () => Promise<CResult> | CResult,
+    resolveFn?: (entity: TFlatten<T>, group: CResult) => RResult,
+  ) {
+    const shouldAdd = typeof predicate === 'function' ? predicate() : predicate;
+
+    if (shouldAdd) {
+      this.promises.push(getFn());
+      this.resolvers.push({ key, resolveFn, getFn });
+    }
+
+    return this as unknown as AddFields<TUnion<T, { [k in K]?: RResult }>>;
+  }
+
   then: Promise<T>['then'] = (onFulfilled, onRejected) => {
     return this.resolve().then(onFulfilled, onRejected);
   };

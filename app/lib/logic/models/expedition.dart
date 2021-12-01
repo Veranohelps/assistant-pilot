@@ -1,3 +1,4 @@
+import 'package:app/logic/models/profile.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -72,6 +73,7 @@ class ExpeditionShort extends Expedition {
 @JsonSerializable()
 class ExpeditionFull extends Expedition {
   final List<DersuRouteFull> routes;
+  final List<GroupUser> users;
 
   const ExpeditionFull({
     required String id,
@@ -83,6 +85,7 @@ class ExpeditionFull extends Expedition {
     String? userId,
     String? description,
     required this.routes,
+    required this.users,
   }) : super(
           id: id,
           userId: userId,

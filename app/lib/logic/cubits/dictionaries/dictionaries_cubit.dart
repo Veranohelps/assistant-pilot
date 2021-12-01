@@ -14,7 +14,7 @@ class DictionariesCubit
   final api = DictionariesApi();
 
   @override
-  void load(user) async {
+  void load(token) async {
     final routeOrigins = await api.fetchRouteOrigins();
     final dictionaryLevels = await api.fetchLevelCategories();
     final activeTypes = await api.fetchActiveTypes();

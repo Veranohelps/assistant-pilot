@@ -13,7 +13,7 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
   final api = UserApi();
 
   @override
-  void load(user) async {
+  void load(token) async {
     var profile = await api.fetch();
     late ProfileState state;
     if (profile is FilledProfile) {

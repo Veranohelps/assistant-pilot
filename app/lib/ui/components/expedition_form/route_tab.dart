@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-part of 'route_details.dart';
+part of 'expedition_form.dart';
 
 class RutaTab extends StatefulWidget {
-  const RutaTab({Key? key}) : super(key: key);
+  const RutaTab({
+    Key? key,
+    required this.formCubit,
+  }) : super(key: key);
+
+  final ExpeditionFormCubit formCubit;
 
   @override
   State<RutaTab> createState() => _RutaTabState();
@@ -12,18 +17,8 @@ class RutaTab extends StatefulWidget {
 class _RutaTabState extends State<RutaTab> {
   @override
   Widget build(BuildContext context) {
-    final dectionary = context.watch<DictionariesCubit>().state;
-    final route = context.watch<RouteCubit>().state;
+    final route = widget.formCubit.route.state.value!;
 
-    if (route == null || dectionary is! DictionariesLoaded) {
-      return BrandLoader();
-    }
-
-    var selectedTime = context.watch<SelectTimeCubit>().state;
-    var selectedActivityTypes = context.watch<SelectActivityTypesCubit>().state;
-
-    var availableSelectedTypesIds =
-        selectedActivityTypes.where((id) => route.activityTypeIds.contains(id));
     return ListView(
       children: [
         _buildMapBlock(route),
@@ -33,39 +28,6 @@ class _RutaTabState extends State<RutaTab> {
         _routeDetails(context, route),
         _activityDetails(context, route),
         SizedBox(height: 20),
-        Center(
-          child: BrandButtons.primaryShort(
-            onPressed: () => setTimeFilterDate(context),
-            label: 'time change',
-            text: selectedTime == null
-                ? LocaleKeys.planning_route_details_no_date.tr()
-                : dateFormat2.format(selectedTime),
-          ),
-        ),
-        SizedBox(height: 15),
-        if (availableSelectedTypesIds.isEmpty) ...[
-          Text(
-            LocaleKeys.planning_set_activity_reminder.tr(),
-            textAlign: TextAlign.center,
-          ),
-        ],
-        SizedBox(height: 30),
-        Center(
-          child: BrandButtons.primaryShort(
-            onPressed: selectedTime == null || availableSelectedTypesIds.isEmpty
-                ? null
-                : () => Navigator.of(context).push(
-                      materialRoute(
-                        CreatePlanning(
-                          startTime: selectedTime,
-                          route: route,
-                        ),
-                      ),
-                    ),
-            text: LocaleKeys.planning_confirm_expedition.tr(),
-          ),
-        ),
-        SizedBox(height: 30),
       ],
     );
   }
@@ -106,10 +68,18 @@ class _RutaTabState extends State<RutaTab> {
 
     var notActivityLevels = levelsTries
         .where((tree) => !activityTypes.any((el) => el.skillId == tree[1].id));
+
+    var profileState = context.watch<ProfileCubit>().state;
+    if (profileState is! ProfileReady ||
+        profileState.profile is! FilledProfile) {
+      return Container();
+    }
+    var profileLevels = (profileState.profile as FilledProfile).currentLevels;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: notActivityLevels.map((l) {
-        final compareSpan = compareWithUserLevel(context, l);
+        var diff = compareUserLevesWithNeededLevel(dict, l, profileLevels);
+        final compareSpan = compareWithUserLevel(diff);
 
         return GestureDetector(
           onTap: () async {
@@ -162,7 +132,7 @@ class _RutaTabState extends State<RutaTab> {
                               style: ThemeTypo.arimo18regular
                                   .copyWith(color: BrandColors.black),
                               text:
-                                  '${l[2].name} · ${l[2].description.isEmpty ? 'no description' : l[2].description}',
+                                  '${l[2].name} · ${l[2].description.isEmpty ? LocaleKeys.planning_route_details_no_description.tr() : l[2].description}',
                             ),
                           ],
                         ),
@@ -187,6 +157,13 @@ class _RutaTabState extends State<RutaTab> {
 
     var levelsTries = route.levelIds.map((id) => dict.levelTreeByLevelId(id));
 
+    var profileState = context.watch<ProfileCubit>().state;
+    if (profileState is! ProfileReady ||
+        profileState.profile is! FilledProfile) {
+      return Container();
+    }
+    var profileLevels = (profileState.profile as FilledProfile).currentLevels;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -196,6 +173,9 @@ class _RutaTabState extends State<RutaTab> {
           (type) {
             var currentLevelTree = levelsTries
                 .firstWhere((element) => element[1].id == type.skillId);
+
+            var diff = compareUserLevesWithNeededLevel(
+                dict, currentLevelTree, profileLevels);
             return GestureDetector(
               onTap: () async {
                 await Navigator.of(context).push(
@@ -231,7 +211,7 @@ class _RutaTabState extends State<RutaTab> {
                                 .copyWith(color: BrandColors.black),
                             children: [
                               TextSpan(text: '${currentLevelTree[0].name} · '),
-                              compareWithUserLevel(context, currentLevelTree),
+                              compareWithUserLevel(diff),
                             ],
                           ),
                         ),
@@ -249,49 +229,29 @@ class _RutaTabState extends State<RutaTab> {
   }
 
   TextSpan compareWithUserLevel(
-    BuildContext context,
-    List<LevelsCatalogData> checkingLevelTree,
+    int? diff,
   ) {
-    var dict = (context.read<DictionariesCubit>().state as DictionariesLoaded);
-
-    var profileState = context.watch<ProfileCubit>().state;
-    if (profileState is! ProfileReady ||
-        profileState.profile is! FilledProfile) {
+    if (diff == null) {
       return TextSpan(
         style: ThemeTypo.arimo14Semibold.copyWith(color: BrandColors.black),
-        text: 'loading',
+        text: LocaleKeys.planning_levels_not_set.tr(),
       );
-    }
-    var profileLevels = (profileState.profile as FilledProfile).currentLevels;
-
-    var userLevelId = profileLevels[checkingLevelTree[1].id];
-    if (userLevelId == null) {
-      return TextSpan(
-        style: ThemeTypo.arimo14Semibold.copyWith(color: BrandColors.black),
-        text: 'Evaluación no realizada',
-      );
-    }
-    var userLevelTree = dict.levelTreeByLevelId(userLevelId);
-
-    var checkingLevel = (checkingLevelTree[2] as Level).level;
-    var userLevel = (userLevelTree[2] as Level).level;
-
-    if (checkingLevel == userLevel) {
+    } else if (diff == 0) {
       return TextSpan(
         style:
             ThemeTypo.arimo14Semibold.copyWith(color: BrandColors.martaBF961A),
-        text: 'En tu nivel',
+        text: LocaleKeys.planning_levels_same_level.tr(),
       );
-    } else if (checkingLevel > userLevel) {
+    } else if (diff < 0) {
       return TextSpan(
         style: ThemeTypo.arimo14Semibold.copyWith(color: BrandColors.red),
-        text: 'Nive por debajo',
+        text: LocaleKeys.planning_levels_over_your_level.tr(),
       );
     } else {
       return TextSpan(
         style:
             ThemeTypo.arimo14Semibold.copyWith(color: BrandColors.marta2BA333),
-        text: 'Nivel por encima',
+        text: LocaleKeys.planning_levels_under_your_level.tr(),
       );
     }
   }

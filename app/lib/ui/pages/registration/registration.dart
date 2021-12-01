@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app/config/brand_colors.dart';
 import 'package:app/config/brand_theme.dart';
 import 'package:app/config/theme_typo.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -56,12 +57,22 @@ class Registration extends StatelessWidget {
                             behavior: HitTestBehavior.opaque,
                             onTap: () => form.isSubscribedToNewsletter
                                 .setValue(!state.value),
-                            child: Row(
+                            child: Column(
                               children: [
-                                BrandSwitcher(isAcitve: state.value),
-                                SizedBox(width: 10),
-                                Text(
-                                    LocaleKeys.registration_subscribe_text.tr())
+                                Row(
+                                  children: [
+                                    BrandSwitcher(isAcitve: state.value),
+                                    SizedBox(width: 10),
+                                    Text(LocaleKeys.registration_subscribe_text
+                                        .tr())
+                                  ],
+                                ),
+                                if (state.error != null)
+                                  Text(
+                                    state.error!,
+                                    style: ThemeTypo.defaultText
+                                        .copyWith(color: BrandColors.errors),
+                                  ),
                               ],
                             ),
                           );

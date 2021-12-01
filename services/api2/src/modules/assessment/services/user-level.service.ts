@@ -85,7 +85,7 @@ export class UserLevelService {
     return results;
   }
 
-  async getLevelsByUserIds(
+  async getCurrentLevelsByUserIds(
     tx: TransactionManager | null,
     userIds: string[],
   ): Promise<SRecord<SRecord<string>>> {

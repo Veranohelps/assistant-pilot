@@ -6,11 +6,13 @@ part of 'create_expedition.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Map<String, dynamic> _$CreateExpeditionDtoToJson(CreateExpeditionDto instance) {
+Map<String, dynamic> _$ExpeditionDtoToJson(ExpeditionDto instance) {
   final val = <String, dynamic>{
     'routes': instance.routes,
     'activityTypes': instance.activityTypes,
     'name': instance.name,
+    'invites': instance.invites,
+    'users': instance.users,
   };
 
   void writeNotNull(String key, dynamic value) {

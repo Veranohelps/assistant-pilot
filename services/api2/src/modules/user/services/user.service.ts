@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { SRecord } from '../../../types/helpers.type';
 import { UserLevelService } from '../../assessment/services/user-level.service';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
@@ -6,6 +7,7 @@ import { EventService } from '../../common/services/event.service';
 import { GcpService } from '../../common/services/gcp.service';
 import AddFields from '../../common/utilities/add-fields';
 import { AppQuery } from '../../common/utilities/app-query';
+import { generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -56,7 +58,6 @@ export class UserService {
       .update({
         firstName: payload.firstName,
         lastName: payload.lastName,
-        otherName: payload.otherName,
         isRegistrationFinished: true,
       })
       .cReturning();
@@ -111,14 +112,51 @@ export class UserService {
     return user;
   }
 
-  async findOne(tx: TransactionManager | null, id: string): Promise<IUser> {
-    const user = await this.db.read(tx).where({ id }).first();
+  async findOne(
+    tx: TransactionManager | null,
+    id: string,
+    options?: { includeLevels?: boolean },
+  ): Promise<IUser> {
+    const user = await this.db
+      .read(tx)
+      .where({ id })
+      .first()
+      .then((usr) =>
+        AddFields.target(usr).addWhen(!!options?.includeLevels, 'currentLevels', () =>
+          this.userLevelService.getCurrentUserLevels(tx, id),
+        ),
+      );
 
     if (!user) {
       throw new NotFoundError(ErrorCodes.USER_NOT_FOUND, 'User not found');
     }
 
     return user;
+  }
+
+  async findByIds(
+    tx: TransactionManager | null,
+    ids: string[],
+    options?: { includeLevels?: boolean },
+  ): Promise<SRecord<IUser>> {
+    const users = await this.db
+      .read(tx)
+      .whereIn('id', ids)
+      .then((res) =>
+        AddFields.target(res).addWhen(
+          !!options?.includeLevels,
+          'currentLevels',
+          () =>
+            this.userLevelService.getCurrentLevelsByUserIds(
+              tx,
+              res.map((u) => u.id),
+            ),
+          (user, record) => record[user.id] ?? {},
+        ),
+      )
+      .then(generateRecord2((u) => u.id));
+
+    return users;
   }
 
   async findByAuth0Id(tx: TransactionManager | null, auth0Id: string): Promise<IUser> {
@@ -137,7 +175,7 @@ export class UserService {
     return { user };
   }
 
-  async searchUsers(options: ISearchUsersOptions): Promise<IUserSlim[]> {
+  async searchUsers(userId: string, options: ISearchUsersOptions): Promise<IUserSlim[]> {
     const opts = AppQuery.withOptions(options);
     const builder = this.db
       .read(null, {
@@ -149,6 +187,7 @@ export class UserService {
           updatedAt: { select: false },
         },
       })
+      .whereNot({ id: userId })
       .orderBy('createdAt', 'desc')
       .limit(50);
 
@@ -166,7 +205,7 @@ export class UserService {
       AddFields.target(res).add(
         'currentLevels',
         () =>
-          this.userLevelService.getLevelsByUserIds(
+          this.userLevelService.getCurrentLevelsByUserIds(
             null,
             res.map((u) => u.id),
           ),

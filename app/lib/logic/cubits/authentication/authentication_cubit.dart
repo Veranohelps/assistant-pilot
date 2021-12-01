@@ -58,5 +58,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     await repository.logout();
     getIt<Analitics>().sendCubitEvent(action: 'Cubit: Logout');
     emit(NotAuthenticated());
+    getIt<NavigationService>().navigator.popUntil((route) => route.isFirst);
   }
 }

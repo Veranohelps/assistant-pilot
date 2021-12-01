@@ -8,7 +8,12 @@
     "ok": "OK",
     "open_settings": "Abrir Ajustes",
     "required": "Obligatorio",
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "loading": "Cargando",
+    "add": "Agregar",
+    "remove": "Eliminar"
   },
   "profile": {
     "name": "Perfil",
@@ -27,14 +32,29 @@
   "planning": {
     "name": "Planificación",
     "set_activity_reminder": "No te olvides de seleccionar por lo menos una actividad en la pestaña de Terreno.",
-    "confirm_expedition": "Confirmar expedición",    
+    "confirm_expedition": "Confirmar expedición",
+    "reject_invite": "Rechazar",
+    "accept_invite": "Aceptar",
+    "expedition_date": "Fecha",
+    "expedition_activity": "Actividad",
+    "not_selected": "sin seleccionar",
+    "start_expedition": "Comenzar expedición",
+    "edit_expedition": "Editar expedición",
+    "leave_expedition": "Abandonar la expedición",
+    "levels": {
+      "not_set": "Sin definir",
+      "same_level": "En tu nivel",
+      "under_your_level": "Por debajo de tu nivel",
+      "over_your_level": "Por encima de tu nivel"
+    },
     "route_details": {
       "no_date": "Estableder fecha y hora de salida",
       "distance": "distancia",
       "elevation_gain": "Desnivel positivo",
       "elevation_loss": "Desnivel negativo",
       "activities": "Actividades",
-      "elevation_profile": "Perfil de elevación"
+      "elevation_profile": "Perfil de elevación",
+      "no_description": "Sin descripción"
     },
     "conditions": {
       "date_time_departure": "Fecha y hora de salida",
@@ -49,12 +69,30 @@
       "expedition_name": "Nombre de la expedición",
       "expedition_description": "Descripción",
       "save_expedition": "Guardar"
+    },
+    "search": {
+      "hint": "Puedes buscar usuarios en Dersu por su nombre o apellidos",
+      "no_results": "No hemos encontrado a nadie",
+      "min_characters": "Necesitamos un mínimo de 3 letras para la búsqueda"
+    },
+    "group": {
+      "search_hint": "Presiona + para añadir a personas a la expedición",
+      "expedition_owner": "Organizador",
+      "guest_status": "Estado"
+    },
+    "tabs": {
+      "route": "Ruta",
+      "conditions": "Condiciones",
+      "terrain": "Terreno",
+      "group": "Grupo"
     }
   },
   "dashboard": {
     "name": "Home",
     "upcoming_expeditions": "Próximas expediciones",
-    "upcoming_expeditions_empty": "No hay expediciones planificadas"
+    "upcoming_expeditions_empty": "No hay expediciones planificadas",
+    "pending_invitations": "Invitaciones pendientes",
+    "no_pending_invitations": "Sin invitaciones pendientes"
   },
   "more": {
     "name": "Ajustes",

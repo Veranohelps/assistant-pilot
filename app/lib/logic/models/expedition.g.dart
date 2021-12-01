@@ -38,6 +38,9 @@ ExpeditionFull _$ExpeditionFullFromJson(Map<String, dynamic> json) =>
       routes: (json['routes'] as List<dynamic>)
           .map((e) => DersuRouteFull.fromJson(e as Map<String, dynamic>))
           .toList(),
+      users: (json['users'] as List<dynamic>)
+          .map((e) => GroupUser.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ExpeditionFullToJson(ExpeditionFull instance) =>
@@ -51,4 +54,5 @@ Map<String, dynamic> _$ExpeditionFullToJson(ExpeditionFull instance) =>
       'updatedAt': instance.updatedAt.toIso8601String(),
       'activityTypeIds': instance.activityTypeIds,
       'routes': instance.routes,
+      'users': instance.users,
     };

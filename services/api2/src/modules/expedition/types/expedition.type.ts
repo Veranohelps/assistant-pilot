@@ -4,6 +4,7 @@ import { IDefaultMeta } from '../../database/types/database.type';
 import { IActivityType } from '../../route/types/activity-type.type';
 import { IRoute, IRouteSlim } from '../../route/types/route.type';
 import { ICreateExpeditionRoutesDTO } from './expedition-route.type';
+import { IExpeditionUser } from './expedition-user.type';
 
 export interface IExpedition {
   id: string;
@@ -38,9 +39,19 @@ export interface ICreateExpeditionDTO {
   name: string;
   description?: string | null;
   routes: ICreateExpeditionRoutesDTO['routes'];
+  invites: string[];
 }
 
 export interface IExpeditionFull extends IExpedition {
   routes?: IRoute[] | IRouteSlim[];
   activityTypes: IActivityType[];
+  users?: IExpeditionUser[];
+}
+export interface IUpdateExpeditionDTO {
+  activityTypes?: string[];
+  name?: string;
+  description?: string | null;
+  routes?: ICreateExpeditionRoutesDTO['routes'];
+  invites?: string[];
+  users?: string[];
 }

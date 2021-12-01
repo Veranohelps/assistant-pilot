@@ -17,13 +17,14 @@ const assessmentSubmitUrl = '/assessment/submit';
 const deleteAvatarUrl = '/user/delete-avatar';
 const updateAvatarUrl = '/user/update-avatar';
 
+const searchUrl = '/user/search';
+
 class UserApi extends PrivateDersuApi {
   Future<Profile> fetch() async {
     var client = await getClient();
     var res = await client.get(profileUrl);
     client.close();
     var json = res.data['data']['profile']['user'];
-    json['currentLevels'] = res.data['data']['profile']['currentLevels'];
     return Profile.fromJson(json);
   }
 
@@ -44,6 +45,17 @@ class UserApi extends PrivateDersuApi {
     client.close();
 
     return await fetch() as FilledProfile;
+  }
+
+  Future<List<User>> search({required String searchString}) async {
+    var client = await getClient();
+    var res =
+        await client.get(searchUrl, queryParameters: {'name': searchString});
+    client.close();
+
+    return (res.data['data']['users'] as List)
+        .map<User>((json) => User.fromJson(json))
+        .toList();
   }
 
   Future<FilledProfile> setNewLevels({required List<String> levels}) async {

@@ -6,7 +6,6 @@ export interface IUser {
   email: string;
   firstName: string | null;
   lastName: string | null;
-  otherName: string | null;
   isRegistrationFinished: boolean;
   isSubscribedToNewsletter: boolean;
   avatar: string | null;
@@ -19,7 +18,6 @@ export interface IUserSlim {
   id: string;
   firstName: string | null;
   lastName: string | null;
-  otherName: string | null;
   avatar: string | null;
   levels?: SRecord<string>;
 }

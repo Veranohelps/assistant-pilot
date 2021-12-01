@@ -8,7 +8,12 @@
     "ok": "OK",
     "open_settings": "Open Settings",
     "required": "Required",
-    "continue": "Continue"
+    "continue": "Continue",
+    "edit": "Edit",
+    "search": "Search",
+    "loading": "Loading",
+    "add": "Add",
+    "remove": "Remove"
   },
   "profile": {
     "name": "Profile",
@@ -28,13 +33,28 @@
     "name": "Planning",
     "set_activity_reminder": "Please don't forget to set an actity in the Terrain tab.",
     "confirm_expedition": "Confirm expedition",
+    "reject_invite": "Reject",
+    "accept_invite": "Accept",
+    "expedition_date": "Date",
+    "expedition_activity": "Activity",
+    "not_selected": "not selected",
+    "start_expedition": "Start expedition",
+    "edit_expedition": "Edit expedition",
+    "leave_expedition": "Leave expedition",
+    "levels": {
+      "not_set": "Not set",
+      "same_level": "On your level",
+      "under_your_level": "Under your level",
+      "over_your_level": "Over your level"
+    },    
     "route_details": {
       "no_date": "Set expedition's departure date and time",
       "distance": "Distance",
       "elevation_gain": "Elevation gain",
       "elevation_loss": "Elevation loss",
       "activities": "Activities",
-      "elevation_profile": "Elevation profile"
+      "elevation_profile": "Elevation profile",
+      "no_description": "No description"
     },
     
     "conditions": {
@@ -50,12 +70,30 @@
       "expedition_name": "Expedition name",
       "expedition_description": "Description",
       "save_expedition": "Save"
+    },
+    "search": {
+      "hint": "You can search for users in Dersu by their name or surname",
+      "no_results": "We haven't found anyone",
+      "min_characters": "We need at least 3 characters for the search"
+    },
+    "group": {
+      "search_hint": "Press + to add people to the expedition",
+      "expedition_owner": "Organizer",
+      "guest_status": "Status"
+    },
+    "tabs": {
+      "route": "Route",
+      "conditions": "Conditions",
+      "terrain": "Terrain",
+      "group": "Group"
     }
   },
   "dashboard": {
     "name": "Home",
     "upcoming_expeditions": "Upcoming expeditions",
-    "upcoming_expeditions_empty": "No expeditions planned"
+    "upcoming_expeditions_empty": "No expeditions planned",
+    "pending_invitations": "Pending invitations",
+    "no_pending_invitations": "No pending invitations"
   },
   "more": {
     "name": "Settings",

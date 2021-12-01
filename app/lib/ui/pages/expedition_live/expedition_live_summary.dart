@@ -1,5 +1,5 @@
 import 'package:app/generated/locale_keys.g.dart';
-import 'package:app/logic/cubits/dashboard/dashboard_cubit.dart';
+import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
 import 'package:app/utils/extensions/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
@@ -29,7 +29,7 @@ class ExpeditionSummary extends StatelessWidget {
             SizedBox(height: 10),
             BrandButtons.primaryBig(
               onPressed: () async {
-                await context.read<DashboardCubit>().fetch();
+                await context.read<ExpeditionsCubit>().fetch();
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               text: LocaleKeys.basis_ok.tr(),

@@ -15,7 +15,7 @@ dependencies:
   cached_network_image: 3.1.0+1
   carbon_icons: 0.0.1+2
   connectivity: 3.0.6
-  cubit_form: 2.0.0
+  cubit_form: 2.0.1
   cupertino_icons: 1.0.4
   dersu_permissions:
     path: dersu_permissions

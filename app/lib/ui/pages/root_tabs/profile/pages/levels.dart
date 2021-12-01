@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/dictionaries/dictionaries_cubit.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
@@ -121,7 +123,8 @@ class _LevelsSettingState extends State<LevelsSetting> {
                 },
               ),
             ),
-            SizedBox(height: 20)
+            SizedBox(
+                height: max(20, MediaQuery.of(context).padding.bottom + 10)),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import { generateId } from '../common/utilities/generate-id';
 import { knexClient } from '../database/knex/init-knex';
 import { IEntity } from '../database/types/entity.type';
 import { IExpeditionRoute } from './types/expedition-route.type';
+import { IExpeditionUser } from './types/expedition-user.type';
 import { IExpedition } from './types/expedition.type';
 
 export const expeditionEntity: IEntity<IExpedition> = {
@@ -36,5 +37,18 @@ export const expeditionRouteEntity: IEntity<IExpeditionRoute> = {
     meta: { select: false, type: 'json' },
     createdAt: { select: false, type: 'date' },
     updatedAt: { select: false, type: 'date' },
+  },
+};
+
+export const expeditionUserEntity: IEntity<IExpeditionUser> = {
+  columns: {
+    expeditionId: { type: 'string' },
+    userId: { type: 'string' },
+    isOwner: { type: 'boolean' },
+    inviteStatus: { type: 'string' },
+    acceptedOn: { type: 'date' },
+    rejectedOn: { type: 'date' },
+    leftOn: { type: 'date' },
+    createdAt: { select: false, type: 'date' },
   },
 };

@@ -17,4 +17,5 @@ class Authenticated extends AuthenticationState {
   });
 
   final TokenResponse token;
+  
 }
