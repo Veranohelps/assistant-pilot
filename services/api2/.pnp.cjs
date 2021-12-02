@@ -57,6 +57,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/knex-postgis", "npm:0.10.0"],
             ["@types/lodash", "npm:4.14.175"],
             ["@types/lru-cache", "npm:5.1.1"],
+            ["@types/mime-types", "npm:2.1.1"],
             ["@types/morgan", "npm:1.9.3"],
             ["@types/multer", "npm:1.4.7"],
             ["@types/node", "npm:14.17.19"],
@@ -95,6 +96,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["knex-postgis", "npm:0.14.1"],
             ["lodash", "npm:4.17.21"],
             ["lru-cache", "npm:6.0.0"],
+            ["mime-types", "npm:2.1.34"],
             ["morgan", "npm:1.10.0"],
             ["multer", "npm:1.4.3"],
             ["nanoid", "npm:3.1.28"],
@@ -2894,6 +2896,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/mime-types", [
+        ["npm:2.1.1", {
+          "packageLocation": "./.yarn/cache/@types-mime-types-npm-2.1.1-2f761de0b8-106b5d556a.zip/node_modules/@types/mime-types/",
+          "packageDependencies": [
+            ["@types/mime-types", "npm:2.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/morgan", [
         ["npm:1.9.3", {
           "packageLocation": "./.yarn/cache/@types-morgan-npm-1.9.3-118eec1c2b-0b9bc8641c.zip/node_modules/@types/morgan/",
@@ -3885,6 +3896,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/knex-postgis", "npm:0.10.0"],
             ["@types/lodash", "npm:4.14.175"],
             ["@types/lru-cache", "npm:5.1.1"],
+            ["@types/mime-types", "npm:2.1.1"],
             ["@types/morgan", "npm:1.9.3"],
             ["@types/multer", "npm:1.4.7"],
             ["@types/node", "npm:14.17.19"],
@@ -3923,6 +3935,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["knex-postgis", "npm:0.14.1"],
             ["lodash", "npm:4.17.21"],
             ["lru-cache", "npm:6.0.0"],
+            ["mime-types", "npm:2.1.34"],
             ["morgan", "npm:1.10.0"],
             ["multer", "npm:1.4.3"],
             ["nanoid", "npm:3.1.28"],
@@ -9284,6 +9297,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mime-db", "npm:1.50.0"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:1.51.0", {
+          "packageLocation": "./.yarn/cache/mime-db-npm-1.51.0-d5e42b45ad-613b1ac9d6.zip/node_modules/mime-db/",
+          "packageDependencies": [
+            ["mime-db", "npm:1.51.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["mime-types", [
@@ -9300,6 +9320,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["mime-types", "npm:2.1.33"],
             ["mime-db", "npm:1.50.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:2.1.34", {
+          "packageLocation": "./.yarn/cache/mime-types-npm-2.1.34-3cd0bb907c-67013de9e9.zip/node_modules/mime-types/",
+          "packageDependencies": [
+            ["mime-types", "npm:2.1.34"],
+            ["mime-db", "npm:1.51.0"]
           ],
           "linkType": "HARD",
         }]

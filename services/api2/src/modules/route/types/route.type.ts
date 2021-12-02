@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+import { IBpaReport } from '../../bpa/types/bpa-report.type';
 import {
   ILineStringGeometry,
   IMultiPointGeometry,
@@ -6,6 +7,7 @@ import {
 } from '../../common/types/geojson.type';
 import { IDefaultMeta } from '../../database/types/database.type';
 import { IWaypoint } from '../../waypoint/types/waypoint.type';
+import { IWeatherPredictionDaily } from '../../weather/types/wheather-prediction.type';
 import { IActivityType } from './activity-type.type';
 import { ERouteOrigins } from './route-origin.type';
 
@@ -101,11 +103,13 @@ export interface IGetRouteUrlParameters {
   searchWaypointsBy: 'track' | 'boundingBox';
 }
 
-// export interface IGetRouteWithWaypointsOptions extends IGetRouteWaypointOptions {}
-
 export interface ITimeZone {
   dstOffset?: number;
   rawOffset?: number;
   timeZoneId?: string;
   timeZoneName?: string;
+}
+
+export interface IRouteWeather extends IWeatherPredictionDaily {
+  bpaReports: IBpaReport[];
 }

@@ -26,6 +26,7 @@ import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { SkillLevelService } from '../../skill/services/skill-level.service';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
+import { WeatherService } from '../../weather/services/weather.service';
 import { ERouteEvents } from '../events/event-types/route.event-type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
@@ -33,6 +34,7 @@ import {
   IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
+  IRouteWeather,
   TMPIRoutePartial,
 } from '../types/route.type';
 import { analyseRoute, IRouteAnalysis, IRoutePartial } from '../utils/analyse-route';
@@ -51,6 +53,7 @@ export class RouteService {
     private elevationService: ElevationService,
     private timezoneService: TimezoneService,
     private eventService: EventService,
+    private weatherService: WeatherService,
   ) {}
 
   private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
@@ -192,6 +195,7 @@ export class RouteService {
   ): Promise<IRoute> {
     const lineStringGeom = this.geoJsonToLineStringGeometry(geojson);
     const startingPointAltitude = lineStringGeom.coordinates[0][2];
+
     if (startingPointAltitude == null) {
       const startingPointLongitude = lineStringGeom.coordinates[0][0];
       const startingPointLatitude = lineStringGeom.coordinates[0][1];
@@ -598,6 +602,13 @@ export class RouteService {
       )
       .then(generateRecord2((r) => r.id));
     return routes;
+  }
+
+  async getRouteWeather(routeId: string): Promise<IRouteWeather> {
+    const route = await this.findOne(null, routeId);
+    const predictions = await this.weatherService.getForecast(route);
+
+    return predictions;
   }
 
   async getUserRoutes(

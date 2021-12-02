@@ -5,6 +5,9 @@ import {
 } from '../../assessment/types/assessment-history.type';
 import { IAssessment, ICreateAssessment } from '../../assessment/types/assessment.type';
 import { ICreateUserLevel, IUserLevel } from '../../assessment/types/user-level.type';
+import { IBpaProvider, ICreateBpaProvider } from '../../bpa/types/bpa-provider.type';
+import { IBpaReport, ICreateBpaReport } from '../../bpa/types/bpa-report.type';
+import { IBpaZone, ICreateBpaZone } from '../../bpa/types/bpa-zone.type';
 import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
@@ -89,4 +92,11 @@ export interface IDatabaseTables {
     ICreateExpeditionUser,
     Partial<Omit<IExpeditionUser, 'id'>>
   >;
+  BpaZone: Knex.CompositeTableType<IBpaZone, ICreateBpaZone, Partial<Omit<IBpaZone, 'id'>>>;
+  BpaProvider: Knex.CompositeTableType<
+    IBpaProvider,
+    ICreateBpaProvider,
+    Partial<Omit<IBpaProvider, 'id'>>
+  >;
+  BpaReport: Knex.CompositeTableType<IBpaReport, ICreateBpaReport, Partial<Omit<IBpaReport, 'id'>>>;
 }

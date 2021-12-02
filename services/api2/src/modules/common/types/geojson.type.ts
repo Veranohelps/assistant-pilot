@@ -29,13 +29,13 @@ export interface IMultiPointGeometry {
 type T2dPoint = [number, number];
 export interface IPolygonGeometry {
   type: 'Polygon';
-  coordinates: [T2dPoint, T2dPoint, T2dPoint, T2dPoint, T2dPoint][];
+  coordinates: T2dPoint[];
 }
 
 interface Feature {
   type: string;
   properties?: IProperties;
-  geometry: IPointGeometry | ILineStringGeometry;
+  geometry: IPointGeometry | ILineStringGeometry | IPolygonGeometry;
 }
 
 export interface IGeoJSON {
