@@ -67,7 +67,7 @@ export class AdminBpaReportController {
     return successResponse('BPA report created', { report });
   }
 
-  @Delete(':reportId')
+  @Delete(':reportId/delete')
   @HttpCode(HttpStatus.OK)
   async delete(@Tx() tx: TransactionManager, @Param('reportId') id: string) {
     const report = await this.bpaReportService.deleteReport(tx, id);

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { endOfDay, startOfDay } from 'date-fns';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { GcpUploadService } from '../../common/services/gcp-upload.service';
@@ -60,8 +61,8 @@ export class BpaReportService {
       .insert({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        publishDate: payload.publishDate,
-        validUntilDate: payload.validUntilDate,
+        publishDate: startOfDay(payload.publishDate),
+        validUntilDate: endOfDay(payload.validUntilDate),
         resourceUrl: fileUrl,
       })
       .cReturning();
@@ -117,13 +118,13 @@ export class BpaReportService {
       .update({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        publishDate: payload.publishDate,
-        validUntilDate: payload.validUntilDate,
+        ...(payload.publishDate && { publishDate: startOfDay(payload.publishDate) }),
+        ...(payload.validUntilDate && { validUntilDate: endOfDay(payload.validUntilDate) }),
         resourceUrl: fileUrl,
       })
       .cReturning();
 
-    this.bpaZoneReportService.updateZones(tx, report.id, payload.zoneIds);
+    await this.bpaZoneReportService.updateZones(tx, report.id, payload.zoneIds);
 
     // increment counts
     await this.updateCounts(tx, report, 1);

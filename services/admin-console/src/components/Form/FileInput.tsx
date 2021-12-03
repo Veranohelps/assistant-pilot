@@ -1,5 +1,10 @@
 import { useField } from 'formik';
 import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+
+const Input = styled.input`
+  width: min-content;
+`
 
 interface IProps extends React.InputHTMLAttributes<any> {
   name: string;
@@ -16,7 +21,7 @@ const FileInput = (props: IProps) => {
   }, [meta.value]);
 
   return (
-    <input
+    <Input
       {...props}
       onBlur={input.onBlur}
       name={props.name}

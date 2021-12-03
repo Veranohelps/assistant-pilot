@@ -1,7 +1,6 @@
 import { addDays, format, max, startOfToday } from 'date-fns';
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import * as yup from 'yup';
@@ -13,9 +12,9 @@ import InputContainer from '../../../components/Form/InputContainer';
 import { FlexBox } from '../../../components/Layout';
 import { Typography } from '../../../components/Typography';
 import appRoutes from '../../../config/appRoutes';
+import { useCreateBpaReport, useUpdateBpaReport } from '../../../hooks/mutations/bpaMutations';
 import { useBpaProvidersQuery, useBpaZonesQuery } from '../../../hooks/queries/bpaQueries';
-import { createBpaReportService, updateBpaReportService } from '../../../services/bpaService';
-import { IBpaReport, ICreatBpaReportPayload } from '../../../types/bpa';
+import { IBpaReport } from '../../../types/bpa';
 import { className } from '../../../utils/style';
 
 const cls = className();
@@ -43,6 +42,21 @@ const Container = styled.div`
     textarea {
       padding: 5px 8px;
       border-radius: 4px;
+    }
+
+    ${cls.get('activityTypes')} {
+      display: flex;
+      flex-wrap: wrap;
+
+      label {
+        margin: 5px 10px 0;
+        display: flex;
+        align-items: center;
+
+        input {
+          margin-right: 5px;
+        }
+      }
     }
   }
 
@@ -97,26 +111,12 @@ interface IProps {
 
 const CreateBpaReport = (props: IProps) => {
   const [formData, setFormData] = useState(initialFormData);
-  const queryClient = useQueryClient();
   const zonesQuery = useBpaZonesQuery({ select: (res) => res.data.zones });
   const providersQuery = useBpaProvidersQuery({
     select: (res) => res.data.providers,
   });
-  const invalidate = () => queryClient.invalidateQueries(['bpa']);
-  const createReport = useMutation(createBpaReportService, {
-    onSuccess: () => {
-      invalidate();
-    },
-  });
-  const editReport = useMutation(
-    (data: Partial<ICreatBpaReportPayload>) =>
-      updateBpaReportService(props.editingReport!.id, data),
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-    }
-  );
+  const createReport = useCreateBpaReport();
+  const editReport = useUpdateBpaReport(props.editingReport?.id ?? '');
 
   const resetForm = () => {
     setFormData(initialFormData);
@@ -148,7 +148,7 @@ const CreateBpaReport = (props: IProps) => {
         initialValues={formData}
         enableReinitialize
         validationSchema={props.editingReport ? editSchema : createSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, helpers) => {
           const data = {
             zoneIds: values.zoneIds,
             providerId: values.providerId!,
@@ -162,6 +162,7 @@ const CreateBpaReport = (props: IProps) => {
             await createReport.mutateAsync({ ...data, pdf: values.pdf as File });
           }
 
+          helpers.resetForm();
           resetForm();
         }}
       >

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, Polyline, TileLayer, Tooltip } from 'react-leaflet';
 import styled from 'styled-components';
 import GetMap from '../../../components/GetMap';
-import { FlexBox } from '../../../components/Layout';
+import { FlexBox, GridBox } from '../../../components/Layout';
 import { Typography } from '../../../components/Typography';
 import { useBpaZonesQuery } from '../../../hooks/queries/bpaQueries';
 import { IBpaZone } from '../../../types/bpa';
@@ -120,19 +120,25 @@ const BpaZone = () => {
                     {zone.name}
                   </Typography>
                   <button className={cls.set('viewButton')} onClick={() => setViewingZone(zone)}>
-                    view
+                    <Typography textStyle="sm14">view</Typography>
                   </button>
                 </FlexBox>
-                <br />
                 <Typography textStyle="sm14" display="block">
                   {zone.description}
                 </Typography>
-                <br />
-                <FlexBox justify="flex-end">
+                <Typography textStyle="sm14" display="block">
+                  No. of reports: {zone.reportCount}
+                </Typography>
+                <GridBox justify="flex-end" direction="column" gap={16}>
                   <button className={cls.set('viewButton')} onClick={() => setEditingZone(zone)}>
-                    Edit zone
+                    <Typography textStyle="sm14" style={{ color: 'red' }}>
+                      Delete
+                    </Typography>
                   </button>
-                </FlexBox>
+                  <button className={cls.set('viewButton')} onClick={() => setEditingZone(zone)}>
+                    <Typography textStyle="sm14">Edit</Typography>
+                  </button>
+                </GridBox>
               </div>
             );
           })}

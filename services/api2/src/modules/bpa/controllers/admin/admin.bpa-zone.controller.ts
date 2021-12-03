@@ -14,7 +14,6 @@ import { AdminJwtProtected } from '../../../auth/decorators/admin-jwt-atuh.guard
 import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { IGeoJSON } from '../../../common/types/geojson.type';
-import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import { createBpaZoneVSchema, updateBpaZoneVSchema } from '../../bpa.validation-schema';

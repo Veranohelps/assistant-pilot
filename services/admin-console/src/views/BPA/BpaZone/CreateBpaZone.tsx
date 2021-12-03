@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
@@ -10,8 +9,8 @@ import FormLabel from '../../../components/Form/FormLabel';
 import InputContainer from '../../../components/Form/InputContainer';
 import { FlexBox } from '../../../components/Layout';
 import { Typography } from '../../../components/Typography';
-import { createBpaZoneService, updateBpaZoneService } from '../../../services/bpaService';
-import { IBpaZone, ICreateBpaZonePayload } from '../../../types/bpa';
+import { useCreateBpaZone, useUpdateBpaZone } from '../../../hooks/mutations/bpaMutations';
+import { IBpaZone } from '../../../types/bpa';
 import { className } from '../../../utils/style';
 
 const cls = className();
@@ -79,21 +78,8 @@ interface IProps {
 
 const CreateBpaZone = (props: IProps) => {
   const [formData, setFormData] = useState(initialFormData);
-  const queryClient = useQueryClient();
-  const invalidate = () => queryClient.invalidateQueries(['bpa', 'zone']);
-  const createZone = useMutation(createBpaZoneService, {
-    onSuccess: () => {
-      invalidate();
-    },
-  });
-  const editZone = useMutation(
-    (data: Partial<ICreateBpaZonePayload>) => updateBpaZoneService(props.editingZone!.id, data),
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-    }
-  );
+  const createZone = useCreateBpaZone();
+  const editZone = useUpdateBpaZone(props.editingZone?.id!);
 
   const resetForm = () => {
     setFormData(initialFormData);
@@ -121,7 +107,7 @@ const CreateBpaZone = (props: IProps) => {
         initialValues={formData}
         enableReinitialize
         validationSchema={props.editingZone ? editSchema : createSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, helpers) => {
           const data = {
             name: values.name,
             description: values.description || null,
@@ -133,6 +119,7 @@ const CreateBpaZone = (props: IProps) => {
             await createZone.mutateAsync({ ...data, geojson: values.geojson as File });
           }
 
+          helpers.resetForm();
           resetForm();
         }}
       >

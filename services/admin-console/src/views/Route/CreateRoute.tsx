@@ -15,7 +15,7 @@ import {
   createRouteService,
   deleteRouteService,
   editRouteService,
-  getRouteByIdService
+  getRouteByIdService,
 } from '../../services/routeService';
 import { ISkillDictionary } from '../../types/dictionary';
 import { ICreateRoutePayload } from '../../types/route';
@@ -61,9 +61,6 @@ const Container = styled.div`
           margin-right: 5px;
         }
       }
-    }
-
-    ${cls.get('levelsList')} {
     }
   }
 
@@ -319,11 +316,7 @@ const CreateRoute = (props: IProps) => {
                           {skill.levels.map((level) => {
                             return (
                               <FormLabel key={level.id}>
-                                <Field
-                                  type="radio"
-                                  name={`levels.${skill.id}`}
-                                  value={level.id}
-                                />
+                                <Field type="radio" name={`levels.${skill.id}`} value={level.id} />
                                 {level.name}
                               </FormLabel>
                             );

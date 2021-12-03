@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { FlexBox, GridBox } from '../../../components/Layout';
+import { GridBox } from '../../../components/Layout';
 import { Typography } from '../../../components/Typography';
+import { useDeleteBpaReport } from '../../../hooks/mutations/bpaMutations';
 import { useBpaReportsQuery } from '../../../hooks/queries/bpaQueries';
 import { IBpaReport } from '../../../types/bpa';
 import { className } from '../../../utils/style';
@@ -74,6 +75,13 @@ const BpaReport = () => {
     select: (res) => res.data.reports,
   });
   const [editingReport, setEditingReport] = useState<IBpaReport | null>(null);
+  const deleteMutation = useDeleteBpaReport();
+
+  const deleteReport = async (id: string) => {
+    if (window.confirm('Are you sure you want to permanently delete this report?')) {
+      await deleteMutation.mutateAsync(id);
+    }
+  };
 
   return (
     <Container>
@@ -96,15 +104,19 @@ const BpaReport = () => {
                     Resource URL: {report.resourceUrl}
                   </Typography>
                 </GridBox>
-                <br />
-                <FlexBox justify="flex-end">
+                <GridBox justify="flex-end" direction="column" gap={16}>
+                  <button className={cls.set('viewButton')} onClick={() => deleteReport(report.id)}>
+                    <Typography textStyle="sm14" style={{ color: 'red' }}>
+                      Delete
+                    </Typography>
+                  </button>
                   <button
                     className={cls.set('viewButton')}
                     onClick={() => setEditingReport(report)}
                   >
-                    Edit
+                    <Typography textStyle="sm14">Edit</Typography>
                   </button>
-                </FlexBox>
+                </GridBox>
               </div>
             );
           })}

@@ -90,17 +90,15 @@ const BpaProvider = () => {
                     {provider.name}
                   </Typography>
                 </FlexBox>
-                <br />
                 <Typography textStyle="sm14" display="block">
                   {provider.description}
                 </Typography>
-                <br />
                 <FlexBox justify="flex-end">
                   <button
                     className={cls.set('viewButton')}
                     onClick={() => setEditingProvider(provider)}
                   >
-                    Edit
+                    <Typography textStyle="sm14">Edit</Typography>
                   </button>
                 </FlexBox>
               </div>

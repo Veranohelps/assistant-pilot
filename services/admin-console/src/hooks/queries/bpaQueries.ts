@@ -7,25 +7,25 @@ type TQueryOptions<T1, T2> = Omit<
   'queryKey' | 'queryFn'
 >;
 
-export const useBpaZonesQuery = <T2 = IGetBpaZonesResponse>(
-  options?: TQueryOptions<IGetBpaZonesResponse, T2>
-): UseQueryResult<T2> => {
+export const useBpaZonesQuery = <T = IGetBpaZonesResponse>(
+  options?: TQueryOptions<IGetBpaZonesResponse, T>
+): UseQueryResult<T> => {
   const query = useQuery(['bpa', 'zone'], getBpaZonesService, options);
 
   return query;
 };
 
-export const useBpaProvidersQuery = <T2 = IGetBpaProvidersResponse>(
-  options?: TQueryOptions<IGetBpaProvidersResponse, T2>
-): UseQueryResult<T2> => {
+export const useBpaProvidersQuery = <T = IGetBpaProvidersResponse>(
+  options?: TQueryOptions<IGetBpaProvidersResponse, T>
+): UseQueryResult<T> => {
   const query = useQuery(['bpa', 'provider'], getBpaProvidersService, options);
 
   return query;
 };
 
-export const useBpaReportsQuery = <T2 = IGetBpaProvidersResponse>(
-  options?: TQueryOptions<IGetBpaReportsResponse, T2>
-): UseQueryResult<T2> => {
+export const useBpaReportsQuery = <T = IGetBpaProvidersResponse>(
+  options?: TQueryOptions<IGetBpaReportsResponse, T>
+): UseQueryResult<T> => {
   const query = useQuery(['bpa', 'report'], getBpaReportsService, options);
 
   return query;

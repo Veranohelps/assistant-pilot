@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
@@ -9,8 +8,8 @@ import FormLabel from '../../../components/Form/FormLabel';
 import InputContainer from '../../../components/Form/InputContainer';
 import { FlexBox } from '../../../components/Layout';
 import { Typography } from '../../../components/Typography';
-import { createBpaProviderService, updateBpaProviderService } from '../../../services/bpaService';
-import { IBpaProvider, ICreateBpaProviderPayload } from '../../../types/bpa';
+import { useCreateBpaProvider, useUpdateBpaPRovider } from '../../../hooks/mutations/bpaMutations';
+import { IBpaProvider } from '../../../types/bpa';
 import { className } from '../../../utils/style';
 
 const cls = className();
@@ -70,22 +69,8 @@ interface IProps {
 
 const CreateBpaProvider = (props: IProps) => {
   const [formData, setFormData] = useState(initialFormData);
-  const queryClient = useQueryClient();
-  const invalidate = () => queryClient.invalidateQueries(['bpa', 'provider']);
-  const createProvider = useMutation(createBpaProviderService, {
-    onSuccess: () => {
-      invalidate();
-    },
-  });
-  const editProvider = useMutation(
-    (data: Partial<ICreateBpaProviderPayload>) =>
-      updateBpaProviderService(props.editingProvider!.id, data),
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-    }
-  );
+  const createProvider = useCreateBpaProvider();
+  const editProvider = useUpdateBpaPRovider(props.editingProvider?.id!);
 
   const resetForm = () => {
     setFormData(initialFormData);
@@ -114,7 +99,7 @@ const CreateBpaProvider = (props: IProps) => {
         initialValues={formData}
         enableReinitialize
         validationSchema={createSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, helpers) => {
           const data = {
             name: values.name,
             description: values.description,
@@ -126,6 +111,7 @@ const CreateBpaProvider = (props: IProps) => {
             await createProvider.mutateAsync(data);
           }
 
+          helpers.resetForm();
           resetForm();
         }}
       >
