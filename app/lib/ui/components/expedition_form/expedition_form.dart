@@ -36,8 +36,6 @@ import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'dart:async' show StreamSubscription;
 import 'package:async/async.dart' show StreamGroup;

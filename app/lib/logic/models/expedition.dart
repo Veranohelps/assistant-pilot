@@ -1,4 +1,5 @@
 import 'package:app/logic/models/profile.dart';
+import 'package:app/logic/models/time_with_timezone.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -110,6 +111,13 @@ class ExpeditionFull extends Expedition {
 
   static ExpeditionFull fromJson(Map<String, dynamic> json) =>
       _$ExpeditionFullFromJson(json);
+
+  TimeWithTimeZone get timeWithTimeZone => TimeWithTimeZone.fromUtc(
+        startDateTime.toUtc(),
+        Duration(
+          seconds: routes.first.timezone.rawOffset,
+        ),
+      );
 
   Map<String, dynamic> toJson() => _$ExpeditionFullToJson(this);
 }

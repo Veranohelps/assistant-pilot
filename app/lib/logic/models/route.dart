@@ -1,3 +1,4 @@
+import 'package:app/logic/models/timezone.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -66,6 +67,7 @@ abstract class DersuRoute extends Equatable {
 class DersuRouteFull extends DersuRoute {
   final LineStringGeometry coordinate;
   final List<Waypoint> waypoints;
+  final Timezone timezone;
 
   @JsonKey(
     fromJson: Serialization.fromJsonToLatLngBounds,
@@ -89,6 +91,7 @@ class DersuRouteFull extends DersuRoute {
     required double elevationLossInMeters,
     required double highestPointInMeters,
     required double lowestPointInMeters,
+    required this.timezone,
     this.waypoints = const [],
     String? userId,
   }) : super(
@@ -116,6 +119,7 @@ class DersuRouteFull extends DersuRoute {
         ...coordinates,
         ...waypoints,
         boundaries,
+        timezone,
       ];
 
   factory DersuRouteFull.fromJson(Map<String, dynamic> json) =>

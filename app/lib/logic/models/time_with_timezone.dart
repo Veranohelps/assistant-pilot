@@ -26,7 +26,7 @@ class TimeWithTimeZone implements DateTime {
 
   bool get isLocal => offset == DateTime.now().timeZoneOffset;
 
-  static TimeWithTimeZone parse(String formattedString) {
+  static parse(String formattedString) {
     var re = _parseFormat;
     Match? match = re.firstMatch(formattedString);
     if (match != null) {
@@ -40,10 +40,10 @@ class TimeWithTimeZone implements DateTime {
       // precision of 999 milliseconds and 999 microseconds.
       int parseMilliAndMicroseconds(String? matched) {
         if (matched == null) return 0;
-        int length = matched.length;
+        final length = matched.length;
         assert(length >= 1);
-        int result = 0;
-        for (int i = 0; i < 6; i++) {
+        var result = 0;
+        for (var i = 0; i < 6; i++) {
           result *= 10;
           if (i < matched.length) {
             result += matched.codeUnitAt(i) ^ 0x30;
@@ -52,22 +52,22 @@ class TimeWithTimeZone implements DateTime {
         return result;
       }
 
-      int years = int.parse(match[1]!);
-      int month = int.parse(match[2]!);
-      int day = int.parse(match[3]!);
-      int hour = parseIntOrZero(match[4]);
-      int minute = parseIntOrZero(match[5]);
-      int second = parseIntOrZero(match[6]);
-      int milliAndMicroseconds = parseMilliAndMicroseconds(match[7]);
-      int millisecond =
+      final years = int.parse(match[1]!);
+      final month = int.parse(match[2]!);
+      final day = int.parse(match[3]!);
+      final hour = parseIntOrZero(match[4]);
+      final minute = parseIntOrZero(match[5]);
+      final second = parseIntOrZero(match[6]);
+      final milliAndMicroseconds = parseMilliAndMicroseconds(match[7]);
+      final millisecond =
           milliAndMicroseconds ~/ Duration.microsecondsPerMillisecond;
-      int microsecond =
+      final microsecond =
           milliAndMicroseconds.remainder(Duration.microsecondsPerMillisecond);
 
-      String? tzSign = match[9];
-      int sign = (tzSign == '-') ? -1 : 1;
-      int hourDifference = int.parse(match[10]!);
-      int minuteDifference = parseIntOrZero(match[11]);
+      final tzSign = match[9];
+      final sign = (tzSign == '-') ? -1 : 1;
+      final hourDifference = int.parse(match[10]!);
+      final minuteDifference = parseIntOrZero(match[11]);
 
       var offset =
           Duration(hours: hourDifference, minutes: minuteDifference) * sign;
@@ -126,8 +126,7 @@ class TimeWithTimeZone implements DateTime {
 
   @override
   DateTime toLocal() =>
-      DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch, isUtc: true)
-          .add(DateTime.now().timeZoneOffset);
+      DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch, isUtc: false);
 
   static String _fourDigits(int n) {
     var absN = n.abs();
@@ -169,7 +168,7 @@ class TimeWithTimeZone implements DateTime {
     if (isUtc) {
       return "$y-$m-$d$sep$h:$min:$sec.$ms${us}Z";
     } else {
-      var offSign = offset >= Duration.zero ? '+' : '-';
+      var offSign = offset >= Duration.zero ? '+' : '';
 
       var offH = offset.inHours.toString();
       var offM =
@@ -250,4 +249,38 @@ class TimeWithTimeZone implements DateTime {
       RegExp(r'^([+-]?\d{4,6})-?(\d\d)-?(\d\d)' // Day part.
           r'(?:[ T](\d\d)(?::?(\d\d)(?::?(\d\d)(?:[.,](\d+))?)?)?' // Time part.
           r'( ?[zZ]| ?([-+])(\d\d)(?::?(\d\d))?)?)?$'); // Timezone part.
+
+  factory TimeWithTimeZone.fromUtc(DateTime utcTime, Duration offset) =>
+      TimeWithTimeZone._(utcTime, offset);
+
+  factory TimeWithTimeZone.fromLocal(DateTime local, Duration offset) =>
+      TimeWithTimeZone._(local.toUtc(), offset);
+
+  DateTime toFakeLocal() {
+    // use it for date pickers and things like that
+    return DateTime(
+      _native.year,
+      _native.month,
+      _native.day,
+      _native.hour,
+      _native.minute,
+      _native.second,
+      _native.millisecond,
+      _native.microsecond,
+    ).add(offset);
+  }
+
+  factory TimeWithTimeZone.fromFakeLocal(DateTime local, Duration offset) {
+    return TimeWithTimeZone(
+      offset,
+      local.year,
+      local.month,
+      local.day,
+      local.hour,
+      local.minute,
+      local.second,
+      local.millisecond,
+      local.microsecond,
+    );
+  }
 }

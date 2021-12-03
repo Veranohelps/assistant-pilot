@@ -27,6 +27,7 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) =>
       elevationLossInMeters: (json['elevationLossInMeters'] as num).toDouble(),
       highestPointInMeters: (json['highestPointInMeters'] as num).toDouble(),
       lowestPointInMeters: (json['lowestPointInMeters'] as num).toDouble(),
+      timezone: Timezone.fromJson(json['timezone'] as Map<String, dynamic>),
       waypoints: (json['waypoints'] as List<dynamic>?)
               ?.map((e) => Waypoint.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -51,6 +52,7 @@ Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
       'lowestPointInMeters': instance.lowestPointInMeters,
       'coordinate': instance.coordinate,
       'waypoints': instance.waypoints,
+      'timezone': instance.timezone,
       'boundaries': Serialization.fromLatLngBoundsToJson(instance.boundaries),
     };
 

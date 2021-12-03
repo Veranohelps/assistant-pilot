@@ -7,7 +7,7 @@ const routesUrl = '/route';
 class RoutesApi extends PrivateDersuApi {
   Future<List<DersuRouteShort>> routes() async {
     var client = await getClient();
-    var res = await client.get('/route');
+    var res = await client.get(routesUrl);
     client.close();
 
     return (res.data['data']['routes'] as List)

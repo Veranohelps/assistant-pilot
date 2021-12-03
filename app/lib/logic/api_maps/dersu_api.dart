@@ -80,6 +80,8 @@ abstract class PrivateDersuApi extends ApiMap {
                 navigator.popUntil((route) => route.isFirst);
               }
             }
+          } else {
+            return handler.next(err);
           }
         },
       ),

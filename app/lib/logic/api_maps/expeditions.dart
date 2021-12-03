@@ -51,8 +51,12 @@ class ExpeditionsApi extends PrivateDersuApi {
 // remove reduntant json layers...
 Map<String, dynamic> _optimizeJson(Map<String, dynamic> json) {
   var expedition = json['data']['expedition'];
-  expedition['routes'] =
-      expedition['routes'].map((route) => formatRoutesResponse(route)).toList();
+  expedition['routes'] = expedition['routes'].map(
+    (route) {
+      route['timezone'] = route['timezone'].first;
+      return formatRoutesResponse(route);
+    },
+  ).toList();
 
   var users = expedition["users"]
       .map((json) => json['user']

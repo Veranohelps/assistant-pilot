@@ -10,5 +10,6 @@ Map<String, dynamic> _$RouteWithStartTimeDtoToJson(
         RouteWithStartTimeDto instance) =>
     <String, dynamic>{
       'routeId': instance.routeId,
-      'startDateTime': instance.startDateTime.toIso8601String(),
+      'startDateTime':
+          Serialization.fromTimeWithTimeZoneToString(instance.startDateTime),
     };

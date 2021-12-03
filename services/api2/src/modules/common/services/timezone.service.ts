@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import got from 'got';
-import { ITimeZone } from '../../route/types/route.type';
+import { SRecord } from '../../../types/helpers.type';
+import { IRoute, ITimeZone } from '../../route/types/route.type';
 import { ILineStringGeometry } from '../types/geojson.type';
+import { generateRecord2 } from '../utilities/generate-record';
 
 @Injectable()
 export class TimezoneService {
@@ -39,10 +41,26 @@ export class TimezoneService {
       return null;
     }
   }
-
   getQueryParams(longitude: number, latitude: number): string {
     const timestamp = new Date().getTime() / 1000;
     return `location=${latitude}%2C${longitude}&timestamp=${timestamp}&key=${this.GOOGLE_TIMEZONE_API_KEY}`;
+  }
+  async getTimezones(routes: IRoute[]): Promise<SRecord<ITimeZone | null>> {
+    const requests = routes.map(async (r) => {
+      const timezone = await this.getTimezone(r.coordinate as ILineStringGeometry);
+
+      return {
+        routeId: r.id,
+        timezone,
+      };
+    });
+    const timezones = Promise.all(requests).then(
+      generateRecord2(
+        (t) => t.routeId,
+        (t) => t.timezone,
+      ),
+    );
+    return timezones;
   }
 }
 

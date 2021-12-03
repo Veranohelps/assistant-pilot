@@ -7,6 +7,7 @@ import 'package:app/logic/forms/create_expedition/dto/route_time.dart';
 import 'package:app/logic/models/expedition.dart';
 import 'package:app/logic/models/profile.dart';
 import 'package:app/logic/models/route.dart';
+import 'package:app/logic/models/time_with_timezone.dart';
 import 'package:app/ui/components/expedition_form/create_planning.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
@@ -18,7 +19,7 @@ class ExpeditionFormCubit extends FormCubit {
     this.fullExpedition,
   }) {
     date = FieldCubit(
-      initalValue: fullExpedition?.startDateTime,
+      initalValue: fullExpedition?.timeWithTimeZone,
       validations: [RequiredNotNullValidation('date required')],
     );
 
@@ -99,7 +100,7 @@ class ExpeditionFormCubit extends FormCubit {
   ExpeditionFull? fullExpedition;
 
   final ExpeditionsCubit expeditionsCubit;
-  late FieldCubit<DateTime?> date;
+  late FieldCubit<TimeWithTimeZone?> date;
   late FieldCubit<List<String>> activityTypeIds;
   late FieldCubit<List<User>> users;
   late FieldCubit<DersuRouteFull?> route;

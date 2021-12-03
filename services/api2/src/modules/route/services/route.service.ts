@@ -563,11 +563,16 @@ export class RouteService {
   }
 
   async findByIds(tx: TransactionManager | null, ids: string[]): Promise<SRecord<IRoute>> {
-    const routes = await this.db
+    const builder = this.db
       .read(tx, { overrides: { coordinate: { select: true } } })
-      .whereIn('id', ids)
+      .whereIn('id', ids);
+    const routes = await builder
+      .then((res) =>
+        AddFields.target(res).add('timezone', async () =>
+          recordToArray(await this.timezoneService.getTimezones(res)),
+        ),
+      )
       .then(generateRecord2((r) => r.id));
-
     return routes;
   }
 

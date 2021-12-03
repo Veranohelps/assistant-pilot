@@ -2,26 +2,31 @@ part of 'expedition_form.dart';
 
 void setTimeFilterDate(
     BuildContext context, ExpeditionFormCubit formCubit) async {
-  var today = DateTime.now();
-  var tommorow = today.add(Duration(days: 1));
+  final timezoneOffset = formCubit.route.state.value!.timezone.offset;
 
-  var expeditionFormCubit = formCubit.date;
-  var prevDate = expeditionFormCubit.state.value;
-  final initalDate = prevDate ?? tommorow;
+  var fakeToday = TimeWithTimeZone.fromLocal(
+    DateTime.now(),
+    timezoneOffset,
+  ).toFakeLocal();
+  var tommorow = fakeToday.add(Duration(days: 1));
+
+  var dateField = formCubit.date;
+  var prevDate = formCubit.date.state.value;
+  final initalDate = prevDate?.toFakeLocal() ?? tommorow;
 
   var day = await showDatePicker(
     context: context,
     initialDate: initalDate,
-    firstDate: today.hour < 23 ? today : tommorow,
-    lastDate: today.add(Duration(days: 13)),
+    firstDate: fakeToday.hour < 23 ? fakeToday : tommorow,
+    lastDate: fakeToday.add(Duration(days: 13)),
   );
 
   if (day != null) {
     TimeOfDay? time;
     final initalTime = prevDate != null
         ? TimeOfDay.fromDateTime(prevDate)
-        : day.isSameDate(today)
-            ? TimeOfDay(hour: today.hour + 1, minute: today.minute)
+        : day.isSameDate(fakeToday)
+            ? TimeOfDay(hour: fakeToday.hour + 1, minute: fakeToday.minute)
             : TimeOfDay(hour: 8, minute: 0);
 
     time = await showCustomTimePicker(
@@ -29,11 +34,11 @@ void setTimeFilterDate(
         onFailValidation: (context) => print('Must be in future'),
         initialTime: initalTime,
         selectableTimePredicate: (time) {
-          if (day.isSameDate(today)) {
-            return today.add(Duration(minutes: 30)).isBefore(DateTime(
-                  today.year,
-                  today.month,
-                  today.day,
+          if (day.isSameDate(fakeToday)) {
+            return fakeToday.add(Duration(minutes: 30)).isBefore(DateTime(
+                  fakeToday.year,
+                  fakeToday.month,
+                  fakeToday.day,
                   time!.hour,
                   time.minute,
                 ));
@@ -45,7 +50,12 @@ void setTimeFilterDate(
     if (time != null) {
       final dayTime =
           DateTime(day.year, day.month, day.day, time.hour, time.minute);
-      expeditionFormCubit.setValue(dayTime);
+      dateField.setValue(
+        TimeWithTimeZone.fromFakeLocal(
+          dayTime,
+          timezoneOffset,
+        ),
+      );
     }
   }
 }

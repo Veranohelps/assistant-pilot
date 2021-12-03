@@ -43,7 +43,7 @@ export interface IRoute {
   deletedAt?: Date | null;
 }
 export interface IRouteWithTimezone extends IRoute {
-  timezone: ITimeZone;
+  timezone: ITimeZone | null;
 }
 
 export interface ICreateRoute {

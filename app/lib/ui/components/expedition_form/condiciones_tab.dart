@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 part of 'expedition_form.dart';
 
 class CondicionesTab extends StatefulWidget {
@@ -75,7 +73,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
   int selectedDayTabIndex = 0;
 
   final controller = ScrollController();
-  late StreamSubscription subscirption;
+  StreamSubscription? subscirption;
 
   @override
   void initState() {
@@ -98,7 +96,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
   @override
   void dispose() {
     controller.dispose();
-    subscirption.cancel();
+    subscirption?.cancel();
     super.dispose();
   }
 

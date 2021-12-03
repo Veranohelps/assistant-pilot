@@ -37,9 +37,9 @@ class WeatherForecast {
     );
   }
 
-  List<HourlyForecast> currentDayHorlyForecast(TimeWithTimeZone dateTime) {
-    return forecastHourly
-        .where((element) => element.dateTime.isSameDate(dateTime))
-        .toList();
-  }
+  // List<HourlyForecast> currentDayHorlyForecast(TimeWithTimeZone dateTime) {
+  //   return forecastHourly
+  //       .where((element) => element.dateTime.isSameDate(dateTime))
+  //       .toList();
+  // }
 }

@@ -1,3 +1,4 @@
+import 'package:app/logic/models/time_with_timezone.dart';
 import 'package:app/utils/extensions/lat_lng_bounds.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -31,5 +32,10 @@ class Serialization {
 
   static DateTime fromUtcStringToLocal(String utc) {
     return DateTime.parse(utc);
+  }
+
+  static String fromTimeWithTimeZoneToString(
+      TimeWithTimeZone timeWithTimeZone) {
+    return timeWithTimeZone.toUtc().toString();
   }
 }

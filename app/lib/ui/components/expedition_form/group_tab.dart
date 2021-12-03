@@ -22,24 +22,22 @@ class GroupTab extends StatelessWidget {
           );
         }
 
-        return Padding(
+        return ListView(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            children: state.value.map((user) {
-              var isOwner = formCubit.fullExpedition?.userId == user.id;
+          children: state.value.map((user) {
+            var isOwner = formCubit.fullExpedition?.userId == user.id;
 
-              var hasRemoveButton = isEditable && !isOwner;
-              return PlaningGroupUserCard(
-                  user: user,
-                  route: formCubit.route.state.value,
-                  hasRemoveButton: hasRemoveButton,
-                  onRemove: () {
-                    formCubit.users.setValue(formCubit.users.state.value
-                        .where((element) => element.id != user.id)
-                        .toList());
-                  });
-            }).toList(),
-          ),
+            var hasRemoveButton = isEditable && !isOwner;
+            return PlaningGroupUserCard(
+                user: user,
+                route: formCubit.route.state.value,
+                hasRemoveButton: hasRemoveButton,
+                onRemove: () {
+                  formCubit.users.setValue(formCubit.users.state.value
+                      .where((element) => element.id != user.id)
+                      .toList());
+                });
+          }).toList(),
         );
       },
     );
@@ -139,7 +137,6 @@ class PlaningGroupUserCard extends StatelessWidget {
   }
 
   TextSpan buildLevels(int? diff) {
-    print(diff);
     if (diff == null) {
       return TextSpan(
         style:
