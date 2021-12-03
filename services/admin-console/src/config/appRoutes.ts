@@ -9,7 +9,12 @@ const appRoutes = {
   waypoint: {
     dashboard: '/waypoint',
     create: '/waypoint/create',
-    // edit: (routeId: string) => `/route/${routeId}/edit`,
+  },
+  bpa: {
+    dashboard: '/bpa/report',
+    zone: '/bpa/zone',
+    provider: '/bpa/provider',
+    report: '/bpa/report',
   },
 };
 
