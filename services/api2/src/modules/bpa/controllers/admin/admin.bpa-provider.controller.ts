@@ -4,7 +4,7 @@ import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
-import { createBpaProviderVSchema } from '../../bpa.validation-schema';
+import { createBpaProviderVSchema, updateBpaProviderVSchema } from '../../bpa.validation-schema';
 import { BpaProviderService } from '../../services/bpa-provider.service';
 import { ICreateBpaProvider } from '../../types/bpa-provider.type';
 
@@ -38,6 +38,18 @@ export class AdminBpaProviderController {
     const provider = await this.bpaProviderService.create(tx, payload);
 
     return successResponse('BPA provider created', { provider });
+  }
+
+  @Patch(':providerId/update')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Tx() tx: TransactionManager,
+    @ParsedBody(updateBpaProviderVSchema) payload: Partial<ICreateBpaProvider>,
+    @Param('providerId') id: string,
+  ) {
+    const provider = await this.bpaProviderService.updateProvider(tx, id, payload);
+
+    return successResponse('BPA provider updated', { provider });
   }
 
   @Patch(':providerId/disable')

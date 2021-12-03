@@ -17,15 +17,9 @@ export class BpaZoneService {
   ) {}
 
   geoJsonToPolygonGeometry(geojson: IGeoJSON): IPolygonGeometry {
-    const [coordinates] = geojson.features
-      .filter((feature) => feature.geometry.type === 'Polygon')
-      .map((feat) =>
-        (feat.geometry as IPolygonGeometry).coordinates.map(([longitude, latitude]) => {
-          return [longitude, latitude];
-        }),
-      );
+    const feature = geojson.features.find((feature) => feature.geometry.type === 'Polygon');
 
-    return { type: 'Polygon', coordinates: coordinates as IPolygonGeometry['coordinates'] };
+    return feature?.geometry as IPolygonGeometry;
   }
 
   async create(
@@ -37,6 +31,7 @@ export class BpaZoneService {
       .write(tx)
       .insert({
         name: payload.name,
+        description: payload.description,
         coordinate: this.db.knex.raw('ST_GeomFromGeoJSON(?)', [
           JSON.stringify(this.geoJsonToPolygonGeometry(geoJson)),
         ]),
@@ -44,6 +39,47 @@ export class BpaZoneService {
       .cReturning();
 
     return zone;
+  }
+
+  async updateZone(
+    tx: TransactionManager,
+    id: string,
+    payload: Partial<ICreateBpaZoneDTO>,
+    geoJson?: IGeoJSON,
+  ): Promise<IBpaZone> {
+    const [zone] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({
+        name: payload.name,
+        description: payload.description,
+        ...(geoJson && {
+          coordinate: this.db.knex.raw('ST_GeomFromGeoJSON(?)', [
+            JSON.stringify(this.geoJsonToPolygonGeometry(geoJson)),
+          ]),
+        }),
+      })
+      .cReturning();
+
+    if (!zone) {
+      throw new NotFoundError(ErrorCodes.BPA_ZONE_NOT_FOUND, 'BPA zone not found');
+    }
+
+    return zone;
+  }
+
+  async updateReportCount(
+    tx: TransactionManager,
+    ids: string[],
+    delta: number,
+  ): Promise<IBpaZone[]> {
+    const zones = await this.db
+      .write(tx)
+      .increment('reportCount', delta)
+      .whereIn('id', ids)
+      .cReturning();
+
+    return zones;
   }
 
   async findOne(tx: TransactionManager | null, id: string): Promise<IBpaZone> {

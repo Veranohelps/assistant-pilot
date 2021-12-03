@@ -8,8 +8,9 @@ import AddFields from '../../common/utilities/add-fields';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
-import { IBpaReport, ICreateBpaReportDTO } from '../types/bpa-report.type';
+import { IBpaReport, IBpaReportFull, ICreateBpaReportDTO } from '../types/bpa-report.type';
 import { BpaProviderService } from './bpa-provider.service';
+import { BpaZoneReportService } from './bpa-zone-report.service';
 import { BpaZoneService } from './bpa-zone.service';
 
 @Injectable()
@@ -21,15 +22,23 @@ export class BpaReportService {
     private gcpUploadService: GcpUploadService,
     private bpaZoneService: BpaZoneService,
     private bpaProviderService: BpaProviderService,
+    private bpaZoneReportService: BpaZoneReportService,
   ) {}
 
   private bpaBucket: string = this.configService.get('BPA_BUCKET_NAME') as string;
+
+  async updateCounts(tx: TransactionManager, report: IBpaReport, delta: number): Promise<boolean> {
+    this.bpaZoneService.updateReportCount(tx, report.zoneIds, delta);
+    this.bpaProviderService.updateReportCount(tx, report.providerId, delta);
+
+    return true;
+  }
 
   async create(
     tx: TransactionManager,
     payload: ICreateBpaReportDTO,
     file: Express.Multer.File,
-  ): Promise<IBpaReport[]> {
+  ): Promise<IBpaReport> {
     const mimetype = file.mimetype.toLowerCase();
 
     if (mimetype !== 'application/pdf') {
@@ -46,25 +55,88 @@ export class BpaReportService {
     }
 
     const fileUrl = await this.gcpUploadService.uploadFile(tx, this.bpaBucket, file);
-    const reports = await this.db
+    const [report] = await this.db
       .write(tx)
-      .insert(
-        payload.zoneIds.map((zoneId) => ({
-          zoneId,
-          providerId: payload.providerId,
-          publishDate: payload.publishDate,
-          validUntilDate: payload.validUntilDate,
-          resourceUrl: fileUrl,
-        })),
-      )
+      .insert({
+        zoneIds: payload.zoneIds,
+        providerId: payload.providerId,
+        publishDate: payload.publishDate,
+        validUntilDate: payload.validUntilDate,
+        resourceUrl: fileUrl,
+      })
       .cReturning();
 
-    return reports;
+    await this.bpaZoneReportService.updateZones(tx, report.id, payload.zoneIds);
+    await this.updateCounts(tx, report, 1);
+
+    return report;
+  }
+
+  async update(
+    tx: TransactionManager,
+    id: string,
+    payload: ICreateBpaReportDTO,
+    file: Express.Multer.File | null,
+  ): Promise<IBpaReport> {
+    let report = await this.findOne(tx, id);
+
+    // decrement counts
+    await this.updateCounts(tx, report, -1);
+
+    if (file) {
+      const mimetype = file.mimetype.toLowerCase();
+
+      if (mimetype !== 'application/pdf') {
+        throw new BadRequestError(
+          ErrorCodes.INVALID_MIME_TYPE,
+          'MimeType must be: application/pdf',
+        );
+      }
+
+      await this.gcpUploadService.deleteFile(tx, this.bpaBucket, report.resourceUrl);
+    }
+
+    if (payload.providerId) {
+      const provider = await this.bpaProviderService.findOne(tx, payload.providerId);
+
+      if (provider.disabled) {
+        throw new BadRequestError(
+          ErrorCodes.BPA_PROVIDER_DISABLED,
+          'Report cannot be created by a disabled provider',
+        );
+      }
+    }
+
+    const fileUrl = file
+      ? await this.gcpUploadService.uploadFile(tx, this.bpaBucket, file)
+      : undefined;
+
+    [report] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({
+        zoneIds: payload.zoneIds,
+        providerId: payload.providerId,
+        publishDate: payload.publishDate,
+        validUntilDate: payload.validUntilDate,
+        resourceUrl: fileUrl,
+      })
+      .cReturning();
+
+    this.bpaZoneReportService.updateZones(tx, report.id, payload.zoneIds);
+
+    // increment counts
+    await this.updateCounts(tx, report, 1);
+
+    return report;
   }
 
   async deleteReport(tx: TransactionManager, id: string): Promise<IBpaReport> {
+    await this.bpaZoneReportService.deleteReport(tx, id);
+
     const [deleted] = await this.db.write(tx).where({ id }).del().cReturning();
 
+    await this.updateCounts(tx, deleted, -1);
     await this.gcpUploadService.deleteFile(tx, this.bpaBucket, deleted.resourceUrl);
 
     if (!deleted) {
@@ -94,8 +166,9 @@ export class BpaReportService {
 
     const reports = await this.db
       .read(tx)
-      .whereIn(
-        'zoneId',
+      .where(
+        'zoneIds',
+        '&&',
         zones.map((z) => z.id),
       )
       .where('validUntilDate', '>=', this.db.knex.fn.now());
@@ -103,20 +176,16 @@ export class BpaReportService {
     return reports;
   }
 
-  async getReports(): Promise<IBpaReport[]> {
+  async getReports(): Promise<IBpaReportFull[]> {
     const reports = await this.db
       .read()
       .orderBy('publishDate', 'desc')
       .then((res) =>
         AddFields.target(res)
           .add(
-            'zone',
-            () =>
-              this.bpaZoneService.findByIds(
-                null,
-                res.map((r) => r.zoneId),
-              ),
-            (report, record) => record[report.zoneId],
+            'zones',
+            () => this.bpaZoneService.findByIds(null, res.map((r) => r.zoneIds).flat()),
+            (report, record) => report.zoneIds.map((zoneId) => record[zoneId]),
           )
           .add(
             'provider',

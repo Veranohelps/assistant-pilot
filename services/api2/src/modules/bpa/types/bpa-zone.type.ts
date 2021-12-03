@@ -6,6 +6,7 @@ export interface IBpaZone {
   name: string;
   description: string | null;
   coordinate: IPolygonGeometry;
+  reportCount: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -4,12 +4,7 @@ import { DatabaseConstraints } from '../database.constraint';
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('BpaReport', (table) => {
     table.string('id', 50).primary({ constraintName: DatabaseConstraints.BPA_REPORT_PKEY });
-    table
-      .string('zoneId', 50)
-      .notNullable()
-      .references('id')
-      .inTable('BpaZone')
-      .withKeyName(DatabaseConstraints.BPA_REPORT_ZONE_ID_FKEY);
+    table.specificType('zoneIds', 'text ARRAY').notNullable().defaultTo('{}');
     table
       .string('providerId', 50)
       .notNullable()
@@ -21,6 +16,8 @@ export async function up(knex: Knex): Promise<void> {
     table.text('resourceUrl').notNullable();
     table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());
     table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
+
+    table.index('zoneIds', 'BPA_REPORT_ZONE_IDS_INDEX', 'GIN');
   });
 }
 

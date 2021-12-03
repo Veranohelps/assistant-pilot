@@ -25,10 +25,42 @@ export class BpaProviderService {
     return provider;
   }
 
+  async updateProvider(
+    tx: TransactionManager,
+    id: string,
+    payload: Partial<ICreateBpaProvider>,
+  ): Promise<IBpaProvider> {
+    const [provider] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({ name: payload.name, description: payload.description })
+      .cReturning();
+
+    if (!provider) {
+      throw new NotFoundError(ErrorCodes.BPA_PROVIDER_NOT_FOUND, 'BPA provider not found');
+    }
+
+    return provider;
+  }
+
   async disable(tx: TransactionManager, id: string): Promise<IBpaProvider> {
     const [provider] = await this.db
       .write(tx)
       .update({ disabled: true })
+      .where({ id })
+      .cReturning();
+
+    return provider;
+  }
+
+  async updateReportCount(
+    tx: TransactionManager,
+    id: string,
+    delta: number,
+  ): Promise<IBpaProvider> {
+    const [provider] = await this.db
+      .write(tx)
+      .increment('reportCount', delta)
       .where({ id })
       .cReturning();
 

@@ -5,11 +5,12 @@ import { AdminBpaReportController } from './controllers/admin/admin.bpa-report.c
 import { AdminBpaZoneController } from './controllers/admin/admin.bpa-zone.controller';
 import { BpaProviderService } from './services/bpa-provider.service';
 import { BpaReportService } from './services/bpa-report.service';
+import { BpaZoneReportService } from './services/bpa-zone-report.service';
 import { BpaZoneService } from './services/bpa-zone.service';
 
 @Module({
-  imports: [DatabaseModule.forFeature(['BpaZone', 'BpaProvider', 'BpaReport'])],
-  providers: [BpaReportService, BpaProviderService, BpaZoneService],
+  imports: [DatabaseModule.forFeature(['BpaZone', 'BpaProvider', 'BpaReport', 'BpaZoneReport'])],
+  providers: [BpaReportService, BpaProviderService, BpaZoneService, BpaZoneReportService],
   controllers: [AdminBpaZoneController, AdminBpaProviderController, AdminBpaReportController],
   exports: [BpaReportService],
 })

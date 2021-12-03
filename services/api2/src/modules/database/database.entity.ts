@@ -3,7 +3,12 @@ import {
   assessmentHistoryEntity,
   userLevelEntity,
 } from '../assessment/assessment.entity';
-import { bpaProviderEntity, bpaREportEntity, bpaZoneEntity } from '../bpa/bpa.entity';
+import {
+  bpaProviderEntity,
+  bpaReportEntity,
+  bpaZoneEntity,
+  bpaZoneReportEntity,
+} from '../bpa/bpa.entity';
 import {
   expeditionEntity,
   expeditionRouteEntity,
@@ -40,5 +45,6 @@ export const entityMap: Record<keyof IDatabaseTables, IEntity> = {
   ExpeditionUser: expeditionUserEntity,
   BpaZone: bpaZoneEntity,
   BpaProvider: bpaProviderEntity,
-  BpaReport: bpaREportEntity,
+  BpaReport: bpaReportEntity,
+  BpaZoneReport: bpaZoneReportEntity,
 };

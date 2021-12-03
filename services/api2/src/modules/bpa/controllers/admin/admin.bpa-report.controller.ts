@@ -53,6 +53,20 @@ export class AdminBpaReportController {
     return successResponse('BPA report created', { report });
   }
 
+  @Post(':reportId/update')
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('pdf'))
+  async update(
+    @UploadedFile() file: Express.Multer.File,
+    @Tx() tx: TransactionManager,
+    @ParsedBody(createBpaReportVSchema) payload: ICreateBpaReportDTO,
+    @Param('reportId') id: string,
+  ) {
+    const report = await this.bpaReportService.update(tx, id, payload, file ?? null);
+
+    return successResponse('BPA report created', { report });
+  }
+
   @Delete(':reportId')
   @HttpCode(HttpStatus.OK)
   async delete(@Tx() tx: TransactionManager, @Param('reportId') id: string) {
