@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -95,5 +96,16 @@ export class PersonalRouteController {
     );
 
     return successResponse('Route created', { route });
+  }
+  @Patch(':routeId/update')
+  @HttpCode(HttpStatus.OK)
+  async updateUserRoute(
+    @UserData() user: IUser,
+    @Tx() tx: TransactionManager,
+    @Param('routeId') id: string,
+    @ParsedBody() payload: ICreateRouteDTO,
+  ) {
+    const route = await this.routeService.updateUserRoute(tx, id, payload, user.id);
+    return successResponse('Route updated', { route });
   }
 }

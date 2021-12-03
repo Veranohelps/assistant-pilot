@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/logic/api_maps/dersu_api.dart';
 import 'package:app/logic/models/profile.dart';
 import 'package:dio/dio.dart';
+import 'package:either_option/either_option.dart';
 import 'package:http_parser/http_parser.dart';
 
 const mockKey = 'UserMockKey';
@@ -18,6 +19,8 @@ const deleteAvatarUrl = '/user/delete-avatar';
 const updateAvatarUrl = '/user/update-avatar';
 
 const searchUrl = '/user/search';
+
+const uploadGpxUrl = '/route/create';
 
 class UserApi extends PrivateDersuApi {
   Future<Profile> fetch() async {
@@ -111,5 +114,27 @@ class UserApi extends PrivateDersuApi {
         : await client.delete(deleteProfileUrl, data: {'text': text});
 
     client.close();
+  }
+
+  Future<Either<HttpException, void>> uploadGpxFile(String gpxFilePath) async {
+    var formData = FormData.fromMap({
+      'gpx': await MultipartFile.fromFile(
+        gpxFilePath,
+        filename: gpxFilePath.split("/").last,
+        contentType: MediaType("image", "gpx"),
+      ),
+      'name': gpxFilePath.split("/").last
+    });
+
+    var client = await getClient();
+
+    try {
+      await client.post(uploadGpxUrl, data: formData);
+      return Right(null);
+    } on DioError catch (error) {
+      return Left(HttpException(error.response?.data['message'] ?? 'error'));
+    } finally {
+      client.close();
+    }
   }
 }

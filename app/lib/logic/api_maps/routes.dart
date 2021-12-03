@@ -15,6 +15,16 @@ class RoutesApi extends PrivateDersuApi {
         .toList();
   }
 
+  Future<List<DersuRouteShort>> userRoutes() async {
+    var client = await getClient();
+    var res = await client.get('/route?owner=me');
+    client.close();
+
+    return (res.data['data']['routes'] as List)
+        .map<DersuRouteShort>((json) => DersuRouteShort.fromJson(json))
+        .toList();
+  }
+
   Future<DersuRouteFull> route(String url) async {
     var client = await getClient();
     var res = await client.get(url);

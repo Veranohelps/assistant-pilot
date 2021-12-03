@@ -11,7 +11,7 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      originId: json['originId'] as String,
+      originId: $enumDecode(_$OriginIdEnumMap, json['originId']),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
           .map((e) => e as String)
@@ -38,7 +38,7 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'originId': instance.originId,
+      'originId': _$OriginIdEnumMap[instance.originId],
       'userId': instance.userId,
       'id': instance.id,
       'updatedAt': instance.updatedAt.toIso8601String(),
@@ -56,12 +56,17 @@ Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
       'boundaries': Serialization.fromLatLngBoundsToJson(instance.boundaries),
     };
 
+const _$OriginIdEnumMap = {
+  OriginId.dersu: 'dersu',
+  OriginId.manual: 'manual',
+};
+
 DersuRouteShort _$DersuRouteShortFromJson(Map<String, dynamic> json) =>
     DersuRouteShort(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      originId: json['originId'] as String,
+      originId: $enumDecode(_$OriginIdEnumMap, json['originId']),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       activityTypeIds: (json['activityTypeIds'] as List<dynamic>)
           .map((e) => e as String)

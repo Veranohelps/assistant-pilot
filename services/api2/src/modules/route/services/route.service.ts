@@ -399,7 +399,31 @@ export class RouteService {
 
     return route;
   }
+  async updateUserRoute(
+    tx: TransactionManager,
+    id: string,
+    payload: Partial<ICreateRouteDTO>,
+    userId?: string,
+  ) {
+    const userRoute = await this.db
+      .read(tx, { overrides: { coordinate: { select: true }, globalId: { select: true } } })
+      .where({ id })
+      .where({ userId })
+      .first();
 
+    if (!userRoute) {
+      throw new NotFoundError(
+        ErrorCodes.ROUTE_NOT_FOUND,
+        'Route not found or not belong to the user',
+      );
+    }
+    const [update] = await this.db
+      .write(tx)
+      .where({ id })
+      .update({ name: payload.name, description: payload.description })
+      .cReturning();
+    return update;
+  }
   async deleteRoute(
     tx: TransactionManager,
     id: string,

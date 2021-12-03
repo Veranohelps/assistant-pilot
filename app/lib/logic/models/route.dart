@@ -11,7 +11,7 @@ part 'route.g.dart';
 
 abstract class DersuRoute extends Equatable {
   final String name;
-  final String originId;
+  final OriginId originId;
   final String? userId;
   final String id;
   final DateTime updatedAt;
@@ -79,7 +79,7 @@ class DersuRouteFull extends DersuRoute {
     required String id,
     required String name,
     required String? description,
-    required String originId,
+    required OriginId originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
     required List<String> levelIds,
@@ -136,7 +136,7 @@ class DersuRouteShort extends DersuRoute {
     required String id,
     required String name,
     required String? description,
-    required String originId,
+    required OriginId originId,
     required DateTime updatedAt,
     required List<String> activityTypeIds,
     required List<String> levelIds,
@@ -173,4 +173,11 @@ class DersuRouteShort extends DersuRoute {
 
   factory DersuRouteShort.fromJson(Map<String, dynamic> json) =>
       _$DersuRouteShortFromJson(json);
+}
+
+enum OriginId {
+  @JsonValue("dersu")
+  dersu,
+  @JsonValue("manual")
+  manual,
 }

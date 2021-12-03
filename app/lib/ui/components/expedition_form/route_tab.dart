@@ -26,7 +26,7 @@ class _RutaTabState extends State<RutaTab> {
         _buildElevationBlock(route),
         SizedBox(height: 15),
         _routeDetails(context, route),
-        _activityDetails(context, route),
+        if (route.originId == OriginId.dersu) _activityDetails(context, route),
         SizedBox(height: 20),
       ],
     );
@@ -171,6 +171,9 @@ class _RutaTabState extends State<RutaTab> {
         getSubtitle(LocaleKeys.planning_route_details_activities.tr()),
         ...activityTypes.map(
           (type) {
+            if (route.levelIds.isEmpty) {
+              return Container();
+            }
             var currentLevelTree = levelsTries
                 .firstWhere((element) => element[1].id == type.skillId);
 

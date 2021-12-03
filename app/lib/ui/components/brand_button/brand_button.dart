@@ -111,7 +111,9 @@ class _PrimaryBig extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 150,
+        constraints: BoxConstraints(
+          minWidth: 150,
+        ),
         alignment: Alignment.center,
         margin: const EdgeInsets.only(top: 2),
         padding: EdgeInsets.fromLTRB(10, 9, 10, 11),

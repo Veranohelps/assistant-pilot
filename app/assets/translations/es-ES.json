@@ -13,7 +13,9 @@
     "search": "Buscar",
     "loading": "Cargando",
     "add": "Agregar",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "browse": "Buscar",
+    "submit": "Enviar"
   },
   "profile": {
     "name": "Perfil",
@@ -27,7 +29,22 @@
     "delete_profile": "Eliminar perfil",
     "delete_profile_confirmation": "Sí, eliminar",
     "delete_profile_text": "Eliminar tu perfil de Dersu es permanente e irreversible, confirma por favor.",
-    "delete_profile_text_hint": "Feedback opcional"
+    "delete_profile_text_hint": "Feedback opcional",
+    "my_routes": {
+      "name": "Mis rutas",
+      "import_gpx": "Importar GPX",
+      "connect_strava": "Conectar con STRAVA",
+      "loading_routes": "Cargando rutas...",
+      "upload": {
+        "hint": "Elije un archivo GPX de tu dispositivo",
+        "file_selected": "Archivo seleccionado",
+        "error_title": "Ha habido un problema al importar el archivo GPX",
+        "error_text": "Si crees que es un problema de Dersu por favor contacta con el servicio de soporte en support@dersu.uz. Más información a continuación. Gracias.",
+        "back_to_route_list": "Volver a la lista de rutas",
+        "see_route": "Ver ruta",
+        "success_title": "Archivo importado correctamente"
+      }
+    }
   },
   "planning": {
     "name": "Planificación",

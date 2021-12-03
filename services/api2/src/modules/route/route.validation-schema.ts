@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { ICreateRouteDTO, IGetRouteUrlParameters } from './types/route.type';
 
 export const getUserRoutesQueryValidationSchema = Joi.object({
-  owner: Joi.array().min(1).items(Joi.string().valid('me')),
+  owner: Joi.string().valid('me'),
 });
 
 export const getTimeZoneQueryValidationSchema = Joi.object({
