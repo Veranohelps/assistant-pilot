@@ -94,8 +94,8 @@ export class OpenWeatherService {
           hiClouds: hourlyData.clouds,
           totalCloudCover: null,
           sunshineTime: null,
-          windSpeed: hourlyData.wind_speed,
-          windGust: hourlyData.wind_gust,
+          windSpeed: hourlyData.wind_speed * 3.6, // convert to km/h
+          windGust: hourlyData.wind_gust * 3.6,
           isDay: null,
           // this is inconsistent with their docs, weather should be an object
           // List of weather IDs and icons:

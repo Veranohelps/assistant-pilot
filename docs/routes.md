@@ -148,9 +148,9 @@ Array of meteograms (one per point of interest), `forecastDaily` data for sunris
 
 At least one point of interest / range is guaranteed, which is the starting point of the route.
 
-Note that ranges may be negative `[-999-0]` since there are routes with points below sea level. 
+Note that ranges may be negative `[-999-0]` since there are routes with points below sea level.
 
-Pictocodes as per [Meteoblue documentation](https://content.meteoblue.com/en/specifications/standards/symbols-and-pictograms) (downloadeable set). Note that in order to use the day or night version of the pictocode you have to take `isDay` into account. 
+Pictocodes as per [Meteoblue documentation](https://content.meteoblue.com/en/specifications/standards/symbols-and-pictograms) (downloadeable set). Note that in order to use the day or night version of the pictocode you have to take `isDay` into account.
 
 Meteograms provide information for the following 5 days from the time of request. More information about Meteograms at [Meteoblue Forecast images](https://docs.meteoblue.com/en/weather-apis/images-api/forecast-images).
 
@@ -204,16 +204,15 @@ All dates and times returned are **local route times**. Meteoblue calculates the
       ]
     }
   ]
-}        
+}
 
 ```
-
 
 #### Notes
 
 - As the globalId is an implementation detail for routes, it is omitted from all client API responses
 - Units for the predicion variables:
-  
+
   ```
         "temperature": "C",
         "precipitation": "mm",
@@ -221,9 +220,10 @@ All dates and times returned are **local route times**. Meteoblue calculates the
         "visibility": "m",
         "cloudCover": "percent",
         "sunshineTime": "minutes"
-        "windSpeed": "ms-1",
-        "windGust": "ms-1",
+        "windSpeed": "km/h",
+        "windGust": "km/h",
         "isDay": "0-night, 1-day",
         "pictoCode": "1-35 codes, differents for night/day, i.e. 1 for isDay=0 is a different image than 1 for isDay=1"
   ```
+
 - As we are using Meteoblue API, for forecast days 8 – 14, you get trend data. 1h data is for technical simplification only, there is no skill in 1h 14 day forecasts.

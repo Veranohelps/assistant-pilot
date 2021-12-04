@@ -125,6 +125,7 @@ export class MeteoblueService {
       `history_days=0&` +
       `lat=${latitude}&` +
       `lon=${longitude}&` +
+      `windspeed=kmh&` +
       `expire=${Date.now() + this.THREE_MONTHS_MILLISECONDS}`;
 
     if (altitude) {
