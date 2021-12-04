@@ -250,6 +250,7 @@ AUTH0_ADMIN_AUDIENCE="https://${terraform.workspace}-api.dersu.uz/admin"
 METEOBLUE_API_KEY="${data.google_secret_manager_secret_version.meteoblue-api-key-version.secret_data}"
 METEOBLUE_API_SECRET="${data.google_secret_manager_secret_version.meteoblue-api-secret-version.secret_data}"
 PROFILE_IMAGES_BUCKET_NAME="${google_storage_bucket.profile-images-bucket.name}"
+BPA_BUCKET_NAME="${google_storage_bucket.bpa-reports-bucket.name}"
 GOOGLE_TIMEZONE_API_KEY="${data.google_secret_manager_secret_version.google-timezone-api-key-version.secret_data}"
 GOOGLE_ELEVATION_API_KEY="${data.google_secret_manager_secret_version.google-elevation-api-key-version.secret_data}"
 EOT
@@ -312,6 +313,23 @@ resource "google_storage_bucket" "profile-images-bucket" {
 
 resource "google_storage_default_object_access_control" "public_rule" {
   bucket = google_storage_bucket.profile-images-bucket.name
+  role   = "READER"
+  entity = "allUsers"
+}
+
+resource "random_id" "random-bpa-bucket-suffix" {
+  byte_length = 6
+}
+
+resource "google_storage_bucket" "bpa-reports-bucket" {
+  project = var.project_id
+  name = "${terraform.workspace}-bpa-reports-${random_id.random-bpa-bucket-suffix.hex}"
+  location = "EU"
+  storage_class = "STANDARD"
+}
+
+resource "google_storage_default_object_access_control" "public_rule" {
+  bucket = google_storage_bucket.bpa-reports-bucket.name
   role   = "READER"
   entity = "allUsers"
 }
