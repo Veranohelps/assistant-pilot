@@ -11,6 +11,7 @@ import 'package:app/logic/models/weather/hourly_forecast.dart';
 import 'package:app/logic/models/weather/meteogram.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/models/profile.dart';
+import 'package:app/logic/service/external_urls.dart';
 import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/altitude_chart/altitude_chart.dart';
 import 'package:app/config/brand_colors.dart';

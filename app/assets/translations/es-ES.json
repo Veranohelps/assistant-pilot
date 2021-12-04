@@ -78,7 +78,14 @@
     "conditions": {
       "date_time_departure": "Fecha y hora de salida",
       "select": "Seleccionar",
-      "select_explanation": "Seleccionar fecha y hora para acceder a las previsiones de meteo y nivo."
+      "select_explanation": "Seleccionar fecha y hora para acceder a las previsiones de meteo y nivo.",
+      "metereology": "Metereología",
+      "temperature": "Temperatura",
+      "wind": "Viento",
+      "rain": "Precipitaciones",
+      "nivology": "Nivología",
+      "full_report": "Parte completo",
+      "no_bpa_report": "Sin parte nivológico disponible para esta fecha"
     },
     "terrain": {
       "activities": "Actividades",

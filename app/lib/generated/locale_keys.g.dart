@@ -72,6 +72,12 @@ abstract class  LocaleKeys {
   static const planning_conditions_date_time_departure = 'planning.conditions.date_time_departure';
   static const planning_conditions_select = 'planning.conditions.select';
   static const planning_conditions_select_explanation = 'planning.conditions.select_explanation';
+  static const planning_conditions_metereology = 'planning.conditions.metereology';
+  static const planning_conditions_temperature = 'planning.conditions.temperature';
+  static const planning_conditions_wind = 'planning.conditions.wind';
+  static const planning_conditions_rain = 'planning.conditions.rain';
+  static const planning_conditions_nivology = 'planning.conditions.nivology';
+  static const planning_conditions_full_report = 'planning.conditions.full_report';
   static const planning_conditions = 'planning.conditions';
   static const planning_terrain_activities = 'planning.terrain.activities';
   static const planning_terrain_no_activities_for_route = 'planning.terrain.no_activities_for_route';

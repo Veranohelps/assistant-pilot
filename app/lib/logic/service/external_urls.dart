@@ -29,4 +29,12 @@ class ExternalUrls {
       throw 'Could not launch $fullUrl';
     }
   }
+
+  static void launchPDF(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }

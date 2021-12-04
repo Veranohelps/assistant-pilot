@@ -79,7 +79,14 @@
     "conditions": {
       "date_time_departure": "Date and time departure",
       "select": "Choose",
-      "select_explanation": "Set date and time in order to access weather and nivology reports."
+      "select_explanation": "Set date and time in order to access weather and nivology reports.",
+      "metereology": "Metereology",
+      "temperature": "Temperature",
+      "wind": "Wind",
+      "rain": "Rain",
+      "nivology": "Nivology",
+      "full_report": "Full report",
+      "no_bpa_report": "No avalanche report avialble for this date"
     },
     "terrain": {
       "activities": "Actividades",

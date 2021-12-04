@@ -185,7 +185,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                 vertical: 10,
               ),
               child: Text(
-                'Metereología',
+                LocaleKeys.planning_conditions_metereology.tr(),
                 style: MType.h5,
               ),
             ),
@@ -203,6 +203,29 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                     ))
                 .values
                 .toList(),
+            BrandDivider(
+              margin: EdgeInsets.only(left: 16),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ),
+              child: Text(
+                LocaleKeys.planning_conditions_nivology.tr(),
+                style: MType.h5,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => ExternalUrls.launchPDF(
+                  "https://storage.googleapis.com/temp-dersu-bpa-bucket/BPA_Pirineo_Cat.pdf"),
+              child: Text(
+                LocaleKeys.planning_conditions_full_report.tr(),
+                style: MType.subtitle1.copyWith(
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
           ],
         );
       },
@@ -281,12 +304,12 @@ class WeatherCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(materialRoute(ImageViewer(
-                      title: 'Meteogram',
+                      title: LocaleKeys.planning_conditions_full_report.tr(),
                       url: meteogram.url,
                     )));
                   },
                   child: Text(
-                    'meteogram',
+                    LocaleKeys.planning_conditions_full_report.tr(),
                     style: MType.subtitle1.copyWith(
                       decoration: TextDecoration.underline,
                     ),
@@ -299,15 +322,15 @@ class WeatherCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getColumnBlock(
-                  'TEMPERATURA',
+                  LocaleKeys.planning_conditions_temperature.tr().toUpperCase(),
                   '${rangeForecast.temperature} °C',
                 ),
                 getColumnBlock(
-                  'Viento'.toUpperCase(),
+                  LocaleKeys.planning_conditions_wind.tr().toUpperCase(),
                   '${rangeForecast.windSpeed} km/h',
                 ),
                 getColumnBlock(
-                  'precipitaciones'.toUpperCase(),
+                  LocaleKeys.planning_conditions_rain.tr().toUpperCase(),
                   '${rangeForecast.precipitationProbability} %',
                 )
               ],
