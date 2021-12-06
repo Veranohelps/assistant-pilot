@@ -197,6 +197,14 @@ class TimeWithTimeZone implements DateTime {
             offset == other.offset;
   }
 
+  bool operator <=(TimeWithTimeZone other) {
+    return _native.millisecondsSinceEpoch <= other.millisecondsSinceEpoch;
+  }
+
+  bool operator <(TimeWithTimeZone other) {
+    return _native.millisecondsSinceEpoch < other.millisecondsSinceEpoch;
+  }
+
   @override
   bool isBefore(DateTime other) => _native.isBefore(other);
 

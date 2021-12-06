@@ -7,6 +7,7 @@ import 'package:app/logic/cubits/user_search/user_search_cubit.dart';
 import 'package:app/logic/forms/expedition_form/expedition_form.dart';
 import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/waypoint.dart';
+import 'package:app/logic/models/weather/bpa_report.dart';
 import 'package:app/logic/models/weather/hourly_forecast.dart';
 import 'package:app/logic/models/weather/meteogram.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';

@@ -30,7 +30,7 @@ class ExternalUrls {
     }
   }
 
-  static void launchPDF(String url) async {
+  static void launchUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {

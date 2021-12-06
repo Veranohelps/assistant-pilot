@@ -216,16 +216,9 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                 style: MType.h5,
               ),
             ),
-            GestureDetector(
-              onTap: () => ExternalUrls.launchPDF(
-                  "https://storage.googleapis.com/temp-dersu-bpa-bucket/BPA_Pirineo_Cat.pdf"),
-              child: Text(
-                LocaleKeys.planning_conditions_full_report.tr(),
-                style: MType.subtitle1.copyWith(
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
+            BpaReportsWidget(
+                allReports: getReports(),
+                date: weather.days[selectedDayTabIndex])
           ],
         );
       },
@@ -360,7 +353,103 @@ class WeatherCard extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
+class BpaReportsWidget extends StatelessWidget {
+  late List<BpaReport> reports;
+  final TimeWithTimeZone? date;
+
+  BpaReportsWidget({Key? key, required allReports, required this.date})
+      : super(key: key) {
+    if (date == null) {
+      // NOTE (JD): without a reference date we can't provide BPA reports
+      reports = [];
+    } else {
+      reports = allReports
+          .where((report) =>
+              report.publishDateTime <= date &&
+              date! < report.validUntilDateTime)
+          .toList();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(16),
+        child: (reports.isEmpty)
+            ? Text(LocaleKeys.planning_conditions_no_bpa_report.tr())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var report in reports) BpaReportWidget(report: report)
+                ],
+              ));
+  }
+}
+
+class BpaReportWidget extends StatelessWidget {
+  final BpaReport report;
+
+  const BpaReportWidget({Key? key, required this.report}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: 500,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(LocaleKeys.planning_conditions_bpa_zones.tr() +
+              ": " +
+              report.zones.map((zone) => zone.name).join(", ")),
+          Text(LocaleKeys.planning_conditions_bpa_published.tr() +
+              ": " +
+              dataFormat1.format(report.publishDateTime)),
+          Text(LocaleKeys.planning_conditions_bpa_valid_until.tr() +
+              ": " +
+              dataFormat1.format(report.validUntilDateTime)),
+          GestureDetector(
+            onTap: () => ExternalUrls.launchUrl(report.url),
+            child: Text(
+              LocaleKeys.planning_conditions_full_report.tr(),
+              style: MType.subtitle1.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => ExternalUrls.launchUrl(report.provider.url),
+              child: RichText(
+                  text: TextSpan(
+                      style: ThemeTypo.defaultText,
+                      text: LocaleKeys
+                              .planning_conditions_bpa_report_provided_by
+                              .tr() +
+                          ": ",
+                      children: [
+                    TextSpan(
+                        text: report.provider.name,
+                        style: TextStyle(decoration: TextDecoration.underline))
+                  ]))),
+        ]));
+  }
+}
+
 bool isSameDate(DateTime date1, DateTime date2) {
   return DateTime(date1.toUtc().year, date1.toUtc().month, date1.toUtc().day) ==
       DateTime(date2.toUtc().year, date2.toUtc().month, date2.toUtc().day);
+}
+
+List<BpaReport> getReports() {
+  List<BpaReport> reports = [];
+
+  reports.add(BpaReport(
+      url:
+          "https://storage.googleapis.com/temp-dersu-bpa-bucket/BPA_Pirineo_Cat.pdf",
+      zones: [BpaZone(name: "Segorbe"), BpaZone(name: "Jacetania")],
+      provider:
+          BpaProvider(name: 'AEMET', logoUrl: "", url: "https://www.aemet.com"),
+      publishDateTime: TimeWithTimeZone.parse("2021-12-06T00:00+01:00"),
+      validUntilDateTime: TimeWithTimeZone.parse("2021-12-07T23:59+01:00")));
+
+  return reports;
 }

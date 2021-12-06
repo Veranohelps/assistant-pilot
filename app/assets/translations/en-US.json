@@ -86,7 +86,11 @@
       "rain": "Rain",
       "nivology": "Nivology",
       "full_report": "Full report",
-      "no_bpa_report": "No avalanche report avialble for this date"
+      "no_bpa_report": "No avalanche report available for this date",
+      "bpa_zones": "Zones",
+      "bpa_published": "Published",
+      "bpa_valid_until": "Valid until",
+      "bpa_report_provided_by": "Information provided by"
     },
     "terrain": {
       "activities": "Actividades",
