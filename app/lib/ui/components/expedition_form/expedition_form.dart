@@ -12,6 +12,7 @@ import 'package:app/logic/models/weather/hourly_forecast.dart';
 import 'package:app/logic/models/weather/meteogram.dart';
 import 'package:app/logic/cubits/profile/profile_cubit.dart';
 import 'package:app/logic/models/profile.dart';
+import 'package:app/logic/models/weather/weather_forecast.dart';
 import 'package:app/logic/service/external_urls.dart';
 import 'package:app/logic/service/permission_handler.dart';
 import 'package:app/ui/components/altitude_chart/altitude_chart.dart';
@@ -33,7 +34,11 @@ import 'package:app/ui/components/static_map/static_map.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
 import 'package:app/ui/pages/image_viewer/image_viewer.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
+<<<<<<< HEAD
 import 'package:app/utils/extensions/duration.dart';
+=======
+import 'package:app/utils/extensions/iterable.dart';
+>>>>>>> 3ac6eea (add estimation from activity)
 import 'package:app/utils/levels.dart';
 import 'package:app/utils/named_font_weight.dart';
 import 'package:app/utils/route_transitions/basic.dart';

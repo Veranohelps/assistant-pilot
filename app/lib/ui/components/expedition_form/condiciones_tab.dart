@@ -106,24 +106,8 @@ class _WeatherBlockState extends State<_WeatherBlock> {
       builder: (context, weatherState) {
         final weather = (weatherState as WeatherLoaded).weather;
 
-        final selectedDay = weather.days[selectedDayTabIndex];
-        final planningDay = widget.formCubit.date.state.value!;
-
-        final amountOfRanges = weather.forecastHourly.first.ranges.length;
-        final List<HourlyForecast> hourlyForecastList = [];
-        final startingTimeWithTimeZone = TimeWithTimeZone(
-          Duration(minutes: weather.metadata.timezoneUTCOffsetInMinutes),
-          selectedDay.year,
-          selectedDay.month,
-          selectedDay.day,
-          planningDay.hour,
-        );
-        for (var i = 0; i < amountOfRanges; i++) {
-          var forecast = weather.forecastHourly.firstWhere((f) =>
-              f.dateTime ==
-              startingTimeWithTimeZone.add(Duration(hours: 4 * i)));
-          hourlyForecastList.add(forecast);
-        }
+        // var forecast =
+        // hourlyForecastList.add(forecast);
 
         return ListView(
           children: [
@@ -179,33 +163,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               margin: EdgeInsets.only(left: 16),
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-              child: Text(
-                LocaleKeys.planning_conditions_metereology.tr(),
-                style: MType.h5,
-              ),
-            ),
-            BrandDivider(
-              margin: EdgeInsets.only(left: 16),
-            ),
-            ...hourlyForecastList
-                .asMap()
-                .map((k, f) => MapEntry(
-                      k,
-                      WeatherCard(
-                          rangeForecast: f.ranges[k],
-                          dateTime: f.dateTime,
-                          meteogram: weather.meteograms[k]),
-                    ))
-                .values
-                .toList(),
-            BrandDivider(
-              margin: EdgeInsets.only(left: 16),
-            ),
+            buildMetereology(context, weather),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -254,6 +212,99 @@ class _WeatherBlockState extends State<_WeatherBlock> {
         }
       }
     }
+  }
+
+  Widget buildMetereology(BuildContext context, WeatherForecast weather) {
+    final selectedDay = weather.days[selectedDayTabIndex];
+    final planningDay = widget.formCubit.date.state.value!;
+
+    final startingTimeWithTimeZone = TimeWithTimeZone(
+      Duration(minutes: weather.metadata.timezoneUTCOffsetInMinutes),
+      selectedDay.year,
+      selectedDay.month,
+      selectedDay.day,
+      planningDay.hour,
+    );
+
+    final amountOfRanges = weather.forecastHourly.first.ranges.length;
+
+    var route = widget.formCubit.route.state.value;
+    var activityType = widget.formCubit.activityTypeIds.state.value;
+
+    final List<HourlyForecast> hourlyForecastList = [
+      weather.forecastHourly
+          .firstWhere((f) => f.dateTime == startingTimeWithTimeZone)
+    ];
+
+    var isNotDataEnough = false;
+    if (activityType.isNotEmpty) {
+      var estimationByActivity = route!.estimations!.firstWhere(
+          (element) => element.activityTypeId == activityType.first);
+
+      for (var point in estimationByActivity.points) {
+        print(point.duration);
+        var e = weather.forecastHourly.firstWhereOrNull((f) =>
+            f.dateTime ==
+            startingTimeWithTimeZone
+                .add(Duration(hours: point.duration.inHours)));
+        if (e != null) {
+          hourlyForecastList.add(e);
+        } else {
+          isNotDataEnough = true;
+        }
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
+          child: Text(
+            LocaleKeys.planning_conditions_metereology.tr(),
+            style: MType.h5,
+          ),
+        ),
+        BrandDivider(
+          margin: EdgeInsets.only(left: 16),
+        ),
+        ...hourlyForecastList
+            .asMap()
+            .map((k, f) => MapEntry(
+                  k,
+                  WeatherCard(
+                      rangeForecast: f.ranges[k],
+                      dateTime: f.dateTime,
+                      meteogram: weather.meteograms[k]),
+                ))
+            .values
+            .toList(),
+        if (amountOfRanges > 1 && activityType.isEmpty) ...[
+          Center(
+            child: Text(
+              'select activity to get more data',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+        if (isNotDataEnough) ...[
+          Center(
+            child: Text(
+              'select activity to get more data',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+        BrandDivider(
+          margin: EdgeInsets.only(left: 16),
+        ),
+      ],
+    );
   }
 }
 

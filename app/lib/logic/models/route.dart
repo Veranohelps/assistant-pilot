@@ -21,7 +21,6 @@ abstract class DersuRoute extends Equatable {
   final List<String> levelIds;
   final String? description;
 
-  // final List<MultyPointGeometry> meteoPointsOfInterests;
   final double distanceInMeters;
   final double elevationGainInMeters;
   final double elevationLossInMeters;
@@ -36,7 +35,6 @@ abstract class DersuRoute extends Equatable {
     required this.userId,
     required this.updatedAt,
     required this.activityTypeIds,
-    // required this.meteoPointsOfInterests,
     required this.distanceInMeters,
     required this.elevationGainInMeters,
     required this.elevationLossInMeters,
@@ -85,7 +83,6 @@ class DersuRouteFull extends DersuRoute {
       (a, b) => a.duration.compareTo(b.duration),
     );
 
-    // NOTE (JD): we return the longest duration as a matter of safety and precaution
     return estimations!.last.duration.toDayHourMinuteFormat();
   }
 
@@ -94,6 +91,7 @@ class DersuRouteFull extends DersuRoute {
     toJson: Serialization.fromLatLngBoundsToJson,
   )
   final LatLngBounds boundaries;
+  final MultyPointGeometry meteoPointsOfInterests;
 
   const DersuRouteFull({
     required String id,
@@ -105,7 +103,7 @@ class DersuRouteFull extends DersuRoute {
     required List<String> levelIds,
     required this.coordinate,
     required this.boundaries,
-    // required List<MultyPointGeometry> meteoPointsOfInterests,
+    required this.meteoPointsOfInterests,
     required double distanceInMeters,
     required double elevationGainInMeters,
     required double elevationLossInMeters,
@@ -123,7 +121,6 @@ class DersuRouteFull extends DersuRoute {
           updatedAt: updatedAt,
           activityTypeIds: activityTypeIds,
           description: description,
-          // meteoPointsOfInterests: meteoPointsOfInterests,
           distanceInMeters: distanceInMeters,
           elevationGainInMeters: elevationGainInMeters,
           elevationLossInMeters: elevationLossInMeters,
@@ -161,7 +158,6 @@ class DersuRouteShort extends DersuRoute {
     required DateTime updatedAt,
     required List<String> activityTypeIds,
     required List<String> levelIds,
-    // required List<MultyPointGeometry> meteoPointsOfInterests,
     required double distanceInMeters,
     required double elevationGainInMeters,
     required double elevationLossInMeters,
