@@ -174,7 +174,7 @@ export class BpaReportService {
         '&&',
         zones.map((z) => z.id),
       )
-      .where('validUntilDate', '>=', this.db.knex.fn.now())
+      .where('validUntilDateTime', '>=', this.db.knex.fn.now())
       .then((res) =>
         AddFields.target(res)
           .add(
