@@ -93,6 +93,14 @@ const BpaProvider = () => {
                 <Typography textStyle="sm14" display="block">
                   {provider.description}
                 </Typography>
+                <a href={provider.url}>
+                  <Typography textStyle="sm14" display="block">
+                    {provider.url}
+                  </Typography>
+                </a>
+                <Typography textStyle="sm14" display="block">
+                  No. of reports: {provider.reportCount}
+                </Typography>
                 <FlexBox justify="flex-end">
                   <button
                     className={cls.set('viewButton')}

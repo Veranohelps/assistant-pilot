@@ -19,7 +19,7 @@ export class BpaProviderService {
   async create(tx: TransactionManager, payload: ICreateBpaProvider): Promise<IBpaProvider> {
     const [provider] = await this.db
       .write(tx)
-      .insert({ name: payload.name, description: payload.description })
+      .insert({ name: payload.name, description: payload.description, url: payload.url })
       .cReturning();
 
     return provider;

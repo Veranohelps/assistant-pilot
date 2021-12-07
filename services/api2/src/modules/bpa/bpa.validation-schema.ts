@@ -14,11 +14,13 @@ export const updateBpaZoneVSchema = Joi.object({
 export const createBpaProviderVSchema = Joi.object({
   name: Joi.string().max(255).required(),
   description: Joi.string().required(),
+  url: Joi.string().uri().required(),
 });
 
 export const updateBpaProviderVSchema = Joi.object({
   name: Joi.string().max(255),
   description: Joi.string(),
+  url: Joi.string().uri(),
 });
 
 export const createBpaReportVSchema = Joi.object({

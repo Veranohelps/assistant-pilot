@@ -37,13 +37,14 @@ export class WaypointService {
       .filter((feature) => feature.geometry.type === 'Point')
       .map((point) => {
         const geometry = point.geometry as IPointGeometry;
+        const altitude = geometry.coordinates[2];
+
+        if (!altitude) geometry.coordinates.push(0);
 
         return {
           name: point.properties?.name ?? '',
           description: point.properties?.desc,
-          gFingerprint: `${geometry.coordinates[0]}_${geometry.coordinates[1]}_${
-            geometry.coordinates[2] ?? 0
-          }`,
+          gFingerprint: `${geometry.coordinates[0]}_${geometry.coordinates[1]}_${geometry.coordinates[2]}`,
           typeIds: [],
           radiusInMeters: 100,
           originId,

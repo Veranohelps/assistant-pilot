@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { SRecord } from '../../../types/helpers.type';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { NotFoundError } from '../../common/errors/http.error';
-import { IGeoJSON, ILineStringGeometry, IPolygonGeometry } from '../../common/types/geojson.type';
+import {
+  IGeoJSON,
+  ILineStringGeometry,
+  IPolygonGeometry,
+  T2dPoint,
+} from '../../common/types/geojson.type';
 import { generateRecord2 } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
@@ -18,8 +23,12 @@ export class BpaZoneService {
 
   geoJsonToPolygonGeometry(geojson: IGeoJSON): IPolygonGeometry {
     const feature = geojson.features.find((feature) => feature.geometry.type === 'Polygon');
+    const geometry = feature?.geometry as IPolygonGeometry;
+    const coordinates = geometry.coordinates.map((coordinate) =>
+      coordinate.map(([lon, lat]) => [lon, lat] as T2dPoint),
+    );
 
-    return feature?.geometry as IPolygonGeometry;
+    return { ...geometry, coordinates };
   }
 
   async create(

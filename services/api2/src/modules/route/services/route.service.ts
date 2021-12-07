@@ -594,6 +594,7 @@ export class RouteService {
     const builder = this.db
       .read(tx, { overrides: { coordinate: { select: true } } })
       .whereIn('id', ids);
+
     const routes = await builder
       .then((res) =>
         AddFields.target(res).add('timezone', async () =>
@@ -601,6 +602,7 @@ export class RouteService {
         ),
       )
       .then(generateRecord2((r) => r.id));
+
     return routes;
   }
 
@@ -652,11 +654,27 @@ export class RouteService {
     const routes = await this.findByIds(tx, ids)
       .then((res) => Object.values(res))
       .then((res) =>
-        AddFields.target(res).add(
-          'waypoints',
-          () => this.waypointService.getRouteWaypoints(tx, ids, options),
-          (route, record) => record[route.id] ?? [],
-        ),
+        AddFields.target(res)
+          .add(
+            'waypoints',
+            () => this.waypointService.getRouteWaypoints(tx, ids, options),
+            (route, record) => record[route.id] ?? [],
+          )
+          .add(
+            'activityTypes',
+            () => this.activityTypeService.findByIds(res.map((r) => r.activityTypeIds).flat()),
+            (route, record) => route.activityTypeIds.map((id) => record[id]),
+          )
+          .add(
+            'activities',
+            () => this.routeActivityTypeService.getActivitiesByRouteIds(null, ids),
+            (route, record) => generateRecord(record[route.id], (a) => a.activityTypeId),
+          )
+          .add(
+            'levels',
+            () => this.skillLevelService.findByIds(tx, res.map((r) => r.levelIds).flat()),
+            (route, record) => route.levelIds.map((id) => record[id]),
+          ),
       )
       .then(generateRecord2((r) => r.id));
 
@@ -668,7 +686,7 @@ export class RouteService {
     id: string,
     options?: IGetRouteWaypointOptions,
   ) {
-    const route: any = await this.findOne(tx, id).then(async (r) =>
+    const route = await this.findOne(tx, id).then(async (r) =>
       AddFields.target(r)
         .add('waypoints', () =>
           this.waypointService.getRouteWaypoints(tx, [r.id], options).then((w) => w[r.id] ?? []),
@@ -681,12 +699,11 @@ export class RouteService {
             .getRouteActivities(null, r.id)
             .then(generateRecord2((a) => a.activityTypeId)),
         )
-        .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray)),
+        .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray))
+        .add('timezone', () =>
+          this.timezoneService.getTimezone(r.coordinate as ILineStringGeometry),
+        ),
     );
-    const timezone = await this.timezoneService.getTimezone(
-      route.coordinate as ILineStringGeometry,
-    );
-    route.timezone = timezone;
 
     return route;
   }

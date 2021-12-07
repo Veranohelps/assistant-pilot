@@ -41,10 +41,12 @@ export class TimezoneService {
       return null;
     }
   }
+
   getQueryParams(longitude: number, latitude: number): string {
     const timestamp = new Date().getTime() / 1000;
     return `location=${latitude}%2C${longitude}&timestamp=${timestamp}&key=${this.GOOGLE_TIMEZONE_API_KEY}`;
   }
+
   async getTimezones(routes: IRoute[]): Promise<SRecord<ITimeZone | null>> {
     const requests = routes.map(async (r) => {
       const timezone = await this.getTimezone(r.coordinate as ILineStringGeometry);

@@ -9,6 +9,8 @@ export async function up(knex: Knex): Promise<void> {
       .notNullable()
       .unique({ indexName: DatabaseConstraints.BPA_PROVIDER_NAME_UNIQUE });
     table.text('description').notNullable();
+    table.string('url', 255).notNullable();
+    table.string('logoUrl', 255).nullable();
     table.integer('reportCount').notNullable().defaultTo(0);
     table.boolean('disabled').notNullable().defaultTo(false);
     table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());

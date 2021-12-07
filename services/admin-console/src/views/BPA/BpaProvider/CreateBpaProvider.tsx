@@ -50,16 +50,19 @@ const Container = styled.div`
 interface IForm {
   name: string;
   description: string;
+  url: string;
 }
 
 const initialFormData: IForm = {
   name: '',
   description: '',
+  url: '',
 };
 
 const createSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
   description: yup.string().required('Description is required'),
+  url: yup.string().url('Field must be a valid url').required('URL is required'),
 });
 
 interface IProps {
@@ -82,6 +85,7 @@ const CreateBpaProvider = (props: IProps) => {
       setFormData({
         name: props.editingProvider.name,
         description: props.editingProvider.description,
+        url: props.editingProvider.url,
       });
     } else {
       setFormData(initialFormData);
@@ -103,6 +107,7 @@ const CreateBpaProvider = (props: IProps) => {
           const data = {
             name: values.name,
             description: values.description,
+            url: values.url,
           };
 
           if (props.editingProvider) {
@@ -122,6 +127,11 @@ const CreateBpaProvider = (props: IProps) => {
                 <FormLabel>Name</FormLabel>
                 <Field name="name" />
                 <FormErrorMessage name="name" />
+              </InputContainer>
+              <InputContainer>
+                <FormLabel>URL</FormLabel>
+                <Field name="url" />
+                <FormErrorMessage name="url" />
               </InputContainer>
               <InputContainer>
                 <FormLabel>Description</FormLabel>

@@ -25,6 +25,8 @@ export const bpaProviderEntity: IEntity<IBpaProvider> = {
   columns: {
     id: { type: 'string', defaults: { insert: () => generateId() } },
     name: { type: 'string' },
+    url: { type: 'string' },
+    logoUrl: { type: 'string' },
     description: { type: 'string' },
     reportCount: { type: 'number' },
     disabled: { type: 'boolean' },

@@ -172,7 +172,24 @@ export class BpaReportService {
         '&&',
         zones.map((z) => z.id),
       )
-      .where('validUntilDate', '>=', this.db.knex.fn.now());
+      .where('validUntilDate', '>=', this.db.knex.fn.now())
+      .then((res) =>
+        AddFields.target(res)
+          .add(
+            'provider',
+            () =>
+              this.bpaProviderService.findByIds(
+                null,
+                res.map((r) => r.providerId),
+              ),
+            (report, record) => record[report.providerId],
+          )
+          .add(
+            'zones',
+            () => this.bpaZoneService.findByIds(null, res.map((r) => r.zoneIds).flat()),
+            (report, record) => report.zoneIds.map((zoneId) => record[zoneId]),
+          ),
+      );
 
     return reports;
   }

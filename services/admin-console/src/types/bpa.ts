@@ -5,6 +5,8 @@ export interface IBpaProvider {
   id: string;
   name: string;
   description: string;
+  url: string;
+  logoUrl: string | null;
   reportCount: number;
   disabled: boolean;
 }
@@ -48,6 +50,7 @@ export interface IGetBpaProvidersResponse extends IBaseResponse {
 export interface ICreateBpaProviderPayload {
   name: string;
   description: string;
+  url: string;
 }
 
 export interface ICreateBpaProviderResponse extends IBaseResponse {
