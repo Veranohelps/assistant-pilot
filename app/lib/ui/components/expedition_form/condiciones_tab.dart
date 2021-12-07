@@ -217,7 +217,7 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               ),
             ),
             BpaReportsWidget(
-                allReports: getReports(),
+                allReports: weather.bpaReports,
                 date: weather.days[selectedDayTabIndex])
           ],
         );
@@ -437,19 +437,4 @@ class BpaReportWidget extends StatelessWidget {
 bool isSameDate(DateTime date1, DateTime date2) {
   return DateTime(date1.toUtc().year, date1.toUtc().month, date1.toUtc().day) ==
       DateTime(date2.toUtc().year, date2.toUtc().month, date2.toUtc().day);
-}
-
-List<BpaReport> getReports() {
-  List<BpaReport> reports = [];
-
-  reports.add(BpaReport(
-      url:
-          "https://storage.googleapis.com/temp-dersu-bpa-bucket/BPA_Pirineo_Cat.pdf",
-      zones: [BpaZone(name: "Segorbe"), BpaZone(name: "Jacetania")],
-      provider:
-          BpaProvider(name: 'AEMET', logoUrl: "", url: "https://www.aemet.com"),
-      publishDateTime: TimeWithTimeZone.parse("2021-12-06T00:00+01:00"),
-      validUntilDateTime: TimeWithTimeZone.parse("2021-12-07T23:59+01:00")));
-
-  return reports;
 }

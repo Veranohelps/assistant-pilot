@@ -19,4 +19,7 @@ WeatherForecast _$WeatherForecastFromJson(Map<String, dynamic> json) =>
           .toList(),
       metadata:
           WeatherMetadata.fromJson(json['metadata'] as Map<String, dynamic>),
+      bpaReports: (json['bpaReports'] as List<dynamic>)
+          .map((e) => BpaReport.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
