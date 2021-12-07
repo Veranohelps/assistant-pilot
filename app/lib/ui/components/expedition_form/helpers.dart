@@ -24,28 +24,29 @@ void setTimeFilterDate(
   if (day != null) {
     TimeOfDay? time;
     final initalTime = prevDate != null
-        ? TimeOfDay.fromDateTime(prevDate)
+        ? TimeOfDay.fromDateTime(prevDate.toFakeLocal())
         : day.isSameDate(fakeToday)
             ? TimeOfDay(hour: fakeToday.hour + 1, minute: fakeToday.minute)
             : TimeOfDay(hour: 8, minute: 0);
 
     time = await showCustomTimePicker(
-        context: context,
-        onFailValidation: (context) => print('Must be in future'),
-        initialTime: initalTime,
-        selectableTimePredicate: (time) {
-          if (day.isSameDate(fakeToday)) {
-            return fakeToday.add(Duration(minutes: 30)).isBefore(DateTime(
-                  fakeToday.year,
-                  fakeToday.month,
-                  fakeToday.day,
-                  time!.hour,
-                  time.minute,
-                ));
-          } else {
-            return true;
-          }
-        });
+      context: context,
+      onFailValidation: (context) => print('Must be in future'),
+      initialTime: initalTime,
+      selectableTimePredicate: (time) {
+        if (day.isSameDate(fakeToday)) {
+          return fakeToday.add(Duration(minutes: 30)).isBefore(DateTime(
+                fakeToday.year,
+                fakeToday.month,
+                fakeToday.day,
+                time!.hour,
+                time.minute,
+              ));
+        } else {
+          return true;
+        }
+      },
+    );
 
     if (time != null) {
       final dayTime =
