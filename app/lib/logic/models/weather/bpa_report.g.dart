@@ -7,14 +7,15 @@ part of 'bpa_report.dart';
 // **************************************************************************
 
 BpaReport _$BpaReportFromJson(Map<String, dynamic> json) => BpaReport(
-      url: json['resourceUrl'] as String,
+      url: json['url'] as String,
       zones: (json['zones'] as List<dynamic>)
           .map((e) => BpaZone.fromJson(e as Map<String, dynamic>))
           .toList(),
       provider: BpaProvider.fromJson(json['provider'] as Map<String, dynamic>),
-      publishDateTime: TimeWithTimeZone.parse(json['publishDate'] as String),
+      publishDateTime:
+          TimeWithTimeZone.parse(json['publishDateTime'] as String),
       validUntilDateTime:
-          TimeWithTimeZone.parse(json['validUntilDate'] as String),
+          TimeWithTimeZone.parse(json['validUntilDateTime'] as String),
     );
 
 BpaProvider _$BpaProviderFromJson(Map<String, dynamic> json) => BpaProvider(

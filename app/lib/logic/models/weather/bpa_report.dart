@@ -5,15 +5,14 @@ part 'bpa_report.g.dart';
 
 @JsonSerializable(createToJson: false)
 class BpaReport {
-  @JsonKey(name: 'resourceUrl')
   final String url;
   final BpaProvider provider;
   final List<BpaZone> zones;
 
-  @JsonKey(name: 'publishDate', fromJson: TimeWithTimeZone.parse)
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
   final TimeWithTimeZone publishDateTime;
 
-  @JsonKey(name: 'validUntilDate', fromJson: TimeWithTimeZone.parse)
+  @JsonKey(fromJson: TimeWithTimeZone.parse)
   final TimeWithTimeZone validUntilDateTime;
 
   BpaReport(
