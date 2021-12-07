@@ -86,8 +86,8 @@ export const createBpaReportService = async (data: ICreatBpaReportPayload) => {
     form.append('zoneIds', zoneId);
   });
   form.append('providerId', data.providerId);
-  form.append('publishDate', data.publishDate.toISOString());
-  form.append('validUntilDate', data.validUntilDate.toISOString());
+  form.append('publishDateTime', data.publishDateTime.toISOString());
+  form.append('validUntilDateTime', data.validUntilDateTime.toISOString());
   form.append('pdf', data.pdf);
 
   const response = await bpaHttp
@@ -104,8 +104,8 @@ export const updateBpaReportService = async (id: string, data: Partial<ICreatBpa
     form.append('zoneIds', zoneId);
   });
   data.providerId && form.append('providerId', data.providerId);
-  data.publishDate && form.append('publishDate', data.publishDate.toISOString());
-  data.validUntilDate && form.append('validUntilDate', data.validUntilDate.toISOString());
+  data.publishDateTime && form.append('publishDateTime', data.publishDateTime.toISOString());
+  data.validUntilDateTime && form.append('validUntilDateTime', data.validUntilDateTime.toISOString());
   data.pdf && form.append('pdf', data.pdf);
 
   const response = await bpaHttp

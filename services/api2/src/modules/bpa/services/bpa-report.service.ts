@@ -61,9 +61,9 @@ export class BpaReportService {
       .insert({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        publishDate: startOfDay(payload.publishDate),
-        validUntilDate: endOfDay(payload.validUntilDate),
-        resourceUrl: fileUrl,
+        publishDateTime: startOfDay(payload.publishDateTime),
+        validUntilDateTime: endOfDay(payload.validUntilDateTime),
+        url: fileUrl,
       })
       .cReturning();
 
@@ -94,7 +94,7 @@ export class BpaReportService {
         );
       }
 
-      await this.gcpUploadService.deleteFile(tx, this.bpaBucket, report.resourceUrl);
+      await this.gcpUploadService.deleteFile(tx, this.bpaBucket, report.url);
     }
 
     if (payload.providerId) {
@@ -118,9 +118,11 @@ export class BpaReportService {
       .update({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        ...(payload.publishDate && { publishDate: startOfDay(payload.publishDate) }),
-        ...(payload.validUntilDate && { validUntilDate: endOfDay(payload.validUntilDate) }),
-        resourceUrl: fileUrl,
+        ...(payload.publishDateTime && { publishDateTime: startOfDay(payload.publishDateTime) }),
+        ...(payload.validUntilDateTime && {
+          validUntilDateTime: endOfDay(payload.validUntilDateTime),
+        }),
+        url: fileUrl,
       })
       .cReturning();
 
@@ -138,7 +140,7 @@ export class BpaReportService {
     const [deleted] = await this.db.write(tx).where({ id }).del().cReturning();
 
     await this.updateCounts(tx, deleted, -1);
-    await this.gcpUploadService.deleteFile(tx, this.bpaBucket, deleted.resourceUrl);
+    await this.gcpUploadService.deleteFile(tx, this.bpaBucket, deleted.url);
 
     if (!deleted) {
       throw new NotFoundError(ErrorCodes.BPA_REPORT_NOT_FOUND, 'BPA report not found');
@@ -197,7 +199,7 @@ export class BpaReportService {
   async getReports(): Promise<IBpaReportFull[]> {
     const reports = await this.db
       .read()
-      .orderBy('publishDate', 'desc')
+      .orderBy('publishDateTime', 'desc')
       .then((res) =>
         AddFields.target(res)
           .add(

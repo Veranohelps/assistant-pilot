@@ -101,7 +101,7 @@ const BpaReport = () => {
                     Zones: {report.zones?.map((zone) => zone.name).join(' | ')}
                   </Typography>
                   <Typography textStyle="sm14" display="block">
-                    Resource URL: {report.resourceUrl}
+                    Resource URL: {report.url}
                   </Typography>
                 </GridBox>
                 <GridBox justify="flex-end" direction="column" gap={16}>

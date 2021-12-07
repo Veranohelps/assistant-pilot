@@ -11,9 +11,9 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('BpaProvider')
       .withKeyName(DatabaseConstraints.BPA_REPORT_PROVIDER_ID_FKEY);
-    table.timestamp('publishDate').notNullable();
-    table.timestamp('validUntilDate').notNullable();
-    table.text('resourceUrl').notNullable();
+    table.timestamp('publishDateTime').notNullable();
+    table.timestamp('validUntilDateTime').notNullable();
+    table.text('url').notNullable();
     table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());
     table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
 

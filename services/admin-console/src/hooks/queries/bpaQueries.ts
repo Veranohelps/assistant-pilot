@@ -1,6 +1,14 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
-import { getBpaProvidersService, getBpaReportsService, getBpaZonesService } from '../../services/bpaService';
-import { IGetBpaProvidersResponse, IGetBpaReportsResponse, IGetBpaZonesResponse } from '../../types/bpa';
+import {
+  getBpaProvidersService,
+  getBpaReportsService,
+  getBpaZonesService,
+} from '../../services/bpaService';
+import {
+  IGetBpaProvidersResponse,
+  IGetBpaReportsResponse,
+  IGetBpaZonesResponse,
+} from '../../types/bpa';
 
 type TQueryOptions<T1, T2> = Omit<
   UseQueryOptions<T1, unknown, T2, string[]>,

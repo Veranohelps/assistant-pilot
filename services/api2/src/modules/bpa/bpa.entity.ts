@@ -38,9 +38,9 @@ export const bpaReportEntity: IEntity<IBpaReport> = {
     id: { type: 'string', defaults: { insert: () => generateId() } },
     providerId: { type: 'string' },
     zoneIds: { type: 'array' },
-    resourceUrl: { type: 'string' },
-    publishDate: { type: 'date' },
-    validUntilDate: { type: 'date' },
+    url: { type: 'string' },
+    publishDateTime: { type: 'date' },
+    validUntilDateTime: { type: 'date' },
   },
 };
 

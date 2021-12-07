@@ -1,4 +1,4 @@
-import { addDays, format, max, startOfToday } from 'date-fns';
+import { addDays, format, max, startOfDay, startOfToday } from 'date-fns';
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -71,36 +71,38 @@ const Container = styled.div`
 interface IForm {
   zoneIds: string[];
   providerId: string;
-  publishDate: Date;
-  validUntilDate: Date;
+  publishDateTime: Date;
+  validUntilDateTime: Date;
   pdf: File | null;
 }
 
 const initialFormData: IForm = {
   zoneIds: [],
   providerId: '',
-  publishDate: new Date(),
-  validUntilDate: addDays(new Date(), 1),
+  publishDateTime: startOfToday(),
+  validUntilDateTime: addDays(startOfToday(), 1),
   pdf: null,
 };
 
 const createSchema = yup.object().shape({
   providerId: yup.string().required('Choose a provider'),
   zoneIds: yup.array().min(1, 'Select a zone'),
-  publishDate: yup.date().min(startOfToday(), 'Publish date must be at least today').required(),
-  validUntilDate: yup
+  publishDateTime: yup.date().max(startOfToday(), 'Publish date must be at most today').required(),
+  validUntilDateTime: yup
     .date()
-    .min(yup.ref('publishDate'), 'Valid until must be greater than publish date')
+    .min(startOfToday(), 'Valid until date must be at least today')
+    .min(yup.ref('publishDateTime'), 'Valid until must be greater than publish date')
     .required(),
   pdf: yup.mixed().nullable().required('Report PDF is required'),
 });
 const editSchema = yup.object().shape({
   providerId: yup.string().required('Choose a provider'),
   zoneIds: yup.array().min(1, 'Select a zone'),
-  publishDate: yup.date().min(startOfToday(), 'Publish date must be at least today').required(),
-  validUntilDate: yup
+  publishDateTime: yup.date().max(startOfToday(), 'Publish date must be at most today').required(),
+  validUntilDateTime: yup
     .date()
-    .min(yup.ref('publishDate'), 'Valid until must be greater than publish date')
+    .min(startOfToday(), 'Valid until date must be at least today')
+    .min(yup.ref('publishDateTime'), 'Valid until must be greater than publish date')
     .required(),
 });
 
@@ -128,8 +130,8 @@ const CreateBpaReport = (props: IProps) => {
       setFormData({
         zoneIds: props.editingReport.zoneIds,
         providerId: props.editingReport.providerId,
-        publishDate: new Date(props.editingReport.publishDate),
-        validUntilDate: new Date(props.editingReport.validUntilDate),
+        publishDateTime: new Date(props.editingReport.publishDateTime),
+        validUntilDateTime: new Date(props.editingReport.validUntilDateTime),
         pdf: null,
       });
     } else {
@@ -152,8 +154,8 @@ const CreateBpaReport = (props: IProps) => {
           const data = {
             zoneIds: values.zoneIds,
             providerId: values.providerId!,
-            publishDate: values.publishDate!,
-            validUntilDate: values.validUntilDate!,
+            publishDateTime: values.publishDateTime!,
+            validUntilDateTime: values.validUntilDateTime!,
           };
 
           if (props.editingReport) {
@@ -167,6 +169,7 @@ const CreateBpaReport = (props: IProps) => {
         }}
       >
         {({ isSubmitting, values, setFieldValue }) => {
+          console.log(values.publishDateTime, startOfDay(values.publishDateTime), startOfToday())
           return (
             <Form>
               <InputContainer>
@@ -211,25 +214,25 @@ const CreateBpaReport = (props: IProps) => {
                 <FormLabel>Publish date</FormLabel>
                 <input
                   type="date"
-                  name="publishDate"
+                  name="publishDateTime"
                   disabled={!!props.editingReport}
                   max={format(new Date(), 'yyyy-MM-dd')}
-                  value={format(values.publishDate, 'yyyy-MM-dd')}
-                  onChange={(e) => setFieldValue('publishDate', new Date(e.target.value))}
+                  value={format(values.publishDateTime, 'yyyy-MM-dd')}
+                  onChange={(e) => setFieldValue('publishDateTime', startOfDay(new Date(e.target.value)))}
                 />
-                <FormErrorMessage name="publishDate" />
+                <FormErrorMessage name="publishDateTime" />
               </InputContainer>
               <InputContainer>
                 <FormLabel>Valid until</FormLabel>
                 <input
                   type="date"
-                  name="validUntilDate"
+                  name="validUntilDateTime"
                   disabled={!!props.editingReport}
-                  min={format(max([addDays(values.publishDate, 1), startOfToday()]), 'yyyy-MM-dd')}
-                  value={format(values.validUntilDate, 'yyyy-MM-dd')}
-                  onChange={(e) => setFieldValue('validUntilDate', new Date(e.target.value))}
+                  min={format(max([addDays(values.publishDateTime, 1), startOfToday()]), 'yyyy-MM-dd')}
+                  value={format(values.validUntilDateTime, 'yyyy-MM-dd')}
+                  onChange={(e) => setFieldValue('validUntilDateTime', new Date(e.target.value))}
                 />
-                <FormErrorMessage name="validUntilDate" />
+                <FormErrorMessage name="validUntilDateTime" />
               </InputContainer>
               <InputContainer>
                 <FormLabel>Upload report PDF</FormLabel>

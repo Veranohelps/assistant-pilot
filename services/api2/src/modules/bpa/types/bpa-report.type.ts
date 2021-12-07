@@ -5,9 +5,9 @@ export interface IBpaReport {
   id: string;
   providerId: string;
   zoneIds: string[];
-  publishDate: Date;
-  validUntilDate: Date;
-  resourceUrl: string;
+  publishDateTime: Date;
+  validUntilDateTime: Date;
+  url: string;
 }
 
 export interface IBpaReportFull extends IBpaReport {
@@ -18,14 +18,14 @@ export interface IBpaReportFull extends IBpaReport {
 export interface ICreateBpaReport {
   providerId: string;
   zoneIds: string[];
-  publishDate: Date;
-  validUntilDate: Date;
-  resourceUrl: string;
+  publishDateTime: Date;
+  validUntilDateTime: Date;
+  url: string;
 }
 
 export interface ICreateBpaReportDTO {
   zoneIds: string[];
   providerId: string;
-  publishDate: Date;
-  validUntilDate: Date;
+  publishDateTime: Date;
+  validUntilDateTime: Date;
 }

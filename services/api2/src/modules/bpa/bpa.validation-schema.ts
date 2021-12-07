@@ -26,13 +26,13 @@ export const updateBpaProviderVSchema = Joi.object({
 export const createBpaReportVSchema = Joi.object({
   zoneIds: Joi.array().single().min(1).items(Joi.string()).required(),
   providerId: Joi.string().required(),
-  publishDate: Joi.date()
+  publishDateTime: Joi.date()
     .max(endOfToday())
     .required()
     .custom((val) => startOfDay(val)),
-  validUntilDate: Joi.date()
+  validUntilDateTime: Joi.date()
     .min(startOfToday())
-    .greater(Joi.ref('publishDate'))
+    .greater(Joi.ref('publishDateTime'))
     .required()
     .custom((val) => endOfDay(val)),
 });
