@@ -328,7 +328,7 @@ resource "google_storage_bucket" "bpa-reports-bucket" {
   storage_class = "STANDARD"
 }
 
-resource "google_storage_default_object_access_control" "public_rule" {
+resource "google_storage_default_object_access_control" "public_rule_bpa" {
   bucket = google_storage_bucket.bpa-reports-bucket.name
   role   = "READER"
   entity = "allUsers"
