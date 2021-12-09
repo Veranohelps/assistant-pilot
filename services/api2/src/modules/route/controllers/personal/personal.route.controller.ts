@@ -75,6 +75,14 @@ export class PersonalRouteController {
     return SuccessResponse.transform(weather);
   }
 
+  @Get(':routeId/weather2')
+  @HttpCode(HttpStatus.OK)
+  async getRouteWeather2(@Param('routeId') id: string) {
+    const weather = await this.routeService.getRouteWeather(id);
+
+    return successResponse('Route weather report', { weather });
+  }
+
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('gpx'))
