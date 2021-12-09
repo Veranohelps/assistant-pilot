@@ -440,18 +440,10 @@ class BpaReportWidget extends StatelessWidget {
           GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => ExternalUrls.launchUrl(report.provider.url),
-              child: RichText(
-                  text: TextSpan(
-                      style: ThemeTypo.defaultText,
-                      text: LocaleKeys
-                              .planning_conditions_bpa_report_provided_by
-                              .tr() +
-                          ": ",
-                      children: [
-                    TextSpan(
-                        text: report.provider.name,
-                        style: TextStyle(decoration: TextDecoration.underline))
-                  ]))),
+              child: Text(
+                  LocaleKeys.planning_conditions_bpa_report_provided_by.tr() +
+                      ": " +
+                      report.provider.name)),
         ]));
   }
 }
