@@ -2,21 +2,11 @@ import 'package:app/logic/models/time_with_timezone.dart';
 import 'package:app/utils/extensions/lat_lng_bounds.dart';
 import 'package:flutter_map/flutter_map.dart';
 
-import 'estimation.dart';
-
 // ignore: prefer_void_to_null
 Null readonly(_) => null;
 
 class Serialization {
   static const Function readOnly = readonly;
-
-  static List<Estimation>? toEstimations(Map<String, dynamic>? json) {
-    if (json == null) {
-      return null;
-    }
-    var list = json.values;
-    return list.map((object) => Estimation.fromJson(object)).toList();
-  }
 
   static Duration fromMinutesToDuration(double number) {
     return Duration(minutes: number.toInt());

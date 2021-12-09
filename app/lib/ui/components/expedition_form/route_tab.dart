@@ -320,14 +320,13 @@ class _RutaTabState extends State<RutaTab> {
 
   Widget _buildElevationBlock(DersuRouteFull route) {
     final activityTypeIds = widget.formCubit.activityTypeIds.state.value;
-    var time = activityTypeIds.isEmpty || route.estimations == null
-        ? route.timeEstimation
-        : route.estimations!
+    var duration = activityTypeIds.isEmpty
+        ? route.estimations.last.duration
+        : route.estimations
             .firstWhere(
-              (element) => element.activityTypeId == activityTypeIds.first,
-            )
-            .duration
-            .toDayHourMinuteFormat();
+                (element) => element.activityTypeId == activityTypeIds.first)
+            .duration;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -364,7 +363,7 @@ class _RutaTabState extends State<RutaTab> {
                     ),
                     detailElement(
                       LocaleKeys.planning_route_details_duration.tr(),
-                      time,
+                      duration.toDayHourMinuteFormat(),
                     ),
                   ],
                 ),

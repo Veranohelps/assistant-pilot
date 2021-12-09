@@ -1,6 +1,5 @@
 import 'package:app/logic/models/estimation.dart';
 import 'package:app/logic/models/timezone.dart';
-import 'package:app/utils/extensions/duration.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -63,28 +62,31 @@ abstract class DersuRoute extends Equatable {
       number.round() == 0 ? '1' : number.round().toString();
 }
 
+List<Estimation> sorted(List<Estimation> list) {
+  list.sort((a, b) => a.duration.compareTo(b.duration));
+  return list;
+}
+
 @JsonSerializable()
 class DersuRouteFull extends DersuRoute {
   final LineStringGeometry coordinate;
   final List<Waypoint> waypoints;
   final Timezone timezone;
 
-  @JsonKey(
-    name: 'activities',
-    fromJson: Serialization.toEstimations,
-  )
-  final List<Estimation>? estimations;
+  final List<Estimation> _estimations;
 
-  String get timeEstimation {
-    if (estimations == null) {
-      return '-';
-    }
-    estimations!.sort(
+  @JsonKey(name: 'activities')
+  List<Estimation> get estimations {
+    /// always sorted from fastest to slowest
+    final list = [..._estimations];
+    list.sort(
       (a, b) => a.duration.compareTo(b.duration),
     );
 
-    return estimations!.last.duration.toDayHourMinuteFormat();
+    return list;
   }
+
+  Estimation get slowest => estimations.last;
 
   @JsonKey(
     fromJson: Serialization.fromJsonToLatLngBounds,
@@ -110,10 +112,11 @@ class DersuRouteFull extends DersuRoute {
     required double highestPointInMeters,
     required double lowestPointInMeters,
     required this.timezone,
-    required this.estimations,
+    required List<Estimation> estimations,
     this.waypoints = const [],
     String? userId,
-  }) : super(
+  })  : _estimations = estimations,
+        super(
           id: id,
           name: name,
           originId: originId,
@@ -136,6 +139,7 @@ class DersuRouteFull extends DersuRoute {
         ...super.props,
         ...coordinates,
         ...waypoints,
+        ...estimations,
         boundaries,
         timezone,
       ];
@@ -173,7 +177,6 @@ class DersuRouteShort extends DersuRoute {
           userId: userId,
           updatedAt: updatedAt,
           activityTypeIds: activityTypeIds,
-          // meteoPointsOfInterests: meteoPointsOfInterests,
           distanceInMeters: distanceInMeters,
           elevationGainInMeters: elevationGainInMeters,
           elevationLossInMeters: elevationLossInMeters,
@@ -197,4 +200,8 @@ enum OriginId {
   dersu,
   @JsonValue("manual")
   manual,
+}
+
+List<Estimation> ab(List<Estimation> list) {
+  return list;
 }

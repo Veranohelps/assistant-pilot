@@ -106,9 +106,6 @@ class _WeatherBlockState extends State<_WeatherBlock> {
       builder: (context, weatherState) {
         final weather = (weatherState as WeatherLoaded).weather;
 
-        // var forecast =
-        // hourlyForecastList.add(forecast);
-
         return ListView(
           children: [
             if (widget.isEditable)
@@ -226,8 +223,6 @@ class _WeatherBlockState extends State<_WeatherBlock> {
       planningDay.hour,
     );
 
-    final amountOfRanges = weather.forecastHourly.first.ranges.length;
-
     var route = widget.formCubit.route.state.value;
     var activityType = widget.formCubit.activityTypeIds.state.value;
 
@@ -236,22 +231,18 @@ class _WeatherBlockState extends State<_WeatherBlock> {
           .firstWhere((f) => f.dateTime == startingTimeWithTimeZone)
     ];
 
-    var isNotDataEnough = false;
-    if (activityType.isNotEmpty) {
-      var estimationByActivity = route!.estimations!.firstWhere(
-          (element) => element.activityTypeId == activityType.first);
+    var estimationByActivity = activityType.isEmpty
+        ? route!.slowest
+        : route!.estimations.firstWhere(
+            (element) => element.activityTypeId == activityType.first);
 
-      for (var point in estimationByActivity.points) {
-        print(point.duration);
-        var e = weather.forecastHourly.firstWhereOrNull((f) =>
-            f.dateTime ==
-            startingTimeWithTimeZone
-                .add(Duration(hours: point.duration.inHours)));
-        if (e != null) {
-          hourlyForecastList.add(e);
-        } else {
-          isNotDataEnough = true;
-        }
+    for (var point in estimationByActivity.points) {
+      var e = weather.forecastHourly.firstWhereOrNull((f) =>
+          f.dateTime ==
+          startingTimeWithTimeZone
+              .add(Duration(hours: point.duration.inHours)));
+      if (e != null) {
+        hourlyForecastList.add(e);
       }
     }
 
@@ -282,24 +273,6 @@ class _WeatherBlockState extends State<_WeatherBlock> {
                 ))
             .values
             .toList(),
-        if (amountOfRanges > 1 && activityType.isEmpty) ...[
-          Center(
-            child: Text(
-              'select activity to get more data',
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: 20),
-        ],
-        if (isNotDataEnough) ...[
-          Center(
-            child: Text(
-              'select activity to get more data',
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: 20),
-        ],
         BrandDivider(
           margin: EdgeInsets.only(left: 16),
         ),

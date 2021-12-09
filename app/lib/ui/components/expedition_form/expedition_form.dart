@@ -34,11 +34,8 @@ import 'package:app/ui/components/static_map/static_map.dart';
 import 'package:app/ui/pages/expedition_live/expedition_live.dart';
 import 'package:app/ui/pages/image_viewer/image_viewer.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
-<<<<<<< HEAD
 import 'package:app/utils/extensions/duration.dart';
-=======
 import 'package:app/utils/extensions/iterable.dart';
->>>>>>> 3ac6eea (add estimation from activity)
 import 'package:app/utils/levels.dart';
 import 'package:app/utils/named_font_weight.dart';
 import 'package:app/utils/route_transitions/basic.dart';
