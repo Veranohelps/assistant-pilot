@@ -18,7 +18,6 @@ class _RutaTabState extends State<RutaTab> {
   @override
   Widget build(BuildContext context) {
     final route = widget.formCubit.route.state.value!;
-
     return ListView(
       children: [
         _buildMapBlock(route),
@@ -28,8 +27,39 @@ class _RutaTabState extends State<RutaTab> {
         _routeDetails(context, route),
         if (route.originId == OriginId.dersu) _activityDetails(context, route),
         SizedBox(height: 20),
+        _waypointsBlock(context, route),
+        SizedBox(height: 20),
       ],
     );
+  }
+
+  Widget _waypointsBlock(BuildContext context, DersuRouteFull route) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        getSubtitle(LocaleKeys.planning_route_details_waypoints.tr()),
+        for (var waypoint in route.waypoints) getWaypoint(waypoint)
+      ],
+    );
+  }
+
+  Widget getWaypoint(Waypoint waypoint) {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              waypoint.name,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            if (waypoint.description != null &&
+                waypoint.description!.isNotEmpty)
+              Text(waypoint.description!),
+            SizedBox(height: 12),
+          ],
+        ));
   }
 
   Widget _buildMapBlock(DersuRouteFull route) {
@@ -289,6 +319,15 @@ class _RutaTabState extends State<RutaTab> {
   }
 
   Widget _buildElevationBlock(DersuRouteFull route) {
+    final activityTypeIds = widget.formCubit.activityTypeIds.state.value;
+    var time = activityTypeIds.isEmpty || route.estimations == null
+        ? route.timeEstimation
+        : route.estimations!
+            .firstWhere(
+              (element) => element.activityTypeId == activityTypeIds.first,
+            )
+            .duration
+            .toDayHourMinuteFormat();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -323,6 +362,10 @@ class _RutaTabState extends State<RutaTab> {
                       LocaleKeys.planning_route_details_distance.tr(),
                       '${route.distanceInMetersToString} km',
                     ),
+                    detailElement(
+                      LocaleKeys.planning_route_details_duration.tr(),
+                      time,
+                    ),
                   ],
                 ),
               ),
@@ -355,4 +398,3 @@ class _RutaTabState extends State<RutaTab> {
   }
 }
 //LocaleKeys.planning_route_details_activities.tr()
-

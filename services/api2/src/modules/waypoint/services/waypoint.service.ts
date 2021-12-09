@@ -220,7 +220,15 @@ export class WaypointService {
     options: IGetRouteWaypointOptions = { searchWaypointsBy: 'track' },
   ) {
     const opts = new AppQuery(options);
-    const builder = this.db.read(tx).select({ routeId: 'Route.id' });
+    const builder = this.db
+      .read(tx)
+      .select({ routeId: 'Route.id' })
+      .orderByRaw(
+        this.db.knex.raw('ST_LineLocatePoint(??::geometry, ??::geometry) asc', [
+          'Route.coordinate',
+          'Waypoint.coordinate',
+        ]),
+      );
 
     opts
       .withFieldValue('searchWaypointsBy', 'track', () => {

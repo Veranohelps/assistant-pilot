@@ -71,7 +71,9 @@
       "elevation_loss": "Desnivel negativo",
       "activities": "Actividades",
       "elevation_profile": "Perfil de elevación",
-      "no_description": "Sin descripción"
+      "no_description": "Sin descripción",
+      "waypoints": "Puntos de ruta",
+      "duration":"Duración"
     },
     "conditions": {
       "date_time_departure": "Fecha y hora de salida",

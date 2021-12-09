@@ -9,6 +9,7 @@ void main() {
     "id": "KWvknoVS9x52jBkqqDDmYO",
     "typeIds": ["waypoint"],
     "name": "Cruce, recto",
+    "description": "Una descripcion",
     "radiusInMeters": 100,
     "coordinate": {
       "type": "Point",
@@ -22,6 +23,7 @@ void main() {
       var waypoint = Waypoint.fromJson(json);
       expect(waypoint.id, json['id']);
       expect(waypoint.name, json['name']);
+      expect(waypoint.description, json['description']);
       expect(waypoint.typeIds, json['typeIds']);
       expect(waypoint.radiusInMeters, json['radiusInMeters']);
       expect(
@@ -51,6 +53,7 @@ void main() {
       var waypoint = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
+        description: "Una descripcion",
         typeIds: const ['waypoint'],
         // NOTE (JD): this is a hardocde to hack the test
         radiusInMeters: 25,
@@ -70,6 +73,7 @@ void main() {
       var waypoint1 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
+        description: "Una descripcion",
         typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
@@ -84,6 +88,7 @@ void main() {
       var waypoint2 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "Cruce, recto",
+        description: "Una descripcion",
         typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),
@@ -98,6 +103,7 @@ void main() {
       var waypoint3 = Waypoint(
         id: "KWvknoVS9x52jBkqqDDmYO",
         name: "another",
+        description: "Una descripcion",
         typeIds: const ['waypoint'],
         radiusInMeters: 100,
         updatedAt: DateTime.parse('2021-09-09T13:54:50.909Z'),

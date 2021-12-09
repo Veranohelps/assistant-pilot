@@ -71,7 +71,9 @@
       "elevation_loss": "Elevation loss",
       "activities": "Activities",
       "elevation_profile": "Elevation profile",
-      "no_description": "No description"
+      "no_description": "No description",
+      "waypoints": "Waypoints",
+      "duration":"Duration"
     },
     
     "conditions": {

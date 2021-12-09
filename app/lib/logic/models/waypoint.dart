@@ -10,6 +10,7 @@ class Waypoint extends Equatable {
     required this.id,
     required this.typeIds,
     required this.name,
+    required this.description,
     required this.radiusInMeters,
     required this.updatedAt,
     required this.coordinate,
@@ -18,6 +19,7 @@ class Waypoint extends Equatable {
   final String id;
   final List<String> typeIds;
   final String name;
+  final String? description;
   final num radiusInMeters;
   final PointGeometry coordinate;
   final DateTime updatedAt;
@@ -36,6 +38,13 @@ class Waypoint extends Equatable {
   Map<String, dynamic> toJson() => _$WaypointToJson(this);
 
   @override
-  List<Object?> get props =>
-      [id, name, ...typeIds, radiusInMeters, updatedAt, coordinate];
+  List<Object?> get props => [
+        id,
+        name,
+        description,
+        ...typeIds,
+        radiusInMeters,
+        updatedAt,
+        coordinate
+      ];
 }

@@ -11,4 +11,15 @@ extension DurationFormatter on Duration {
       return seg.toString().padLeft(2, '0');
     }).join(':');
   }
+
+  String toDayHourMinuteFormat() {
+    this.toString();
+    var segments = [
+      this.inHours.remainder(24),
+      this.inMinutes.remainder(60),
+    ].map((seg) {
+      return seg.toString().padLeft(2, '0');
+    });
+    return segments.first + "h" + " " + segments.last + "m";
+  }
 }

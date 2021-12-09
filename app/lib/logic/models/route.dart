@@ -1,4 +1,6 @@
+import 'package:app/logic/models/estimation.dart';
 import 'package:app/logic/models/timezone.dart';
+import 'package:app/utils/extensions/duration.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -70,6 +72,24 @@ class DersuRouteFull extends DersuRoute {
   final Timezone timezone;
 
   @JsonKey(
+    name: 'activities',
+    fromJson: Serialization.toEstimations,
+  )
+  final List<Estimation>? estimations;
+
+  String get timeEstimation {
+    if (estimations == null) {
+      return '-';
+    }
+    estimations!.sort(
+      (a, b) => a.duration.compareTo(b.duration),
+    );
+
+    // NOTE (JD): we return the longest duration as a matter of safety and precaution
+    return estimations!.last.duration.toDayHourMinuteFormat();
+  }
+
+  @JsonKey(
     fromJson: Serialization.fromJsonToLatLngBounds,
     toJson: Serialization.fromLatLngBoundsToJson,
   )
@@ -92,6 +112,7 @@ class DersuRouteFull extends DersuRoute {
     required double highestPointInMeters,
     required double lowestPointInMeters,
     required this.timezone,
+    required this.estimations,
     this.waypoints = const [],
     String? userId,
   }) : super(

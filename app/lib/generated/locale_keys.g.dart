@@ -66,6 +66,8 @@ abstract class  LocaleKeys {
   static const planning_route_details_activities = 'planning.route_details.activities';
   static const planning_route_details_elevation_profile = 'planning.route_details.elevation_profile';
   static const planning_route_details_no_description = 'planning.route_details.no_description';
+  static const planning_route_details_waypoints = 'planning.route_details.waypoints';
+  static const planning_route_details_duration = 'planning.route_details.duration';
   static const planning_route_details = 'planning.route_details';
   static const planning_conditions_date_time_departure = 'planning.conditions.date_time_departure';
   static const planning_conditions_select = 'planning.conditions.select';
