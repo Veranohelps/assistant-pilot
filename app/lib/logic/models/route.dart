@@ -75,7 +75,10 @@ class DersuRouteFull extends DersuRoute {
 
   final List<Estimation> _estimations;
 
-  @JsonKey(name: 'activities')
+  @JsonKey(
+    name: 'activities',
+    fromJson: Serialization.fromJsonMapToEsitmationList,
+  )
   List<Estimation> get estimations {
     /// always sorted from fastest to slowest
     final list = [..._estimations];
