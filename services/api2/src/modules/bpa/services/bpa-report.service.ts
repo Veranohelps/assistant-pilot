@@ -55,8 +55,7 @@ export class BpaReportService {
       );
     }
 
-    // const fileUrl = await this.gcpUploadService.uploadFile(tx, this.bpaBucket, file);
-    const fileUrl = 'www.url.com';
+    const fileUrl = await this.gcpUploadService.uploadFile(tx, this.bpaBucket, file);
     const [report] = await this.db
       .write(tx)
       .insert({
