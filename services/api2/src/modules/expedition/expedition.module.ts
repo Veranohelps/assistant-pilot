@@ -3,9 +3,7 @@ import { DatabaseModule } from '../database/database.module';
 import { RouteModule } from '../route/route.module';
 import { UserModule } from '../user/user.module';
 import { WaypointModule } from '../waypoint/waypoint.module';
-import { MeteoblueService } from '../weather/services/meteoblue.service';
-import { OpenWeatherService } from '../weather/services/openweather.service';
-import { WeatherService } from '../weather/services/weather.service';
+import { WeatherModule } from '../weather/weather.module';
 import { AdminExpeditionController } from './controllers/admin/admin.expedition.controller';
 import { PersonalExpeditionUserController } from './controllers/personal/personal.expedition-user.controller';
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';
@@ -21,6 +19,7 @@ import { ExpeditionService } from './services/expedition.service';
     WaypointModule,
     RouteModule,
     UserModule,
+    WeatherModule,
   ],
   controllers: [
     AdminExpeditionController,
@@ -32,19 +31,10 @@ import { ExpeditionService } from './services/expedition.service';
     ExpeditionRouteService,
     ExpeditionUserService,
     ExpeditionResolver,
-    WeatherService,
-    MeteoblueService,
-    OpenWeatherService,
 
     // event handlers
     ExpeditionEventHandler,
   ],
-  exports: [
-    ExpeditionService,
-    ExpeditionRouteService,
-    ExpeditionUserService,
-    WeatherService,
-    MeteoblueService,
-  ],
+  exports: [ExpeditionService, ExpeditionRouteService, ExpeditionUserService],
 })
 export class ExpeditionModule {}

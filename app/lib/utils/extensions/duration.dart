@@ -2,7 +2,6 @@
 
 extension DurationFormatter on Duration {
   String toDayHourMinuteSecondFormat() {
-    this.toString();
     return [
       this.inHours.remainder(24),
       this.inMinutes.remainder(60),
@@ -13,7 +12,6 @@ extension DurationFormatter on Duration {
   }
 
   String toDayHourMinuteFormat() {
-    this.toString();
     var segments = [
       this.inHours.remainder(24),
       this.inMinutes.remainder(60),

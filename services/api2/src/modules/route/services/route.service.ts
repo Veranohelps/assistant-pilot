@@ -26,6 +26,7 @@ import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { SkillLevelService } from '../../skill/services/skill-level.service';
 import { WaypointService } from '../../waypoint/services/waypoint.service';
 import { IGetRouteWaypointOptions } from '../../waypoint/types/waypoint.type';
+import { WeatherService } from '../../weather/services/weather.service';
 import { ERouteEvents } from '../events/event-types/route.event-type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
@@ -33,6 +34,7 @@ import {
   IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
+  IRouteWeather,
   TMPIRoutePartial,
 } from '../types/route.type';
 import { analyseRoute, IRouteAnalysis, IRoutePartial } from '../utils/analyse-route';
@@ -51,6 +53,7 @@ export class RouteService {
     private elevationService: ElevationService,
     private timezoneService: TimezoneService,
     private eventService: EventService,
+    private weatherService: WeatherService,
   ) {}
 
   private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
@@ -192,6 +195,7 @@ export class RouteService {
   ): Promise<IRoute> {
     const lineStringGeom = this.geoJsonToLineStringGeometry(geojson);
     const startingPointAltitude = lineStringGeom.coordinates[0][2];
+
     if (startingPointAltitude == null) {
       const startingPointLongitude = lineStringGeom.coordinates[0][0];
       const startingPointLatitude = lineStringGeom.coordinates[0][1];
@@ -590,6 +594,7 @@ export class RouteService {
     const builder = this.db
       .read(tx, { overrides: { coordinate: { select: true } } })
       .whereIn('id', ids);
+
     const routes = await builder
       .then((res) =>
         AddFields.target(res).add('timezone', async () =>
@@ -597,7 +602,15 @@ export class RouteService {
         ),
       )
       .then(generateRecord2((r) => r.id));
+
     return routes;
+  }
+
+  async getRouteWeather(routeId: string): Promise<IRouteWeather> {
+    const route = await this.findOne(null, routeId);
+    const predictions = await this.weatherService.getForecast(route);
+
+    return predictions;
   }
 
   async getUserRoutes(
@@ -641,11 +654,27 @@ export class RouteService {
     const routes = await this.findByIds(tx, ids)
       .then((res) => Object.values(res))
       .then((res) =>
-        AddFields.target(res).add(
-          'waypoints',
-          () => this.waypointService.getRouteWaypoints(tx, ids, options),
-          (route, record) => record[route.id] ?? [],
-        ),
+        AddFields.target(res)
+          .add(
+            'waypoints',
+            () => this.waypointService.getRouteWaypoints(tx, ids, options),
+            (route, record) => record[route.id] ?? [],
+          )
+          .add(
+            'activityTypes',
+            () => this.activityTypeService.findByIds(res.map((r) => r.activityTypeIds).flat()),
+            (route, record) => route.activityTypeIds.map((id) => record[id]),
+          )
+          .add(
+            'activities',
+            () => this.routeActivityTypeService.getActivitiesByRouteIds(null, ids),
+            (route, record) => generateRecord(record[route.id], (a) => a.activityTypeId),
+          )
+          .add(
+            'levels',
+            () => this.skillLevelService.findByIds(tx, res.map((r) => r.levelIds).flat()),
+            (route, record) => route.levelIds.map((id) => record[id]),
+          ),
       )
       .then(generateRecord2((r) => r.id));
 
@@ -657,7 +686,7 @@ export class RouteService {
     id: string,
     options?: IGetRouteWaypointOptions,
   ) {
-    const route: any = await this.findOne(tx, id).then(async (r) =>
+    const route = await this.findOne(tx, id).then(async (r) =>
       AddFields.target(r)
         .add('waypoints', () =>
           this.waypointService.getRouteWaypoints(tx, [r.id], options).then((w) => w[r.id] ?? []),
@@ -670,12 +699,11 @@ export class RouteService {
             .getRouteActivities(null, r.id)
             .then(generateRecord2((a) => a.activityTypeId)),
         )
-        .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray)),
+        .add('levels', () => this.skillLevelService.findByIds(tx, r.levelIds).then(recordToArray))
+        .add('timezone', () =>
+          this.timezoneService.getTimezone(r.coordinate as ILineStringGeometry),
+        ),
     );
-    const timezone = await this.timezoneService.getTimezone(
-      route.coordinate as ILineStringGeometry,
-    );
-    route.timezone = timezone;
 
     return route;
   }

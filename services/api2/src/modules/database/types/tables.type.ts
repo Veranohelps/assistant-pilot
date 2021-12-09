@@ -5,6 +5,10 @@ import {
 } from '../../assessment/types/assessment-history.type';
 import { IAssessment, ICreateAssessment } from '../../assessment/types/assessment.type';
 import { ICreateUserLevel, IUserLevel } from '../../assessment/types/user-level.type';
+import { IBpaProvider, ICreateBpaProvider } from '../../bpa/types/bpa-provider.type';
+import { IBpaReport, ICreateBpaReport } from '../../bpa/types/bpa-report.type';
+import { IBpaZoneReport, ICreateBpaZoneReport } from '../../bpa/types/bpa-zone-report.type';
+import { IBpaZone, ICreateBpaZone } from '../../bpa/types/bpa-zone.type';
 import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
@@ -88,5 +92,17 @@ export interface IDatabaseTables {
     IExpeditionUser,
     ICreateExpeditionUser,
     Partial<Omit<IExpeditionUser, 'id'>>
+  >;
+  BpaZone: Knex.CompositeTableType<IBpaZone, ICreateBpaZone, Partial<ICreateBpaZone>>;
+  BpaProvider: Knex.CompositeTableType<
+    IBpaProvider,
+    ICreateBpaProvider,
+    Partial<ICreateBpaProvider>
+  >;
+  BpaReport: Knex.CompositeTableType<IBpaReport, ICreateBpaReport, Partial<ICreateBpaReport>>;
+  BpaZoneReport: Knex.CompositeTableType<
+    IBpaZoneReport,
+    ICreateBpaZoneReport,
+    Partial<ICreateBpaZoneReport>
   >;
 }

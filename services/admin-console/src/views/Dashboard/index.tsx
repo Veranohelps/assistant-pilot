@@ -17,6 +17,12 @@ const Container = styled.div`
   max-width: 500px;
 `;
 
+const dashboardLinks: { name: string; url: string }[] = [
+  { name: 'Routes', url: appRoutes.route.dashboard },
+  { name: 'Waypoint', url: appRoutes.waypoint.dashboard },
+  { name: 'BPA', url: appRoutes.bpa.dashboard },
+];
+
 const Dashboard = () => {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
 
@@ -40,20 +46,17 @@ const Dashboard = () => {
       </Typography>
       {isAuthenticated ? (
         <GridBox direction="column" gap={20} justify="center" box={{ mTop: '3rem' }}>
-          <div className={cls.set('item')}>
-            <Link to={appRoutes.route.dashboard}>
-              <Typography textStyle="sm18" textAlign="center">
-                Routes
-              </Typography>
-            </Link>
-          </div>
-          <div className={cls.set('item')}>
-            <Link to={appRoutes.waypoint.dashboard}>
-              <Typography textStyle="sm18" textAlign="center">
-                Waypoints
-              </Typography>
-            </Link>
-          </div>
+          {dashboardLinks.map((link) => {
+            return (
+              <div key={link.name} className={cls.set('item')}>
+                <Link to={link.url}>
+                  <Typography textStyle="sm18" textAlign="center">
+                    {link.name}
+                  </Typography>
+                </Link>
+              </div>
+            );
+          })}
         </GridBox>
       ) : (
         <FlexBox box={{ mTop: '3rem' }}>

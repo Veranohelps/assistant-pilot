@@ -31,7 +31,6 @@ class RoutesApi extends PrivateDersuApi {
     client.close();
 
     var route = res.data['data']['route'] as Map<String, dynamic>;
-
     return DersuRouteFull.fromJson(formatRoutesResponse(route));
   }
 }

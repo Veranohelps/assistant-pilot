@@ -27,6 +27,8 @@ const beforeUpdate = (builder: any) => {
   }
 
   rows.forEach((row: Record<string, any>) => {
+    if (!row) return;
+
     Object.keys(columns).forEach((col) => {
       row[col] = row[col];
 

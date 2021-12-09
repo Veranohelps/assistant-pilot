@@ -1,3 +1,5 @@
+import { IBpaReport } from '../../bpa/types/bpa-report.type';
+
 export interface IRangeHourly {
   range: string;
   temperature: number;
@@ -41,4 +43,8 @@ export interface IWeatherPredictionDaily {
   meteograms: IMeteograms[];
   sunCalendar: ISunCalendar[];
   forecastHourly: IForecastHourly[];
+}
+
+export interface IWeatherReport extends IWeatherPredictionDaily {
+  bpaReports: IBpaReport[];
 }

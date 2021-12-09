@@ -15,9 +15,8 @@ import { ParsedBody } from '../../../common/decorators/parsed-body.decorator';
 import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-parameters.decorator';
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
-import { IMultiPointGeometry } from '../../../common/types/geojson.type';
 import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
-import { successResponse } from '../../../common/utilities/success-response';
+import { SuccessResponse, successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
@@ -70,14 +69,20 @@ export class PersonalRouteController {
 
   @Get(':routeId/weather')
   @HttpCode(HttpStatus.OK)
-  async getRouteWeather(@Tx() tx: TransactionManager, @Param('routeId') id: string) {
-    const route = await this.routeService.findOne(tx, id);
-    const apiResponse = await this.weatherService.getForecast(
-      route.meteoPointsOfInterests as IMultiPointGeometry,
-    );
+  async getRouteWeather(@Param('routeId') id: string) {
+    const weather = await this.routeService.getRouteWeather(id);
 
-    return apiResponse;
+    return SuccessResponse.transform(weather);
   }
+
+  @Get(':routeId/weather2')
+  @HttpCode(HttpStatus.OK)
+  async getRouteWeather2(@Param('routeId') id: string) {
+    const weather = await this.routeService.getRouteWeather(id);
+
+    return successResponse('Route weather report', { weather });
+  }
+
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('gpx'))

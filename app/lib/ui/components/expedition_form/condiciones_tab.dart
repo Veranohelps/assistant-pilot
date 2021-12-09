@@ -41,10 +41,8 @@ class _CondicionesTabState extends State<CondicionesTab> {
             builder: (context, date) {
               if (context.watch<WeatherCubit>().state is! WeatherLoaded ||
                   date.value == null) {
-                return Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                      LocaleKeys.planning_conditions_select_explanation.tr()),
+                return Center(
+                  child: Text(LocaleKeys.basis_loading.tr()),
                 );
               }
               return _WeatherBlock(
@@ -106,25 +104,6 @@ class _WeatherBlockState extends State<_WeatherBlock> {
       builder: (context, weatherState) {
         final weather = (weatherState as WeatherLoaded).weather;
 
-        final selectedDay = weather.days[selectedDayTabIndex];
-        final planningDay = widget.formCubit.date.state.value!;
-
-        final amountOfRanges = weather.forecastHourly.first.ranges.length;
-        final List<HourlyForecast> hourlyForecastList = [];
-        final startingTimeWithTimeZone = TimeWithTimeZone(
-          Duration(minutes: weather.metadata.timezoneUTCOffsetInMinutes),
-          selectedDay.year,
-          selectedDay.month,
-          selectedDay.day,
-          planningDay.hour,
-        );
-        for (var i = 0; i < amountOfRanges; i++) {
-          var forecast = weather.forecastHourly.firstWhere((f) =>
-              f.dateTime ==
-              startingTimeWithTimeZone.add(Duration(hours: 4 * i)));
-          hourlyForecastList.add(forecast);
-        }
-
         return ListView(
           children: [
             if (widget.isEditable)
@@ -179,30 +158,20 @@ class _WeatherBlockState extends State<_WeatherBlock> {
               margin: EdgeInsets.only(left: 16),
               height: 20,
             ),
+            buildMetereology(context, weather),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 10,
               ),
               child: Text(
-                'Metereología',
+                LocaleKeys.planning_conditions_nivology.tr(),
                 style: MType.h5,
               ),
             ),
-            BrandDivider(
-              margin: EdgeInsets.only(left: 16),
-            ),
-            ...hourlyForecastList
-                .asMap()
-                .map((k, f) => MapEntry(
-                      k,
-                      WeatherCard(
-                          rangeForecast: f.ranges[k],
-                          dateTime: f.dateTime,
-                          meteogram: weather.meteograms[k]),
-                    ))
-                .values
-                .toList(),
+            BpaReportsWidget(
+                allReports: weather.bpaReports,
+                date: weather.days[selectedDayTabIndex])
           ],
         );
       },
@@ -238,6 +207,75 @@ class _WeatherBlockState extends State<_WeatherBlock> {
         }
       }
     }
+  }
+
+  Widget buildMetereology(BuildContext context, WeatherForecast weather) {
+    final selectedDay = weather.days[selectedDayTabIndex];
+    final planningDay = widget.formCubit.date.state.value!;
+
+    final startingTimeWithTimeZone = TimeWithTimeZone(
+      Duration(minutes: weather.metadata.timezoneUTCOffsetInMinutes),
+      selectedDay.year,
+      selectedDay.month,
+      selectedDay.day,
+      planningDay.hour,
+    );
+
+    var route = widget.formCubit.route.state.value;
+    var activityType = widget.formCubit.activityTypeIds.state.value;
+
+    final List<HourlyForecast> hourlyForecastList = [
+      weather.forecastHourly
+          .firstWhere((f) => f.dateTime == startingTimeWithTimeZone)
+    ];
+
+    var estimationByActivity = activityType.isEmpty
+        ? route!.slowest
+        : route!.estimations.firstWhere(
+            (element) => element.activityTypeId == activityType.first);
+
+    for (var point in estimationByActivity.points) {
+      var e = weather.forecastHourly.firstWhereOrNull((f) =>
+          f.dateTime ==
+          startingTimeWithTimeZone
+              .add(Duration(hours: point.duration.inHours)));
+      if (e != null) {
+        hourlyForecastList.add(e);
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
+          child: Text(
+            LocaleKeys.planning_conditions_metereology.tr(),
+            style: MType.h5,
+          ),
+        ),
+        BrandDivider(
+          margin: EdgeInsets.only(left: 16),
+        ),
+        ...hourlyForecastList
+            .asMap()
+            .map((k, f) => MapEntry(
+                  k,
+                  WeatherCard(
+                      rangeForecast: f.ranges[k],
+                      dateTime: f.dateTime,
+                      meteogram: weather.meteograms[k]),
+                ))
+            .values
+            .toList(),
+        BrandDivider(
+          margin: EdgeInsets.only(left: 16),
+        ),
+      ],
+    );
   }
 }
 
@@ -281,12 +319,12 @@ class WeatherCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(materialRoute(ImageViewer(
-                      title: 'Meteogram',
+                      title: LocaleKeys.planning_conditions_full_report.tr(),
                       url: meteogram.url,
                     )));
                   },
                   child: Text(
-                    'meteogram',
+                    LocaleKeys.planning_conditions_full_report.tr(),
                     style: MType.subtitle1.copyWith(
                       decoration: TextDecoration.underline,
                     ),
@@ -299,15 +337,15 @@ class WeatherCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getColumnBlock(
-                  'TEMPERATURA',
+                  LocaleKeys.planning_conditions_temperature.tr().toUpperCase(),
                   '${rangeForecast.temperature} °C',
                 ),
                 getColumnBlock(
-                  'Viento'.toUpperCase(),
+                  LocaleKeys.planning_conditions_wind.tr().toUpperCase(),
                   '${rangeForecast.windSpeed} km/h',
                 ),
                 getColumnBlock(
-                  'precipitaciones'.toUpperCase(),
+                  LocaleKeys.planning_conditions_rain.tr().toUpperCase(),
                   '${rangeForecast.precipitationProbability} %',
                 )
               ],
@@ -334,6 +372,87 @@ class WeatherCard extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+// ignore: must_be_immutable
+class BpaReportsWidget extends StatelessWidget {
+  late List<BpaReport> reports;
+  final TimeWithTimeZone? date;
+
+  BpaReportsWidget({Key? key, required allReports, required this.date})
+      : super(key: key) {
+    if (date == null) {
+      // NOTE (JD): without a reference date we can't provide BPA reports
+      reports = [];
+    } else {
+      reports = allReports
+          .where((report) =>
+              report.publishDateTime <= date &&
+              date! < report.validUntilDateTime)
+          .toList();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(16),
+        child: (reports.isEmpty)
+            ? Text(LocaleKeys.planning_conditions_no_bpa_report.tr())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var report in reports) BpaReportWidget(report: report)
+                ],
+              ));
+  }
+}
+
+class BpaReportWidget extends StatelessWidget {
+  final BpaReport report;
+
+  const BpaReportWidget({Key? key, required this.report}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: 500,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(LocaleKeys.planning_conditions_bpa_zones.tr() +
+              ": " +
+              report.zones.map((zone) => zone.name).join(", ")),
+          Text(LocaleKeys.planning_conditions_bpa_published.tr() +
+              ": " +
+              dataFormat1.format(report.publishDateTime)),
+          Text(LocaleKeys.planning_conditions_bpa_valid_until.tr() +
+              ": " +
+              dataFormat1.format(report.validUntilDateTime)),
+          GestureDetector(
+            onTap: () => ExternalUrls.launchUrl(report.url),
+            child: Text(
+              LocaleKeys.planning_conditions_full_report.tr(),
+              style: MType.subtitle1.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => ExternalUrls.launchUrl(report.provider.url),
+              child: RichText(
+                  text: TextSpan(
+                      style: ThemeTypo.defaultText,
+                      text: LocaleKeys
+                              .planning_conditions_bpa_report_provided_by
+                              .tr() +
+                          ": ",
+                      children: [
+                    TextSpan(
+                        text: report.provider.name,
+                        style: TextStyle(decoration: TextDecoration.underline))
+                  ]))),
+        ]));
   }
 }
 

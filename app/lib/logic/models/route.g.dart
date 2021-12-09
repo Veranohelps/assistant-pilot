@@ -22,14 +22,16 @@ DersuRouteFull _$DersuRouteFullFromJson(Map<String, dynamic> json) =>
           json['coordinate'] as Map<String, dynamic>),
       boundaries: Serialization.fromJsonToLatLngBounds(
           json['boundaries'] as Map<String, dynamic>),
+      meteoPointsOfInterests: MultyPointGeometry.fromJson(
+          json['meteoPointsOfInterests'] as Map<String, dynamic>),
       distanceInMeters: (json['distanceInMeters'] as num).toDouble(),
       elevationGainInMeters: (json['elevationGainInMeters'] as num).toDouble(),
       elevationLossInMeters: (json['elevationLossInMeters'] as num).toDouble(),
       highestPointInMeters: (json['highestPointInMeters'] as num).toDouble(),
       lowestPointInMeters: (json['lowestPointInMeters'] as num).toDouble(),
       timezone: Timezone.fromJson(json['timezone'] as Map<String, dynamic>),
-      estimations: Serialization.toEstimations(
-          json['activities'] as Map<String, dynamic>?),
+      estimations: Serialization.fromJsonMapToEsitmationList(
+          json['activities'] as Map<String, dynamic>),
       waypoints: (json['waypoints'] as List<dynamic>?)
               ?.map((e) => Waypoint.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -57,6 +59,7 @@ Map<String, dynamic> _$DersuRouteFullToJson(DersuRouteFull instance) =>
       'timezone': instance.timezone,
       'activities': instance.estimations,
       'boundaries': Serialization.fromLatLngBoundsToJson(instance.boundaries),
+      'meteoPointsOfInterests': instance.meteoPointsOfInterests,
     };
 
 const _$OriginIdEnumMap = {
