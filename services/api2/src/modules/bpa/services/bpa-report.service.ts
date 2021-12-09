@@ -6,6 +6,7 @@ import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { GcpUploadService } from '../../common/services/gcp-upload.service';
 import { ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
+import { generateRecord } from '../../common/utilities/generate-record';
 import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
@@ -188,8 +189,9 @@ export class BpaReportService {
           )
           .add(
             'zones',
-            () => this.bpaZoneService.findByIds(null, res.map((r) => r.zoneIds).flat()),
-            (report, record) => report.zoneIds.map((zoneId) => record[zoneId]),
+            () => generateRecord(zones, (z) => z.id),
+            (report, record) =>
+              report.zoneIds.filter((zId) => !!record[zId]).map((zoneId) => record[zoneId]),
           ),
       );
 

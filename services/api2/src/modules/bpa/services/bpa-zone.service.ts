@@ -121,7 +121,7 @@ export class BpaZoneService {
     track: ILineStringGeometry,
   ): Promise<IBpaZone[]> {
     const zones = await this.db
-      .read(tx)
+      .read(tx, { overrides: { coordinate: { select: false } } })
       .where(
         this.db.knex.raw('ST_Intersects(coordinate, ST_GeomFromGeoJSON(?))', [
           JSON.stringify(track),
