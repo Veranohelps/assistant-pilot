@@ -16,7 +16,7 @@ import { ParsedUrlParameters } from '../../../common/decorators/parsed-url-param
 import { Tx } from '../../../common/decorators/transaction-manager.decorator';
 import { UserData } from '../../../common/decorators/user-data.decorator';
 import gpxToGeoJSON from '../../../common/utilities/gpx-to-geojson';
-import { successResponse } from '../../../common/utilities/success-response';
+import { SuccessResponse, successResponse } from '../../../common/utilities/success-response';
 import { TransactionManager } from '../../../common/utilities/transaction-manager';
 import withUrl, { appUrls } from '../../../common/utilities/with-url';
 import { IUser } from '../../../user/types/user.type';
@@ -72,7 +72,7 @@ export class PersonalRouteController {
   async getRouteWeather(@Param('routeId') id: string) {
     const weather = await this.routeService.getRouteWeather(id);
 
-    return weather;
+    return SuccessResponse.transform(weather);
   }
 
   @Post('create')
