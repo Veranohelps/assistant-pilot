@@ -110,16 +110,24 @@ class ExpeditionFormCubit extends FormCubit {
       return;
     }
     route.setValue(newRoute);
-    var tommorow = DateTime.now().add(Duration(days: 1));
-    date.setValue(TimeWithTimeZone(
-      newRoute.timezone.offset,
-      tommorow.year,
-      tommorow.month,
-      tommorow.day,
-      8,
-    ));
 
-    // only untill we have one activityType;
+    var todayWithTimeZone = TimeWithTimeZone.fromLocal(
+      DateTime.now(),
+      newRoute.timezone.offset,
+    );
+
+    var minimalDate = todayWithTimeZone.add(Duration(hours: 1));
+    var firstDay = minimalDate.add(Duration(days: 1));
+    var defaultTime = TimeWithTimeZone(
+      newRoute.timezone.offset,
+      firstDay.year,
+      firstDay.month,
+      firstDay.day,
+      8,
+    );
+
+    date.setValue(defaultTime);
+
     if (activityTypeIds.state.value.isNotEmpty &&
         newRoute.activityTypeIds.contains(activityTypeIds.state.value.first)) {
       activityTypeIds.setValue([]);

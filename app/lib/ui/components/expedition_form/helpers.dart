@@ -8,26 +8,39 @@ void setTimeFilterDate(
     DateTime.now(),
     timezoneOffset,
   ).toFakeLocal();
-  var tommorow = fakeToday.add(Duration(days: 1));
+  final dateField = formCubit.date;
+  final minimalDate = fakeToday.add(Duration(hours: 1));
+  final prevDate = formCubit.date.state.value!.toFakeLocal();
 
-  var dateField = formCubit.date;
-  var prevDate = formCubit.date.state.value;
-  final initalDate = prevDate?.toFakeLocal() ?? tommorow;
+  final initDate = prevDate.isBefore(minimalDate)
+      ? minimalDate.add(Duration(days: 1))
+      : prevDate;
 
   var day = await showDatePicker(
     context: context,
-    initialDate: initalDate,
-    firstDate: fakeToday.hour < 23 ? fakeToday : tommorow,
+    initialDate: initDate,
+    firstDate: minimalDate,
     lastDate: fakeToday.add(Duration(days: 13)),
   );
 
   if (day != null) {
-    TimeOfDay? time;
-    final initalTime = prevDate != null
-        ? TimeOfDay.fromDateTime(prevDate.toFakeLocal())
-        : day.isSameDate(fakeToday)
-            ? TimeOfDay(hour: fakeToday.hour + 1, minute: fakeToday.minute)
-            : TimeOfDay(hour: 8, minute: 0);
+    TimeOfDay? time, initalTime;
+
+    var checkingDate = TimeWithTimeZone(
+      timezoneOffset,
+      day.year,
+      day.month,
+      day.day,
+      initDate.hour,
+      initDate.minute,
+    ).toFakeLocal();
+
+    if (minimalDate.isBefore(checkingDate)) {
+      initalTime = TimeOfDay.fromDateTime(initDate);
+    } else {
+      // the inital date time is not valid, that's why we are chaing it to minimal time.
+      initalTime = TimeOfDay.fromDateTime(minimalDate);
+    }
 
     time = await showCustomTimePicker(
       context: context,
