@@ -15,7 +15,7 @@ class Serialization {
     return json.values.map((object) => Estimation.fromJson(object)).toList();
   }
 
-  static Duration fromMinutesToDuration(double number) {
+  static Duration fromMinutesToDuration(num number) {
     return Duration(minutes: number.toInt());
   }
 
