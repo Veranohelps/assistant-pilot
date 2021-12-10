@@ -12,17 +12,37 @@
 
 ## Material de progresión
 
+### Material básico
+
+- Mochila Esqui-alpinismo 25-30l
+- Esquís
+- Botas
+- Bastones
+- Pieles de foca
+- Cuchillas
+- Casco
+
+### Para rutas un poco más difíciles (S2):
+
+- Piolet clásico
+- Crampones
+- Arnés
+- Cuerda o cordino (para rapel)
+- Anillo reunión con maillón
+- Descensor con mosquetón de seguridad
+
+### Si la ruta es de nivel S3 o superior:
+
 - Mochila alpinismo 30-40l
 - Piolets técnicos
 - Crampones técnicos
-- Arnés
-- Casco
+- Arnés y casco
 - Cabo de anclaje con mosquetón
 - Material reunión
 - Aparato de aseguramiento
 - Cintas varias
 - Material autoprotección
-- Kit autorescate (kit rescate glaciar)
+- Kit de autorescate (kit rescate glaciar)
 - Cuerdas para escalar
 
 ## Material de seguridad
@@ -39,7 +59,9 @@
 
 ## Material de orientación
 
-- Kit orientación (mapa, brújula, gps)
-- Alimentación
-- Comida (300cal/h)
+- Kit de orientación (mapa, brújula, GPS)
+
+## Alimentación
+
 - Agua o termo con bebida caliente (1.5l)
+- Comida (300cal/h)

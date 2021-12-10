@@ -15,24 +15,35 @@
 
 - Mochila de día (15-22L)
 - Opcional: Bastones
+
+### Para rutas avanzadas (nivel T5)
+
 - Arnés
 - Casco
 - Cuerda o cordino (para rápel)
 - Anillo reunión con maillón
 - Descensor con mosquetón de seguridad
 - Kit de ferrata
-- Material de seguridad
+
+## Material de seguridad
+
 - Botiquín personal
 - Silbato
 - Manta térmica
 - Frontal
 - Móvil
 
-## Orientación
+## Material de orientación
 
-- Mapa y GPS
+### Para rutas básicas (T1)
 
-## Nutrición
+- Plano de la zona
+
+### Para rutas con zonas sin señalizar
+
+- Mapa, brújula, GPS
+
+## Alimentación
 
 - Agua o termo con bebida caliente (1.5l)
 - Comida (300cal/h)
