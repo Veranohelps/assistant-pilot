@@ -1,0 +1,78 @@
+[
+    {
+        "ids": "bimVT5YusiGgSZfsNViQFa,5AC3m20wXQZs74JXkkl6Va",
+        "notification": "Confirma los partes (meteo y nivo), visualiza el itinerario y confirma que el grupo está preparado con el material necesario, incluido el DVA."
+    },
+    {
+        "ids": "ptFKGC7li6OH9mhIecgz0L,tfC2T99Y7ufNr6Ao4pcalD",
+        "notification": "¿Cómo ha ido todo? evalúa la planificación, los imprevistos y las reacciones. ¿Repetirías? ¿Qué opina el grupo?"
+    },
+    {
+        "ids": "i4TKTlo0ZeUWj9x4nVk0I1,FRW5GCHm1LNFyt7TA3uYId",
+        "notification": "¿Estás en hora según el plan? ¿Cómo está el grupo?"
+    },
+    {
+        "ids": "GBrD39ueU1nArgccNjsTEk,ZKdtg8eEFELG3syPlDjHi9",
+        "notification": "¿Cómo está el terreno y la nieve? ¿Y el grupo? Evalúa si la situación es favorable para continuar."
+    },
+    {
+        "ids": "ANlQQ8hH5E2xUHHR5UjjHZ,9psiob4ZAcZt7K0LUvhUYN",
+        "notification": "¿Cómo está la nieve? ¿Necesitas material? Valora el tipo de terreno y si la dirección es de ascenso o de descenso."
+    },
+    {
+        "ids": "1NUC8o9RtEUaTbUXqmh36Y,JeJwp4FguVMt47a9afYc00",
+        "notification": "Revisa el tipo de trampa y evalúa la probabilidad y tiempo de exposición al riesgo."
+    },
+    {
+        "ids": "EvkjC8f5wHdmA7kHERMWoj,rk0QMYCH4tt1xlQpWjF0y8",
+        "notification": "Valora la visibilidad y evalúa el riesgo de aludes. Ten en cuenta los indicios de estabilidad y si el cambio pasa a más o a menos complejo."
+    },
+    {
+        "ids": "DmThep4ZM4qghnCjQPKC6S,1t33BdR4CEMubMtthPXEp8",
+        "notification": "Recuerda que una inclinación entre 25º y 45º aumenta la probabilidad de aludes. Es el momento de evaluar el tamaño, la probabilidad y las consecuencias de un alud."
+    },
+    {
+        "ids": "LVVukjt17tz4eGilxldHB6,qKpoDoz2KwXnhRjSTqLaeg",
+        "notification": "¿Cómo está la nieve? ¿Necesitas material? Valora el tipo de terreno y si la dirección es de ascenso o de descenso."
+    },
+    {
+        "ids": "xaeEa8Qe7GHFvYG7vBiU4J,f0v6WX2MDFsQIN2K4s7l8d",
+        "notification": "Es el momento de equiparte, valorar la técnica de progresión y los peligros objetivos que supone entrar o salir a la vía."
+    },
+    {
+        "ids": "gAkeZnRaNTIoyXQcANhQbT,cZ4hHiNeJyYwCQ6XJ428SR",
+        "notification": "Es el momento de equiparte, valorar la técnica de progresión y los peligros objetivos que supone entrar o salir a la vía."
+    },
+    {
+        "ids": "IeRIZi8leQA6oYsFdRSjvP,WJJ9slwphmJNX8a8N1J4BF",
+        "notification": "¿Cómo está el terreno? ¿Y la nieve? Revisa si el paso está equipado y el material que necesitas."
+    },
+    {
+        "ids": "VWA8EP3ecZ2V3bCwIEsLXs,sw6xVYLnaJ5BBywgZQWLT6",
+        "notification": "¿Cómo está el terreno? ¿Y la nieve? Evalúa el paso y el material que necesitas."
+    },
+    {
+        "ids": "QI1ljb6Sfum63K9eMFJuNm,NTKI24yDjdz0VvERWTtklZ",
+        "notification": "¿Tienes buena visibilidad? ¿Conoces tu ubicación actual y tienes claro hacia dónde ir?"
+    },
+    {
+        "ids": "lUsQsJl2Vc7YNtg2vvDsFO,KuTYcX67ujSIS0nlNHTY8n",
+        "notification": "¿Cómo está la nieve? Evalúa el terreno al que entras, la técnica que requiere y el material que necesitas."
+    },
+    {
+        "ids": "5HhNVbTCdQHn8Sd3Ao1Ap0,zlTsZq3rFeN3zFbfcrHj20",
+        "notification": "El lugar perfecto para descansar, beber y conversar con el grupo."
+    },
+    {
+        "ids": "FXsrghcczJmgiRftoewa0v,X6yuuQBlq6gZh4oyvC2RpU",
+        "notification": "Evalúa si la situación es favorable para continuar por la ruta planificada: ¿Cómo está la nieve? ¿Y el grupo?"
+    },
+    {
+        "ids": "S62xWnYE6Exs1jgdUUUoLH,S0wDtdK9Ux8mVBWcM5hVR7",
+        "notification": "Vas a cambiar de zona de actividad, ten en cuenta que en la estación de esquí existe una normativa y que en terreno de montaña debes evaluar nuevos riesgos."
+    },
+    {
+        "ids": "rwrlg1QLHuZ5qX7KsFnPIL,VtcW3UNkltqMFZ3KPn7Y6d",
+        "notification": "Estás entrando en zona de gran altura, evalúa cómo se encuentra el grupo (mareos, fatigas, dolores de cabeza...) antes de revisar el plan."
+    }
+]
