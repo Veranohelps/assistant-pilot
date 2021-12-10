@@ -17,16 +17,16 @@ export interface IBpaZone {
   description: string | null;
   coordinate: IPolygonGeometry;
   reportCount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IBpaReport {
   id: string;
   providerId: string;
   zoneIds: string[];
-  publishDateTime: Date;
-  validUntilDateTime: Date;
+  publishDateTime: string;
+  validUntilDateTime: string;
   url: string;
 }
 

@@ -17,6 +17,9 @@ export class BpaProviderService {
   ) {}
 
   async create(tx: TransactionManager, payload: ICreateBpaProvider): Promise<IBpaProvider> {
+    // TODO
+    // BPA provider should have a timezone associated with them
+    // see https://www.notion.so/BPA-reports-use-the-time-zone-of-the-user-that-created-them-e0a852ae04e14b9fa349a9dc8e237a18
     const [provider] = await this.db
       .write(tx)
       .insert({ name: payload.name, description: payload.description, url: payload.url })

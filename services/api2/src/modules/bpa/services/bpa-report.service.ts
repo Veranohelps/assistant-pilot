@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { endOfDay, startOfDay } from 'date-fns';
 import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError, NotFoundError } from '../../common/errors/http.error';
 import { GcpUploadService } from '../../common/services/gcp-upload.service';
@@ -57,13 +56,17 @@ export class BpaReportService {
     }
 
     const fileUrl = await this.gcpUploadService.uploadFile(tx, this.bpaBucket, file);
+
+    // TODO
+    // Reports should use the timezone of the provider instead of that of the creator
+    // see https://www.notion.so/BPA-reports-use-the-time-zone-of-the-user-that-created-them-e0a852ae04e14b9fa349a9dc8e237a18
     const [report] = await this.db
       .write(tx)
       .insert({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        publishDateTime: startOfDay(payload.publishDateTime),
-        validUntilDateTime: endOfDay(payload.validUntilDateTime),
+        publishDateTime: payload.publishDateTime,
+        validUntilDateTime: payload.validUntilDateTime,
         url: fileUrl,
       })
       .cReturning();
@@ -119,9 +122,9 @@ export class BpaReportService {
       .update({
         zoneIds: payload.zoneIds,
         providerId: payload.providerId,
-        ...(payload.publishDateTime && { publishDateTime: startOfDay(payload.publishDateTime) }),
+        ...(payload.publishDateTime && { publishDateTime: payload.publishDateTime }),
         ...(payload.validUntilDateTime && {
-          validUntilDateTime: endOfDay(payload.validUntilDateTime),
+          validUntilDateTime: payload.validUntilDateTime,
         }),
         url: fileUrl,
       })

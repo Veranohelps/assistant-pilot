@@ -1,4 +1,4 @@
-import { addDays, format, max, startOfDay, startOfToday } from 'date-fns';
+import { addDays, endOfDay, format, max, startOfDay, startOfToday } from 'date-fns';
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -169,7 +169,6 @@ const CreateBpaReport = (props: IProps) => {
         }}
       >
         {({ isSubmitting, values, setFieldValue }) => {
-          console.log(values.publishDateTime, startOfDay(values.publishDateTime), startOfToday())
           return (
             <Form>
               <InputContainer>
@@ -218,7 +217,9 @@ const CreateBpaReport = (props: IProps) => {
                   disabled={!!props.editingReport}
                   max={format(new Date(), 'yyyy-MM-dd')}
                   value={format(values.publishDateTime, 'yyyy-MM-dd')}
-                  onChange={(e) => setFieldValue('publishDateTime', startOfDay(new Date(e.target.value)))}
+                  onChange={(e) =>
+                    setFieldValue('publishDateTime', startOfDay(new Date(e.target.value)))
+                  }
                 />
                 <FormErrorMessage name="publishDateTime" />
               </InputContainer>
@@ -228,9 +229,14 @@ const CreateBpaReport = (props: IProps) => {
                   type="date"
                   name="validUntilDateTime"
                   disabled={!!props.editingReport}
-                  min={format(max([addDays(values.publishDateTime, 1), startOfToday()]), 'yyyy-MM-dd')}
+                  min={format(
+                    max([addDays(values.publishDateTime, 1), startOfToday()]),
+                    'yyyy-MM-dd'
+                  )}
                   value={format(values.validUntilDateTime, 'yyyy-MM-dd')}
-                  onChange={(e) => setFieldValue('validUntilDateTime', new Date(e.target.value))}
+                  onChange={(e) =>
+                    setFieldValue('validUntilDateTime', endOfDay(new Date(e.target.value)))
+                  }
                 />
                 <FormErrorMessage name="validUntilDateTime" />
               </InputContainer>
