@@ -4,10 +4,10 @@ class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   NavigatorState get navigator => navigatorKey.currentState!;
 
-  void showPopUpDialog(AlertDialog dialog) {
+  Future<void> showPopUpDialog(AlertDialog dialog) async {
     final context = navigatorKey.currentState!.overlay!.context;
 
-    showDialog(
+    return await showDialog(
       context: context,
       builder: (_) => dialog,
     );

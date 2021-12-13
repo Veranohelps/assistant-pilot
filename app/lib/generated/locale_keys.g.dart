@@ -135,9 +135,12 @@ abstract class  LocaleKeys {
   static const registration_read_privacy_policy_error = 'registration.read_privacy_policy_error';
   static const registration_accept_terms_and_conditions_error = 'registration.accept_terms_and_conditions_error';
   static const registration = 'registration';
-  static const expedition_warning_title = 'expedition.warning.title';
-  static const expedition_warning_text = 'expedition.warning.text';
-  static const expedition_warning = 'expedition.warning';
+  static const expedition_location_access_warning_title = 'expedition.location_access_warning.title';
+  static const expedition_location_access_warning_text = 'expedition.location_access_warning.text';
+  static const expedition_location_access_warning = 'expedition.location_access_warning';
+  static const expedition_location_access_error_title = 'expedition.location_access_error.title';
+  static const expedition_location_access_error_text = 'expedition.location_access_error.text';
+  static const expedition_location_access_error = 'expedition.location_access_error';
   static const expedition_live_on_route = 'expedition.live.on_route';
   static const expedition_live_finish = 'expedition.live.finish';
   static const expedition_live = 'expedition.live';

@@ -153,9 +153,13 @@
     "accept_terms_and_conditions_error": "You have to accept Dersu's Terms and Conditions"
   },
   "expedition": {
-    "warning": {
-      "title" : "Open Location Settings",
-      "text": "Dersu uses your location during expeditions, even with the application closed, in order to alert you to potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'Settings' section of the application or at https://dersu.uz/en/privacy. Thanks."
+    "location_access_warning": {
+      "title" : "Access to your Location",
+      "text": "Dersu uses your location during expeditions, even with when the application is closed, in order to alert you of potential hazards, relevant weather changes and points of interest. If you wish, you can consult Dersu's privacy policy in the 'Settings' section of the app. Your device may show you now a related warning. Thanks."
+    },
+    "location_access_error": {
+      "title" : "Location access error",
+      "text": "Dersu cannot support you without full access to your location during expeditions. Please open your device settings and grant Dersu location access ALWAYS, including while in the background. Thanks."
     },
     "live": {
       "on_route": "On route",

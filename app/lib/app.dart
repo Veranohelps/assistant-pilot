@@ -28,6 +28,8 @@ class _AppState extends State<App> {
     var liveExpedition = context.read<LiveCubit>().state;
 
     if (liveExpedition is LiveStateOn) {
+      // NOTE (JD): we avoid showing location access dialog if we are resuming
+      // an expedition because it was asked before starting
       bool allowed =
           await DersuPermissionsHandler.requestPermission(showDialog: false);
       if (allowed) {

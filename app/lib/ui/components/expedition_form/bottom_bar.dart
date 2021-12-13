@@ -125,7 +125,9 @@ class _BottomBar extends StatelessWidget {
         return BrandButtons.primaryBig(
           text: LocaleKeys.planning_start_expedition.tr(),
           onPressed: () async {
-            bool allowed = await DersuPermissionsHandler.requestPermission();
+            bool allowed = await DersuPermissionsHandler.requestPermission(
+                showDialog:
+                    true); // always warn about location access before starting an expedition
             if (allowed) {
               await context.read<LiveCubit>().set(formCubit.fullExpedition!);
               Navigator.of(context).push(
