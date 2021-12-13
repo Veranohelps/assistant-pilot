@@ -3,6 +3,7 @@ import 'package:app/logic/models/activity_type.dart';
 import 'package:app/logic/models/levels.dart';
 import 'package:app/logic/models/url.dart';
 import 'package:app/logic/models/route_origin.dart';
+import 'package:app/logic/models/waypoint_type.dart';
 
 const dictionaryUrl = '/dictionary';
 
@@ -41,6 +42,18 @@ class DictionariesApi extends PrivateDersuApi {
     client.close();
     return (res.data['data']['skills'] as List)
         .map<Category>((json) => Category.fromJson(json))
+        .toList();
+  }
+
+  Future<List<WaypointType>> fetchWaypointTypes() async {
+    var allDictionaries = await getDictionaryUrls();
+    var waypointTypesUrl =
+        allDictionaries.firstWhere((element) => element.id == 'waypoint-type');
+    var client = await getClient();
+    var res = await client.get(waypointTypesUrl.url);
+    client.close();
+    return (res.data['data']['waypointTypes'] as List)
+        .map<WaypointType>((json) => WaypointType.fromJson(json))
         .toList();
   }
 

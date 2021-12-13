@@ -164,6 +164,21 @@
     "summary": {
       "finished": "Expedición terminada.",
       "duration": "Duración"
+    },
+    "three_by_three": {
+      "title": "Antes de seguir, considera:",
+      "hint": "Habla con el resto del grupo, comparte los siguientes pasos y pregunta si tienen alguna inquietud. ¿Seguimos?",
+      "continue": "Continuar con la ruta",
+      "waypoint_type": "Tipo",
+      "conditions_title": "Condiciones en este momento",
+      "conditions_hint": "Mira a tu alrededor y recuerda el parte de meteo.",
+      "conditions_text": "¿Tienes visibilidad clara del entorno? ojo con las nubes y la niebla ¿Cuál es la temperatura y tu sensación térmica? ¿Hay previsión de viento, lluvia o nieve?",
+      "terrain_title": "A qué terreno te enfrentas",
+      "terrain_hint": "Ten en cuenta si estás cerca de puntos críticos o peligros objetivos.",
+      "terrain_text": "¿Sabes dónde estás y hacia dónde vas? ¿Puedes asumir esta exposición al riesgo? ¿Has valorado objetivamente las consecuencias de hacerlo?",
+      "group_title": "Cómo está el grupo",
+      "group_hint": "Analiza cómo habéis avanzado en el último rato y cómo se encuentran las personas que te acompañan.",
+      "group_text": "¿Qué lleváis hecho y qué es lo que queda? ¿Vais en hora? ¿Tenéis un plan B o un camino alternativo? ¿Cómo están física y anímicamente? ¿Tenéis comida y bebida suficiente?"
     }
   }
 }

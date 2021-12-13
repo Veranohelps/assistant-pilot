@@ -164,6 +164,21 @@
     "summary": {
       "finished": "Expedition finished",
       "duration": "Duration"
+    },
+    "three_by_three": {
+      "title": "Before continuing, please consider:",
+      "hint": "Talk to the group, share next steps and ask if they have any questions. Do we continue?",
+      "continue": "Continue with the expedition",
+      "waypoint_type": "Type",
+      "conditions_title": "Current conditions",
+      "conditions_hint": "Look around keeping in mind the meteo report.",
+      "conditions_text": "Do you have clear visibility of your surroundings? Watch out for clouds and fog. What's the temperature and your thermal sensation? What is the forecast for wind, rain and snow?",
+      "terrain_title": "What terrain are you facing?",
+      "terrain_hint": "Keep in mind if you are close to waypoints or dangers.",
+      "terrain_text": "Do you know where you are and where you are heading? Can you handle the upcoming risk expositon? Have you objectively assessed the consequences of doing it?",
+      "group_title": "How is the group doing?",
+      "group_hint": "Analyse how has the group recently advanced and how is everyone else around you doing.",
+      "group_text": "How much have you covered and how much is left? Are you on time? Do you have a plan B or alternative route? How are they physically and emotionally? Do you have enough food and drink?"
     }
   }
 }

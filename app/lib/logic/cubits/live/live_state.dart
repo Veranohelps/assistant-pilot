@@ -7,6 +7,15 @@ abstract class LiveState extends Equatable {
 
 class LiveStateOff extends LiveState {}
 
+class LiveStateOn3x3 extends LiveStateOn {
+  final Waypoint waypoint;
+  LiveStateOn3x3({required this.waypoint, expedition, startTime})
+      : super(expedition: expedition, startTime: startTime);
+
+  @override
+  List<Object?> get props => [expedition, startTime, waypoint];
+}
+
 class LiveStateOn extends LiveState {
   final ExpeditionFull expedition;
   final DateTime startTime;

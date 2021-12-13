@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:app/config/get_it_config.dart';
 import 'package:app/logic/models/console_message.dart';
 import 'package:app/logic/models/waypoint.dart';
+import 'package:app/logic/service/waypoint_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
 
@@ -75,35 +74,16 @@ class GeofenceService extends ChangeNotifier {
     if (action.toLowerCase() == "enter") {
       var description = waypoint.typeIds.isEmpty
           ? ''
-          : await getDescriptionByWaypointId(waypoint.typeIds.first);
+          : await WaypointService.getNotificationByTypeId(
+              waypoint.typeIds.first);
       notification.showNotification(
-        title: waypoint.name,
-        text: description,
-      );
+          title: waypoint.name, text: description, payload: waypoint.id);
     }
 
     getIt<ConsoleService>()
         .addMessage(ConsoleMessage(text: '$action: ${waypoint.id}'));
     // bg.BackgroundGeolocation.removeGeofence(waypoint.id);
     // notifyListeners();
-  }
-
-  Future<String> getDescriptionByWaypointId(String id) async {
-    String notifications = await rootBundle
-        .loadString('assets/content/waypoint_notifications.json');
-
-    final json = jsonDecode(notifications);
-
-    var notification = '';
-
-    json.forEach((entry) {
-      var ids = entry['ids'] as String;
-      if (ids.contains(id)) {
-        notification = entry['notification'] as String;
-      }
-    });
-
-    return notification;
   }
 
   Future<void> removeGeofences() async {

@@ -9,7 +9,7 @@ part of 'estimation.dart';
 Estimation _$EstimationFromJson(Map<String, dynamic> json) => Estimation(
       activityTypeId: json['activityTypeId'] as String,
       duration: Serialization.fromMinutesToDuration(
-          json['estimatedDurationInMinutes'] as double),
+          json['estimatedDurationInMinutes'] as num),
       points: (json['estimatedDurationToMeteoPointsOfInterestsInMinutes']
               as List<dynamic>)
           .map((e) =>
@@ -28,7 +28,7 @@ PointOfInterestEstimation _$PointOfInterestEstimationFromJson(
         Map<String, dynamic> json) =>
     PointOfInterestEstimation(
       duration:
-          Serialization.fromMinutesToDuration(json['estimatedTime'] as double),
+          Serialization.fromMinutesToDuration(json['estimatedTime'] as num),
       coordinate:
           PointCoordinates.fromJson(json['coordinate'] as List<dynamic>),
     );

@@ -13,15 +13,16 @@ class DictionariesLoaded extends DictionariesState {
   final List<Category> levels;
   final List<RouteOrigin> routeOrigins;
   final List<ActivityType> activeTypes;
+  final List<WaypointType> waypointTypes;
 
   bool get isNotEmtpy => props.isNotEmpty;
   bool get isEmpty => props.isEmpty;
 
-  const DictionariesLoaded({
-    required this.levels,
-    required this.routeOrigins,
-    required this.activeTypes,
-  });
+  const DictionariesLoaded(
+      {required this.levels,
+      required this.routeOrigins,
+      required this.activeTypes,
+      required this.waypointTypes});
 
   RouteOrigin findRouteById(String id) {
     return routeOrigins.firstWhere((el) => el.id == id);

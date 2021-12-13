@@ -71,6 +71,7 @@ abstract class  LocaleKeys {
   static const planning_route_details = 'planning.route_details';
   static const planning_conditions_date_time_departure = 'planning.conditions.date_time_departure';
   static const planning_conditions_select = 'planning.conditions.select';
+  static const planning_conditions_select_explanation = 'planning.conditions.select_explanation';
   static const planning_conditions_metereology = 'planning.conditions.metereology';
   static const planning_conditions_temperature = 'planning.conditions.temperature';
   static const planning_conditions_wind = 'planning.conditions.wind';
@@ -143,6 +144,20 @@ abstract class  LocaleKeys {
   static const expedition_summary_finished = 'expedition.summary.finished';
   static const expedition_summary_duration = 'expedition.summary.duration';
   static const expedition_summary = 'expedition.summary';
+  static const expedition_three_by_three_title = 'expedition.three_by_three.title';
+  static const expedition_three_by_three_hint = 'expedition.three_by_three.hint';
+  static const expedition_three_by_three_continue = 'expedition.three_by_three.continue';
+  static const expedition_three_by_three_waypoint_type = 'expedition.three_by_three.waypoint_type';
+  static const expedition_three_by_three_conditions_title = 'expedition.three_by_three.conditions_title';
+  static const expedition_three_by_three_conditions_hint = 'expedition.three_by_three.conditions_hint';
+  static const expedition_three_by_three_conditions_text = 'expedition.three_by_three.conditions_text';
+  static const expedition_three_by_three_terrain_title = 'expedition.three_by_three.terrain_title';
+  static const expedition_three_by_three_terrain_hint = 'expedition.three_by_three.terrain_hint';
+  static const expedition_three_by_three_terrain_text = 'expedition.three_by_three.terrain_text';
+  static const expedition_three_by_three_group_title = 'expedition.three_by_three.group_title';
+  static const expedition_three_by_three_group_hint = 'expedition.three_by_three.group_hint';
+  static const expedition_three_by_three_group_text = 'expedition.three_by_three.group_text';
+  static const expedition_three_by_three = 'expedition.three_by_three';
   static const expedition = 'expedition';
 
 }

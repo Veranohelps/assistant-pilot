@@ -25,7 +25,16 @@ Packages, libraries and plugins in use:
 
 ## Misc
 
-LocaleKeys generation: 
-`$ flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o locale_keys.g.dart`
+### Generate Translatioms (LocaleKeys) 
+
+```
+flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o locale_keys.g.dart
+```
+
+### Generate Models' JSON parsers
+
+```
+flutter pub run build_runner build --delete-conflicting-outputs
+```
 
 Also see notes about [Auth0 configuration](../docs/identity.md).
