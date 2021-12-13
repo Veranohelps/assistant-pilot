@@ -27,7 +27,7 @@ dependencies:
   equatable: 2.0.3
   flutter:
     sdk: flutter
-  flutter_appauth: 1.1.0+2
+  flutter_appauth: 2.1.0+1
   flutter_background_geolocation: 4.3.0
   flutter_bloc: 8.0.0
   flutter_config: 2.0.0
@@ -75,9 +75,9 @@ flutter_icons:
 
 flutter_native_splash:
   background_image: "assets/splash_screen/background.png"
-  image: "assets/splash_screen/logo.png"
-  android_gravity: bottom|left
-  ios_content_mode: bottomLeft
+  # image: "assets/splash_screen/logo.png"
+  # android_gravity: bottom|left
+  # ios_content_mode: bottomLeft
   web: false
   ios: true
   android: true
@@ -89,6 +89,7 @@ flutter:
     - assets/translations/
     - assets/weather_pictos/
     - assets/content/
+    - assets/splash_screen/
 
   fonts:
     - family: DersuIcons

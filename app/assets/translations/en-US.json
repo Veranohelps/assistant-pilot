@@ -180,5 +180,11 @@
       "group_hint": "Analyse how has the group recently advanced and how is everyone else around you doing.",
       "group_text": "How much have you covered and how much is left? Are you on time? Do you have a plan B or alternative route? How are they physically and emotionally? Do you have enough food and drink?"
     }
+  },
+  "login": {
+    "title": "Welcome",
+    "text": "To be part of this adventure we need you to be part of Dersu.",
+    "cta": "Come on in",
+    "invitation_only": "(Invitation only for the time being)"
   }
 }

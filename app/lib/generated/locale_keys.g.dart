@@ -159,5 +159,10 @@ abstract class  LocaleKeys {
   static const expedition_three_by_three_group_text = 'expedition.three_by_three.group_text';
   static const expedition_three_by_three = 'expedition.three_by_three';
   static const expedition = 'expedition';
+  static const login_title = 'login.title';
+  static const login_text = 'login.text';
+  static const login_cta = 'login.cta';
+  static const login_invitation_only = 'login.invitation_only';
+  static const login = 'login';
 
 }

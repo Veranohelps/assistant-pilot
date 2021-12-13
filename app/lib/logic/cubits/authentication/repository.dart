@@ -18,13 +18,20 @@ class AuthenticationRepository {
   final box = Hive.box(HiveContants.authentication.txt);
 
   Future<Option<AuthorizationTokenResponse>> login() async {
+    final deviceInfo = getIt<DeviceInfoService>();
+    // https://github.com/aissat/easy_localization#-get-device-locale-devicelocale
     AuthorizationTokenResponse? result;
     try {
       result = await appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           auth0clientId,
           auth0redirectUrl,
-          additionalParameters: {'audience': auth0audience},
+          additionalParameters: {
+            'audience': auth0audience,
+            'ui_locales': (deviceInfo.locale != null)
+                ? deviceInfo.locale!.toString()
+                : 'es'
+          },
           promptValues: ['login'],
           issuer: auth0issuer,
           scopes: ['offline_access'],

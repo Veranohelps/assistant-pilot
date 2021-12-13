@@ -180,5 +180,11 @@
       "group_hint": "Analiza cómo habéis avanzado en el último rato y cómo se encuentran las personas que te acompañan.",
       "group_text": "¿Qué lleváis hecho y qué es lo que queda? ¿Vais en hora? ¿Tenéis un plan B o un camino alternativo? ¿Cómo están física y anímicamente? ¿Tenéis comida y bebida suficiente?"
     }
+  },
+  "login": {
+    "title": "Te damos la bienvenida",
+    "text": "Para poder continuar con esta aventura necesitamos que formes parte de Dersu.",
+    "cta": "Entrar",
+    "invitation_only": "(Invitación necesaria)"
   }
 }
