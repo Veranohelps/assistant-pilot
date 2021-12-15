@@ -1,6 +1,5 @@
 import 'package:app/config/brand_theme.dart';
 import 'package:app/logic/cubits/profile/user_routes_cubit.dart';
-import 'package:app/logic/cubits/routes/expeditions_cubit.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/add_user_gpx.dart';
 import 'package:app/ui/pages/root_tabs/routes/routes.dart';

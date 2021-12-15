@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/utils/extensions/extensions.dart';
 import 'package:app/generated/locale_keys.g.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({Key? key}) : super(key: key);
