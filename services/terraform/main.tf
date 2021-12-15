@@ -253,6 +253,7 @@ PROFILE_IMAGES_BUCKET_NAME="${google_storage_bucket.profile-images-bucket.name}"
 BPA_BUCKET_NAME="${google_storage_bucket.bpa-reports-bucket.name}"
 GOOGLE_TIMEZONE_API_KEY="${data.google_secret_manager_secret_version.google-timezone-api-key-version.secret_data}"
 GOOGLE_ELEVATION_API_KEY="${data.google_secret_manager_secret_version.google-elevation-api-key-version.secret_data}"
+GOOGLE_GEOCODING_API_KEY="${data.google_secret_manager_secret_version.google-geocoding-api-key-version.secret_data}"
 EOT
 }
 
@@ -296,6 +297,12 @@ data "google_secret_manager_secret_version" "google-timezone-api-key-version" {
 
 data "google_secret_manager_secret_version" "google-elevation-api-key-version" {
   secret = "google-elevation-api-key"
+  project = var.project_id
+  version = 1
+}
+
+data "google_secret_manager_secret_version" "google-geocoding-api-key-version" {
+  secret = "google-geocoding-api-key"
   project = var.project_id
   version = 1
 }

@@ -24,7 +24,9 @@ class BlocAndProviderConfig extends StatelessWidget {
         BlocProvider(lazy: false, create: (_) => ProfileCubit(auth)),
         BlocProvider(lazy: false, create: (_) => dictionaries),
         BlocProvider(lazy: false, create: (_) => ExpeditionsCubit(auth)),
-        BlocProvider(create: (_) => RoutesCubit()),
+        BlocProvider(
+            create: (_) =>
+                RoutesCubit()), // most likely we don't need this here any more
         BlocProvider(create: (_) => ExpeditionCubit()),
         BlocProvider(create: (_) => LiveCubit()..load()),
       ],

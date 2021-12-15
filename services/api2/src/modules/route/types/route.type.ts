@@ -87,7 +87,10 @@ export interface IRouteFull extends IRoute {
 }
 
 export interface IGetUserRoutesUrlParameters {
-  owner: string[];
+  owner?: string[];
+  name?: string;
+  levels?: string[];
+  activityTypes?: string[];
 }
 
 export interface ICreateRouteResult {
@@ -112,4 +115,9 @@ export interface ITimeZone {
 
 export interface IRouteWeather extends IWeatherPredictionDaily {
   bpaReports: IBpaReport[];
+}
+
+export interface ISearchRoutesResult {
+  routes: IRoute[];
+  locations: { fullName: string; boundingBox: IPolygonGeometry; routes: IRoute[] }[];
 }

@@ -25,6 +25,7 @@ import {
   createNoDersuRouteValidationSchema,
   getRouteValidationSchema,
   getUserRoutesQueryValidationSchema,
+  searchRoutesVSchema,
 } from '../../route.validation-schema';
 import { RouteService } from '../../services/route.service';
 import { ERouteOrigins } from '../../types/route-origin.type';
@@ -52,6 +53,21 @@ export class PersonalRouteController {
     withUrl(routes, (r: IRouteSlim) => appUrls.personal.route.id(r.id));
 
     return successResponse('fetch personal routes success', { routes });
+  }
+
+  @Get('search')
+  @HttpCode(HttpStatus.OK)
+  async searchRoutes(
+    @UserData() user: IUser,
+    @ParsedUrlParameters(searchRoutesVSchema)
+    urlParameters: IGetUserRoutesUrlParameters,
+  ) {
+    const result = await this.routeService.search(user.id, urlParameters);
+
+    withUrl(result, (r: IRouteSlim) => appUrls.personal.route.id(r.id), 'routes');
+    withUrl(result, (r: IRouteSlim) => appUrls.personal.route.id(r.id), 'locations.routes');
+
+    return successResponse('search routes success', result);
   }
 
   @Get(':routeId')
@@ -102,6 +118,7 @@ export class PersonalRouteController {
 
     return successResponse('Route created', { route });
   }
+
   @Patch(':routeId/update')
   @HttpCode(HttpStatus.OK)
   async updateUserRoute(

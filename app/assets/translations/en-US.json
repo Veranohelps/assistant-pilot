@@ -190,5 +190,16 @@
     "text": "To be part of this adventure we need you to be part of Dersu.",
     "cta": "Come on in",
     "invitation_only": "(Invitation only for the time being)"
+  },
+  "route_search": {
+    "title": "Planning",
+    "routes": "Routes",
+    "locations": "Locations",
+    "hint": "Type the name of a route or location.",
+    "no_routes_found": "We haven't found routes by that name.",
+    "no_locations_found": "We haven't found a location by that name.",
+    "no_routes_for_this_location": "We haven't found routes at this location.",
+    "routes_for_this_location": "Routes for this location.",
+    "error": "Apologies, there's been an error while searching, more information below."
   }
 }

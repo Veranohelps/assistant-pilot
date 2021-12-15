@@ -5,6 +5,7 @@ import { ErrorCodes } from '../../common/errors/error-codes';
 import { BadRequestError, NotFoundError, ServerError } from '../../common/errors/http.error';
 import { ElevationService, ElevationStatus } from '../../common/services/elevation.service';
 import { EventService } from '../../common/services/event.service';
+import { GeocodingService } from '../../common/services/geocoding.service';
 import { TimezoneService } from '../../common/services/timezone.service';
 import { IGeoJSON, ILineStringGeometry } from '../../common/types/geojson.type';
 import AddFields from '../../common/utilities/add-fields';
@@ -35,6 +36,7 @@ import {
   IRoute,
   IRouteSlim,
   IRouteWeather,
+  ISearchRoutesResult,
   TMPIRoutePartial,
 } from '../types/route.type';
 import { analyseRoute, IRouteAnalysis, IRoutePartial } from '../utils/analyse-route';
@@ -54,6 +56,7 @@ export class RouteService {
     private timezoneService: TimezoneService,
     private eventService: EventService,
     private weatherService: WeatherService,
+    private geocodingService: GeocodingService,
   ) {}
 
   private _4326Spheroid = 'SPHEROID["WGS 84",6378137,298.257223563]';
@@ -403,6 +406,7 @@ export class RouteService {
 
     return route;
   }
+
   async updateUserRoute(
     tx: TransactionManager,
     id: string,
@@ -428,6 +432,7 @@ export class RouteService {
       .cReturning();
     return update;
   }
+
   async deleteRoute(
     tx: TransactionManager,
     id: string,
@@ -619,19 +624,31 @@ export class RouteService {
     options: IGetUserRoutesUrlParameters,
   ): Promise<IRouteSlim[]> {
     const opts = new AppQuery(options);
-    const builder = this.db.read(tx);
+    const builder = this.db.read(tx).orderBy('createdAt', 'desc');
 
-    opts.withField(
-      'owner',
-      (owners) => {
-        if (owners.includes('me')) {
-          builder.where({ userId });
-        }
-      },
-      () => {
-        builder.where({ userId }).orWhere({ userId: null });
-      },
-    );
+    opts
+      .withField(
+        'owner',
+        (owners) => {
+          if (owners.includes('me')) {
+            builder.where({ userId });
+          }
+        },
+        () => {
+          builder.where({ userId }).orWhere({ userId: null });
+        },
+      )
+      .withField('name', (name) => {
+        builder.whereRaw(`regexp_replace(name, '\s+', '') ilike ?`, [
+          `%${name.replace(/\s+/g, '')}%`,
+        ]);
+      })
+      .withField('levels', (levels) => {
+        builder.where('levelIds', '&&', levels);
+      })
+      .withField('activityTypes', (types) => {
+        builder.where('activityTypeIds', '&&', types);
+      });
 
     const routes = await builder;
 
@@ -639,7 +656,7 @@ export class RouteService {
   }
 
   async getAdminRoutes(): Promise<IRouteSlim[]> {
-    const builder = this.db.read().orderBy('createdAt', 'desc');
+    const builder = this.db.read().where({ userId: null }).orderBy('createdAt', 'desc');
 
     const routes = await builder;
 
@@ -706,5 +723,81 @@ export class RouteService {
     );
 
     return route;
+  }
+
+  async search(userId: string, options: IGetUserRoutesUrlParameters): Promise<ISearchRoutesResult> {
+    const opts = new AppQuery(options);
+    const builder = this.db.read().orderBy('createdAt', 'desc');
+
+    opts
+      .withField(
+        'owner',
+        (owners) => {
+          if (owners.includes('me')) {
+            builder.where({ userId });
+          }
+        },
+        () => builder.where((b) => b.where({ userId }).orWhere({ userId: null })),
+      )
+      .withField('levels', (levels) => {
+        builder.where('levelIds', '&&', levels);
+      })
+      .withField('activityTypes', (types) => {
+        builder.where('activityTypeIds', '&&', types);
+      });
+
+    const name = opts.query.name;
+
+    if (!name) {
+      return {
+        routes: [],
+        locations: [],
+      };
+    }
+
+    const geocodeLocations = await this.geocodingService.searchByName(name);
+
+    const routesByNameBuilder = builder
+      .clone()
+      .whereRaw(`regexp_replace(lower(name), ' +', '') ilike ?`, [
+        `%${opts.query.name?.replace(/\s+/g, '')}%`,
+      ]);
+    const routesByLocationBuilder = builder
+      .clone()
+      .select('placeId')
+      .innerJoin(
+        this.db.knex.raw(
+          '(select * from json_to_recordset(?) as ("placeId" varchar, coordinate text)) as location on ST_Intersects(ST_GeomFromGeoJSON(??), ??)',
+          [
+            JSON.stringify(
+              geocodeLocations.map((location) => ({
+                placeId: location.place_id,
+                coordinate: this.geocodingService.viewPortToPolygon(location.geometry.viewport),
+              })),
+            ),
+            'location.coordinate',
+            'Route.coordinate',
+          ],
+        ),
+      );
+
+    const [routesByName, routesByLocation] = await Promise.all([
+      routesByNameBuilder,
+      geocodeLocations.length
+        ? (routesByLocationBuilder as Promise<(IRoute & { placeId: string })[]>)
+        : [],
+    ]);
+
+    const routeByLocationRecord = generateGroupRecord(routesByLocation, (r) => r.placeId);
+    const locations = geocodeLocations.map((location) => ({
+      fullName: location.formatted_address,
+      boundingBox: this.geocodingService.viewPortToPolygon(location.geometry.viewport),
+      routes: routeByLocationRecord[location.place_id] ?? [],
+    }));
+
+    return {
+      routes: routesByName,
+      locations,
+    };
   }
 }

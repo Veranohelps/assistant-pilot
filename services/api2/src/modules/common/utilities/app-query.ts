@@ -1,8 +1,6 @@
 import { cloneDeep, merge } from 'lodash';
 
-type TFilterCallback<T> = (val: TRemoveUndefined<T>) => void;
-
-type TRemoveUndefined<T> = T extends undefined | infer U ? U : T;
+type TFilterCallback<T> = (val: T) => void;
 
 export class AppQuery<T = Record<string, unknown>> {
   query!: T;
@@ -30,7 +28,7 @@ export class AppQuery<T = Record<string, unknown>> {
 
   withField<K extends keyof T>(
     key: K,
-    callback: TFilterCallback<T[K]>,
+    callback: TFilterCallback<Required<T>[K]>,
     elseCallback?: VoidFunction,
   ) {
     const value = this.query[key];
@@ -41,7 +39,7 @@ export class AppQuery<T = Record<string, unknown>> {
       return this;
     }
 
-    callback(value as TRemoveUndefined<T[K]>);
+    callback(value as Required<T>[K]);
 
     return this;
   }

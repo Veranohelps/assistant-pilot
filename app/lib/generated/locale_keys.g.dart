@@ -167,5 +167,15 @@ abstract class  LocaleKeys {
   static const login_cta = 'login.cta';
   static const login_invitation_only = 'login.invitation_only';
   static const login = 'login';
+  static const route_search_title = 'route_search.title';
+  static const route_search_routes = 'route_search.routes';
+  static const route_search_locations = 'route_search.locations';
+  static const route_search_hint = 'route_search.hint';
+  static const route_search_no_routes_found = 'route_search.no_routes_found';
+  static const route_search_no_locations_found = 'route_search.no_locations_found';
+  static const route_search_no_routes_for_this_location = 'route_search.no_routes_for_this_location';
+  static const route_search_routes_for_this_location = 'route_search.routes_for_this_location';
+  static const route_search_error = 'route_search.error';
+  static const route_search = 'route_search';
 
 }

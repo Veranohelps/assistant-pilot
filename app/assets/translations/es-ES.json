@@ -190,5 +190,16 @@
     "text": "Para poder continuar con esta aventura necesitamos que formes parte de Dersu.",
     "cta": "Entrar",
     "invitation_only": "(Invitación necesaria)"
+  },
+  "route_search": {
+    "title": "Planificación",
+    "routes": "Rutas",
+    "locations": "Localizaciones",
+    "hint": "Introduce el nombre de una ruta o localización.",
+    "no_routes_found": "No hemos encontrado rutas con ese nombre.",
+    "no_locations_found": "No hemos encontrado ninguna localización con ese nombre.",
+    "no_routes_for_this_location": "No hemos encontrado rutas en esta localización.",
+    "routes_for_this_location": "Rutas para esta localización.",
+    "error": "Lo sentimos pero ha habido un error al hacer la búsqueda. Más información a continuación."
   }
 }

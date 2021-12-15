@@ -9,6 +9,7 @@ import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { EventService } from './services/event.service';
 import { GcpUploadService } from './services/gcp-upload.service';
 import { GcpService } from './services/gcp.service';
+import { GeocodingService } from './services/geocoding.service';
 import { LoaderService } from './services/loader.service';
 
 @Global()
@@ -39,7 +40,8 @@ import { LoaderService } from './services/loader.service';
     GcpService,
     EventService,
     GcpUploadService,
+    GeocodingService,
   ],
-  exports: [LoaderService, GcpService, EventService, GcpUploadService],
+  exports: [LoaderService, GcpService, EventService, GcpUploadService, GeocodingService],
 })
 export class CommonModule {}

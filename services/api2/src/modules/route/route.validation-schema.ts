@@ -31,3 +31,10 @@ export const updateRouteValidationSchema = Joi.object<ICreateRouteDTO>({
 export const getRouteValidationSchema = Joi.object<IGetRouteUrlParameters>({
   searchWaypointsBy: Joi.string().valid('track', 'boundingBox').default('track'),
 });
+
+export const searchRoutesVSchema = Joi.object({
+  name: Joi.string().allow('').lowercase().trim(),
+  levels: Joi.array(),
+  activityTypes: Joi.array(),
+  owner: Joi.array(),
+});

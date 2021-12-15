@@ -4,7 +4,8 @@ import 'package:app/ui/components/brand_tab_bar/brand_tab_bar.dart';
 import 'package:app/ui/pages/root_tabs/dashboard/dashboard.dart';
 import 'package:app/ui/pages/root_tabs/more/more.dart';
 import 'package:app/ui/pages/root_tabs/profile/profile.dart';
-import 'package:app/ui/pages/root_tabs/routes/routes.dart';
+// import 'package:app/ui/pages/root_tabs/routes/routes.dart';
+import 'package:app/ui/pages/root_tabs/routes_search/routes_search_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -71,7 +72,8 @@ class _RootPageState extends State<RootPage>
           controller: tabController,
           children: const [
             Dashboard(),
-            RoutesTab(),
+            RoutesSearchTab(),
+            // RoutesTab(),
             ProfileTab(),
             More(),
           ],
