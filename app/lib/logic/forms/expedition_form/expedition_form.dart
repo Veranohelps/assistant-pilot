@@ -129,7 +129,7 @@ class ExpeditionFormCubit extends FormCubit {
     date.setValue(defaultTime);
 
     if (activityTypeIds.state.value.isNotEmpty &&
-        newRoute.activityTypeIds.contains(activityTypeIds.state.value.first)) {
+        !newRoute.activityTypeIds.contains(activityTypeIds.state.value.first)) {
       activityTypeIds.setValue([]);
     }
 
