@@ -1,5 +1,6 @@
 import 'package:app/config/brand_theme.dart';
 import 'package:app/logic/models/levels.dart';
+import 'package:app/ui/components/brand_button/brand_button.dart';
 import 'package:app/utils/extensions/text_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -42,16 +43,7 @@ class _BaseAssessment extends State<BaseAssessment> {
                       ((currentUserLevel == null)
                           ? "not set"
                           : currentUserLevel.name)),
-                  Slider(
-                    min: 0,
-                    max: skill.children.length - 1,
-                    value: _currentLevelIndex.toDouble(),
-                    label: skill.children.elementAt(_currentLevelIndex).name,
-                    onChanged: (double value) {
-                      _setLevel(value.toInt());
-                    },
-                    divisions: skill.children.length - 1,
-                  ),
+                  SizedBox(height: 20),
                   Text(currentDisplayLevel.name).h5,
                   SizedBox(height: 10),
                   if (snapshot.data != null)
@@ -61,6 +53,27 @@ class _BaseAssessment extends State<BaseAssessment> {
                     ),
                 ],
               ),
+            ),
+            bottomSheet: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Slider(
+                  min: 0,
+                  max: skill.children.length - 1,
+                  value: _currentLevelIndex.toDouble(),
+                  label: skill.children.elementAt(_currentLevelIndex).name,
+                  onChanged: (double value) {
+                    _setLevel(value.toInt());
+                  },
+                  divisions: skill.children.length - 1,
+                ),
+                BrandButtons.primaryBig(
+                    text: "I am at this level", onPressed: null),
+                SizedBox(
+                  height: 50,
+                )
+              ],
             ),
           );
         });

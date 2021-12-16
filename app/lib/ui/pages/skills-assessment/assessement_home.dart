@@ -40,7 +40,7 @@ class _AssessmentHome extends State<AssessmentHome> {
                 : <String, String>{};
             return Scaffold(
               appBar: AppBar(
-                title: Text("Skills assessment HOME"),
+                title: Text("Skills assessment"),
               ),
               body: Padding(
                 padding:
@@ -95,8 +95,10 @@ class _SkillWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BrandButtons.primaryBig(
-        text:
-            skill.name + " (" + ((level == null) ? "nope" : level!.name) + ")",
+        text: skill.name +
+            " (" +
+            ((level == null) ? "not set" : level!.name) +
+            ")",
         onPressed: () => openCallback());
   }
 }
