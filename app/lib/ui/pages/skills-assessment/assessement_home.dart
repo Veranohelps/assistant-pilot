@@ -25,15 +25,14 @@ class _AssessmentHome extends State<AssessmentHome> {
         ],
         child: Builder(
           builder: (context) {
-            var allSkills =
-                (context.read<DictionariesCubit>().state as DictionariesLoaded)
-                    .allSkils;
             var profile =
                 (context.read<ProfileCubit>().state as ProfileReady).profile;
-
             var allLevels =
                 (context.read<DictionariesCubit>().state as DictionariesLoaded)
                     .allLevels;
+            var allSkills =
+                (context.read<DictionariesCubit>().state as DictionariesLoaded)
+                    .allSkils;
 
             var currentLevels = (profile is FilledProfile)
                 ? profile.currentLevels
@@ -68,15 +67,28 @@ class _AssessmentHome extends State<AssessmentHome> {
   void _openSkillAssessment(Skill skill, Level? currentLevel) {
     Navigator.of(context).push(materialRoute(BaseAssessment(
       skill: skill,
-      currentLevel: currentLevel,
+      currentUserLevel: currentLevel,
+      setNewLevelCallback: _setNewLevelCallback,
     )));
   }
 
   Level? _findLevelForSkillInUserProfile(
       List<Level> allLevels, Map<String, String> userLevels, Skill skill) {
-    return userLevels.containsKey(skill.id)
-        ? allLevels.firstWhere((level) => level.skillId == skill.id)
-        : null;
+    if (userLevels.containsKey(skill.id)) {
+      var userLevelId = userLevels[skill.id];
+      return allLevels.singleWhere((level) => level.id == userLevelId);
+    } else {
+      return null;
+    }
+  }
+
+  void _setNewLevelCallback(Level level) {
+    print(level);
+    Map<String, String> assessment = {};
+    assessment[level.skillId] = level.id;
+    var profileCubit = context.read<ProfileCubit>();
+    profileCubit.setNewAssessments(assessment);
+    Navigator.of(context).pop();
   }
 }
 
