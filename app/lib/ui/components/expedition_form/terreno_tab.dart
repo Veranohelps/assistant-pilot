@@ -9,11 +9,6 @@ class TerrenoTab extends StatelessWidget {
   final ExpeditionFormCubit formCubit;
   final bool isEditable;
 
-  final MarkdownStyleSheet markdownStyle = MarkdownStyleSheet(
-      h1: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      h2: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-      p: TextStyle(fontSize: 14));
-
   Future<MaterialData> getMaterialData(Iterable<ActivityType> types) async {
     var data = <String, String>{};
     for (var activityType in types) {

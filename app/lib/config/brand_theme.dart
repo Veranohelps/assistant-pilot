@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'brand_colors.dart';
 
@@ -42,3 +43,8 @@ final shadow = BoxShadow(
   offset: const Offset(0, 4),
   color: BrandColors.black.withOpacity(0.08),
 );
+
+MarkdownStyleSheet markdownStyle = MarkdownStyleSheet(
+    h1: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    h2: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    p: TextStyle(fontSize: 14));

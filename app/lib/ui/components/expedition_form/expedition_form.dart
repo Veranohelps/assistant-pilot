@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/config/brand_theme.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/logic/cubits/expeditions/expeditions_cubit.dart';
 import 'package:app/logic/cubits/live/live_cubit.dart';

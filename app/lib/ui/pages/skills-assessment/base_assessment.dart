@@ -1,3 +1,4 @@
+import 'package:app/config/brand_theme.dart';
 import 'package:app/logic/models/levels.dart';
 import 'package:app/utils/extensions/text_extension.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,10 @@ class _BaseAssessment extends State<BaseAssessment> {
                   Text(currentDisplayLevel.name).h5,
                   SizedBox(height: 10),
                   if (snapshot.data != null)
-                    MarkdownBody(data: snapshot.data![currentDisplayLevel.id]!),
+                    MarkdownBody(
+                      data: snapshot.data![currentDisplayLevel.id]!,
+                      styleSheet: markdownStyle,
+                    ),
                 ],
               ),
             ),
