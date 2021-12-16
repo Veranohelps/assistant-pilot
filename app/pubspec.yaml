@@ -89,6 +89,7 @@ flutter:
     - assets/translations/
     - assets/weather_pictos/
     - assets/content/
+    - assets/content/skill-levels/
     - assets/splash_screen/
 
   fonts:

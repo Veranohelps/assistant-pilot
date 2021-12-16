@@ -11,6 +11,7 @@ import 'package:app/ui/components/brand_text_field/brand_text_field.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/delete_profile.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/levels.dart';
 import 'package:app/ui/pages/root_tabs/profile/pages/user_routes.dart';
+import 'package:app/ui/pages/skills-assessment/assessement_home.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class ProfileTab extends StatelessWidget {
           Divider(),
           _NavItem(
             title: LocaleKeys.profile_my_levels_name.tr(),
-            goTo: LevelsSetting(),
+            goTo: AssessmentHome(),
           ),
           _NavItem(
             title: LocaleKeys.profile_my_routes_name.tr(),
