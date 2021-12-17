@@ -17,6 +17,12 @@
     "browse": "Buscar",
     "submit": "Enviar"
   },
+  "assessment": {
+    "title": "Mis niveles",
+    "not_set": "Sin definir",
+    "current_level": "Tu nivel actual",
+    "confirm_level": "Estoy en este nivel"
+  },
   "profile": {
     "name": "Perfil",
     "edit_profile": "Editar perfil",

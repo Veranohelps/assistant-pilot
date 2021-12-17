@@ -17,6 +17,12 @@
     "browse": "Browse",
     "submit": "Submit"
   },
+  "assessment": {
+    "title": "My levels",
+    "not_set": "Not set",
+    "current_level": "Your current level",
+    "confirm_level": "I am at this level"
+  },
   "profile": {
     "name": "Profile",
     "edit_profile": "Edit profile",

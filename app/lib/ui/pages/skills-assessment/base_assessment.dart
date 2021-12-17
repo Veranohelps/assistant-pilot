@@ -5,6 +5,8 @@ import 'package:app/utils/extensions/text_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BaseAssessment extends StatefulWidget {
   final Skill skill;
@@ -53,9 +55,10 @@ class _BaseAssessment extends State<BaseAssessment> {
                 children: [
                   Text(skill.name).h2,
                   SizedBox(height: 10),
-                  Text("Current user level for this skill: " +
+                  Text(LocaleKeys.assessment_current_level.tr() +
+                      ": " +
                       ((currentUserLevel == null)
-                          ? "not set"
+                          ? LocaleKeys.assessment_not_set.tr()
                           : currentUserLevel.name)),
                   SizedBox(height: 20),
                   Text(currentDisplayLevel.name).h5,
@@ -68,28 +71,31 @@ class _BaseAssessment extends State<BaseAssessment> {
                 ],
               ),
             ),
-            bottomSheet: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Slider(
-                  min: 0,
-                  max: skill.children.length - 1,
-                  value: _currentLevelIndex.toDouble(),
-                  label: skill.children.elementAt(_currentLevelIndex).name,
-                  onChanged: (double value) {
-                    _setLevel(value.toInt());
-                  },
-                  divisions: skill.children.length - 1,
-                ),
-                BrandButtons.primaryBig(
-                    text: "I am at this level",
-                    onPressed: () => widget.setNewLevelCallback(
-                        skill.children.elementAt(_currentLevelIndex))),
-                SizedBox(
-                  height: 50, // would be good to make this dynamic
-                )
-              ],
+            bottomSheet: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Slider(
+                    min: 0,
+                    max: skill.children.length - 1,
+                    value: _currentLevelIndex.toDouble(),
+                    label: skill.children.elementAt(_currentLevelIndex).name,
+                    onChanged: (double value) {
+                      _setLevel(value.toInt());
+                    },
+                    divisions: skill.children.length - 1,
+                  ),
+                  BrandButtons.primaryBig(
+                      text: LocaleKeys.assessment_confirm_level.tr(),
+                      onPressed: () => widget.setNewLevelCallback(
+                          skill.children.elementAt(_currentLevelIndex))),
+                  SizedBox(
+                    height: 50, // would be good to make this dynamic
+                  )
+                ],
+              ),
             ),
           );
         });

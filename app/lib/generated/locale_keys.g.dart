@@ -18,6 +18,11 @@ abstract class  LocaleKeys {
   static const basis_browse = 'basis.browse';
   static const basis_submit = 'basis.submit';
   static const basis = 'basis';
+  static const assessment_title = 'assessment.title';
+  static const assessment_not_set = 'assessment.not_set';
+  static const assessment_current_level = 'assessment.current_level';
+  static const assessment_confirm_level = 'assessment.confirm_level';
+  static const assessment = 'assessment';
   static const profile_name = 'profile.name';
   static const profile_edit_profile = 'profile.edit_profile';
   static const profile_my_levels_name = 'profile.my_levels.name';

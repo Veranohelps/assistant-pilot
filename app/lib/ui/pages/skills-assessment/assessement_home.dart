@@ -7,6 +7,8 @@ import 'package:app/ui/pages/skills-assessment/base_assessment.dart';
 import 'package:app/utils/route_transitions/basic.dart';
 import 'package:cubit_form/cubit_form.dart';
 import 'package:flutter/material.dart';
+import 'package:app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AssessmentHome extends StatefulWidget {
   const AssessmentHome({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class _AssessmentHome extends State<AssessmentHome> {
         (profile is FilledProfile) ? profile.currentLevels : <String, String>{};
     return Scaffold(
       appBar: AppBar(
-        title: Text("Skills assessment"),
+        title: Text(LocaleKeys.assessment_title.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -95,9 +97,10 @@ class _SkillWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BrandButtons.primaryBig(
         text: skill.name +
-            " (" +
-            ((level == null) ? "not set" : level!.name) +
-            ")",
+            " " +
+            ((level == null)
+                ? "(" + LocaleKeys.assessment_not_set.tr() + ")"
+                : "- " + level!.name),
         onPressed: () => openCallback());
   }
 }
