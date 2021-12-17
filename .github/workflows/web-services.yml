@@ -71,9 +71,9 @@ jobs:
       - name: Terraform plan
         working-directory: services/terraform
         run: |
-          terraform plan -input=false -out=tfplan \
+          terraform plan -lock=false -input=false -out=tfplan \
           -var="dersu_api_docker_image_tag=${{ steps.dockerimage.outputs.tag }}" \
           -var="dersu_admin_console_docker_image_tag=${{ steps.dockerimage.outputs.tag }}"
       - name: Terraform apply
         working-directory: services/terraform
-        run: terraform apply -input=false tfplan
+        run: terraform apply -lock=false -input=false tfplan
