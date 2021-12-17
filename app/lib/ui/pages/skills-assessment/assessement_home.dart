@@ -18,50 +18,37 @@ class AssessmentHome extends StatefulWidget {
 class _AssessmentHome extends State<AssessmentHome> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => context.read<DictionariesCubit>()),
-          BlocProvider(create: (context) => context.read<ProfileCubit>())
-        ],
-        child: Builder(
-          builder: (context) {
-            var profile =
-                (context.read<ProfileCubit>().state as ProfileReady).profile;
-            var allLevels =
-                (context.read<DictionariesCubit>().state as DictionariesLoaded)
-                    .allLevels;
-            var allSkills =
-                (context.read<DictionariesCubit>().state as DictionariesLoaded)
-                    .allSkils;
+    var profile = (context.watch<ProfileCubit>().state as ProfileReady).profile;
+    var allLevels =
+        (context.read<DictionariesCubit>().state as DictionariesLoaded)
+            .allLevels;
+    var allSkills =
+        (context.read<DictionariesCubit>().state as DictionariesLoaded)
+            .allSkils;
 
-            var currentLevels = (profile is FilledProfile)
-                ? profile.currentLevels
-                : <String, String>{};
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Skills assessment"),
-              ),
-              body: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (var skill in allSkills)
-                        _SkillWidget(
-                          skill: skill,
-                          level: _findLevelForSkillInUserProfile(
-                              allLevels, currentLevels, skill),
-                          openCallback: () => _openSkillAssessment(
-                              skill,
-                              _findLevelForSkillInUserProfile(
-                                  allLevels, currentLevels, skill)),
-                        ),
-                    ]),
-              ),
-            );
-          },
-        ));
+    var currentLevels =
+        (profile is FilledProfile) ? profile.currentLevels : <String, String>{};
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Skills assessment"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          for (var skill in allSkills)
+            _SkillWidget(
+              skill: skill,
+              level: _findLevelForSkillInUserProfile(
+                  allLevels, currentLevels, skill),
+              openCallback: () => _openSkillAssessment(
+                  skill,
+                  _findLevelForSkillInUserProfile(
+                      allLevels, currentLevels, skill)),
+            ),
+        ]),
+      ),
+    );
   }
 
   void _openSkillAssessment(Skill skill, Level? currentLevel) {

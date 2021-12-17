@@ -94,7 +94,7 @@ class _LevelsSettingState extends State<LevelsSetting> {
                                 levelData as Skill,
                               ),
                               label: 'Level - Change',
-                              text: currentLevel.name,
+                              text: currentLevel?.name ?? "",
                             )
                           : BrandButtons.primaryShort(
                               label: 'Level - Not set up',

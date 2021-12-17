@@ -70,7 +70,12 @@ class ProfileCubit extends AuthenticationDependendCubit<ProfileState> {
   Future<void> setNewAssessments(
       final Map<String, String> currentLevels) async {
     var profile = (state as ProfileDersuRegistrationFinished).profile;
-    var newProfile = profile.copyWith(currentLevels: currentLevels);
+
+    var newLevels = <String, String>{
+      ...profile.currentLevels,
+      ...currentLevels
+    };
+    var newProfile = profile.copyWith(currentLevels: newLevels);
     await api.setNewLevels(levels: newProfile.currentLevels.values.toList());
     emit(ProfileDersuRegistrationFinished(newProfile));
   }

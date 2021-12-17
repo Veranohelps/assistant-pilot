@@ -1,7 +1,7 @@
 part of 'expedition_form.dart';
 
 class TerrenoTab extends StatelessWidget {
-  TerrenoTab({
+  const TerrenoTab({
     Key? key,
     required this.formCubit,
     required this.isEditable,

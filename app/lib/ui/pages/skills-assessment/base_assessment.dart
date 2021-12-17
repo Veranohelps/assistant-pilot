@@ -10,9 +10,8 @@ class BaseAssessment extends StatefulWidget {
   final Skill skill;
   final Level? currentUserLevel;
   final ValueChanged<Level> setNewLevelCallback;
-  int _currentLevelIndex = -1;
 
-  BaseAssessment(
+  const BaseAssessment(
       {Key? key,
       required this.skill,
       required this.currentUserLevel,
@@ -24,16 +23,18 @@ class BaseAssessment extends StatefulWidget {
 }
 
 class _BaseAssessment extends State<BaseAssessment> {
+  int _currentLevelIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     var skill = widget.skill;
     var currentUserLevel = widget.currentUserLevel;
-    if (widget._currentLevelIndex < 0) {
-      widget._currentLevelIndex = currentUserLevel!.level - 1;
+
+    if (_currentLevelIndex < 0) {
+      _currentLevelIndex = currentUserLevel!.level - 1;
     }
 
-    var currentDisplayLevel =
-        skill.children.elementAt(widget._currentLevelIndex);
+    var currentDisplayLevel = skill.children.elementAt(_currentLevelIndex);
 
     return FutureBuilder<Map<String, String>>(
         future: getSkillInformation(skill),
@@ -70,9 +71,8 @@ class _BaseAssessment extends State<BaseAssessment> {
                 Slider(
                   min: 0,
                   max: skill.children.length - 1,
-                  value: widget._currentLevelIndex.toDouble(),
-                  label:
-                      skill.children.elementAt(widget._currentLevelIndex).name,
+                  value: _currentLevelIndex.toDouble(),
+                  label: skill.children.elementAt(_currentLevelIndex).name,
                   onChanged: (double value) {
                     _setLevel(value.toInt());
                   },
@@ -81,7 +81,7 @@ class _BaseAssessment extends State<BaseAssessment> {
                 BrandButtons.primaryBig(
                     text: "I am at this level",
                     onPressed: () => widget.setNewLevelCallback(
-                        skill.children.elementAt(widget._currentLevelIndex))),
+                        skill.children.elementAt(_currentLevelIndex))),
                 SizedBox(
                   height: 50, // would be good to make this dynamic
                 )
@@ -93,7 +93,7 @@ class _BaseAssessment extends State<BaseAssessment> {
 
   void _setLevel(int levelIndex) {
     setState(() {
-      widget._currentLevelIndex = levelIndex;
+      _currentLevelIndex = levelIndex;
     });
   }
 
