@@ -31,7 +31,11 @@ class _BaseAssessment extends State<BaseAssessment> {
     var currentUserLevel = widget.currentUserLevel;
 
     if (_currentLevelIndex < 0) {
-      _currentLevelIndex = currentUserLevel!.level - 1;
+      if (currentUserLevel == null) {
+        _currentLevelIndex = 0;
+      } else {
+        _currentLevelIndex = currentUserLevel.level - 1;
+      }
     }
 
     var currentDisplayLevel = skill.children.elementAt(_currentLevelIndex);
