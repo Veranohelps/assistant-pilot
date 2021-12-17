@@ -51,6 +51,11 @@ export const appUrls = {
     },
     expedition: {
       id: (id: string) => `${appUrl}/personal/expedition/${id}`,
+      user: {
+        log: {
+          id: (id: string) => `${appUrl}/personal/expedition/user/log/${id}`,
+        },
+      },
     },
     waypoint: {
       id: (id: string) => `${appUrl}/personal/waypoint/${id}`,

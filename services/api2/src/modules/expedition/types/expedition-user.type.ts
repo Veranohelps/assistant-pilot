@@ -1,5 +1,5 @@
 import { IUser } from '../../user/types/user.type';
-import { IExpedition } from './expedition.type';
+import { EExpeditionStatus, IExpedition } from './expedition.type';
 
 export enum EExpeditionInviteStatus {
   PENDING = 'PENDING',
@@ -17,6 +17,8 @@ export interface IExpeditionUser {
   rejectedOn: Date | null;
   leftOn: Date | null;
   createdAt: Date;
+  updatedAt: Date;
+  expeditionStatus: EExpeditionStatus;
 }
 
 export interface ICreateExpeditionUser {
@@ -24,6 +26,7 @@ export interface ICreateExpeditionUser {
   userId: string;
   inviteStatus: EExpeditionInviteStatus;
   isOwner: boolean;
+  expeditionStatus?: EExpeditionStatus;
   acceptedOn?: Date | null;
   rejectedOn?: Date | null;
   leftOn?: Date | null;

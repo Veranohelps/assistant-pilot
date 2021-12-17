@@ -26,7 +26,6 @@ class _AppState extends State<App> {
 
   Future<void> _afterLayout(_) async {
     var liveExpedition = context.read<LiveCubit>().state;
-
     if (liveExpedition is LiveStateOn) {
       // NOTE (JD): we avoid showing location access dialog if we are resuming
       // an expedition because it was asked before starting

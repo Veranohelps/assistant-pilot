@@ -85,10 +85,11 @@ class _WeatherBlockState extends State<_WeatherBlock> {
 
     _checkTabs(a.state.value!, (b.state as WeatherLoaded).weather.days);
 
-    subscirption = StreamGroup.merge([a.stream, b.stream]).listen(
-      (_) =>
-          _checkTabs(a.state.value!, (b.state as WeatherLoaded).weather.days),
-    );
+    subscirption = StreamGroup.merge([a.stream, b.stream]).listen((_) {
+      if (a.state.value != null) {
+        _checkTabs(a.state.value!, (b.state as WeatherLoaded).weather.days);
+      }
+    });
   }
 
   @override

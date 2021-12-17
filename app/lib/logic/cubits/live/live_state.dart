@@ -36,6 +36,7 @@ class LiveStateOn extends LiveState {
   }
 
   factory LiveStateOn.fromMap(Map<String, dynamic> map) {
+    // throw 'here';
     return LiveStateOn(
       expedition: ExpeditionFull.fromJson(map['expedition']),
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),

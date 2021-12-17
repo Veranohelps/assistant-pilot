@@ -3,6 +3,7 @@ export enum ERouteOrigins {
   GARMIN = 'garmin',
   STRAVA = 'strava',
   MANUAL = 'manual',
+  EXPEDITION = 'expedition',
 }
 
 export interface IRouteOrigin {

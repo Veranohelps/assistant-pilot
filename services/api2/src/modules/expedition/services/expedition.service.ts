@@ -16,6 +16,7 @@ import { RouteService } from '../../route/services/route.service';
 import { EExpeditionEvents } from '../events/event-types/expedition.event-type';
 import { EExpeditionInviteStatus } from '../types/expedition-user.type';
 import {
+  EExpeditionStatus,
   ICreateExpedition,
   ICreateExpeditionDTO,
   IExpedition,
@@ -353,6 +354,7 @@ export class ExpeditionService {
       .innerJoin('ExpeditionUser', (b) => b.on('Expedition.id', 'ExpeditionUser.expeditionId'))
       .where('ExpeditionUser.userId', userId)
       .where('ExpeditionUser.inviteStatus', EExpeditionInviteStatus.ACCEPTED)
+      .where('ExpeditionUser.expeditionStatus', EExpeditionStatus.PLANNING)
       .orderBy('Expedition.createdAt', 'desc')
       .then((res) =>
         AddFields.target(res).add('activityTypes', () =>
@@ -363,5 +365,24 @@ export class ExpeditionService {
       );
 
     return expeditions;
+  }
+
+  async cancelExpedition(
+    tx: TransactionManager,
+    expeditionId: string,
+    userId: string,
+  ): Promise<IExpedition> {
+    const expedition = await this.findOne(tx, expeditionId);
+
+    // only expedition owners are allowed to cancel expeditions
+    if (userId !== expedition.userId) {
+      throw new UnauthorizedError(
+        ErrorCodes.UNAUTHORIZED,
+        'An expedition can only be cancelled by its owner',
+      );
+    }
+    await this.expeditionUserService.cancelExpedition(tx, expeditionId);
+
+    return expedition;
   }
 }

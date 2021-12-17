@@ -133,9 +133,11 @@
     "app_version": "Versión"
   },
   "errors": {
+    "error": "Error",
     "fatal": "Error!",
     "unknown": "Error desconocido",
-    "token": "Hay algún problema con sus credenciales, por favor inténtelo de nuevo."
+    "token": "Hay algún problema con sus credenciales, por favor inténtelo de nuevo.",
+    "expedition_data_save": "unfortunately you have no connection now, we haven't been able to save your expedition data"
   },
   "gestures": {
     "press_and_hold": "Mantén presionado"

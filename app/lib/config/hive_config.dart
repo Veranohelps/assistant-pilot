@@ -17,6 +17,7 @@ class HiveConfig {
     await Hive.openBox<ConsoleMessage>(HiveContants.console.txt);
     await Hive.openBox(HiveContants.geoConfig.txt);
     await Hive.openBox(HiveContants.hydratedCubits.txt);
+    await Hive.openBox(HiveContants.expeditionLog.txt);
 
     var encryptionKey = await getEncryptionKey();
     await Hive.openBox(
@@ -53,6 +54,7 @@ enum HiveContants {
   refreshToken,
   hydratedCubits,
   liveExpedition,
+  expeditionLog
 }
 
 extension HiveContantseExt on HiveContants {

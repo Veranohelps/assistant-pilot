@@ -14,6 +14,7 @@ import {
   createExpeditionValidationSchema,
   updateExpeditionVSchema,
 } from '../../expedition.validation';
+import { ExpeditionUserRouteLogService } from '../../services/expedition-user-route-log.service';
 import { ExpeditionRouteService } from '../../services/expedition-route.service';
 import { ExpeditionService } from '../../services/expedition.service';
 import {
@@ -29,6 +30,7 @@ export class PersonalExpeditionController {
     private expeditionService: ExpeditionService,
     private expeditionRouteService: ExpeditionRouteService,
     private weatherService: WeatherService,
+    private expeditionLogService: ExpeditionUserRouteLogService,
   ) {}
 
   @Get('/')
@@ -92,5 +94,32 @@ export class PersonalExpeditionController {
     const apiResponse = await this.weatherService.getForecast(expeditionRoute.route, dailyMode);
 
     return apiResponse;
+  }
+
+  @Patch(':expeditionId/cancel')
+  @HttpCode(HttpStatus.OK)
+  async cancelExpedition(
+    @Tx() tx: TransactionManager,
+    @UserData() user: IUser,
+    @Param('expeditionId') id: string,
+  ) {
+    const expedition = await this.expeditionService.cancelExpedition(tx, id, user.id);
+
+    return successResponse('Expedition cancelled', { expedition });
+  }
+
+  @Get('user/log')
+  @HttpCode(HttpStatus.OK)
+  async getLog(@UserData() user: IUser) {
+    const expeditions = await this.expeditionLogService.getUserExpeditionLog(user.id);
+    withUrl(expeditions, (e) => appUrls.personal.expedition.user.log.id(e.id));
+    return successResponse('Expedition log', { expeditions });
+  }
+
+  @Get('user/log/:expeditionLogId')
+  @HttpCode(HttpStatus.OK)
+  async getLogById(@UserData() user: IUser, @Param('expeditionLogId') id: string) {
+    const expedition = await this.expeditionLogService.getExpeditionLogById(user.id, id);
+    return successResponse('Expedition log', { expedition });
   }
 }

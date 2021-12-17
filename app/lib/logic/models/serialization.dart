@@ -10,10 +10,14 @@ Null readonly(_) => null;
 class Serialization {
   static const Function readOnly = readonly;
 
-  static List<Estimation> fromJsonMapToEsitmationList(
-      Map<String, dynamic> json) {
-    return json.values.map((object) => Estimation.fromJson(object)).toList();
-  }
+  static Map<String, dynamic> fromEstimationListToJsonMap(
+    List<Estimation> list,
+  ) =>
+      list.asMap().map((k, v) => MapEntry(v.activityTypeId, v));
+
+  static List<Estimation> fromJsonMapToEstimationList(
+          Map<String, dynamic> json) =>
+      json.values.map((object) => Estimation.fromJson(object)).toList();
 
   static Duration fromMinutesToDuration(num number) {
     return Duration(minutes: number.toInt());

@@ -121,3 +121,8 @@ export interface ISearchRoutesResult {
   routes: IRoute[];
   locations: { fullName: string; boundingBox: IPolygonGeometry; routes: IRoute[] }[];
 }
+export interface ICreateRouteFromExpeditionDTO {
+  name: string;
+  description?: string | null;
+  coordinate: ILineStringGeometry;
+}

@@ -6,13 +6,15 @@ import { TransactionManager } from '../../common/utilities/transaction-manager';
 import { KnexClient } from '../../database/knex/client.knex';
 import { InjectKnexClient } from '../../database/knex/decorator.knex';
 import { UserService } from '../../user/services/user.service';
+import { IExpeditionUserEventData } from '../types/expedition-event.type';
 import {
   EExpeditionInviteStatus,
   ICreateExpeditionUser,
   IExpeditionUser,
   IExpeditionUserFull,
 } from '../types/expedition-user.type';
-import { IExpedition } from '../types/expedition.type';
+import { EExpeditionStatus, IExpedition } from '../types/expedition.type';
+import { ExpeditionUserEventService } from './expedition-event.service';
 import { ExpeditionService } from './expedition.service';
 
 @Injectable()
@@ -23,6 +25,7 @@ export class ExpeditionUserService {
     @Inject(forwardRef(() => ExpeditionService))
     private expeditionService: ExpeditionService,
     private userService: UserService,
+    private expeditionUserEventService: ExpeditionUserEventService,
   ) {}
 
   async addUsers(
@@ -37,6 +40,7 @@ export class ExpeditionUserService {
         userId,
         inviteStatus: EExpeditionInviteStatus.PENDING,
         isOwner: false,
+        expeditionStatus: EExpeditionStatus.PLANNING,
       }));
 
     if (expedition.userId) {
@@ -46,6 +50,7 @@ export class ExpeditionUserService {
         inviteStatus: EExpeditionInviteStatus.ACCEPTED,
         isOwner: true,
         acceptedOn: new Date(),
+        expeditionStatus: EExpeditionStatus.PLANNING,
       });
     }
 
@@ -81,6 +86,7 @@ export class ExpeditionUserService {
         userId,
         inviteStatus: EExpeditionInviteStatus.PENDING,
         isOwner: false,
+        expeditionStatus: EExpeditionStatus.PLANNING,
       }));
 
       await this.expeditionUserDb
@@ -140,6 +146,7 @@ export class ExpeditionUserService {
           userId,
           isOwner: false,
           inviteStatus: EExpeditionInviteStatus.PENDING,
+          expeditionStatus: expUser.expeditionStatus,
         })),
       )
       .onConflict(['expeditionId', 'userId'])
@@ -311,5 +318,47 @@ export class ExpeditionUserService {
     );
 
     return result;
+  }
+
+  async startExpedition(
+    tx: TransactionManager,
+    expeditionId: string,
+    userId: string,
+    event: IExpeditionUserEventData,
+  ): Promise<IExpeditionUser> {
+    let expUser = await this.getExpeditionUser(tx, expeditionId, userId);
+
+    [expUser] = await this.expeditionUserDb
+      .write(tx)
+      .update({ expeditionStatus: EExpeditionStatus.IN_PROGRESS })
+      .where({ expeditionId, userId })
+      .cReturning();
+
+    await this.expeditionUserEventService.insertArrayOfEvents(tx, expeditionId, userId, [event]);
+    return expUser;
+  }
+
+  async cancelExpedition(tx: TransactionManager, expeditionId: string): Promise<IExpeditionUser[]> {
+    const expUser = await this.expeditionUserDb
+      .write(tx)
+      .update({ expeditionStatus: EExpeditionStatus.CANCELLED })
+      .where({ expeditionId })
+      .cReturning();
+
+    return expUser;
+  }
+
+  async finishExpedition(
+    tx: TransactionManager,
+    expeditionId: string,
+    userId: string,
+  ): Promise<IExpeditionUser[]> {
+    const expUser = await this.expeditionUserDb
+      .write(tx)
+      .update({ expeditionStatus: EExpeditionStatus.FINISHED })
+      .where({ expeditionId, userId })
+      .cReturning();
+
+    return expUser;
   }
 }

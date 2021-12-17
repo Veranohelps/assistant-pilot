@@ -55,3 +55,10 @@ export interface IUpdateExpeditionDTO {
   invites?: string[];
   users?: string[];
 }
+
+export enum EExpeditionStatus {
+  PLANNING = 'PLANNING',
+  IN_PROGRESS = 'IN-PROGRESS',
+  FINISHED = 'FINISHED',
+  CANCELLED = 'CANCELLED',
+}

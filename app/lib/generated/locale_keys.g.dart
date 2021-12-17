@@ -118,9 +118,11 @@ abstract class  LocaleKeys {
   static const more_terms_and_conditions = 'more.terms_and_conditions';
   static const more_app_version = 'more.app_version';
   static const more = 'more';
+  static const errors_error = 'errors.error';
   static const errors_fatal = 'errors.fatal';
   static const errors_unknown = 'errors.unknown';
   static const errors_token = 'errors.token';
+  static const errors_expedition_data_save = 'errors.expedition_data_save';
   static const errors = 'errors';
   static const gestures_press_and_hold = 'gestures.press_and_hold';
   static const gestures = 'gestures';

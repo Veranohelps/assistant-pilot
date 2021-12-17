@@ -61,6 +61,8 @@ class _LiveMapState extends State<LiveMap> {
 
   Marker? _userMarker;
 
+  // List<CircleMarker> technicalMarkers = [];
+
   @override
   void initState() {
     super.initState();
@@ -92,6 +94,10 @@ class _LiveMapState extends State<LiveMap> {
       _locationErrorListener,
     );
     _locationListener(_userLocation!);
+
+    // setState(() {
+    //   technicalMarkers = drawTecnicalMarkers(_userLocation!);
+    // });
   }
 
   Future<void> _mapListener(MapEvent event) async {
@@ -119,6 +125,7 @@ class _LiveMapState extends State<LiveMap> {
       );
     }
     _userLocation = location;
+
     setState(() {
       _userMarker = Marker(
         point: location.toLatLong(),
@@ -136,6 +143,22 @@ class _LiveMapState extends State<LiveMap> {
     });
   }
 
+  // List<CircleMarker> drawTecnicalMarkers(
+  //   bg.Location location,
+  // ) {
+  //   var list = pointsOnMapCircle(
+  //       location.coords.latitude, location.coords.longitude, 4, 5);
+  //   return list
+  //       .map((e) => CircleMarker(
+  //             radius: 3500,
+  //             useRadiusInMeter: true,
+  //             point: LatLng(e.latitude, e.longitude),
+  //             color: BrandColors.red,
+  //             borderStrokeWidth: 10,
+  //           ))
+  //       .toList();
+  // }
+
   void _findMe() async {
     isMapFixedToLocation = true;
     isMapFixedToLocationOnPause = false;
@@ -143,10 +166,11 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _mapStream.cancel();
+
     bg.BackgroundGeolocation.removeListener(_locationListener);
-    _geofenceService.stop();
+    await _geofenceService.close();
     EasyDebounce.cancel(debouncer);
     super.dispose();
   }
@@ -154,7 +178,8 @@ class _LiveMapState extends State<LiveMap> {
   Future<void> geoFenceStart() async {
     _geofenceService = getIt<GeofenceService>();
     await _geofenceService.init();
-    await _geofenceService.start(widget.route.waypoints);
+    await _geofenceService.startTrackExpedition(
+        widget.expeditionId, widget.route.waypoints);
   }
 
   @override
@@ -185,8 +210,26 @@ class _LiveMapState extends State<LiveMap> {
               children: [
                 BrandButtons.primaryElevatedButton(
                   label: 'Exit expedition',
-                  onPressed: () {
+                  onPressed: () async {
                     context.read<LiveCubit>().clean();
+                    var res = await _geofenceService.finish();
+                    if (!res) {
+                      await getIt<NavigationService>().showPopUpDialog(
+                        AlertDialog(
+                          title: Text(LocaleKeys.errors_error.tr()),
+                          content:
+                              Text(LocaleKeys.errors_expedition_data_save.tr()),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                getIt<NavigationService>().navigator.pop();
+                              },
+                              child: Text(LocaleKeys.basis_ok.tr()),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                     Navigator.of(context).pushReplacement(
                       materialRoute(
                         ExpeditionSummary(
@@ -284,7 +327,13 @@ class _LiveMapState extends State<LiveMap> {
       ),
       layers: [
         ...getLayoutOptions(widget.route),
-        if (_userMarker != null) MarkerLayerOptions(markers: [_userMarker!]),
+        // CircleLayerOptions(
+        //   circles: technicalMarkers,
+        // ),
+        if (_userMarker != null)
+          MarkerLayerOptions(markers: [
+            _userMarker!,
+          ]),
       ],
     );
   }

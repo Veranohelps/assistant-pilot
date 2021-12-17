@@ -9,13 +9,21 @@ import { PersonalExpeditionUserController } from './controllers/personal/persona
 import { PersonalExpeditionController } from './controllers/personal/personal.expedition.controller';
 import { ExpeditionEventHandler } from './events/event-handlers/expedition.event-handler';
 import { ExpeditionResolver } from './graphql/resolvers/expedition.resolver';
+import { ExpeditionUserEventService } from './services/expedition-event.service';
+import { ExpeditionUserRouteLogService } from './services/expedition-user-route-log.service';
 import { ExpeditionRouteService } from './services/expedition-route.service';
 import { ExpeditionUserService } from './services/expedition-user.service';
 import { ExpeditionService } from './services/expedition.service';
 
 @Module({
   imports: [
-    DatabaseModule.forFeature(['Expedition', 'ExpeditionRoute', 'ExpeditionUser']),
+    DatabaseModule.forFeature([
+      'Expedition',
+      'ExpeditionRoute',
+      'ExpeditionUser',
+      'ExpeditionUserRouteLog',
+      'ExpeditionUserEvent',
+    ]),
     WaypointModule,
     RouteModule,
     UserModule,
@@ -30,11 +38,18 @@ import { ExpeditionService } from './services/expedition.service';
     ExpeditionService,
     ExpeditionRouteService,
     ExpeditionUserService,
+    ExpeditionUserRouteLogService,
+    ExpeditionUserEventService,
     ExpeditionResolver,
 
     // event handlers
     ExpeditionEventHandler,
   ],
-  exports: [ExpeditionService, ExpeditionRouteService, ExpeditionUserService],
+  exports: [
+    ExpeditionService,
+    ExpeditionRouteService,
+    ExpeditionUserService,
+    ExpeditionUserRouteLogService,
+  ],
 })
 export class ExpeditionModule {}

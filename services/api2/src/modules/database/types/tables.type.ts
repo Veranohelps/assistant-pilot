@@ -10,6 +10,14 @@ import { IBpaReport, ICreateBpaReport } from '../../bpa/types/bpa-report.type';
 import { IBpaZoneReport, ICreateBpaZoneReport } from '../../bpa/types/bpa-zone-report.type';
 import { IBpaZone, ICreateBpaZone } from '../../bpa/types/bpa-zone.type';
 import {
+  ICreateDataBaseExpeditionUserEvent,
+  IDataBaseExpeditionUserEvent,
+} from '../../expedition/types/expedition-event.type';
+import {
+  ICreateExpeditionUserRouteLog,
+  IExpeditionUserRouteLog,
+} from '../../expedition/types/expedition-log.type';
+import {
   ICreateExpeditionRoute,
   IExpeditionRoute,
 } from '../../expedition/types/expedition-route.type';
@@ -104,5 +112,15 @@ export interface IDatabaseTables {
     IBpaZoneReport,
     ICreateBpaZoneReport,
     Partial<ICreateBpaZoneReport>
+  >;
+  ExpeditionUserEvent: Knex.CompositeTableType<
+    IDataBaseExpeditionUserEvent,
+    ICreateDataBaseExpeditionUserEvent,
+    Partial<Omit<IDataBaseExpeditionUserEvent, 'id'>>
+  >;
+  ExpeditionUserRouteLog: Knex.CompositeTableType<
+    IExpeditionUserRouteLog,
+    ICreateExpeditionUserRouteLog,
+    Partial<Omit<IExpeditionUserRouteLog, 'id'>>
   >;
 }

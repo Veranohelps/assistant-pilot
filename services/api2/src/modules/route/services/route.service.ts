@@ -32,6 +32,7 @@ import { ERouteEvents } from '../events/event-types/route.event-type';
 import { ERouteOrigins } from '../types/route-origin.type';
 import {
   ICreateRouteDTO,
+  ICreateRouteFromExpeditionDTO,
   IGetUserRoutesUrlParameters,
   IRoute,
   IRouteSlim,
@@ -799,5 +800,83 @@ export class RouteService {
       routes: routesByName,
       locations,
     };
+  }
+  async createRouteFromExpedition(
+    tx: TransactionManager,
+    originId: ERouteOrigins,
+    payload: ICreateRouteFromExpeditionDTO,
+    userId?: string,
+  ): Promise<IRoute> {
+    const lineStringGeom = payload.coordinate;
+    const startingPointAltitude = lineStringGeom.coordinates[0][2];
+    if (startingPointAltitude == null) {
+      const startingPointLongitude = lineStringGeom.coordinates[0][0];
+      const startingPointLatitude = lineStringGeom.coordinates[0][1];
+      try {
+        const elevationResponse = await this.elevationService.getElevation({
+          type: 'Point',
+          coordinates: [startingPointLongitude, startingPointLatitude, startingPointAltitude],
+        });
+        if (elevationResponse.status == ElevationStatus.OK) {
+          lineStringGeom.coordinates[0][2] = elevationResponse.results[0].elevation;
+        } else {
+          console.error(
+            `No altitude available for route's starting point ${elevationResponse.error_message}`,
+          );
+          throw new ServerError(
+            ErrorCodes.SERVER_ERROR,
+            `No altitude available for route's starting point ${elevationResponse.error_message}`,
+          );
+        }
+      } catch (err) {
+        console.error("No altitude available for route's starting point");
+        throw new ServerError(
+          ErrorCodes.SERVER_ERROR,
+          "No altitude available for route's starting point",
+        );
+      }
+    }
+
+    const geomString = this.lineStringGeomToString(lineStringGeom);
+    const routeParams = analyseRoute(lineStringGeom);
+    const meteoPointsOfInterestsRoutePartials = await this.getDistanceFromPointsOfInterest2({
+      partials: routeParams.routePartials,
+    }).then((res) => res.partials);
+    const existingRoute = geomString
+      ? await this.db
+          .read(tx, { overrides: { globalId: { select: true } } })
+          .where('coordinate', this.db.knex.raw(geomString))
+          .first()
+      : null;
+    const [route] = await this.db
+      .write(tx)
+      .insert({
+        globalId: existingRoute?.globalId,
+        name: payload.name,
+        description: payload.description,
+        levelIds: [],
+        activityTypeIds: [], //No activity types or levels for now
+        userId,
+        originId,
+        coordinate: this.db.knex.raw(geomString),
+        boundingBox: this.db.knex.raw(`ST_Envelope(${geomString}::geometry)`),
+        distanceInMeters: this.db.knex.raw(
+          `st_lengthspheroid(${geomString}::geometry, '${this._4326Spheroid}')`,
+        ),
+        elevationGainInMeters: routeParams.elevationGainInMeters,
+        elevationLossInMeters: routeParams.elevationLossInMeters,
+        highestPointInMeters: routeParams.highestPointInMeters,
+        lowestPointInMeters: routeParams.lowestPointInMeters,
+        meteoPointsOfInterests: this.db.knex.raw(`ST_GeomFromGeoJSON(?)`, [
+          JSON.stringify(routeParams.meteoPointsOfInterests),
+        ]),
+        meteoPointsOfInterestsRoutePartials,
+      })
+      .where('createdAt')
+      .cReturning();
+
+    //await this.routeActivityTypeService.addActivities(tx, route);
+
+    return route;
   }
 }
